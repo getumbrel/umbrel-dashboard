@@ -53,6 +53,10 @@
           inputClass="card-input w-100"
         />
 
+        <!-- <p class="text-danger text-left align-self-start mt-1">
+          <small>{{ errorMessage }}</small>
+        </p>-->
+
         <b-button
           variant="success"
           size="lg"
@@ -81,8 +85,6 @@
     </div>
 
     <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
-
-    <p v-if="errorMessage">{{ errorMessage }}</p>
   </div>
 </template>
 
@@ -142,7 +144,6 @@ export default {
       password: "",
       confirmPassword: "",
       wifiPassword: "",
-      errorMessage: "",
       selectedWifi: "",
       steps: onboardingSteps,
       wifiNetworks: [
@@ -186,18 +187,20 @@ export default {
       const { onboardingStep } = this.$store.getters;
 
       if (onboardingStep === 1) {
-        if (!/^[A-Za-z ]+$/.test(this.name)) {
-          return false;
-        }
-        if (this.name.length < 3) {
-          return false;
-        }
+        // if (!/^[A-Za-z ]+$/.test(this.name)) {
+        //   return false;
+        // }
+        // if (this.name.length < 3) {
+        //   return false;
+        // }
+        return this.name.length;
       }
 
       if (onboardingStep === 2) {
-        if (this.password.length < 6) {
-          return false;
-        }
+        // if (this.password.length < 6) {
+        //   return false;
+        // }
+        return this.password.length;
       }
 
       if (onboardingStep === 3) {
