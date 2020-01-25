@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="d-flex flex-column align-items-center justify-content-center min-vh-100 p-2">
-      <img src="@/assets/logo.svg" class="mb-2" />
+      <img src="@/assets/logo.svg" class="mb-2 logo" />
 
       <h1 class="text-center mb-2">{{ steps[onboardingStep]["heading"] }}</h1>
       <p class="text-muted w-75 text-center">{{ steps[onboardingStep]["text"] }}</p>
@@ -239,7 +239,7 @@ export default {
         });
         window.setTimeout(() => {
           this.$confetti.stop();
-        }, 3000);
+        }, 2500);
       }
       return this.$store.dispatch("nextStep");
     },
@@ -262,6 +262,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logo {
+  height: 20vh;
+  max-height: 200px;
+  width: auto;
+}
 .form-container {
   max-width: 500px;
 }
