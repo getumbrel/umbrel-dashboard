@@ -1,0 +1,56 @@
+// Overrides
+.btn, button {
+    outline: 0 !important;
+    border: none !important;
+    text-transform: uppercase;
+    box-shadow: none !important;
+}
+
+.card {
+    background: #ffffff;
+    box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
+    border-radius: 1rem;
+    &:hover {
+        box-shadow: 0px 10px 40px rgba(209, 213, 223, 0.6);
+    }
+    border: none !important;
+    outline: 0 !important;
+}
+.card-input {
+    position: relative;
+    background: #ffffff;
+    box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
+    border-radius: 1rem;
+    height: calc(2.25em + 1.125rem + 2px);
+    padding: 0.5rem 1.5rem;
+    outline: 0 !important;
+    border: none !important;
+
+    &:hover,
+    &:focus,
+    &:active {
+      box-shadow: 0px 10px 40px rgba(209, 213, 223, 0.6);
+    }
+}
+
+.card-input-group {
+    .card-input {
+        padding-right: 3rem;
+    }
+    .input-group-append > .btn {
+        background: none !important;
+        color: #616877;
+        border: none !important;    
+        outline: none !important;
+        box-shadow: none !important;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0.5rem;
+    }
+}
+
+.card-list {
+    max-height: 15rem;
+    overflow-y: scroll;
+}
