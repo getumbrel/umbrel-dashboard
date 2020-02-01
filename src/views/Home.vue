@@ -107,20 +107,19 @@ Vue.use(VueConfetti);
 const onboardingSteps = [
   {
     heading: "welcome to umbrel",
-    text: "Your journey to become a first-class Bitcoin citizen starts now"
+    text: "First things first — let's make your Umbrel yours."
   },
   {
-    heading: "let's start with your name",
-    text:
-      "Your name stays on your Umbrel Node and is never shared with a 3rd party."
+    heading: "what is your name?",
+    text: "Your name stays on your Umbrel and is never shared with a 3rd party."
   },
   {
-    heading: "dark or light",
-    text: "the choice is yours"
+    heading: "lights on or lights off?",
+    text: "Dark or light — your Umbrel, your theme."
   },
   {
-    heading: "connect umbrel to wifi",
-    text: ""
+    heading: "choose your wifi",
+    text: "Your Umbreel belongs to your network."
   },
   {
     heading: "enter wifi password",
@@ -129,17 +128,17 @@ const onboardingSteps = [
   {
     heading: "set your password",
     text:
-      "You'll need this password to securely access your Umbrel Node from anywhere."
+      "You'll need this password to securely access your Umbrel from anywhere."
   },
   {
     heading: "confirm your password",
     text:
-      "You'll need this password to securely access your Umbrel Node from anywhere."
+      "You'll need this password to securely access your Umbrel from anywhere."
   },
   {
     heading: "that's it!",
     text:
-      "Congratulations! Your Umbrel Node is now running and synchronizing the Bitcoin blockchain."
+      "Congratulations! Your Umbrel is now running and synchronizing the Bitcoin blockchain."
   }
 ];
 
