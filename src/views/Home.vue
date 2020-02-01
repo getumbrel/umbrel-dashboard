@@ -16,23 +16,7 @@
           autofocus
         ></b-form-input>
 
-        <input-password
-          v-model="password"
-          ref="password"
-          v-if="onboardingStep === 2"
-          placeholder="Enter your password"
-          inputClass="card-input w-100"
-        />
-
-        <input-password
-          v-model="confirmPassword"
-          ref="confirmPassword"
-          placeholder="Re-enter your password"
-          v-if="onboardingStep === 3"
-          inputClass="card-input w-100"
-        />
-
-        <b-list-group class="card card-list w-100" v-if="onboardingStep === 4">
+        <b-list-group class="card card-list w-100" v-if="onboardingStep === 2">
           <b-list-group-item
             class="d-flex"
             button
@@ -49,6 +33,22 @@
           v-model="wifiPassword"
           ref="wifiPassword"
           :placeholder="'Enter WiFi password for ' + selectedWifi"
+          v-if="onboardingStep === 3"
+          inputClass="card-input w-100"
+        />
+
+        <input-password
+          v-model="password"
+          ref="password"
+          v-if="onboardingStep === 4"
+          placeholder="Enter your password"
+          inputClass="card-input w-100"
+        />
+
+        <input-password
+          v-model="confirmPassword"
+          ref="confirmPassword"
+          placeholder="Re-enter your password"
           v-if="onboardingStep === 5"
           inputClass="card-input w-100"
         />
@@ -61,7 +61,7 @@
           variant="success"
           size="lg"
           @click="nextStep"
-          v-if="onboardingStep !== 4 && onboardingStep !== 6"
+          v-if="onboardingStep !== 2 && onboardingStep !== 6"
           :disabled="!isStepValid"
           class="mt-3 px-4"
         >{{ onboardingStep === 0 ? 'Start' : 'Next' }}</b-button>
@@ -107,6 +107,14 @@ const onboardingSteps = [
       "Your name stays on your Umbrel Node and is never shared with a 3rd party."
   },
   {
+    heading: "connect umbrel to wifi",
+    text: ""
+  },
+  {
+    heading: "enter wifi password",
+    text: ""
+  },
+  {
     heading: "set your password",
     text:
       "You'll need this password to securely access your Umbrel Node from anywhere."
@@ -115,14 +123,6 @@ const onboardingSteps = [
     heading: "confirm your password",
     text:
       "You'll need this password to securely access your Umbrel Node from anywhere."
-  },
-  {
-    heading: "connect umbrel to wifi",
-    text: ""
-  },
-  {
-    heading: "enter wifi password",
-    text: ""
   },
   {
     heading: "that's it!",
@@ -197,26 +197,26 @@ export default {
       }
 
       if (onboardingStep === 2) {
+        if (this.selectedWifi === "") {
+          return false;
+        }
+      }
+
+      if (onboardingStep === 3) {
+        return !!this.wifiPassword;
+      }
+
+      if (onboardingStep === 4) {
         // if (this.password.length < 6) {
         //   return false;
         // }
         return this.password.length;
       }
 
-      if (onboardingStep === 3) {
+      if (onboardingStep === 5) {
         if (this.confirmPassword !== this.password) {
           return false;
         }
-      }
-
-      if (onboardingStep === 4) {
-        if (this.selectedWifi === "") {
-          return false;
-        }
-      }
-
-      if (onboardingStep === 5) {
-        return !!this.wifiPassword;
       }
 
       return true;
