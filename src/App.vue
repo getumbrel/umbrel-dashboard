@@ -11,6 +11,9 @@
 <script>
 export default {
   name: "App",
-  mounted() {}
+  mounted() {
+    const isDarkMode = this.$store.getters.isDarkMode;
+    document.body.style.background = isDarkMode ? "#1C1C26" : "#ffffff";
+  }
 };
 </script>

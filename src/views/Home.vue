@@ -3,7 +3,9 @@
     <div class="d-flex flex-column align-items-center justify-content-center min-vh-100 p-2">
       <img src="@/assets/logo.svg" class="mb-2 logo" />
 
-      <h1 class="text-center mb-2">{{ steps[onboardingStep]["heading"] }}</h1>
+      <h1
+        :class="[isDarkMode ? 'text-white' : '', 'text-center mb-2']"
+      >{{ steps[onboardingStep]["heading"] }}</h1>
       <p class="text-muted w-75 text-center">{{ steps[onboardingStep]["text"] }}</p>
 
       <div class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center">
@@ -12,13 +14,18 @@
           ref="name"
           placeholder="Enter your name"
           v-if="onboardingStep === 1"
-          class="card-input w-100"
+          :class="[isDarkMode ? 'dark-mode' : '', 'card-input w-100']"
           autofocus
         ></b-form-input>
 
-        <b-list-group class="card card-list w-100" v-if="onboardingStep === 2">
+        <ThemeSwitch v-if="onboardingStep === 2" class="mb-2" />
+
+        <b-list-group
+          :class="[isDarkMode ? 'dark-mode' : '', 'card card-list w-100']"
+          v-if="onboardingStep === 3"
+        >
           <b-list-group-item
-            class="d-flex"
+            :class="[isDarkMode ? 'dark-mode' : '', 'd-flex']"
             button
             v-for="(network) in wifiNetworks"
             v-bind:key="network.name"
@@ -33,24 +40,24 @@
           v-model="wifiPassword"
           ref="wifiPassword"
           :placeholder="'Enter WiFi password for ' + selectedWifi"
-          v-if="onboardingStep === 3"
-          inputClass="card-input w-100"
+          v-if="onboardingStep === 4"
+          :inputClass="[isDarkMode ? 'dark-mode' : '', 'card-input w-100']"
         />
 
         <input-password
           v-model="password"
           ref="password"
-          v-if="onboardingStep === 4"
+          v-if="onboardingStep === 5"
           placeholder="Enter your password"
-          inputClass="card-input w-100"
+          :inputClass="[isDarkMode ? 'dark-mode' : '', 'card-input w-100']"
         />
 
         <input-password
           v-model="confirmPassword"
           ref="confirmPassword"
           placeholder="Re-enter your password"
-          v-if="onboardingStep === 5"
-          inputClass="card-input w-100"
+          v-if="onboardingStep === 6"
+          :inputClass="[isDarkMode ? 'dark-mode' : '', 'card-input w-100']"
         />
 
         <!-- <p class="text-danger text-left align-self-start mt-1">
@@ -61,7 +68,7 @@
           variant="success"
           size="lg"
           @click="nextStep"
-          v-if="onboardingStep !== 2 && onboardingStep !== 6"
+          v-if="onboardingStep !== 3 && onboardingStep !== 7"
           :disabled="!isStepValid"
           class="mt-3 px-4"
         >{{ onboardingStep === 0 ? 'Start' : 'Next' }}</b-button>
@@ -70,7 +77,7 @@
           variant="success"
           size="lg"
           @click="finish"
-          v-if="onboardingStep === 6"
+          v-if="onboardingStep === 7"
           class="mt-3 px-4"
         >Continue to Dashboard</b-button>
 
@@ -78,7 +85,7 @@
           variant="link"
           size="sm"
           @click="prevStep"
-          v-if="onboardingStep > 1 && onboardingStep !== 6"
+          v-if="onboardingStep > 1 && onboardingStep !== 7"
           class="mt-2"
         >Back</b-button>
       </div>
@@ -93,6 +100,7 @@ import Vue from "vue";
 import VueConfetti from "vue-confetti";
 
 import InputPassword from "@/components/InputPassword";
+import ThemeSwitch from "@/components/ThemeSwitch";
 
 Vue.use(VueConfetti);
 
@@ -105,6 +113,10 @@ const onboardingSteps = [
     heading: "let's start with your name",
     text:
       "Your name stays on your Umbrel Node and is never shared with a 3rd party."
+  },
+  {
+    heading: "dark or light",
+    text: "the choice is yours"
   },
   {
     heading: "connect umbrel to wifi",
@@ -196,24 +208,24 @@ export default {
         return this.name.length;
       }
 
-      if (onboardingStep === 2) {
+      if (onboardingStep === 3) {
         if (this.selectedWifi === "") {
           return false;
         }
       }
 
-      if (onboardingStep === 3) {
+      if (onboardingStep === 4) {
         return !!this.wifiPassword;
       }
 
-      if (onboardingStep === 4) {
+      if (onboardingStep === 5) {
         // if (this.password.length < 6) {
         //   return false;
         // }
         return this.password.length;
       }
 
-      if (onboardingStep === 5) {
+      if (onboardingStep === 6) {
         if (this.confirmPassword !== this.password) {
           return false;
         }
@@ -228,11 +240,14 @@ export default {
       return onboardingStep === 0
         ? 0
         : Math.round((onboardingStep * 100) / (totalSteps - 1));
+    },
+    isDarkMode() {
+      return this.$store.getters.isDarkMode;
     }
   },
   methods: {
     nextStep() {
-      if (this.$store.getters.onboardingStep === 5) {
+      if (this.$store.getters.onboardingStep === 6) {
         this.$confetti.start({
           particles: [
             {
@@ -256,10 +271,14 @@ export default {
       this.selectedWifi = name;
       this.$store.dispatch("selectWifi", name);
       return this.$store.dispatch("nextStep");
+    },
+    toggleDarkMode() {
+      this.$store.commit("toggleDarkMode");
     }
   },
   components: {
-    InputPassword
+    InputPassword,
+    ThemeSwitch
   }
 };
 </script>

@@ -3,10 +3,18 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
+// Initialize Dark/Light Mode
+// if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+//   window.localStorage.setItem("isDarkMode", "true");
+// }
+
+const userSelectedDarkMode = window.localStorage.getItem("isDarkMode") === "true";
+
 // Initial State
 const state = {
   onboardingStep: 0,
-  selectedWifi: ""
+  selectedWifi: "",
+  isDarkMode: userSelectedDarkMode
 };
 
 // Getters
@@ -16,6 +24,9 @@ const getters = {
   },
   selectWifi(state) {
     return state.selectWifi;
+  },
+  isDarkMode(state) {
+    return state.isDarkMode
   }
 }
 
@@ -29,6 +40,17 @@ const mutations = {
   },
   selectWifi(state, networkName) {
     state.selectedWifi = networkName;
+  },
+  toggleDarkMode(state) {
+    if (state.isDarkMode) {
+      state.isDarkMode = false;
+      document.body.style.background = "#ffffff";
+      window.localStorage.setItem("isDarkMode", "false");
+    } else {
+      state.isDarkMode = true;
+      document.body.style.background = "#1C1C26";
+      window.localStorage.setItem("isDarkMode", "true");
+    }
   }
 }
 
@@ -42,6 +64,9 @@ const actions = {
   },
   selectWifi(context, networkName) {
     context.commit('selectWifi', networkName);
+  },
+  triggerDarkMode(context) {
+    context.commit('toggleDarkMode');
   }
 }
 
