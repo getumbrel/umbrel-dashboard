@@ -13,16 +13,16 @@
           v-model="name"
           ref="name"
           placeholder="Enter your name"
-          v-if="onboardingStep === 1"
+          v-show="onboardingStep === 1"
           :class="[isDarkMode ? 'dark-mode' : '', 'card-input w-100']"
           autofocus
         ></b-form-input>
 
-        <ThemeSwitch v-if="onboardingStep === 2" class="mb-2" />
+        <ThemeSwitch v-show="onboardingStep === 2" class="mb-2" />
 
         <b-list-group
           :class="[isDarkMode ? 'dark-mode' : '', 'card card-list w-100']"
-          v-if="onboardingStep === 3"
+          v-show="onboardingStep === 3"
         >
           <b-list-group-item
             :class="[isDarkMode ? 'dark-mode' : '', 'd-flex']"
@@ -40,14 +40,14 @@
           v-model="wifiPassword"
           ref="wifiPassword"
           :placeholder="'Enter WiFi password for ' + selectedWifi"
-          v-if="onboardingStep === 4"
+          v-show="onboardingStep === 4"
           :inputClass="[isDarkMode ? 'dark-mode' : '', 'card-input w-100']"
         />
 
         <input-password
           v-model="password"
           ref="password"
-          v-if="onboardingStep === 5"
+          v-show="onboardingStep === 5"
           placeholder="Enter your password"
           :inputClass="[isDarkMode ? 'dark-mode' : '', 'card-input w-100']"
         />
@@ -56,7 +56,7 @@
           v-model="confirmPassword"
           ref="confirmPassword"
           placeholder="Re-enter your password"
-          v-if="onboardingStep === 6"
+          v-show="onboardingStep === 6"
           :inputClass="[isDarkMode ? 'dark-mode' : '', 'card-input w-100']"
         />
 
@@ -68,7 +68,7 @@
           variant="success"
           size="lg"
           @click="nextStep"
-          v-if="onboardingStep !== 3 && onboardingStep !== 7"
+          v-show="onboardingStep !== 3 && onboardingStep !== 7"
           :disabled="!isStepValid"
           class="mt-3 px-4"
         >{{ onboardingStep === 0 ? 'Start' : 'Next' }}</b-button>
@@ -77,7 +77,7 @@
           variant="success"
           size="lg"
           @click="finish"
-          v-if="onboardingStep === 7"
+          v-show="onboardingStep === 7"
           class="mt-3 px-4"
         >Continue to Dashboard</b-button>
 
@@ -85,7 +85,7 @@
           variant="link"
           size="sm"
           @click="prevStep"
-          v-if="onboardingStep > 1 && onboardingStep !== 7"
+          v-show="onboardingStep > 1 && onboardingStep !== 7"
           class="mt-2"
         >Back</b-button>
       </div>
