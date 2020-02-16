@@ -3,12 +3,16 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-// Initialize Dark/Light Mode
-// if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-//   window.localStorage.setItem("isDarkMode", "true");
-// }
 
-const userSelectedDarkMode = window.localStorage.getItem("isDarkMode") === "true";
+//Dark Mode
+let userSelectedDarkMode = false;
+
+//if dark mode has never been turned on, then get system preference. Else get user's setting.
+if (!window.localStorage.getItem("isDarkMode") && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+  userSelectedDarkMode = true;
+} else {
+  userSelectedDarkMode = window.localStorage.getItem("isDarkMode") === "true";
+}
 
 // Initial State
 const state = {
