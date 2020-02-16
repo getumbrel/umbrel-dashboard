@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "vue-cli-service build && aws s3 sync ./dist s3://live.getumbrel.com"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
