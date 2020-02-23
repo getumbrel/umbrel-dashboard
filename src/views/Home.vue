@@ -264,7 +264,11 @@ export default {
       return this.$store.dispatch("prevStep");
     },
     finish() {
-      return alert("You've reached the end of onboarding.");
+      // Temporarily disable dark mode
+      if (this.isDarkMode) {
+        this.toggleDarkMode();
+      }
+      return this.$router.push("/dashboard");
     },
     selectWifi({ name }) {
       this.selectedWifi = name;

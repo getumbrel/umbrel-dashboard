@@ -45,7 +45,7 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
-            <template v-slot:button-content>User</template>
+            <template v-slot:button-content>Satoshi</template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
@@ -147,10 +147,9 @@
       </b-col>
       <b-col col sm="10">
         <slot></slot>
-        <footer class="d-flex justify-content-end text-muted">
+        <footer class="d-flex justify-content-end text-muted pr-3">
           <p>
             <small>
-              &copy; 2020
               <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
             </small>
           </p>

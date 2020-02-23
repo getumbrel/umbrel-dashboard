@@ -1,5 +1,5 @@
 <template>
-  <b-card header-tag="header" footer-tag="footer" no-body>
+  <b-card header-tag="header" footer-tag="footer" no-body class="mb-4">
     <!-- <template v-slot:header></template> -->
     <div>
       <div class="card-custom-header p-4">
