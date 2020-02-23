@@ -147,29 +147,7 @@
                 <p>8</p>
               </div>-->
               <!-- <p class="px-4">Latest Blocks</p> -->
-              <b-list-group>
-                <b-list-group-item href="#" class="flex-column align-items-start px-4">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1 font-weight-normal">Block 618555</h6>
-                    <small class="text-muted">7 mins ago</small>
-                  </div>
-                  <small class="text-muted">1708 transactions</small>
-                </b-list-group-item>
-                <b-list-group-item href="#" class="flex-column align-items-start px-4">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1 font-weight-normal">Block 618554</h6>
-                    <small class="text-muted">18 mins ago</small>
-                  </div>
-                  <small class="text-muted">1893 transactions</small>
-                </b-list-group-item>
-                <b-list-group-item href="#" class="flex-column align-items-start px-4">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h6 class="mb-1 font-weight-normal">Block 618553</h6>
-                    <small class="text-muted">32 mins ago</small>
-                  </div>
-                  <small class="text-muted">1680 transactions</small>
-                </b-list-group-item>
-              </b-list-group>
+              <blockchain></blockchain>
               <div class="px-4 py-3">
                 <a href="#" class="card-link">Manage</a>
               </div>
@@ -219,6 +197,7 @@
 // import Vue from "vue";
 import AuthenticatedNav from "@/layouts/AuthenticatedNav";
 import CardWidget from "@/components/CardWidget";
+import Blockchain from "@/components/Blockchain";
 
 export default {
   data() {
@@ -232,7 +211,8 @@ export default {
   methods: {},
   components: {
     AuthenticatedNav,
-    CardWidget
+    CardWidget,
+    Blockchain
   }
 };
 </script>
