@@ -58,9 +58,14 @@
         <div class="nav-vertical d-flex flex-column justify-content-between">
           <div>
             <div class="balance-container w-100 px-3 py-4 mb-3">
-              <p class="text-muted">Balance</p>
+              <p class="text-muted">
+                Balance
+                <span style="cursor: pointer;" @click="toggleBalance">
+                  <b-icon :icon="showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon>
+                </span>
+              </p>
               <h3>
-                162,500
+                {{ showBalance ? `162,500` : `******` }}
                 <small style="font-size: 1rem;">Sats</small>
               </h3>
             </div>
@@ -152,14 +157,25 @@
 
 export default {
   data() {
-    return {};
+    return {
+      state: {
+        showBalance: true
+      }
+    };
   },
   computed: {
+    showBalance() {
+      return this.state.showBalance;
+    },
     isDarkMode() {
       return this.$store.getters.isDarkMode;
     }
   },
-  methods: {},
+  methods: {
+    toggleBalance() {
+      return (this.state.showBalance = !this.state.showBalance);
+    }
+  },
   components: {}
 };
 </script>
