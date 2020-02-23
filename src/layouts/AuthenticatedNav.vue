@@ -53,8 +53,8 @@
       </b-collapse>
     </b-navbar>
 
-    <b-row>
-      <b-col col sm="2">
+    <b-row class="mx-0">
+      <b-col col sm="2" class="pl-0">
         <div class="nav-vertical d-flex flex-column justify-content-between">
           <div>
             <div class="balance-container w-100 px-3 py-4 mb-3">
@@ -147,6 +147,14 @@
       </b-col>
       <b-col col sm="10">
         <slot></slot>
+        <footer class="d-flex justify-content-end text-muted">
+          <p>
+            <small>
+              &copy; 2020
+              <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
+            </small>
+          </p>
+        </footer>
       </b-col>
     </b-row>
   </div>
