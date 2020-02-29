@@ -155,7 +155,7 @@
           </card-widget>
         </b-col>
         <b-col col sm="4">
-          <card-widget
+          <!-- <card-widget
             header="BTCPay Server"
             status="Running"
             status-type="success"
@@ -166,7 +166,7 @@
             <div class="px-4 pt-2 pb-3">
               <a href="#" class="card-link">Manage</a>
             </div>
-          </card-widget>
+          </card-widget>-->
           <card-widget
             header="Tor"
             status="Running"

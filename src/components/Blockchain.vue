@@ -66,6 +66,11 @@ export default {
           number: 683498,
           txs: 1783,
           time: "17 mins ago"
+        },
+        {
+          number: 683497,
+          txs: 1723,
+          time: "27 mins ago"
         }
       ]
     };
@@ -87,6 +92,8 @@ export default {
   list-style: none;
   padding: 0;
   margin: 0;
+  height: 18rem;
+  overflow: hidden;
 }
 .blockchain-block {
   padding: 0 0 2rem 0;
