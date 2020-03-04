@@ -38,7 +38,9 @@
 
 <script>
 export default {
-  data() {},
+  data() {
+    return {};
+  },
   props: {
     header: String,
     status: String,
