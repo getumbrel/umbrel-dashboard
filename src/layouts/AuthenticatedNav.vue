@@ -54,7 +54,7 @@
     </b-navbar>
 
     <b-row class="mx-0">
-      <b-col col sm="2" class="pl-0">
+      <b-col col sm="3" xl="2" class="pl-0">
         <div class="nav-vertical d-flex flex-column justify-content-between">
           <div>
             <div class="balance-container w-100 px-3 py-4 mb-3">
@@ -145,7 +145,7 @@
           </div>
         </div>
       </b-col>
-      <b-col col sm="10">
+      <b-col col sm="9" xl="10">
         <slot></slot>
         <footer class="d-flex justify-content-end text-muted pr-3">
           <p>

@@ -6,10 +6,10 @@
         <p class="text-muted">This is your Umbrel's dashboard</p>
       </div>
       <b-row>
-        <b-col col sm="4">
+        <b-col col sm="6" xl="4">
           <lightning-wallet></lightning-wallet>
         </b-col>
-        <b-col col sm="4">
+        <b-col col sm="6" xl="4">
           <card-widget
             header="Bitcoin Core"
             status="Running"
@@ -31,7 +31,7 @@
             </div>
           </card-widget>
         </b-col>
-        <b-col col sm="4">
+        <b-col col sm="6" xl="4">
           <!-- <card-widget
             header="BTCPay Server"
             status="Running"
