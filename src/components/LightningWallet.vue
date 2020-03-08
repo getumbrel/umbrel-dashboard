@@ -6,9 +6,10 @@
     title="162,500"
     sub-title="Sats"
     icon="icon-app-lightning.svg"
+    :loading="state.loading"
   >
     <div class="px-4 pt-2 pb-3" v-if="state.mode != 'balance'">
-      <a href="#" class="card-link text-muted" v-on:click.stop.prevent="changeMode('balance')">
+      <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
         <svg
           width="7"
           height="13"
@@ -105,12 +106,14 @@
         min="1"
         v-model="state.send.invoiceText"
         autofocus
+        @input="pasteInvoice"
+        :disabled="state.send.isSending"
       ></b-input>
       <p>
-        <span v-show="state.send.invoiceText">
+        <span v-show="state.send.isValidInvoice && state.send.description">
           Paying
-          <b>10,000 sats</b> for
-          <b>subscription fee</b>
+          <b>{{ state.send.amount }}</b> sats for
+          <b>{{ state.send.description }}</b>
         </span>
       </p>
     </div>
@@ -148,6 +151,7 @@
         min="1"
         autofocus
         v-model.number="state.receive.amount"
+        :disabled="state.receive.isGeneratingInvoice"
       ></b-input>
 
       <!-- <small class="text-right">{{ state.receive.amount }}</small> -->
@@ -161,6 +165,7 @@
         class="mb-4 neu-input"
         size="lg"
         v-model="state.receive.description"
+        :disabled="state.receive.isGeneratingInvoice"
       ></b-input>
     </div>
 
@@ -244,7 +249,7 @@
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="sendSats"
         v-if="state.mode === 'send'"
-        :disabled="!state.send.invoiceText"
+        :disabled="!state.send.invoiceText || !state.send.isValidInvoice || state.send.isSending"
       >
         <svg
           width="19"
@@ -259,7 +264,7 @@
             fill="#FFFFFF"
           />
         </svg>
-        Send
+        {{ this.state.send.isSending ? 'Sending...' : 'Send'}}
       </b-button>
 
       <b-button
@@ -268,8 +273,8 @@
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="createInvoice"
         v-if="state.mode === 'receive'"
-        :disabled="!state.receive.amount || state.receive.amount < 1"
-      >Create Invoice</b-button>
+        :disabled="!state.receive.amount || state.receive.amount < 1 || state.receive.isGeneratingInvoice"
+      >{{state.receive.isGeneratingInvoice ? 'Creating Invoice...' : 'Create Invoice' }}</b-button>
     </div>
   </card-widget>
 </template>
@@ -286,13 +291,17 @@ export default {
           amount: null,
           description: "",
           invoiceText: "lnbc9990238tdshjshdgshdsud8i82eyshdgyts7diuhsbdnmsdsd",
-          invoiceQR: ""
+          invoiceQR: "",
+          isGeneratingInvoice: false
         },
         send: {
           invoiceText: "",
           description: "",
-          amount: null
-        }
+          amount: null,
+          isValidInvoice: false,
+          isSending: false
+        },
+        loading: false
       }
     };
   },
@@ -302,11 +311,46 @@ export default {
     changeMode(mode) {
       return (this.state.mode = mode); //balance, receive (create invoice), invoice, send, sent
     },
+    reset() {
+      //back button
+      this.state.receive = {
+        amount: null,
+        description: "",
+        invoiceText: "lnbc9990238tdshjshdgshdsud8i82eyshdgyts7diuhsbdnmsdsd",
+        invoiceQR: "",
+        isGeneratingInvoice: false
+      };
+      this.state.send = {
+        invoiceText: "",
+        description: "",
+        amount: null,
+        isValidInvoice: false,
+        isSending: false
+      };
+      this.state.loading = false;
+      return (this.state.mode = "balance");
+    },
     sendSats() {
-      this.state.mode = "sent";
+      if (!this.state.send.isValidInvoice) return;
+
+      this.state.loading = true;
+      this.state.send.isSending = true;
+
+      window.setTimeout(() => {
+        this.state.loading = false;
+        this.state.send.isSending = false;
+        this.state.mode = "sent";
+      }, 3000);
     },
     createInvoice() {
-      this.state.mode = "invoice";
+      this.state.loading = true;
+      this.state.receive.isGeneratingInvoice = true;
+
+      window.setTimeout(() => {
+        this.state.loading = false;
+        this.state.receive.isGeneratingInvoice = false;
+        this.state.mode = "invoice";
+      }, 3000);
     },
     copyInvoice() {
       /* Get the text field */
@@ -318,7 +362,39 @@ export default {
 
       /* Copy the text inside the text field */
       document.execCommand("copy");
+    },
+    pasteInvoice() {
+      //on empty field
+      if (!this.state.send.invoiceText) {
+        this.state.loading = false;
+        this.state.send.description = "";
+        this.state.send.isValidInvoice = false;
+        this.state.send.amount = null;
+        this.state.send.description = "";
+        return;
+      }
+      this.state.loading = true;
+      this.state.send.description = "";
+      this.state.send.isValidInvoice = false;
+
+      //replicate API delay
+      window.setTimeout(() => {
+        this.state.loading = false;
+        this.state.send.isValidInvoice = true;
+        this.state.send.amount = 1000;
+        this.state.send.description = "subscription fee";
+      }, 3000);
     }
+  },
+  watch: {
+    //fetch invoice details
+    // "state.send.invoiceText": invoiceText => {
+    //   this.state.loading = true;
+    //   window.setTimeout(() => {
+    //     this.state.loading = false;
+    //     console.log(invoiceText);
+    //   }, 3000);
+    // }
   },
   components: {
     CardWidget

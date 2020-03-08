@@ -95,3 +95,57 @@ $dark-mode-card-bg: #2A3244;
 #confetti-canvas {
     z-index: 99999;
 }
+
+.card-custom {
+    overflow-x: hidden;
+    position: relative;
+}
+.card-custom-loading-bar {
+    position: absolute;
+    top: 0;
+    height: 4px;
+    background-color: $primary;
+    opacity: 0.2;
+    display: block;
+    border-radius: 1px;
+    animation: card-custom-loading-bar-animation infinite 2s;
+    // animation-timing-function: ease-in-out;
+}
+
+@keyframes card-custom-loading-bar-animation {
+    0% {
+        width: 0;
+        left: 0;
+        right: auto;
+    }
+    25% {
+        width: 100%;
+        left: 0;
+        right: auto;
+    }
+    26% {
+        width: 100%;
+        left: auto;
+        right: 0;
+    }
+    50% {
+        width: 0;
+        left: auto;
+        right: 0;
+    }
+    75% {
+        width: 100%;
+        left: auto;
+        right: 0;
+    }
+    76% {
+        width: 100%;
+        left: 0;
+        right: auto;
+    }
+    100% {
+        width: 0;
+        left: 0;
+        right: auto;
+    }
+  }

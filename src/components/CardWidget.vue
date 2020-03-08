@@ -1,5 +1,6 @@
 <template>
-  <b-card header-tag="header" footer-tag="footer" no-body class="mb-4">
+  <b-card header-tag="header" footer-tag="footer" no-body class="mb-4 card-custom">
+    <div class="card-custom-loading-bar" v-if="loading"></div>
     <!-- <template v-slot:header></template> -->
     <div>
       <div class="card-custom-header p-4">
@@ -47,7 +48,8 @@ export default {
     statusType: String,
     title: String,
     subTitle: String,
-    icon: String
+    icon: String,
+    loading: Boolean
   },
   computed: {},
   methods: {}
