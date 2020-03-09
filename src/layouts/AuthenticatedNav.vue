@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar type="light" variant="default" class="nav-horizontal">
-      <div style="width: 280px;">
+      <div>
         <b-navbar-brand href="#">
           <img src="@/assets/logo.svg" alt="Umbrel" height="50" />
         </b-navbar-brand>
@@ -9,9 +9,9 @@
 
       <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
 
-      <b-navbar-nav>
-        <div class="px-lg-4 px-xl-5"></div>
-        <!-- spacer to shift the search bar to right on large screens -->
+      <!-- Search Bar -->
+      <!-- <b-navbar-nav>
+        <div class="px-lg-4 px-xl-5 mx-xl-4"></div>
         <b-nav-form class="input-search-form">
           <b-form-input
             size="sm"
@@ -20,7 +20,7 @@
           ></b-form-input>
           <div class="input-search-icon"></div>
         </b-nav-form>
-      </b-navbar-nav>
+      </b-navbar-nav>-->
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
@@ -34,10 +34,10 @@
     </b-navbar>
 
     <b-row class="mx-0">
-      <b-col col lg="2" class="d-none d-lg-block d-xl-block pl-0">
+      <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0">
         <div class="nav-vertical d-flex flex-column justify-content-between">
           <div>
-            <!-- <div class="balance-container w-100 px-3 py-4 mb-3">
+            <div class="balance-container w-100 px-3 py-4 mb-3">
               <p class="text-muted">
                 Balance
                 <span style="cursor: pointer;" @click="toggleBalance">
@@ -48,8 +48,8 @@
                 {{ showBalance ? `162,500` : `******` }}
                 <small style="font-size: 1rem;">Sats</small>
               </h3>
-            </div>-->
-            <div class="py-2"></div>
+            </div>
+            <!-- <div class="py-2"></div> -->
             <b-nav vertical class="px-1">
               <b-nav-item class="my-1" active>
                 <svg
@@ -126,7 +126,7 @@
           </div>
         </div>
       </b-col>
-      <b-col col lg="10">
+      <b-col col lg="9" xl="10">
         <slot></slot>
         <footer class="d-flex justify-content-end text-muted pr-3">
           <p>
@@ -200,6 +200,7 @@ export default {
     outline: none !important;
     box-shadow: none !important;
     width: calc(100vw - 200px);
+    max-width: 600px;
     font-size: 1rem;
     margin-left: 1rem;
   }
