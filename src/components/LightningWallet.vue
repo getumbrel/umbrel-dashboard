@@ -201,7 +201,7 @@
         <div class="generated-qr mb-3">
           <transition name="qr-logo-popup">
             <img
-              v-if="!state.receive.isGeneratingInvoice && state.receive.invoiceText"
+              v-show="!state.receive.isGeneratingInvoice && state.receive.invoiceText"
               src="@/assets/umbrel-qr-icon.svg"
               class="qr-logo"
             />
