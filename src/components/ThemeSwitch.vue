@@ -37,6 +37,7 @@ export default {
   box-sizing: border-box;
   display: flex;
   cursor: pointer;
+  transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .light-toggle {
   background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
@@ -53,6 +54,7 @@ export default {
   height: 65px;
   width: 65px;
   border-radius: 65px;
+  transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .toggle-left {
   transform: translateX(0);
