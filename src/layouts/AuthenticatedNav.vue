@@ -1,60 +1,40 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="light" variant="default" class="nav-horizontal">
+    <b-navbar type="light" variant="default" class="nav-horizontal">
       <div style="width: 280px;">
         <b-navbar-brand href="#">
           <img src="@/assets/logo.svg" alt="Umbrel" height="50" />
         </b-navbar-brand>
       </div>
 
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
 
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
-          <b-nav-form>
-            <svg
-              width="23"
-              height="24"
-              viewBox="0 0 23 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M18.709 9.99571C18.709 14.9774 14.7313 18.9914 9.85449 18.9914C4.97766 18.9914 1 14.9774 1 9.99571C1 5.01405 4.97766 1 9.85449 1C14.7313 1 18.709 5.01405 18.709 9.99571Z"
-                stroke="#C3C6D1"
-                stroke-width="2"
-              />
-              <rect
-                width="2.06535"
-                height="9.12065"
-                rx="1.03267"
-                transform="matrix(0.702406 -0.711777 0.701711 0.712461 14.7881 17.4702)"
-                fill="#C3C6D1"
-              />
-            </svg>
+      <b-navbar-nav>
+        <div class="px-lg-4 px-xl-5"></div>
+        <!-- spacer to shift the search bar to right on large screens -->
+        <b-nav-form class="input-search-form">
+          <b-form-input
+            size="sm"
+            class="input-search"
+            placeholder="Search for transactions, addresses, etc."
+          ></b-form-input>
+          <div class="input-search-icon"></div>
+        </b-nav-form>
+      </b-navbar-nav>
 
-            <b-form-input
-              size="sm"
-              class="input-search ml-1"
-              placeholder="Search for transactions, addresses, etc."
-            ></b-form-input>
-          </b-nav-form>
-        </b-navbar-nav>
-
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
-            <template v-slot:button-content>Satoshi</template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-      </b-collapse>
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item-dropdown right>
+          <!-- Using 'button-content' slot -->
+          <template v-slot:button-content>Satoshi</template>
+          <b-dropdown-item href="#">Profile</b-dropdown-item>
+          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
     </b-navbar>
 
     <b-row class="mx-0">
-      <b-col col sm="3" xl="2" class="pl-0">
+      <b-col col lg="2" class="d-none d-lg-block d-xl-block pl-0">
         <div class="nav-vertical d-flex flex-column justify-content-between">
           <div>
             <!-- <div class="balance-container w-100 px-3 py-4 mb-3">
@@ -146,7 +126,7 @@
           </div>
         </div>
       </b-col>
-      <b-col col sm="9" xl="10">
+      <b-col col lg="10">
         <slot></slot>
         <footer class="d-flex justify-content-end text-muted pr-3">
           <p>
@@ -211,14 +191,28 @@ export default {
   border-bottom: solid 1px #eeeff3;
 }
 
-.input-search {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  width: 60vw;
-  max-width: 600px;
-  font-size: 1em;
+.input-search-form {
+  form {
+    position: relative;
+  }
+  .input-search {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    width: calc(100vw - 200px);
+    font-size: 1rem;
+    margin-left: 1rem;
+  }
+  .input-search-icon {
+    content: url("~@/assets/icon-search.svg");
+    position: absolute;
+    top: calc(50% - 0.625rem);
+    left: -0.25rem;
+    height: 1.25rem;
+    width: auto;
+  }
 }
+
 ::-webkit-input-placeholder {
   /* Edge */
   color: #c3c6d1;
