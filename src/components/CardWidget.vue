@@ -24,7 +24,13 @@
         <div class="card-app-info px-4">
           <div class="d-flex w-100 justify-content-between mb-4">
             <div>
-              <h3 class="mb-1">{{ title }}</h3>
+              <h3 class="mb-1" v-if="title">{{ title }}</h3>
+              <h3 class="mb-1" v-if="numericTitle">
+                <ICountUp
+                  :endVal="numericTitle.value"
+                  :options="{'prefix': numericTitle.prefix, 'suffix': numericTitle.suffix}"
+                />
+              </h3>
               <p class="text-muted mb-0">{{ subTitle }}</p>
             </div>
             <img :alt="header" :src="require(`@/assets/${icon}`)" />
@@ -38,22 +44,25 @@
 </template>
 
 <script>
+import ICountUp from "vue-countup-v2";
+
 export default {
-  data() {
-    return {};
-  },
+  data() {},
   props: {
     header: String,
     status: String,
     statusType: String,
     title: String,
+    numericTitle: Object,
     subTitle: String,
     icon: String,
-    loading: Boolean,
-    minHeight: String
+    loading: Boolean
   },
   computed: {},
-  methods: {}
+  methods: {},
+  components: {
+    ICountUp
+  }
 };
 </script>
 

@@ -57,7 +57,7 @@
       <b-col col sm="3" xl="2" class="pl-0">
         <div class="nav-vertical d-flex flex-column justify-content-between">
           <div>
-            <div class="balance-container w-100 px-3 py-4 mb-3">
+            <!-- <div class="balance-container w-100 px-3 py-4 mb-3">
               <p class="text-muted">
                 Balance
                 <span style="cursor: pointer;" @click="toggleBalance">
@@ -68,7 +68,8 @@
                 {{ showBalance ? `162,500` : `******` }}
                 <small style="font-size: 1rem;">Sats</small>
               </h3>
-            </div>
+            </div>-->
+            <div class="py-2"></div>
             <b-nav vertical class="px-1">
               <b-nav-item class="my-1" active>
                 <svg

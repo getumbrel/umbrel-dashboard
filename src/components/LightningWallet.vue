@@ -3,7 +3,12 @@
     header="Lightning Wallet"
     status="Running"
     status-type="success"
-    title="162,500"
+    title
+    :numericTitle="{
+      value: state.balance,
+      suffix: '',
+      prefix: ''
+    }"
     sub-title="Sats"
     icon="icon-app-lightning.svg"
     :loading="state.loading"
@@ -100,6 +105,9 @@
             <small class="text-muted mt-0" style="margin-left: 24px;">1 day ago</small>
           </b-list-group-item>
         </b-list-group>
+        <div class="px-4 pt-2 pb-3" v-if="this.state.mode === 'balance'">
+          <a href="#" class="card-link">Manage</a>
+        </div>
       </div>
 
       <!-- Paste Invoice Screen -->
@@ -299,6 +307,7 @@ export default {
   data() {
     return {
       state: {
+        balance: 162500,
         mode: "balance", //balance, receive (create invoice), invoice, send, sent
         receive: {
           amount: null,
@@ -358,7 +367,12 @@ export default {
         this.state.loading = false;
         this.state.send.isSending = false;
         this.state.mode = "sent";
-      }, 500);
+      }, 3000);
+
+      //slight delay in updating the balance so the popup checkmark animation is complete
+      window.setTimeout(() => {
+        this.state.balance = this.state.balance - 1000;
+      }, 4000);
     },
     createInvoice() {
       this.state.loading = true;
@@ -401,7 +415,7 @@ export default {
         this.state.send.isValidInvoice = true;
         this.state.send.amount = 1000;
         this.state.send.description = "subscription fee";
-      }, 100);
+      }, 3000);
     }
   },
   watch: {
