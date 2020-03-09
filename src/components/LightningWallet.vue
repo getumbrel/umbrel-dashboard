@@ -523,7 +523,7 @@ export default {
 // }
 
 .lightning-mode-change-enter {
-  transform: translate3d(-20px, 0, 0);
+  transform: translate3d(20px, 0, 0);
   opacity: 0;
   .checkmark {
     &:before {
@@ -562,7 +562,7 @@ export default {
 }
 
 .lightning-mode-change-leave-to {
-  transform: translate3d(20px, 0, 0);
+  transform: translate3d(-20px, 0, 0);
   opacity: 0;
   .checkmark {
     &:before {
