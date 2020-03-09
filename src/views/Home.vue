@@ -264,10 +264,6 @@ export default {
       return this.$store.dispatch("prevStep");
     },
     finish() {
-      // Temporarily disable dark mode
-      if (this.isDarkMode) {
-        this.toggleDarkMode();
-      }
       return this.$router.push("/dashboard");
     },
     selectWifi({ name }) {

@@ -87,6 +87,12 @@ export default {
     }
   },
   methods: {},
+  mounted() {
+    // disable dark mode on dashboard
+    if (this.$store.getters.isDarkMode) {
+      this.$store.commit("toggleDarkMode");
+    }
+  },
   components: {
     AuthenticatedNav,
     CardWidget,
