@@ -85,7 +85,7 @@
               <span class="font-weight-bold">
                 <span v-if="tx.type === 'incoming'">+</span>
                 <span v-else>-</span>
-                {{ tx.amount }}
+                {{ tx.amount.toLocaleString() }}
               </span>
             </div>
 
