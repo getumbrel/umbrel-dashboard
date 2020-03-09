@@ -49,7 +49,8 @@ export default {
     title: String,
     subTitle: String,
     icon: String,
-    loading: Boolean
+    loading: Boolean,
+    minHeight: String
   },
   computed: {},
   methods: {}
