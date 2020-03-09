@@ -12,7 +12,6 @@
     sub-title="Sats"
     icon="icon-app-lightning.svg"
     :loading="state.loading"
-    :style="{minHeight: state.minHeight}"
   >
     <!-- Back Button -->
     <div class="px-4 pt-2 pb-3" v-if="state.mode != 'balance'">
@@ -33,42 +32,44 @@
       </a>
     </div>
 
-    <!-- transition -->
+    <!-- transition switching between different modes -->
 
     <transition name="lightning-mode-change" mode="out-in">
       <!-- Default Balance/tx screen -->
       <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
+        <!-- List of last 3 transactions -->
         <b-list-group>
-          <b-list-group-item href="#" class="flex-column align-items-start px-4">
+          <!-- Transaction -->
+          <b-list-group-item
+            v-for="tx in state.txs"
+            :key="tx.description"
+            class="tx flex-column align-items-start px-4"
+          >
             <div class="d-flex w-100 justify-content-between">
               <h6 class="mb-0 font-weight-normal">
+                <!-- Incoming tx icon -->
                 <svg
                   width="18"
                   height="18"
                   viewBox="0 0 18 18"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  v-if="tx.type === 'incoming'"
                 >
                   <path
                     d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
                     fill="#00CD98"
                   />
                 </svg>
-                <span style="margin-left: 6px;">Tips from Reddit</span>
-              </h6>
-              <span class="font-weight-bold">+125,000</span>
-            </div>
-            <small class="text-muted mt-0" style="margin-left: 24px;">6 mins ago</small>
-          </b-list-group-item>
-          <b-list-group-item href="#" class="flex-column align-items-start px-4">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-0 font-weight-normal">
+
+                <!-- Outgoing tx icon -->
                 <svg
                   width="19"
                   height="19"
                   viewBox="0 0 19 19"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  v-else
                 >
                   <path
                     d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
@@ -76,41 +77,34 @@
                   />
                 </svg>
 
-                <span style="margin-left: 6px;">Blockstream Satellite</span>
+                <!-- Invoice description -->
+                <span style="margin-left: 6px;">{{ tx.description }}</span>
               </h6>
-              <span class="font-weight-bold">-37</span>
-            </div>
-            <small class="text-muted mt-0" style="margin-left: 24px;">2 hrs ago</small>
-          </b-list-group-item>
-          <b-list-group-item href="#" class="flex-column align-items-start px-4">
-            <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-0 font-weight-normal">
-                <svg
-                  width="19"
-                  height="19"
-                  viewBox="0 0 19 19"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
-                    fill="#5351FB"
-                  />
-                </svg>
 
-                <span style="margin-left: 6px;">Michael Shwebz</span>
-              </h6>
-              <span class="font-weight-bold">-1,302,532</span>
+              <!-- Positive or negative prefix with amount -->
+              <span class="font-weight-bold">
+                <span v-if="tx.type === 'incoming'">+</span>
+                <span v-else>-</span>
+                {{ tx.amount }}
+              </span>
             </div>
-            <small class="text-muted mt-0" style="margin-left: 24px;">1 day ago</small>
+
+            <!-- Timestamp of tx -->
+            <small
+              class="text-muted mt-0 tx-timestamp"
+              style="margin-left: 24px;"
+              :title="getReadableTime(tx.timestamp)"
+            >{{getTimeFromNow(tx.timestamp)}}</small>
           </b-list-group-item>
         </b-list-group>
-        <div class="px-4 pt-2 pb-3" v-if="this.state.mode === 'balance'">
+
+        <!-- Link to Lightning Network Page -->
+        <div class="px-4 pt-2 pb-3">
           <a href="#" class="card-link">Manage</a>
         </div>
       </div>
 
-      <!-- Paste Invoice Screen -->
+      <!-- SCREEN/MODE: Paste Invoice Screen -->
       <div class="px-4 mode-send" v-if="state.mode === 'send'" key="mode-send">
         <label class="sr-onlsy" for="input-sats">Paste Invoice</label>
         <b-input
@@ -121,9 +115,11 @@
           min="1"
           v-model="state.send.invoiceText"
           autofocus
-          @input="pasteInvoice"
+          @input="fetchInvoiceDetails"
           :disabled="state.send.isSending"
         ></b-input>
+
+        <!-- Invoice amount + description -->
         <p>
           <span v-show="state.send.isValidInvoice && state.send.description">
             Paying
@@ -133,9 +129,9 @@
         </p>
       </div>
 
-      <!-- Successfully paid invoice -->
-
+      <!-- SCREEN/MODE: Successfully paid invoice -->
       <div class="px-4 mode-sent" v-if="state.mode === 'sent'" key="mode-sent">
+        <!-- Big green checkmark -->
         <div class="checkmark mb-4">
           <svg
             width="54"
@@ -151,6 +147,8 @@
             />
           </svg>
         </div>
+
+        <!-- Invoice amount + description -->
         <p class="text-center mb-4">
           Paid
           <b>{{state.send.amount}} sats</b> for
@@ -158,7 +156,7 @@
         </p>
       </div>
 
-      <!-- Create Invoice -->
+      <!-- SCREEN/MODE: Create Invoice (Receive) -->
       <div class="px-4 mode-receive" v-if="state.mode === 'receive'" key="mode-receive">
         <label class="sr-onlsy" for="input-sats">Sats</label>
         <b-input
@@ -187,10 +185,13 @@
         ></b-input>
       </div>
 
-      <!-- Copy Invoice -->
+      <!-- SCREEN/MODE: Show Generated Invoice -->
       <div class="px-4 mode-invoice" v-if="this.state.mode === 'invoice'" key="mode-invoice">
         <p class="text-center text-muted mb-2">
+          <!-- If still generating invoice, show blinking loading text -->
           <span class="blink" v-if="state.receive.isGeneratingInvoice">Generating Invoice</span>
+
+          <!-- Invoice amount + description -->
           <span v-else>
             Please pay
             <b>{{state.receive.amount}} {{ state.receive.amount > 1 ? 'sats' : 'sat'}}</b>
@@ -198,7 +199,10 @@
             <b>{{ state.receive.description }}</b>
           </span>
         </p>
+
+        <!-- QR Code -->
         <div class="generated-qr mb-3">
+          <!-- Popup umbrel logo in the middle of QR code after the QR is generated -->
           <transition name="qr-logo-popup">
             <img
               v-show="!state.receive.isGeneratingInvoice && state.receive.invoiceText"
@@ -206,6 +210,8 @@
               class="qr-logo"
             />
           </transition>
+
+          <!-- QR Code element -->
           <qrcode-vue
             :value="state.receive.invoiceQR"
             :size="200"
@@ -214,8 +220,8 @@
             class="d-flex justify-content-center qr-image"
           ></qrcode-vue>
         </div>
-        <!-- <img class="w-100 m-auto d-block" src="@/assets/fake-qr.png" style="max-width: 200px;" /> -->
 
+        <!-- Copy Invoice Input Field -->
         <b-input-group class="mb-4 mt-2" size="sm">
           <b-form-input
             id="generated-invoice"
@@ -233,18 +239,11 @@
           </b-input-group-append>
         </b-input-group>
       </div>
-
-      <!-- <div class="px-4 py-2">
-              <a href="#" class="card-link">View all transactions</a>
-      </div>-->
-
-      <!-- <div class="px-4 pt-2 pb-3" v-if="this.state.mode === 'balance'">
-        <a href="#" class="card-link">Manage</a>
-      </div>-->
     </transition>
 
-    <!-- Buttons -->
+    <!-- Buttons for all screens/modes -->
     <div class>
+      <!-- Buttons: Balance (default mode) -->
       <b-button-group class="w-100" v-if="this.state.mode === 'balance'">
         <b-button
           class="w-50"
@@ -288,6 +287,7 @@
         </b-button>
       </b-button-group>
 
+      <!-- Button: Send (paste invoice send) -->
       <b-button
         class="w-100"
         variant="primary"
@@ -312,6 +312,7 @@
         {{ this.state.send.isSending ? 'Sending...' : 'Send'}}
       </b-button>
 
+      <!-- Button: Create Invoice (receive mode) -->
       <b-button
         class="w-100"
         variant="success"
@@ -326,46 +327,70 @@
 
 <script>
 import QrcodeVue from "qrcode.vue";
+import moment from "moment";
 import CardWidget from "@/components/CardWidget";
 
 export default {
   data() {
     return {
       state: {
-        balance: 162500,
-        mode: "balance", //balance, receive (create invoice), invoice, send, sent
+        balance: 162500, //net user's balance in sats
+        mode: "balance", //balance (default mode), receive (create invoice), invoice, send, sent
+        txs: [
+          //array of last 3 txs
+          {
+            type: "incoming", //incoming or outgoing
+            amount: 125000, //amount transacted
+            timestamp: new Date(new Date().setSeconds(0)), //time of tx
+            description: "Tips from Reddit" //tx's invoice description
+          },
+          {
+            type: "outgoing",
+            amount: 37,
+            timestamp: new Date(new Date().setMinutes(0)),
+            description: "Blockstream Satellite"
+          },
+          {
+            type: "incoming",
+            amount: 1302532,
+            timestamp: new Date(new Date().setHours(0)),
+            description: "Michael Shwebz"
+          }
+        ],
         receive: {
-          amount: null,
-          description: "",
-          invoiceText: "",
-          invoiceQR: "1", //used for "generating" animation
-          isGeneratingInvoice: false,
-          isInvoiceCopied: false
+          amount: null, //invoice amount
+          description: "", //invoice description
+          invoiceText: "", //Bolt 11 invoice
+          invoiceQR: "1", //used for "generating" animation, is ultimately equal to invoiceText after animation
+          isGeneratingInvoice: false, //used for transitions, animations, etc
+          isInvoiceCopied: false //to toggle between copy/copied state of "copy button"
         },
         send: {
-          invoiceText: "",
-          description: "",
-          amount: null,
-          isValidInvoice: false,
-          isSending: false
+          invoiceText: "", //Bolt 11 as entered by the user
+          description: "", //invoice description
+          amount: null, //invoice amount
+          isValidInvoice: false, //check if invoice entered by user is a valid Bolt 11 invoice
+          isSending: false //used for transition while tx is being broadcasted
         },
-        loading: false,
-        minHeight: "auto"
+        loading: false //overall state of the wallet, used to toggle progress bar on top of the card
       }
     };
-  },
-  mounted() {
-    //set card height so it's consistent between all modes
-    // this.state.minHeight = `${this.$el.clientHeight}px`;
   },
   props: {},
   computed: {},
   methods: {
+    getTimeFromNow(timestamp) {
+      return moment(timestamp).fromNow(); //used in the list of txs, eg "a few seconds ago"
+    },
+    getReadableTime(timestamp) {
+      return moment(timestamp).format("MMMM D, h:mm:ss a"); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
+    },
     changeMode(mode) {
-      return (this.state.mode = mode); //balance, receive (create invoice), invoice, send, sent
+      //change between different modes/screens of the wallet from - balance (default), receive (create invoice), invoice, send, sent
+      return (this.state.mode = mode);
     },
     reset() {
-      //back button
+      //reset to default mode, clear any inputs/generated invoice, pasted invoice, etc - used by "Back" button
       this.state.receive = {
         amount: null,
         description: "",
@@ -385,7 +410,8 @@ export default {
       return (this.state.mode = "balance");
     },
     sendSats() {
-      if (!this.state.send.isValidInvoice) return;
+      //broadcast tx
+      if (!this.state.send.isValidInvoice) return; //check if the invoice user pasted is valid
 
       this.state.loading = true;
       this.state.send.isSending = true;
@@ -396,16 +422,18 @@ export default {
         this.state.mode = "sent";
       }, 3000);
 
-      //slight delay in updating the balance so the popup checkmark animation is complete
+      //slight delay in updating the balance so the checkmark's animation completes first
       window.setTimeout(() => {
         this.state.balance = this.state.balance - 1000;
       }, 4000);
     },
     createInvoice() {
+      //generate invoice to receive payment
       this.state.loading = true;
       this.state.receive.isGeneratingInvoice = true;
       this.state.mode = "invoice";
 
+      //start animated QR invoice until real invoice is fetched from the node
       const QRAnimation = window.setInterval(() => {
         this.state.receive.invoiceQR = `${this.state.receive.invoiceQR}2345`;
       }, 200);
@@ -419,19 +447,18 @@ export default {
       }, 3000);
     },
     copyInvoice() {
-      /* Get the text field */
-      var copyText = document.getElementById("generated-invoice");
+      //copy generated invoice's text to clipboard
 
-      /* Select the text field */
+      const copyText = document.getElementById("generated-invoice");
       copyText.select();
       copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-      /* Copy the text inside the text field */
       document.execCommand("copy");
+
       return (this.state.receive.isInvoiceCopied = true);
     },
-    pasteInvoice() {
-      //on empty field
+    fetchInvoiceDetails() {
+      //fetch invoice details as pasted by user in the "Send" mode/screen
+      //if empty field, reset last fetched invoice
       if (!this.state.send.invoiceText) {
         this.state.loading = false;
         this.state.send.description = "";
@@ -453,16 +480,7 @@ export default {
       }, 3000);
     }
   },
-  watch: {
-    //fetch invoice details
-    // "state.send.invoiceText": invoiceText => {
-    //   this.state.loading = true;
-    //   window.setTimeout(() => {
-    //     this.state.loading = false;
-    //     console.log(invoiceText);
-    //   }, 3000);
-    // }
-  },
+  watch: {},
   components: {
     CardWidget,
     QrcodeVue
@@ -471,12 +489,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// all text input fields
 .neu-input {
   background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
   border: 1px solid rgba(0, 0, 0, 0.02);
   box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.08);
   color: rgba(0, 0, 0, 0.8);
 }
+
+// big circle checkmark on successful send
 .checkmark {
   display: block;
   position: relative;
@@ -508,19 +529,12 @@ export default {
   }
 }
 
-.mode-balance,
-.mode-send,
-.mode-receive,
-.mode-sent,
-.mode-invoice {
-  transition: transform 0.3s, opacity 0.3s linear;
-  // transform: translate3d(100%, 0, 0);
-}
+// Transitions between mode/screen changes
 
 .lightning-mode-change-enter-active,
-// .lightning-mode-change-leave-active {
-
-// }
+.lightning-mode-change-leave-active {
+  transition: transform 0.3s, opacity 0.3s linear;
+}
 
 .lightning-mode-change-enter {
   transform: translate3d(20px, 0, 0);
@@ -574,7 +588,7 @@ export default {
   }
 }
 
-// For "Generating Invoice" text
+// For "Generating Invoice" loading text
 .blink {
   animation: blink 1.5s infinite ease;
 }
@@ -589,8 +603,7 @@ export default {
   }
 }
 
-// For umbrel logo popup on generated invoice
-
+// Transition for umbrel logo popping up on generated invoice
 .qr-logo-popup-enter-active,
 .qr-logo-popup-leave-active {
   &.qr-logo {
@@ -613,8 +626,6 @@ export default {
     opacity: 1;
   }
 }
-
-// End animations/transitions
 
 .generated-qr {
   position: relative;
