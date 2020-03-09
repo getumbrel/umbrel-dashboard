@@ -47,7 +47,9 @@
 import ICountUp from "vue-countup-v2";
 
 export default {
-  data() {},
+  data() {
+    return {};
+  },
   props: {
     header: String,
     status: String,

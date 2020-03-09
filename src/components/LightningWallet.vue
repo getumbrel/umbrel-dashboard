@@ -189,13 +189,33 @@
 
       <!-- Copy Invoice -->
       <div class="px-4 mode-invoice" v-if="this.state.mode === 'invoice'" key="mode-invoice">
-        <p class="text-center text-muted mb-0">
-          Please pay
-          <b>{{state.receive.amount}} {{ state.receive.amount > 1 ? 'sats' : 'sat'}}</b>
-          {{ state.receive.description ? "for" : null }}
-          <b>{{ state.receive.description }}</b>
+        <p class="text-center text-muted mb-2">
+          <span class="blink" v-if="state.receive.isGeneratingInvoice">Generating Invoice</span>
+          <span v-else>
+            Please pay
+            <b>{{state.receive.amount}} {{ state.receive.amount > 1 ? 'sats' : 'sat'}}</b>
+            {{ state.receive.description ? "for" : null }}
+            <b>{{ state.receive.description }}</b>
+          </span>
         </p>
-        <img class="w-100 m-auto d-block" src="@/assets/fake-qr.png" style="max-width: 200px;" />
+        <div class="generated-qr mb-3">
+          <transition name="qr-logo-popup">
+            <img
+              v-if="!state.receive.isGeneratingInvoice && state.receive.invoiceText"
+              src="@/assets/umbrel-qr-icon.svg"
+              class="qr-logo"
+            />
+          </transition>
+          <qrcode-vue
+            :value="state.receive.invoiceQR"
+            :size="200"
+            level="H"
+            renderAs="svg"
+            class="d-flex justify-content-center qr-image"
+          ></qrcode-vue>
+        </div>
+        <!-- <img class="w-100 m-auto d-block" src="@/assets/fake-qr.png" style="max-width: 200px;" /> -->
+
         <b-input-group class="mb-4 mt-2" size="sm">
           <b-form-input
             id="generated-invoice"
@@ -205,7 +225,11 @@
           ></b-form-input>
 
           <b-input-group-append>
-            <b-button variant="primary" @click="copyInvoice">Copy Invoice</b-button>
+            <b-button
+              :variant="state.receive.isInvoiceCopied ? 'success' : 'primary'"
+              @click="copyInvoice"
+              :disabled="!state.receive.invoiceText"
+            >{{ state.receive.isInvoiceCopied ? 'Copied' : 'Copy Invoice' }}</b-button>
           </b-input-group-append>
         </b-input-group>
       </div>
@@ -294,13 +318,14 @@
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="createInvoice"
         v-if="state.mode === 'receive'"
-        :disabled="!state.receive.amount || state.receive.amount < 1 || state.receive.isGeneratingInvoice"
-      >{{state.receive.isGeneratingInvoice ? 'Creating Invoice...' : 'Create Invoice' }}</b-button>
+        :disabled="!state.receive.amount || state.receive.amount < 1"
+      >Create Invoice</b-button>
     </div>
   </card-widget>
 </template>
 
 <script>
+import QrcodeVue from "qrcode.vue";
 import CardWidget from "@/components/CardWidget";
 
 export default {
@@ -312,9 +337,10 @@ export default {
         receive: {
           amount: null,
           description: "",
-          invoiceText: "lnbc9990238tdshjshdgshdsud8i82eyshdgyts7diuhsbdnmsdsd",
-          invoiceQR: "",
-          isGeneratingInvoice: false
+          invoiceText: "",
+          invoiceQR: "1", //used for "generating" animation
+          isGeneratingInvoice: false,
+          isInvoiceCopied: false
         },
         send: {
           invoiceText: "",
@@ -343,9 +369,10 @@ export default {
       this.state.receive = {
         amount: null,
         description: "",
-        invoiceText: "lnbc9990238tdshjshdgshdsud8i82eyshdgyts7diuhsbdnmsdsd",
-        invoiceQR: "",
-        isGeneratingInvoice: false
+        invoiceText: "",
+        invoiceQR: "1",
+        isGeneratingInvoice: false,
+        isInvoiceCopied: false
       };
       this.state.send = {
         invoiceText: "",
@@ -377,11 +404,18 @@ export default {
     createInvoice() {
       this.state.loading = true;
       this.state.receive.isGeneratingInvoice = true;
+      this.state.mode = "invoice";
+
+      const QRAnimation = window.setInterval(() => {
+        this.state.receive.invoiceQR = `${this.state.receive.invoiceQR}2345`;
+      }, 200);
 
       window.setTimeout(() => {
         this.state.loading = false;
         this.state.receive.isGeneratingInvoice = false;
-        this.state.mode = "invoice";
+        this.state.receive.invoiceQR = this.state.receive.invoiceText =
+          "lightning:lnbc10u1p0xvxt5pp52f3dd2ya8ejas4jkfq8l6k9vz6cpzv00wyanskkn0pvpyqjx5gusdqj23jhxarfdenjqvfjxvcqzpgxqyz5vqldzazcemje3f8llz90smx4rr7q7vlw4h988fvgs7tupehdtz038putaw8kysw34rq2apn5s5suc0xfltfwpsuu97nyuenpuzp4xl6zsqzmslgk";
+        window.clearInterval(QRAnimation);
       }, 3000);
     },
     copyInvoice() {
@@ -394,6 +428,7 @@ export default {
 
       /* Copy the text inside the text field */
       document.execCommand("copy");
+      return (this.state.receive.isInvoiceCopied = true);
     },
     pasteInvoice() {
       //on empty field
@@ -429,7 +464,8 @@ export default {
     // }
   },
   components: {
-    CardWidget
+    CardWidget,
+    QrcodeVue
   }
 };
 </script>
@@ -515,22 +551,78 @@ export default {
 .lightning-mode-change-leave {
   transform: translate3d(0, 0, 0);
   opacity: 1;
+  .checkmark {
+    &:before {
+      transform: translate3d(-50%, -50%, 0) scale(1);
+    }
+    .checkmark-icon {
+      transform: translate3d(-50%, -50%, 0) scale(1);
+    }
+  }
 }
 
 .lightning-mode-change-leave-to {
   transform: translate3d(20px, 0, 0);
   opacity: 0;
+  .checkmark {
+    &:before {
+      transform: translate3d(-50%, -50%, 0) scale(0);
+    }
+    .checkmark-icon {
+      transform: translate3d(-50%, -50%, 0) scale(0);
+    }
+  }
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+// For "Generating Invoice" text
+.blink {
+  animation: blink 1.5s infinite ease;
 }
-.fade-enter-to,
-.fade-leave {
-  opacity: 1;
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+
+// For umbrel logo popup on generated invoice
+
+.qr-logo-popup-enter-active,
+.qr-logo-popup-leave-active {
+  &.qr-logo {
+    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+}
+
+.qr-logo-popup-enter {
+  &.qr-logo {
+    transform: translate3d(-50%, -50%, 0) scale(0);
+    opacity: 0;
+  }
+}
+
+.qr-logo-popup-enter-to,
+.qr-logo-popup-leave,
+.qr-logo-popup-leave-to {
+  &.qr-logo {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+// End animations/transitions
+
+.generated-qr {
+  position: relative;
+}
+.qr-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0) scale(1);
 }
 </style>
