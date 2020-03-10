@@ -41,7 +41,7 @@
 
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
-      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-if="state.isMobileMenuOpen">
+      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-show="state.isMobileMenuOpen">
         <authenticated-vertical-navbar :isMobileMenu="true" />
       </div>
     </transition>
@@ -161,7 +161,7 @@ export default {
     height: 4px;
     width: 100%;
     margin: 5px 0;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   div {
     width: 20px;
@@ -190,10 +190,6 @@ export default {
   height: calc(100vh - 84px);
   background: #fff;
   box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
-}
-
-.mobile-vertical-menu-enter-active,
-.mobile-vertical-menu-leave-active {
   transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
@@ -223,10 +219,6 @@ export default {
   background: rgba(0, 0, 0, 1);
   z-index: 8;
   opacity: 0.1;
-}
-
-.mobile-vertical-menu-fader-enter-active,
-.mobile-vertical-menu-fader-leave-active {
   transition: opacity 0.6s ease-in-out;
 }
 
