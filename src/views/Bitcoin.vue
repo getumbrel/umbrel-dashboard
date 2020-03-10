@@ -1,13 +1,10 @@
 <template>
   <div class="p-2">
     <div class="my-3 pb-2">
-      <h1>welcome back, satoshi</h1>
-      <p class="text-muted">This is your Umbrel's dashboard</p>
+      <h1>bitcoin</h1>
+      <p class="text-muted">🛠 Under heavy development</p>
     </div>
     <b-row>
-      <b-col col cols="12" md="6" xl="4">
-        <lightning-wallet></lightning-wallet>
-      </b-col>
       <b-col col cols="12" md="6" xl="4">
         <card-widget
           header="Bitcoin Core"
@@ -30,40 +27,6 @@
           </div>
         </card-widget>
       </b-col>
-      <b-col col cols="12" md="6" xl="4">
-        <!-- <card-widget
-            header="BTCPay Server"
-            status="Running"
-            status-type="success"
-            title="72"
-            sub-title="New orders today"
-            icon="icon-app-btcpay.svg"
-          >
-            <div class="px-4 pt-2 pb-3">
-              <a href="#" class="card-link">Manage</a>
-            </div>
-        </card-widget>-->
-        <card-widget
-          header="Tor"
-          status="Running"
-          status-type="success"
-          title="100%"
-          sub-title="Traffic relayed over Tor"
-          icon="icon-app-tor.svg"
-        >
-          <div class="px-4 pt-2 pb-3">
-            <a href="#" class="card-link">Manage</a>
-          </div>
-        </card-widget>
-        <!-- <card-widget
-            header="Example App"
-            status="Running"
-            status-type="success"
-            title="Title"
-            sub-title="Subtitle"
-            icon="icon-app-chaind.svg"
-        ></card-widget>-->
-      </b-col>
     </b-row>
   </div>
 </template>
@@ -72,7 +35,6 @@
 // import Vue from "vue";
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
-import LightningWallet from "@/components/LightningWallet";
 
 export default {
   data() {
@@ -92,8 +54,7 @@ export default {
   },
   components: {
     CardWidget,
-    Blockchain,
-    LightningWallet
+    Blockchain
   }
 };
 </script>

@@ -536,6 +536,18 @@ export default {
   transition: transform 0.3s, opacity 0.3s linear;
 }
 
+//reverse delay in check mark when leaving (first tick contracts, then the circle)
+.lightning-mode-change-leave-active {
+  .checkmark {
+    &:before {
+      transition-delay: 0.2s;
+    }
+    .checkmark-icon {
+      transition-delay: 0s;
+    }
+  }
+}
+
 .lightning-mode-change-enter {
   transform: translate3d(20px, 0, 0);
   opacity: 0;

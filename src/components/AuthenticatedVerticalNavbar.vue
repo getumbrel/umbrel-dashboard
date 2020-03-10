@@ -15,7 +15,7 @@
       </div>
       <!-- <div class="py-2"></div> -->
       <b-nav vertical class="px-1">
-        <b-nav-item class="my-1" active>
+        <b-nav-item to="/dashboard" class="my-1" exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -34,7 +34,7 @@
           </svg>
           Home
         </b-nav-item>
-        <b-nav-item href="#" class="my-1">
+        <b-nav-item to="/bitcoin" class="my-1" exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -50,7 +50,7 @@
           </svg>
           Bitcoin
         </b-nav-item>
-        <b-nav-item class="my-1">
+        <b-nav-item to="/lightning" class="my-1" exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -67,7 +67,7 @@
           Lightning
         </b-nav-item>
 
-        <b-nav-item class="my-1" v-if="isMobileMenu">
+        <b-nav-item to="/settings" class="my-1" v-if="isMobileMenu" exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -87,7 +87,7 @@
     </div>
     <div>
       <b-nav vertical class="px-1">
-        <b-nav-item class="my-1" v-if="isMobileMenu">
+        <b-nav-item to="/logout" class="my-1" v-if="isMobileMenu" exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -107,7 +107,7 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item class="my-1" v-else>
+        <b-nav-item to="/settings" class="my-1" v-else exact-active-class="active">
           <svg
             width="24"
             height="24"

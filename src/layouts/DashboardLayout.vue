@@ -34,7 +34,7 @@
         <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>Satoshi</template>
-          <b-dropdown-item href="#">Log out</b-dropdown-item>
+          <b-dropdown-item to="/logout">Log out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-navbar>
@@ -49,12 +49,17 @@
     <transition name="mobile-vertical-menu-fader">
       <div class="mobile-vertical-menu-fader d-lg-none d-xl-none" v-if="state.isMobileMenuOpen"></div>
     </transition>
+
     <b-row class="mx-0">
       <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0">
         <authenticated-vertical-navbar />
       </b-col>
+
       <b-col col lg="9" xl="10">
-        <slot :style="{overflow: 'hidden'}"></slot>
+        <!-- Content -->
+        <router-view></router-view>
+
+        <!-- Footer -->
         <footer class="d-flex justify-content-end text-muted pr-3">
           <p>
             <small>
@@ -68,7 +73,7 @@
 </template>
 
 <script>
-import AuthenticatedVerticalNavbar from "@/layouts/AuthenticatedVerticalNavbar";
+import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar";
 
 export default {
   data() {
