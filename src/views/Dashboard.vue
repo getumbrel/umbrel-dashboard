@@ -1,5 +1,5 @@
 <template>
-  <authenticated-nav>
+  <authenticated>
     <div class="p-2">
       <div class="my-3 pb-2">
         <h1>welcome back, satoshi</h1>
@@ -67,12 +67,12 @@
         </b-col>
       </b-row>
     </div>
-  </authenticated-nav>
+  </authenticated>
 </template>
 
 <script>
 // import Vue from "vue";
-import AuthenticatedNav from "@/layouts/AuthenticatedNav";
+import Authenticated from "@/layouts/Authenticated";
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
 import LightningWallet from "@/components/LightningWallet";
@@ -94,7 +94,7 @@ export default {
     }
   },
   components: {
-    AuthenticatedNav,
+    Authenticated,
     CardWidget,
     Blockchain,
     LightningWallet
