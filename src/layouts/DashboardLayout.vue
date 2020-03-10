@@ -57,7 +57,9 @@
 
       <b-col col lg="9" xl="10">
         <!-- Content -->
-        <router-view></router-view>
+        <transition name="change-page" mode="out-in">
+          <router-view></router-view>
+        </transition>
 
         <!-- Footer -->
         <footer class="d-flex justify-content-end text-muted pr-3">
@@ -237,6 +239,29 @@ export default {
   opacity: 0.1;
 }
 .mobile-vertical-menu-fader-leave-to {
+  opacity: 0;
+}
+
+// Page changing transitions
+
+.change-page-enter-active,
+.change-page-leave-active {
+  transition: transform 0.4s, opacity 0.4s ease;
+}
+.change-page-enter {
+  transform: translate3d(-40px, 0, 0);
+  opacity: 0;
+}
+.change-page-enter-to {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+.change-page-leave {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+.change-page-leave-to {
+  transform: translate3d(40px, 0, 0);
   opacity: 0;
 }
 </style>
