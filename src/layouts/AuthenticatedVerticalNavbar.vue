@@ -34,7 +34,7 @@
           </svg>
           Home
         </b-nav-item>
-        <b-nav-item class="my-1" disabled>
+        <b-nav-item href="#" class="my-1">
           <svg
             width="24"
             height="24"
@@ -50,7 +50,7 @@
           </svg>
           Bitcoin
         </b-nav-item>
-        <b-nav-item class="my-1" disabled>
+        <b-nav-item class="my-1">
           <svg
             width="24"
             height="24"
@@ -67,7 +67,7 @@
           Lightning
         </b-nav-item>
 
-        <b-nav-item class="my-1" disabled v-if="isMobileMenu">
+        <b-nav-item class="my-1" v-if="isMobileMenu">
           <svg
             width="24"
             height="24"
@@ -87,7 +87,7 @@
     </div>
     <div>
       <b-nav vertical class="px-1">
-        <b-nav-item class="my-1" disabled v-if="isMobileMenu">
+        <b-nav-item class="my-1" v-if="isMobileMenu">
           <svg
             width="24"
             height="24"
@@ -107,7 +107,7 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item class="my-1" disabled v-else>
+        <b-nav-item class="my-1" v-else>
           <svg
             width="24"
             height="24"
@@ -160,6 +160,29 @@ export default {
   // width: 280px;
   height: calc(100vh - 82px);
   top: 82px;
+  .nav-item {
+    .nav-link {
+      color: #141821;
+      opacity: 0.5;
+      transition: opacity 0.2s ease;
+      svg > path {
+        fill: #141821;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        color: #141821;
+        opacity: 0.9;
+      }
+      &.active {
+        opacity: 1;
+        color: #5351fb;
+        svg > path {
+          fill: #5351fb;
+        }
+      }
+    }
+  }
 }
 
 .balance-container {
