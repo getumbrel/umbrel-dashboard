@@ -2,7 +2,12 @@
   <div>
     <div class="blockchain-container">
       <!-- transitions for blocks + set max height of blocks container as avg block height = 6rem -->
-      <transition-group name="blockchain" tag="ul" :style="{maxHeight: `${numBlocks * 6}rem`}">
+      <transition-group
+        name="blockchain"
+        mode="out-in"
+        tag="ul"
+        :style="{maxHeight: `${numBlocks * 6}rem`}"
+      >
         <li
           href="#"
           class="flex-column align-items-start px-4 blockchain-block"
@@ -57,7 +62,7 @@ export default {
         {
           number: 683500, //block number
           txs: 1802, //num of txs in block
-          timestamp: "a few secs ago" //block's mining timestamp
+          timestamp: "few secs ago" //block's mining timestamp
         },
         {
           number: 683499,
@@ -89,7 +94,7 @@ export default {
       const newBlock = {
         number: tip.number + 1,
         txs: tip.txs + 7,
-        timestamp: "a few secs ago"
+        timestamp: "few secs ago"
       };
       // this.blocks = [newBlock, ...this.blocks];
       this.blocks = [newBlock, ...this.blocks].slice(0, this.numBlocks);
@@ -175,19 +180,51 @@ export default {
 }
 
 .blockchain-block {
-  transition: all 0.6s;
+  transition: all 0.6s ease-in-out;
 }
-.blockchain-enter,
+.blockchain-block-icon {
+  svg {
+    transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    transition-delay: 0.1s;
+  }
+  .blockchain-block-icon-bg {
+    transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+}
+.blockchain-enter {
+  opacity: 0;
+  transform: translateY(2rem);
+  .blockchain-block-icon {
+    svg {
+      transform: translate(-50%, -50%) scale(0);
+    }
+    .blockchain-block-icon-bg {
+      transform: scale(0);
+      background: #5351fb;
+    }
+  }
+}
+.blockchain-enter-to {
+  opacity: 1;
+
+  .blockchain-block-icon {
+    svg {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .blockchain-block-icon-bg {
+      transform: scale(1);
+      background: #eeeeff;
+    }
+  }
+}
+.blockchain-leave {
+  opacity: 1;
+}
 .blockchain-leave-to {
   opacity: 0;
   transform: translateY(2rem);
 }
 
-.blockchain-enter-to,
-.blockchain-leave {
-  opacity: 0;
-  transform: translateY(2rem);
-}
 .blockchain-leave-active {
   // position: absolute;
 }
