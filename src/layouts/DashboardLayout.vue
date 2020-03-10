@@ -2,7 +2,7 @@
   <div>
     <b-navbar type="light" variant="default" class="nav-horizontal">
       <div>
-        <b-navbar-brand href="#">
+        <b-navbar-brand to="/dashboard">
           <img src="@/assets/logo.svg" alt="Umbrel" height="50" />
         </b-navbar-brand>
       </div>

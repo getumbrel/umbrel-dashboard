@@ -2,7 +2,6 @@
   <div>
     <div class="d-flex flex-column align-items-center justify-content-center min-vh-100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
-
       <h1
         :class="[isDarkMode ? 'text-white' : '', 'text-center mb-2']"
       >{{ steps[onboardingStep]["heading"] }}</h1>
@@ -89,9 +88,9 @@
           class="mt-2"
         >Back</b-button>
       </div>
-    </div>
 
-    <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
+      <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
+    </div>
   </div>
 </template>
 

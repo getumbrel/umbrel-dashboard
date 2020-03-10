@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- <b-button class="ml-4 mb-4" @click="addFakeBlock">+</b-button> -->
     <div class="blockchain-container">
-      <transition-group name="blockchain" tag="ul">
+      <!-- transitions for blocks + set max height of blocks container as avg block height = 6rem -->
+      <transition-group name="blockchain" tag="ul" :style="{maxHeight: `${numBlocks * 6}rem`}">
         <li
           href="#"
           class="flex-column align-items-start px-4 blockchain-block"
@@ -73,6 +73,11 @@ export default {
           number: 683497,
           txs: 1723,
           timestamp: "27 mins ago"
+        },
+        {
+          number: 683496,
+          txs: 1982,
+          timestamp: "42 mins ago"
         }
       ]
     };
@@ -87,7 +92,7 @@ export default {
         timestamp: "a few secs ago"
       };
       // this.blocks = [newBlock, ...this.blocks];
-      this.blocks = [newBlock, ...this.blocks].slice(0, 3);
+      this.blocks = [newBlock, ...this.blocks].slice(0, this.numBlocks);
     }
   },
   mounted() {
@@ -95,6 +100,12 @@ export default {
     window.setInterval(() => {
       this.addFakeBlock();
     }, 5000);
+  },
+  props: {
+    numBlocks: {
+      type: Number,
+      default: 3
+    }
   },
   components: {}
 };
@@ -107,7 +118,7 @@ export default {
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 18rem;
+    // max-height: 18rem;
   }
   overflow: hidden;
   &:after {
@@ -164,7 +175,7 @@ export default {
 }
 
 .blockchain-block {
-  transition: all 1s;
+  transition: all 0.6s;
 }
 .blockchain-enter,
 .blockchain-leave-to {

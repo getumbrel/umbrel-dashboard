@@ -1,8 +1,8 @@
 <template>
   <div class="p-2">
     <div class="my-3 pb-2">
-      <h1>logout screen</h1>
-      <p class="text-muted">This is your logout screen</p>
+      <h1>logout</h1>
+      <p class="text-muted">Not gunna leave you too soon 😉</p>
     </div>
     <b-row></b-row>
   </div>

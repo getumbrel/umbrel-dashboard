@@ -20,7 +20,7 @@
                 <p>8</p>
             </div>-->
             <!-- <p class="px-4">Latest Blocks</p> -->
-            <blockchain></blockchain>
+            <blockchain :numBlocks="4"></blockchain>
             <div class="px-4 py-3">
               <a href="#" class="card-link">Manage</a>
             </div>

@@ -77,7 +77,7 @@ const routes = [
   {
     path: "/logout",
     name: "logout",
-    component: SimpleLayout,
+    component: DashboardLayout,
     meta: { requiresAuth: true },
     children: [
       {
