@@ -21,8 +21,8 @@
             </div>-->
             <!-- <p class="px-4">Latest Blocks</p> -->
             <blockchain :numBlocks="4"></blockchain>
-            <div class="px-4 py-3">
-              <a href="#" class="card-link">Manage</a>
+            <div class="px-4 py-2">
+              <!-- <a href="#" class="card-link">Manage</a> -->
             </div>
           </div>
         </card-widget>

@@ -25,7 +25,7 @@
             <!-- <p class="px-4">Latest Blocks</p> -->
             <blockchain></blockchain>
             <div class="px-4 py-3">
-              <a href="#" class="card-link">Manage</a>
+              <router-link to="/bitcoin" class="card-link">Manage</router-link>
             </div>
           </div>
         </card-widget>
@@ -52,7 +52,7 @@
           icon="icon-app-tor.svg"
         >
           <div class="px-4 pt-2 pb-3">
-            <a href="#" class="card-link">Manage</a>
+            <router-link to="/settings" class="card-link">Manage</router-link>
           </div>
         </card-widget>
         <!-- <card-widget

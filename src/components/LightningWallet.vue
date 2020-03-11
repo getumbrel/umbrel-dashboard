@@ -38,7 +38,7 @@
       <!-- Default Balance/tx screen -->
       <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
         <!-- List of last 3 transactions -->
-        <b-list-group>
+        <b-list-group class="pb-2">
           <!-- Transaction -->
           <b-list-group-item
             v-for="tx in state.txs"
@@ -99,8 +99,8 @@
         </b-list-group>
 
         <!-- Link to Lightning Network Page -->
-        <div class="px-4 pt-2 pb-3">
-          <a href="#" class="card-link">Manage</a>
+        <div class="px-4 pb-3" v-if="!isLightningPage">
+          <router-link to="/lightning" class="card-link">Manage</router-link>
         </div>
       </div>
 
@@ -383,6 +383,9 @@ export default {
     },
     walletUnit() {
       return this.$store.getters.getWalletUnit;
+    },
+    isLightningPage() {
+      return this.$router.currentRoute.path === "/lightning";
     }
   },
   methods: {
