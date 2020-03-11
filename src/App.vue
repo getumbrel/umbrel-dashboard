@@ -14,7 +14,6 @@ export default {
   name: "App",
   methods: {
     updateViewPortHeightCSS() {
-      console.log(`${window.innerHeight}px`);
       return document.documentElement.style.setProperty(
         "--vh100",
         `${window.innerHeight}px`

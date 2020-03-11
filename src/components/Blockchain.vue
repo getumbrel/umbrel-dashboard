@@ -102,9 +102,10 @@ export default {
   },
   mounted() {
     //create fake blocks
-    window.setInterval(() => {
-      this.addFakeBlock();
-    }, 5000);
+    window.setInterval(this.addFakeBlock, 5000);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.addFakeBlock);
   },
   props: {
     numBlocks: {
@@ -112,6 +113,7 @@ export default {
       default: 3
     }
   },
+
   components: {}
 };
 </script>
