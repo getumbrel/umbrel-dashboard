@@ -191,7 +191,7 @@ export default {
   right: 0;
   width: 80vw;
   max-width: 280px;
-  height: calc(100vh - 84px);
+  height: calc(var(--vh100, 100vh) - 84px);
   background: #fff;
   box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
   transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
@@ -216,7 +216,7 @@ export default {
 
 .mobile-vertical-menu-fader {
   position: fixed;
-  height: 100vh;
+  height: var(--vh100, 100vh);
   width: 100vw;
   left: 0;
   top: 0;

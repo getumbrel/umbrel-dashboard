@@ -12,12 +12,29 @@
 <script>
 export default {
   name: "App",
+  methods: {
+    updateViewPortHeightCSS() {
+      console.log(`${window.innerHeight}px`);
+      return document.documentElement.style.setProperty(
+        "--vh100",
+        `${window.innerHeight}px`
+      );
+    }
+  },
+  created() {
+    this.updateViewPortHeightCSS();
+    //for 100vh consistency
+    window.addEventListener("resize", this.updateViewPortHeightCSS);
+  },
   mounted() {
     const isDarkMode = this.$store.getters.isDarkMode;
     //onboarding
     // document.body.style.background = isDarkMode ? "#1C1C26" : "#ffffff";
     //dashboard
     document.body.style.background = isDarkMode ? "#1C1C26" : "#F7F9FB";
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.updateViewPortHeightCSS);
   }
 };
 </script>

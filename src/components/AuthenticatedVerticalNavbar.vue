@@ -172,7 +172,7 @@ export default {
   position: sticky;
   z-index: 9;
   // width: 280px;
-  height: calc(100vh - 82px);
+  height: calc(var(--vh100, 100vh) - 82px);
   top: 82px;
   .nav-item {
     .nav-link {

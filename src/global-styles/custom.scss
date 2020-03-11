@@ -8,14 +8,19 @@ $dark-mode-card-bg: #2A3244;
     background: $dark-mode-card-bg;
 }
 
-.vh100 {
-    min-height: 100vh;
-    min-height: -webkit-fill-available;
-    min-height: -moz-available;
-    min-height: available; // not sure if exist in any browser
-    min-height: -webkit-stretch; // not sure if exist in any browser
-    min-height: -moz-stretch; // not sure if exist in any browser
-    min-height: stretch;
+// .vh100 {
+//     min-height: 100vh;
+//     min-height: -webkit-fill-available;
+//     min-height: -moz-available;
+//     min-height: available; // not sure if exist in any browser
+//     min-height: -webkit-stretch; // not sure if exist in any browser
+//     min-height: -moz-stretch; // not sure if exist in any browser
+//     min-height: stretch;
+// }
+
+.min-vh100 {
+    min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    min-height: var(--vh100, 100vh);
 }
 
 // Overrides
