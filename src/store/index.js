@@ -19,7 +19,11 @@ const state = {
   onboardingStep: 0,
   selectedWifi: "",
   isDarkMode: userSelectedDarkMode,
-  isMobileMenuOpen: true
+  isMobileMenuOpen: true,
+  wallet: {
+    balance: 162500,
+    unit: 'Sats' //Sats or BTC
+  }
 };
 
 // Getters
@@ -35,6 +39,12 @@ const getters = {
   },
   isMobileMenuOpen(state) {
     return state.isMobileMenuOpen;
+  },
+  getWalletBalance(state) {
+    return state.wallet.balance;
+  },
+  getWalletUnit(state) {
+    return state.wallet.unit;
   }
 }
 
@@ -70,6 +80,12 @@ const mutations = {
       document.body.style.overflow = "auto";
       state.isMobileMenuOpen = false
     }
+  },
+  updateWalletBalance(state, newBalance) {
+    state.wallet.balance = newBalance;
+  },
+  changeWalletUnit(state, unit) {
+    state.wallet.unit = unit;
   }
 }
 
@@ -89,6 +105,12 @@ const actions = {
   },
   toggleMobileMenu(context) {
     context.commit('toggleMobileMenu');
+  },
+  updateWalletBalance(context, newBalance) {
+    context.commit('updateWalletBalance', newBalance);
+  },
+  changeWalletUnit(context, unit) {
+    context.commit('changeWalletUnit', unit);
   }
 }
 

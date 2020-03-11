@@ -5,11 +5,11 @@
     status-type="success"
     title
     :numericTitle="{
-      value: state.balance,
+      value: walletBalance,
       suffix: '',
       prefix: ''
     }"
-    sub-title="Sats"
+    :sub-title="walletUnit"
     icon="icon-app-lightning.svg"
     :loading="state.loading"
   >
@@ -334,7 +334,7 @@ export default {
   data() {
     return {
       state: {
-        balance: 162500, //net user's balance in sats
+        //balance: 162500, //net user's balance in sats
         mode: "balance", //balance (default mode), receive (create invoice), invoice, send, sent
         txs: [
           //array of last 3 txs
@@ -377,7 +377,14 @@ export default {
     };
   },
   props: {},
-  computed: {},
+  computed: {
+    walletBalance() {
+      return this.$store.getters.getWalletBalance;
+    },
+    walletUnit() {
+      return this.$store.getters.getWalletUnit;
+    }
+  },
   methods: {
     getTimeFromNow(timestamp) {
       return moment(timestamp).fromNow(); //used in the list of txs, eg "a few seconds ago"
@@ -424,7 +431,7 @@ export default {
 
       //slight delay in updating the balance so the checkmark's animation completes first
       window.setTimeout(() => {
-        this.state.balance = this.state.balance - 1000;
+        this.$store.commit("updateWalletBalance", this.walletBalance - 1000);
       }, 4000);
     },
     createInvoice() {

@@ -9,8 +9,13 @@
           </span>
         </p>
         <h3>
-          {{ state.showBalance ? `162,500` : `******` }}
-          <small style="font-size: 1rem;">Sats</small>
+          <ICountUp
+            :endVal="walletBalance"
+            :options="{'startVal': walletBalance}"
+            v-if="state.showBalance"
+          />
+          <span v-else>***,***</span>
+          <small style="font-size: 1rem;">&nbsp;{{ walletUnit }}</small>
         </h3>
       </div>
       <!-- <div class="py-2"></div> -->
@@ -129,7 +134,7 @@
 </template>
 
 <script>
-// import Vue from "vue";
+import ICountUp from "vue-countup-v2";
 
 export default {
   data() {
@@ -139,7 +144,14 @@ export default {
       }
     };
   },
-  computed: {},
+  computed: {
+    walletBalance() {
+      return this.$store.getters.getWalletBalance;
+    },
+    walletUnit() {
+      return this.$store.getters.getWalletUnit;
+    }
+  },
   methods: {
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);
@@ -148,7 +160,9 @@ export default {
   props: {
     isMobileMenu: Boolean
   },
-  components: {}
+  components: {
+    ICountUp
+  }
 };
 </script>
 
