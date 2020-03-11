@@ -3,10 +3,13 @@ import VueRouter from "vue-router";
 
 import store from "../store";
 
+
 import SimpleLayout from "../layouts/SimpleLayout.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
+import TransitionWrapperLayout from "../layouts/TransitionWrapperLayout.vue";
 
 import Home from "../views/Home.vue";
+import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Bitcoin from "../views/Bitcoin.vue";
 import Lightning from "../views/Lightning.vue";
@@ -18,74 +21,93 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: SimpleLayout,
-    meta: { requiresAuth: false },
+    name: "root",
+    component: TransitionWrapperLayout,
     children: [
       {
         path: '',
-        component: Home,
+        component: SimpleLayout,
+        children: [
+          {
+            path: '',
+            name: 'home',
+            component: Home,
+            meta: { requiresAuth: false }
+          }
+        ]
       },
-    ]
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: DashboardLayout,
-    meta: { requiresAuth: true },
-    children: [
       {
-        path: '',
-        component: Dashboard,
+        path: "/login",
+        name: "login",
+        component: SimpleLayout,
+        meta: { requiresAuth: false },
+        children: [
+          {
+            path: '',
+            component: Login,
+          },
+        ]
       },
-    ]
-  },
-  {
-    path: "/bitcoin",
-    name: "bitcoin",
-    component: DashboardLayout,
-    meta: { requiresAuth: true },
-    children: [
       {
-        path: '',
-        component: Bitcoin,
+        path: "/dashboard",
+        name: "dashboard",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: '',
+            component: Dashboard,
+          },
+        ]
       },
-    ]
-  },
-  {
-    path: "/lightning",
-    name: "lightning",
-    component: DashboardLayout,
-    meta: { requiresAuth: true },
-    children: [
       {
-        path: '',
-        component: Lightning,
+        path: "/bitcoin",
+        name: "bitcoin",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: '',
+            component: Bitcoin,
+          },
+        ]
       },
-    ]
-  },
-  {
-    path: "/settings",
-    name: "settings",
-    component: DashboardLayout,
-    meta: { requiresAuth: true },
-    children: [
       {
-        path: '',
-        component: Settings,
+        path: "/lightning",
+        name: "lightning",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: '',
+            component: Lightning,
+          },
+        ]
       },
-    ]
-  },
-  {
-    path: "/logout",
-    name: "logout",
-    component: DashboardLayout,
-    meta: { requiresAuth: true },
-    children: [
       {
-        path: '',
-        component: Logout,
+        path: "/settings",
+        name: "settings",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: '',
+            component: Settings,
+          },
+        ]
       },
+      {
+        path: "/logout",
+        name: "logout",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: '',
+            component: Logout,
+          },
+        ]
+      }
     ]
   }
 ];

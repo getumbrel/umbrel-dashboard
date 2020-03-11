@@ -92,7 +92,7 @@
     </div>
     <div>
       <b-nav vertical class="px-1">
-        <b-nav-item to="/logout" class="my-1" v-if="isMobileMenu" exact-active-class="active">
+        <b-nav-item to="/login" class="my-1" v-if="isMobileMenu" exact-active-class="active">
           <svg
             width="24"
             height="24"

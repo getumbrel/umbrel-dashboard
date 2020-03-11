@@ -7,9 +7,10 @@
       :type="showPassword ? 'text' : 'password'"
       v-bind:value="value"
       v-on:input="$emit('input', $event.target.value)"
+      :disabled="disabled"
     />
     <b-input-group-append>
-      <b-button @click="togglePassword">
+      <b-button @click="togglePassword" :disabled="disabled">
         <b-icon :icon="showPassword ? 'eye-slash-fill' : 'eye-fill'"></b-icon>
       </b-button>
     </b-input-group-append>
@@ -20,8 +21,12 @@
 export default {
   props: {
     value: String,
-    inputClass: String,
-    placeholder: String
+    inputClass: [String, Array],
+    placeholder: String,
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     showPassword() {
