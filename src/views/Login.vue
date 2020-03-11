@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex flex-column align-items-center justify-content-center min-vh-100 p-2">
+    <div class="d-flex flex-column align-items-center justify-content-center vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">welcome back</h1>
       <p class="text-muted w-75 text-center">Enter the password to login to your Umbrel</p>
