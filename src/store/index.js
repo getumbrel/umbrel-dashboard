@@ -18,7 +18,8 @@ if (!window.localStorage.getItem("isDarkMode") && window.matchMedia("(prefers-co
 const state = {
   onboardingStep: 0,
   selectedWifi: "",
-  isDarkMode: userSelectedDarkMode
+  isDarkMode: userSelectedDarkMode,
+  isMobileMenuOpen: true
 };
 
 // Getters
@@ -31,6 +32,9 @@ const getters = {
   },
   isDarkMode(state) {
     return state.isDarkMode
+  },
+  isMobileMenuOpen(state) {
+    return state.isMobileMenuOpen;
   }
 }
 
@@ -56,6 +60,16 @@ const mutations = {
       document.body.style.background = "#1C1C26";
       window.localStorage.setItem("isDarkMode", "true");
     }
+  },
+  toggleMobileMenu(state) {
+    //disable body's scrolling on menu open
+    if (!state.isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      state.isMobileMenuOpen = true;
+    } else {
+      document.body.style.overflow = "auto";
+      state.isMobileMenuOpen = false
+    }
   }
 }
 
@@ -72,6 +86,9 @@ const actions = {
   },
   triggerDarkMode(context) {
     context.commit('toggleDarkMode');
+  },
+  toggleMobileMenu(context) {
+    context.commit('toggleMobileMenu');
   }
 }
 

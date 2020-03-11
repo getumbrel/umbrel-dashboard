@@ -26,7 +26,7 @@
       <b-navbar-nav class="ml-auto">
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none"
-          :class="{active: state.isMobileMenuOpen}"
+          :class="{active: isMobileMenuOpen}"
           @click="toggleMobileMenu"
         >
           <div></div>
@@ -41,13 +41,17 @@
 
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
-      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-show="state.isMobileMenuOpen">
+      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-show="isMobileMenuOpen">
         <authenticated-vertical-navbar :isMobileMenu="true" />
       </div>
     </transition>
 
     <transition name="mobile-vertical-menu-fader">
-      <div class="mobile-vertical-menu-fader d-lg-none d-xl-none" v-if="state.isMobileMenuOpen"></div>
+      <div
+        class="mobile-vertical-menu-fader d-lg-none d-xl-none"
+        v-if="isMobileMenuOpen"
+        @click="toggleMobileMenu"
+      ></div>
     </transition>
 
     <b-row class="mx-0">
@@ -79,26 +83,19 @@ import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavba
 
 export default {
   data() {
-    return {
-      state: {
-        isMobileMenuOpen: false
-      }
-    };
+    return {};
   },
   computed: {
     isDarkMode() {
       return this.$store.getters.isDarkMode;
+    },
+    isMobileMenuOpen() {
+      return this.$store.getters.isMobileMenuOpen;
     }
   },
   methods: {
     toggleMobileMenu() {
-      //disable content's scrolling on menu open
-      if (!this.state.isMobileMenuOpen) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.overflow = "auto";
-      }
-      return (this.state.isMobileMenuOpen = !this.state.isMobileMenuOpen);
+      this.$store.commit("toggleMobileMenu");
     }
   },
   components: {

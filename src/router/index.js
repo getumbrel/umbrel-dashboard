@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+import store from "../store";
+
 import SimpleLayout from "../layouts/SimpleLayout.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 
@@ -91,7 +93,8 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior: () => { return { x: 0, y: 0 } } //scroll to top on page changes
 });
 
 //Fake for now
@@ -112,6 +115,13 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next() // always call next()!
+  }
+});
+
+//Close Mobile Menu after route change
+router.afterEach(() => {
+  if (store.getters.isMobileMenuOpen) {
+    store.commit("toggleMobileMenu");
   }
 })
 

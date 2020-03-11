@@ -165,8 +165,11 @@ export default {
       color: #141821;
       opacity: 0.5;
       transition: opacity 0.2s ease;
-      svg > path {
-        fill: #141821;
+      svg {
+        path,
+        rect {
+          fill: #141821;
+        }
       }
       &:hover,
       &:active,
@@ -177,8 +180,11 @@ export default {
       &.active {
         opacity: 1;
         color: #5351fb;
-        svg > path {
-          fill: #5351fb;
+        svg {
+          path,
+          rect {
+            fill: #5351fb;
+          }
         }
       }
     }
