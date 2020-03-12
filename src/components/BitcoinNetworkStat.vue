@@ -28,7 +28,7 @@
         <span
           class="change-text ml-1"
           :class="{'text-success': change.value > 0, 'text-danger': change.value < 0, 'text-muted': change.value === 0}"
-        >{{ change.value > 0 ? '+' : ''}}{{ change.value }}{{ change.suffix }}</span>
+        >{{ change.value >= 0 ? '+' : ''}}{{ change.value }}{{ change.suffix }}</span>
       </div>
     </div>
   </div>

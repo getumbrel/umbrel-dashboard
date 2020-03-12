@@ -16,15 +16,24 @@ export default {
   data() {
     return {
       state: {
-        isOn: true
+        isOn: false
       }
     };
   },
   computed: {},
+  // created() {
+  //   this.state.isOn = this.props.on;
+  // },
   methods: {
     toggle() {
       this.state.isOn = !this.state.isOn;
     }
+  },
+  props: {
+    // on: {
+    //   type: Boolean,
+    //   default: false
+    // }
   }
 };
 </script>
