@@ -18,7 +18,7 @@ export default {
   transition: transform 0.4s, opacity 0.4s ease;
 }
 .change-page-enter {
-  transform: translate3d(40px, 0, 0);
+  transform: translate3d(-40px, 0, 0);
   opacity: 0;
 }
 .change-page-enter-to {
@@ -30,7 +30,7 @@ export default {
   opacity: 1;
 }
 .change-page-leave-to {
-  transform: translate3d(-40px, 0, 0);
+  transform: translate3d(40px, 0, 0);
   opacity: 0;
 }
 </style>
