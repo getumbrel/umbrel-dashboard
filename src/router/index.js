@@ -3,10 +3,9 @@ import VueRouter from "vue-router";
 
 import store from "../store";
 
-
+import TransitionWrapperLayout from "../layouts/TransitionWrapperLayout.vue";
 import SimpleLayout from "../layouts/SimpleLayout.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
-import TransitionWrapperLayout from "../layouts/TransitionWrapperLayout.vue";
 
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";

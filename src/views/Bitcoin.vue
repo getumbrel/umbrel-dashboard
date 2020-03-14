@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-start align-items-center">
           <img
             style="height: auto; width: 12vw; max-width: 100px"
-            class="mr-2"
+            class="mr-2 mr-sm-3"
             src="@/assets/icon-app-bitcoin.svg"
           />
           <div>
