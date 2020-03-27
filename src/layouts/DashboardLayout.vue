@@ -34,7 +34,7 @@
         <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>Satoshi</template>
-          <b-dropdown-item to="/login">Log out</b-dropdown-item>
+          <b-dropdown-item :to="{'name': 'login'}">Log out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-navbar>

@@ -29,21 +29,21 @@ const routes = [
         children: [
           {
             path: '',
-            name: 'home',
-            component: Home,
+            name: 'login',
+            component: Login,
             meta: { requiresAuth: false }
           }
         ]
       },
       {
-        path: "/login",
-        name: "login",
+        path: "/start",
+        name: "start",
         component: SimpleLayout,
         meta: { requiresAuth: false },
         children: [
           {
             path: '',
-            component: Login,
+            component: Home,
           },
         ]
       },
