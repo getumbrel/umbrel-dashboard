@@ -49,6 +49,18 @@ $dark-mode-card-bg: #2A3244;
         }
     }
 }
+
+.dropdown-menu {
+    background: #ffffff;
+    box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.8);
+    border-radius: 1rem;
+    padding: 1rem 0;
+    border: none !important;
+}
+.dropdown-item {
+    padding: 0.6rem 2rem;
+}
+
 .card-input {
     position: relative;
     background: #ffffff;
