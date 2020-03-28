@@ -1,7 +1,7 @@
 # Umbrel Dashboard UI
 ![live.getumbrel.com](https://github.com/getumbrel/umbrel-dashboard/workflows/live.getumbrel.com/badge.svg?branch=master)
 
-## Install Dependencies
+### Install Dependencies
 ```
 yarn install
 ```
@@ -19,7 +19,7 @@ yarn serve
 yarn deploy-local
 ```
 2. Enter SSH password of `umbrel` user
-3. Visit http://umbrel.local/
+3. Open http://umbrel.local/
 
 ### Compile and minify for production
 ```
