@@ -1,8 +1,7 @@
 <template>
   <card-widget
     header="Lightning Wallet"
-    status="Running"
-    status-type="success"
+    :status="{text: 'Running', variant: 'success', blink: false}"
     title
     :numericTitle="{
       value: walletBalance,

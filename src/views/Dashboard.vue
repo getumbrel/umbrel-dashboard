@@ -11,8 +11,7 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget
           header="Bitcoin Core"
-          status="Running"
-          status-type="success"
+          :status="{text: 'Running', variant: 'success', blink: false}"
           title="100%"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
@@ -45,8 +44,7 @@
         </card-widget>-->
         <card-widget
           header="Tor"
-          status="Running"
-          status-type="success"
+          :status="{text: 'Running', variant: 'success', blink: false}"
           title="100%"
           sub-title="Traffic relayed over Tor"
           icon="icon-app-tor.svg"

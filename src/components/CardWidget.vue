@@ -6,18 +6,11 @@
       <div class="card-custom-header p-4">
         <div class="d-flex w-100 justify-content-between align-items-center">
           <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
-          <small class="text-success" v-if="status">
-            <svg
-              width="8"
-              height="8"
-              viewBox="0 0 8 8"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="4" cy="4" r="4" fill="#00CD98" />
-            </svg>
-            {{ status }}
-          </small>
+          <status
+            v-if="!!status"
+            :variant="status.variant"
+            :blink="!!status.blink"
+          >{{ status.text }}</status>
           <b-dropdown
             variant="link"
             toggle-class="text-decoration-none p-0"
@@ -82,6 +75,7 @@
 
 <script>
 import ICountUp from "vue-countup-v2";
+import Status from "@/components/Status";
 
 export default {
   data() {
@@ -89,9 +83,8 @@ export default {
   },
   props: {
     header: String,
-    status: String,
+    status: Object, // {text, variant, blink}
     hasMenu: Boolean,
-    statusType: String,
     title: String,
     numericTitle: Object,
     subTitle: String,
@@ -101,7 +94,8 @@ export default {
   computed: {},
   methods: {},
   components: {
-    ICountUp
+    ICountUp,
+    Status
   }
 };
 </script>

@@ -8,6 +8,21 @@ $dark-mode-card-bg: #2A3244;
     background: $dark-mode-card-bg;
 }
 
+// to fill svgs, eg. circle in status component
+.fill- {
+    &primary {
+        fill: $primary;
+    }
+    &success {
+        fill: $green;
+    }
+    &danger {
+        fill: $red;
+    }
+    &muted {
+        fill: #6c757d;
+    }
+}
 // .vh100 {
 //     min-height: 100vh;
 //     min-height: -webkit-fill-available;
