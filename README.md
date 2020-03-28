@@ -1,22 +1,32 @@
 # Umbrel Dashboard UI
 ![live.getumbrel.com](https://github.com/getumbrel/umbrel-dashboard/workflows/live.getumbrel.com/badge.svg?branch=master)
 
-## Project setup
+## Install Dependencies
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Run locally
+1. Run
 ```
 yarn serve
 ```
+2. Open http://localhost:8080/ 
 
-### Compiles and minifies for production
+### Deploy to a local Umbrel node
+1. Run 
+```
+yarn deploy-local
+```
+2. Enter SSH password of `umbrel` user
+3. Visit http://umbrel.local/
+
+### Compile and minify for production
 ```
 yarn build
 ```
 
-### Lints and fixes files
+### Lint and fix files
 ```
 yarn lint
 ```
