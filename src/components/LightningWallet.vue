@@ -325,6 +325,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import QrcodeVue from "qrcode.vue";
 import moment from "moment";
 import CardWidget from "@/components/CardWidget";
@@ -378,7 +379,10 @@ export default {
   props: {},
   computed: {
     walletBalance() {
-      return this.$store.getters.getWalletBalance;
+      return (
+        this.$store.state.wallet.balance.onChain +
+        this.$store.state.wallet.balance.offChain
+      );
     },
     walletUnit() {
       return this.$store.getters.getWalletUnit;
@@ -447,13 +451,37 @@ export default {
         this.state.receive.invoiceQR = `${this.state.receive.invoiceQR}2345`;
       }, 200);
 
-      window.setTimeout(() => {
-        this.state.loading = false;
-        this.state.receive.isGeneratingInvoice = false;
-        this.state.receive.invoiceQR = this.state.receive.invoiceText =
-          "lightning:lnbc10u1p0xvxt5pp52f3dd2ya8ejas4jkfq8l6k9vz6cpzv00wyanskkn0pvpyqjx5gusdqj23jhxarfdenjqvfjxvcqzpgxqyz5vqldzazcemje3f8llz90smx4rr7q7vlw4h988fvgs7tupehdtz038putaw8kysw34rq2apn5s5suc0xfltfwpsuu97nyuenpuzp4xl6zsqzmslgk";
-        window.clearInterval(QRAnimation);
-      }, 3000);
+      axios({
+        method: "post",
+        url: "http://umbrel.local/invoicer/payment",
+        data: {
+          amount: this.state.receive.amount,
+          desc: this.state.receive.description,
+          only: "ln"
+        }
+      })
+        .then(res => {
+          this.state.receive.invoiceQR = this.state.receive.invoiceText =
+            res.data.bolt11;
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+          alert(error);
+        })
+        .finally(() => {
+          this.state.loading = false;
+          this.state.receive.isGeneratingInvoice = false;
+          window.clearInterval(QRAnimation);
+        });
+
+      // window.setTimeout(() => {
+      //   this.state.loading = false;
+      //   this.state.receive.isGeneratingInvoice = false;
+      //   this.state.receive.invoiceQR = this.state.receive.invoiceText =
+      //     "lightning:lnbc10u1p0xvxt5pp52f3dd2ya8ejas4jkfq8l6k9vz6cpzv00wyanskkn0pvpyqjx5gusdqj23jhxarfdenjqvfjxvcqzpgxqyz5vqldzazcemje3f8llz90smx4rr7q7vlw4h988fvgs7tupehdtz038putaw8kysw34rq2apn5s5suc0xfltfwpsuu97nyuenpuzp4xl6zsqzmslgk";
+      //   window.clearInterval(QRAnimation);
+      // }, 3000);
     },
     copyInvoice() {
       //copy generated invoice's text to clipboard

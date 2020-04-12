@@ -56,10 +56,11 @@
             <div>
               <h3 class="mb-1">{{ title }}</h3>
               <h3 class="mb-1" v-if="numericTitle">
-                <ICountUp
+                <!-- <ICountUp
                   :endVal="numericTitle.value"
                   :options="{'prefix': numericTitle.prefix, 'suffix': numericTitle.suffix, 'startVal': numericTitle.value}"
-                />
+                />-->
+                {{ numericTitle.value.toLocaleString() }}
               </h3>
               <p class="text-muted mb-0" v-if="subTitle">{{ subTitle }}</p>
             </div>
@@ -74,7 +75,7 @@
 </template>
 
 <script>
-import ICountUp from "vue-countup-v2";
+// import ICountUp from "vue-countup-v2";
 import Status from "@/components/Status";
 
 export default {
@@ -94,7 +95,7 @@ export default {
   computed: {},
   methods: {},
   components: {
-    ICountUp,
+    // ICountUp,
     Status
   }
 };

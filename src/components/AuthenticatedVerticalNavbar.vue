@@ -9,11 +9,12 @@
           </span>
         </p>
         <h3>
-          <ICountUp
+          <!-- <ICountUp
             :endVal="walletBalance"
             :options="{'startVal': walletBalance}"
             v-if="state.showBalance"
-          />
+          />-->
+          <span v-if="state.showBalance">{{ walletBalance.toLocaleString() }}</span>
           <span v-else>***,***</span>
           <small style="font-size: 1rem;">&nbsp;{{ walletUnit }}</small>
         </h3>
@@ -134,7 +135,7 @@
 </template>
 
 <script>
-import ICountUp from "vue-countup-v2";
+// import ICountUp from "vue-countup-v2";
 
 export default {
   data() {
@@ -146,7 +147,10 @@ export default {
   },
   computed: {
     walletBalance() {
-      return this.$store.getters.getWalletBalance;
+      return (
+        this.$store.state.wallet.balance.onChain +
+        this.$store.state.wallet.balance.offChain
+      );
     },
     walletUnit() {
       return this.$store.getters.getWalletUnit;
@@ -161,7 +165,7 @@ export default {
     isMobileMenu: Boolean
   },
   components: {
-    ICountUp
+    // ICountUp
   }
 };
 </script>

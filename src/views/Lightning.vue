@@ -18,9 +18,10 @@
             >
               <circle cx="4" cy="4" r="4" fill="#00CD98" />
             </svg>
-            <small class="ml-1 text-success">Running</small>
+            <small class="ml-1 text-success">{{ state.status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
-            <span class="d-block text-muted">lnd v0.9.2-beta</span>
+            <span class="d-block text-muted" v-if="state.lndVersion">lnd v{{state.lndVersion}}</span>
+            <span class="d-block text-muted" v-else>&nbsp;</span>
           </div>
         </div>
         <div>
@@ -62,11 +63,56 @@
 </template>
 
 <script>
+import axios from "axios";
 import LightningWallet from "@/components/LightningWallet";
 
 export default {
   data() {
-    return {};
+    return {
+      state: {
+        lndVersion: null,
+        status: "Loading"
+      }
+    };
+  },
+  created() {
+    //Get LND Status
+    axios
+      .get(`v1/lnd/info/status`)
+      .then(res => {
+        const { operational, unlocked } = res.data;
+
+        if (operational && unlocked) {
+          return (this.state.status = "Running");
+        }
+        if (operational && !unlocked) {
+          return (this.state.status = "Waiting");
+        }
+        if (!operational) {
+          return (this.state.status = "Stopped");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error);
+      })
+      .finally(() => {
+        // this.state.loading = false;
+      });
+
+    //Get LND Version
+    axios
+      .get(`v1/lnd/info/version`)
+      .then(res => {
+        this.state.lndVersion = res.data.version;
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error);
+      })
+      .finally(() => {
+        // this.state.loading = false;
+      });
   },
   computed: {},
   methods: {},

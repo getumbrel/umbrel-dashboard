@@ -24,6 +24,8 @@ export default {
     this.updateViewPortHeightCSS();
     //for 100vh consistency
     window.addEventListener("resize", this.updateViewPortHeightCSS);
+
+    this.$store.dispatch("fetchWalletBalance");
   },
   mounted() {
     const isDarkMode = this.$store.getters.isDarkMode;
