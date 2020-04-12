@@ -453,17 +453,15 @@ export default {
 
       axios({
         method: "post",
-        url: "http://umbrel.local/invoicer/payment",
+        url: "v1/lnd/lightning/addInvoice",
         data: {
-          amount: this.state.receive.amount,
-          desc: this.state.receive.description,
-          only: "ln"
+          amt: this.state.receive.amount,
+          memo: this.state.receive.description
         }
       })
         .then(res => {
           this.state.receive.invoiceQR = this.state.receive.invoiceText =
-            res.data.bolt11;
-          console.log(res);
+            res.data.paymentRequest;
         })
         .catch(error => {
           console.log(error);

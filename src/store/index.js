@@ -136,14 +136,10 @@ const actions = {
       });
 
     axios
-      .get(`v1/lnd/channel`)
+      .get(`v1/lnd/wallet/lightning`)
       .then(res => {
-        const channels = res.data;
-        let totalBalance = 0;
-        for (let channel of channels) {
-          totalBalance += Number(channel.localBalance);
-        }
-        context.commit('updateWalletBalance', { balance: Number(totalBalance), type: 'offChain' });
+        const { balance } = res.data;
+        context.commit('updateWalletBalance', { balance: Number(balance), type: 'offChain' });
       })
       .catch(error => {
         console.log(error);
