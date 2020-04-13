@@ -138,8 +138,8 @@ const actions = {
     axios
       .get(`v1/lnd/wallet/lightning`)
       .then(res => {
-        const { balance } = res.data;
-        context.commit('updateWalletBalance', { balance: Number(balance), type: 'offChain' });
+        const { balance, pendingOpenBalance } = res.data;
+        context.commit('updateWalletBalance', { balance: Number(balance) + Number(pendingOpenBalance), type: 'offChain' });
       })
       .catch(error => {
         console.log(error);

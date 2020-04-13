@@ -32,7 +32,6 @@
     </div>
 
     <!-- transition switching between different modes -->
-
     <transition name="lightning-mode-change" mode="out-in">
       <!-- Default Balance/tx screen -->
       <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
@@ -45,55 +44,119 @@
             class="tx flex-column align-items-start px-4"
           >
             <div class="d-flex w-100 justify-content-between">
-              <h6 class="mb-0 font-weight-normal">
-                <!-- Incoming tx icon -->
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  v-if="tx.type === 'incoming'"
-                >
-                  <path
-                    d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
-                    fill="#00CD98"
-                  />
-                </svg>
+              <div>
+                <h6 class="mb-0 font-weight-normal">
+                  <!-- Incoming tx icon -->
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    v-if="tx.type === 'incoming'"
+                  >
+                    <path
+                      d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
+                      fill="#00CD98"
+                    />
+                  </svg>
 
-                <!-- Outgoing tx icon -->
-                <svg
-                  width="19"
-                  height="19"
-                  viewBox="0 0 19 19"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  v-else
-                >
-                  <path
-                    d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
-                    fill="#5351FB"
-                  />
-                </svg>
+                  <!-- Outgoing tx icon -->
+                  <svg
+                    width="19"
+                    height="19"
+                    viewBox="0 0 19 19"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    v-else-if="tx.type === 'outgoing'"
+                  >
+                    <path
+                      d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
+                      fill="#5351FB"
+                    />
+                  </svg>
 
-                <!-- Invoice description -->
-                <span style="margin-left: 6px;">{{ tx.description }}</span>
-              </h6>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    v-else-if="tx.type === 'expired'"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                      fill="#F46E6E"
+                    />
+                  </svg>
 
-              <!-- Positive or negative prefix with amount -->
-              <span class="font-weight-bold">
-                <span v-if="tx.type === 'incoming'">+</span>
-                <span v-else>-</span>
-                {{ tx.amount.toLocaleString() }}
-              </span>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    v-else-if="tx.type === 'pending'"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10Z"
+                      fill="#C3C6D1"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10Z"
+                      fill="#C3C6D1"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M13 10C13.5523 10 14 9.55228 14 9C14 8.44772 13.5523 8 13 8C12.4477 8 12 8.44772 12 9C12 9.55228 12.4477 10 13 10Z"
+                      fill="#C3C6D1"
+                    />
+                  </svg>
+
+                  <!-- Invoice description -->
+                  <span style="margin-left: 6px;">{{ tx.description }}</span>
+                </h6>
+
+                <!-- Timestamp of tx -->
+                <small
+                  class="text-muted mt-0 tx-timestamp"
+                  style="margin-left: 24px;"
+                  :title="getReadableTime(tx.timestamp)"
+                  v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
+                >{{getTimeFromNow(tx.timestamp)}}</small>
+
+                <small
+                  class="text-muted mt-0 tx-timestamp"
+                  style="margin-left: 24px;"
+                  :title="`Invoice expires on ${getReadableTime(tx.expiresOn)}`"
+                  v-else-if="tx.type === 'pending'"
+                >Unpaid invoice</small>
+
+                <small
+                  class="text-muted mt-0 tx-timestamp"
+                  style="margin-left: 24px;"
+                  :title="getReadableTime(tx.expiresOn)"
+                  v-else-if="tx.type === 'expired'"
+                >Invoice expired {{getTimeFromNow(tx.expiresOn)}}</small>
+              </div>
+
+              <div class="text-right">
+                <span class="font-weight-bold d-block">
+                  <!-- Positive or negative prefix with amount -->
+                  <span v-if="tx.type === 'incoming'">+</span>
+                  <span v-else-if="tx.type === 'outgoing'">-</span>
+                  {{ Number(tx.amount).toLocaleString() }}
+                </span>
+                <small class="text-muted">Sats</small>
+              </div>
             </div>
-
-            <!-- Timestamp of tx -->
-            <small
-              class="text-muted mt-0 tx-timestamp"
-              style="margin-left: 24px;"
-              :title="getReadableTime(tx.timestamp)"
-            >{{getTimeFromNow(tx.timestamp)}}</small>
           </b-list-group-item>
         </b-list-group>
 
@@ -240,6 +303,9 @@
       </div>
     </transition>
 
+    <!-- Error message -->
+    <small class="text-danger mb-2 d-block px-4" v-if="state.error">{{ state.error }}</small>
+
     <!-- Buttons for all screens/modes -->
     <div class>
       <!-- Buttons: Balance (default mode) -->
@@ -339,10 +405,11 @@ export default {
         txs: [
           //array of last 3 txs
           {
-            type: "incoming", //incoming or outgoing
+            type: "incoming", //incoming, outgoing, pending, expired
             amount: 125000, //amount transacted
             timestamp: new Date(new Date().setSeconds(0)), //time of tx
-            description: "Tips from Reddit" //tx's invoice description
+            description: "Tips from Reddit", //tx's invoice description
+            expiry: new Date(new Date().setSeconds(0))
           },
           {
             type: "outgoing",
@@ -372,7 +439,8 @@ export default {
           isValidInvoice: false, //check if invoice entered by user is a valid Bolt 11 invoice
           isSending: false //used for transition while tx is being broadcasted
         },
-        loading: false //overall state of the wallet, used to toggle progress bar on top of the card
+        loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
+        error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
       }
     };
   },
@@ -404,6 +472,11 @@ export default {
     },
     reset() {
       //reset to default mode, clear any inputs/generated invoice, pasted invoice, etc - used by "Back" button
+
+      //refresh txs
+      this.fetchRecentTxs();
+
+      //reset state
       this.state.receive = {
         amount: null,
         description: "",
@@ -420,7 +493,8 @@ export default {
         isSending: false
       };
       this.state.loading = false;
-      return (this.state.mode = "balance");
+      this.state.error = "";
+      this.state.mode = "balance";
     },
     sendSats() {
       //broadcast tx
@@ -428,17 +502,35 @@ export default {
 
       this.state.loading = true;
       this.state.send.isSending = true;
+      this.state.error = "";
 
-      window.setTimeout(() => {
-        this.state.loading = false;
-        this.state.send.isSending = false;
-        this.state.mode = "sent";
-      }, 3000);
+      axios({
+        method: "post",
+        url: "v1/lnd/lightning/payInvoice",
+        data: {
+          amt: 0, //because payment request already has amount info
+          paymentRequest: this.state.send.invoiceText
+        }
+      })
+        .then(res => {
+          console.log(res);
+          if (res.data.paymentError) {
+            return (this.state.error = res.data.paymentError);
+          }
+          this.state.mode = "sent";
+        })
+        .catch(error => {
+          this.state.error = error.response.data;
+        })
+        .finally(() => {
+          this.state.loading = false;
+          this.state.send.isSending = false;
+        });
 
       //slight delay in updating the balance so the checkmark's animation completes first
-      window.setTimeout(() => {
-        this.$store.commit("updateWalletBalance", this.walletBalance - 1000);
-      }, 4000);
+      // window.setTimeout(() => {
+      //   this.$store.commit("updateWalletBalance", this.walletBalance - 1000);
+      // }, 4000);
     },
     createInvoice() {
       //generate invoice to receive payment
@@ -500,22 +592,131 @@ export default {
         this.state.send.isValidInvoice = false;
         this.state.send.amount = null;
         this.state.send.description = "";
+        this.state.error = "";
         return;
       }
+
       this.state.loading = true;
       this.state.send.description = "";
       this.state.send.isValidInvoice = false;
 
-      //replicate API delay
-      window.setTimeout(() => {
-        this.state.loading = false;
-        this.state.send.isValidInvoice = true;
-        this.state.send.amount = 1000;
-        this.state.send.description = "subscription fee";
-      }, 3000);
+      axios
+        .get(
+          `v1/lnd/lightning/invoice?paymentRequest=${this.state.send.invoiceText}`
+        )
+        .then(res => {
+          //check if invoice is expired
+          const now = Math.floor(new Date().getTime());
+          const invoiceExpiresOn =
+            (Number(res.data.timestamp) + Number(res.data.expiry)) * 1000;
+
+          if (now > invoiceExpiresOn) {
+            this.state.send.isValidInvoice = false;
+            this.state.error = `Invoice expired ${moment(
+              invoiceExpiresOn
+            ).fromNow()}`;
+            return;
+          }
+
+          this.state.send.amount = Number(res.data.numSatoshis);
+          this.state.send.description = res.data.description;
+          this.state.send.isValidInvoice = true;
+          this.state.error = "";
+        })
+        .catch(error => {
+          this.state.send.isValidInvoice = false;
+          this.state.error = "Invalid invoice";
+          console.log(error);
+        })
+        .finally(() => {
+          this.state.loading = false;
+        });
+    },
+    async fetchRecentTxs() {
+      //Get List of transactions
+      let transactions = [];
+      // Get incoming txs
+      await axios
+        .get(`v1/lnd/lightning/invoices`)
+        .then(res => {
+          const latestInvoices = res.data.slice(0, 3).map(tx => {
+            let type = "incoming";
+
+            if (tx.state === "CANCELED") {
+              type = "expired";
+            } else if (tx.state === "OPEN") {
+              type = "pending";
+            }
+
+            return {
+              type,
+              amount: Number(tx.value),
+              timestamp: new Date(Number(tx.creationDate) * 1000),
+              description: tx.memo,
+              expiresOn: new Date(
+                (Number(tx.creationDate) + Number(tx.expiry)) * 1000
+              )
+            };
+          });
+
+          transactions = [...transactions, ...latestInvoices];
+        })
+        .catch(error => {
+          console.log(error);
+          alert(error.response.data);
+        })
+        .finally(() => {
+          // this.state.loading = false;
+        });
+
+      // Get outgoing txs
+      await axios
+        .get(`v1/lnd/lightning/payments`)
+        .then(res => {
+          const latestPayments = res.data.slice(0, 3).map(tx => {
+            return {
+              type: "outgoing",
+              amount: Number(tx.value),
+              timestamp: new Date(Number(tx.creationDate) * 1000),
+              description: tx.paymentRequest //temporarily store payment request in the description as we'll replace it by memo
+            };
+          });
+
+          transactions = [...transactions, ...latestPayments];
+        })
+        .catch(error => {
+          console.log(error.response);
+          alert(error.response.data);
+        })
+        .finally(() => {
+          // this.state.loading = false;
+        });
+
+      //Sort by recent to oldest
+      transactions.sort(function(tx1, tx2) {
+        return tx2.timestamp - tx1.timestamp;
+      });
+
+      //trim to top 3
+      transactions = transactions.slice(0, 3);
+
+      // Fetch descriptions of all outgoing payments
+      for (let tx of transactions) {
+        if (tx.type !== "outgoing") continue;
+
+        const invoiceDetails = await axios.get(
+          `v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
+        );
+        tx.description = invoiceDetails.data.description;
+      }
+
+      this.state.txs = transactions;
     }
   },
   watch: {},
+  created() {
+    this.fetchRecentTxs();
+  },
   components: {
     CardWidget,
     QrcodeVue
