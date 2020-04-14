@@ -20,7 +20,10 @@
             </svg>
             <small class="ml-1 text-success">{{ state.status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
-            <span class="d-block text-muted" v-if="state.lndVersion">lnd v{{state.lndVersion}}</span>
+            <span
+              class="d-block text-muted"
+              v-if="state.lndVersion"
+            >lnd v{{state.lndVersion.split(" commit")[0]}}</span>
             <span class="d-block text-muted" v-else>&nbsp;</span>
           </div>
         </div>
