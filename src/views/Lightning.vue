@@ -93,6 +93,7 @@
                     :title="stat.title"
                     :value="stat.value"
                     :suffix="stat.suffix"
+                    :numberSuffix="stat.numberSuffix || ''"
                   ></bitcoin-network-stat>
                 </b-col>
               </b-row>
@@ -113,11 +114,23 @@ import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
 import LightningWallet from "@/components/LightningWallet";
 import InputCopy from "@/components/InputCopy";
 
+const abbreviateNumber = n => {
+  if (n < 1e3) return [Number(n.toFixed(1)), ""];
+  if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "K"];
+  if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "M"];
+  if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "B"];
+  if (n >= 1e12) return [Number(+(n / 1e12).toFixed(1)), "T"];
+};
+
+window.abv = abbreviateNumber;
+
 export default {
   data() {
     return {
       state: {
         lndVersion: null,
+        numActiveChannels: 0,
+        numPeers: 0,
         status: "Loading",
         pubKey: "",
         channels: []
@@ -126,26 +139,36 @@ export default {
   },
   computed: {
     stats() {
-      let activeChannels = 0;
+      // let activeChannels = 0;
       let totalLocalBalance = 0;
       let totalRemoteBalance = 0;
-      let totalCapacity = 0;
+      // let totalCapacity = 0;
 
       for (let channel of this.state.channels) {
         // if (!channel.active) continue;
-        activeChannels++;
+        // activeChannels++;
         totalLocalBalance += Number(channel.localBalance);
         totalRemoteBalance += Number(channel.remoteBalance);
-        totalCapacity += Number(channel.capacity);
+        // totalCapacity += Number(channel.capacity);
       }
 
-      totalCapacity = totalLocalBalance + totalRemoteBalance;
+      // totalCapacity = totalLocalBalance + totalRemoteBalance;
 
       return [
+        // {
+        //   title: "Total Capacity",
+        //   value: abbreviateNumber(totalCapacity)[0],
+        //   numberSuffix: abbreviateNumber(totalCapacity)[1],
+        //   suffix: "Sats",
+        //   change: {
+        //     value: 1,
+        //     suffix: ""
+        //   }
+        // },
         {
-          title: "Total Capacity",
-          value: totalCapacity,
-          suffix: "Sats",
+          title: "Peers",
+          value: this.state.numPeers,
+          suffix: "Peers",
           change: {
             value: 1,
             suffix: ""
@@ -153,7 +176,7 @@ export default {
         },
         {
           title: "Active Channels",
-          value: activeChannels,
+          value: this.state.numActiveChannels,
           suffix: "Channels",
           change: {
             value: -42,
@@ -162,7 +185,8 @@ export default {
         },
         {
           title: "Max Send",
-          value: totalLocalBalance,
+          value: abbreviateNumber(totalLocalBalance)[0],
+          numberSuffix: abbreviateNumber(totalLocalBalance)[1],
           suffix: "Sats",
           change: {
             value: 7,
@@ -171,7 +195,8 @@ export default {
         },
         {
           title: "Max Receive",
-          value: totalRemoteBalance,
+          value: abbreviateNumber(totalRemoteBalance)[0],
+          numberSuffix: abbreviateNumber(totalRemoteBalance)[1],
           suffix: "Sats",
           change: {
             value: -26,
@@ -195,17 +220,17 @@ export default {
     },
     async showPubKey() {
       //only fetch pubkey if it wasn't loaded before
-      if (!this.state.pubKey) {
-        try {
-          const res = await axios.get(`v1/lnd/info/uris`);
-          const uris = res.data;
-          const pubkey = uris[0].split("@")[0];
-          this.state.pubKey = pubkey;
-        } catch (err) {
-          console.log(err);
-          alert(err.response.data);
-        }
-      }
+      // if (!this.state.pubKey) {
+      //   try {
+      //     const res = await axios.get(`v1/lnd/info/uris`);
+      //     const uris = res.data;
+      //     const pubkey = uris[0].split("@")[0];
+      //     this.state.pubKey = pubkey;
+      //   } catch (err) {
+      //     console.log(err);
+      //     alert(err.response.data);
+      //   }
+      // }
       this.$refs["public-key-modal"].show();
     }
   },
@@ -234,11 +259,16 @@ export default {
         // this.state.loading = false;
       });
 
-    //Get LND Version
+    //Get LND Info
     axios
-      .get(`v1/lnd/info/version`)
+      .get(`v1/pages/lnd/`)
       .then(res => {
-        this.state.lndVersion = res.data.version;
+        this.state.pubKey = res.data.lightningInfo.identityPubkey;
+        this.state.lndVersion = res.data.lightningInfo.version;
+        this.state.numPeers = res.data.lightningInfo.numPeers;
+        this.state.numActiveChannels = res.data.lightningInfo.numActiveChannels;
+
+        window.lnd = res.data;
       })
       .catch(error => {
         console.log(error);

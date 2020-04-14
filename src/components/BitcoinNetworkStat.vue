@@ -4,7 +4,11 @@
     <div class="pt-2 pb-4">
       <div class="mb-1">
         <h3 class="font-weight-normal d-inline">
-          <ICountUp :endVal="value" />
+          <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
+          <span>
+            <!-- <ICountUp :endVal="value" /> -->
+            {{value}}{{numberSuffix}}
+          </span>
         </h3>
         <span class="text-muted d-inline ml-1">{{suffix}}</span>
       </div>
@@ -35,12 +39,16 @@
 </template>
 
 <script>
-import ICountUp from "vue-countup-v2";
+// import ICountUp from "vue-countup-v2";
 export default {
   props: {
     title: String,
     value: Number,
     suffix: String,
+    numberSuffix: {
+      type: String,
+      default: ""
+    },
     change: {
       value: Number,
       suffix: String
@@ -52,7 +60,7 @@ export default {
   },
   methods: {},
   components: {
-    ICountUp
+    // ICountUp
   }
 };
 </script>

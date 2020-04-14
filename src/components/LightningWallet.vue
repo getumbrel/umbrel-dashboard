@@ -679,6 +679,12 @@ export default {
       for (let tx of transactions) {
         if (tx.type !== "outgoing") continue;
 
+        if (!tx.description) {
+          //example in case of a keysend tx
+          tx.description = "Direct payment to node";
+          continue;
+        }
+
         try {
           const invoiceDetails = await axios.get(
             `v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
