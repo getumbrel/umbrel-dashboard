@@ -704,10 +704,15 @@ export default {
       for (let tx of transactions) {
         if (tx.type !== "outgoing") continue;
 
-        const invoiceDetails = await axios.get(
-          `v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
-        );
-        tx.description = invoiceDetails.data.description;
+        try {
+          const invoiceDetails = await axios.get(
+            `v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
+          );
+          tx.description = invoiceDetails.data.description;
+        } catch (error) {
+          alert(error);
+          tx.description = "";
+        }
       }
 
       this.state.txs = transactions;

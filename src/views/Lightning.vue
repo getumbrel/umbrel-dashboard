@@ -25,38 +25,80 @@
           </div>
         </div>
         <div>
-          <svg
-            width="18"
-            height="4"
-            viewBox="0 0 18 4"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
+            <template v-slot:button-content>
+              <svg
+                width="18"
+                height="4"
+                viewBox="0 0 18 4"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M2 4C3.10457 4 4 3.10457 4 2C4 0.89543 3.10457 0 2 0C0.89543 0 0 0.89543 0 2C0 3.10457 0.89543 4 2 4Z"
+                  fill="#C3C6D1"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M9 4C10.1046 4 11 3.10457 11 2C11 0.89543 10.1046 0 9 0C7.89543 0 7 0.89543 7 2C7 3.10457 7.89543 4 9 4Z"
+                  fill="#C3C6D1"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M16 4C17.1046 4 18 3.10457 18 2C18 0.89543 17.1046 0 16 0C14.8954 0 14 0.89543 14 2C14 3.10457 14.8954 4 16 4Z"
+                  fill="#C3C6D1"
+                />
+              </svg>
+            </template>
+            <b-dropdown-item href="#" @click="showPubKey">View Public Key</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
+            <b-dropdown-divider />
+            <b-dropdown-item variant="danger" href="#" disabled>Stop Lightning</b-dropdown-item>
+          </b-dropdown>
+          <b-modal
+            id="public-key-modal"
+            ref="public-key-modal"
+            title="Node Public Key"
+            centered
+            hide-footer
           >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M2 4C3.10457 4 4 3.10457 4 2C4 0.89543 3.10457 0 2 0C0.89543 0 0 0.89543 0 2C0 3.10457 0.89543 4 2 4Z"
-              fill="#C3C6D1"
-            />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M9 4C10.1046 4 11 3.10457 11 2C11 0.89543 10.1046 0 9 0C7.89543 0 7 0.89543 7 2C7 3.10457 7.89543 4 9 4Z"
-              fill="#C3C6D1"
-            />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M16 4C17.1046 4 18 3.10457 18 2C18 0.89543 17.1046 0 16 0C14.8954 0 14 0.89543 14 2C14 3.10457 14.8954 4 16 4Z"
-              fill="#C3C6D1"
-            />
-          </svg>
+            <!-- QR Code element -->
+            <qrcode-vue
+              :value="state.pubKey"
+              :size="150"
+              level="H"
+              renderAs="svg"
+              class="d-flex justify-content-center qr-image my-2"
+            ></qrcode-vue>
+            <input-copy size="sm" :value="state.pubKey" class="p-2"></input-copy>
+          </b-modal>
         </div>
       </div>
     </div>
-    <b-row>
+    <b-row class="row-eq-height">
       <b-col col cols="12" md="6" xl="4">
         <lightning-wallet></lightning-wallet>
+      </b-col>
+      <b-col col cols="12" md="6" xl="8">
+        <card-widget header="Overview">
+          <div class>
+            <div class="px-4 pb-2">
+              <b-row>
+                <b-col col cols="6" xl="3" v-for="stat in stats" :key="stat.title">
+                  <bitcoin-network-stat
+                    :title="stat.title"
+                    :value="stat.value"
+                    :suffix="stat.suffix"
+                  ></bitcoin-network-stat>
+                </b-col>
+              </b-row>
+            </div>
+          </div>
+        </card-widget>
       </b-col>
     </b-row>
   </div>
@@ -64,16 +106,108 @@
 
 <script>
 import axios from "axios";
+import QrcodeVue from "qrcode.vue";
+
+import CardWidget from "@/components/CardWidget";
+import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
 import LightningWallet from "@/components/LightningWallet";
+import InputCopy from "@/components/InputCopy";
 
 export default {
   data() {
     return {
       state: {
         lndVersion: null,
-        status: "Loading"
+        status: "Loading",
+        pubKey: "",
+        channels: []
       }
     };
+  },
+  computed: {
+    stats() {
+      let activeChannels = 0;
+      let totalLocalBalance = 0;
+      let totalRemoteBalance = 0;
+      let totalCapacity = 0;
+
+      for (let channel of this.state.channels) {
+        // if (!channel.active) continue;
+        activeChannels++;
+        totalLocalBalance += Number(channel.localBalance);
+        totalRemoteBalance += Number(channel.remoteBalance);
+        totalCapacity += Number(channel.capacity);
+      }
+
+      totalCapacity = totalLocalBalance + totalRemoteBalance;
+
+      return [
+        {
+          title: "Total Capacity",
+          value: totalCapacity,
+          suffix: "Sats",
+          change: {
+            value: 1,
+            suffix: ""
+          }
+        },
+        {
+          title: "Active Channels",
+          value: activeChannels,
+          suffix: "Channels",
+          change: {
+            value: -42,
+            suffix: ""
+          }
+        },
+        {
+          title: "Max Send",
+          value: totalLocalBalance,
+          suffix: "Sats",
+          change: {
+            value: 7,
+            suffix: ""
+          }
+        },
+        {
+          title: "Max Receive",
+          value: totalRemoteBalance,
+          suffix: "Sats",
+          change: {
+            value: -26,
+            suffix: ""
+          }
+        }
+      ];
+    }
+  },
+  methods: {
+    fetchChannels() {
+      axios
+        .get(`v1/lnd/channel/`)
+        .then(res => {
+          this.state.channels = res.data;
+        })
+        .catch(error => {
+          alert(error.response.data);
+        })
+        .finally(() => {});
+    },
+    async showPubKey() {
+      //only fetch pubkey if it wasn't loaded before
+      if (!this.state.pubKey) {
+        try {
+          const res = await axios.get(`v1/lnd/info/uris`);
+          const uris = res.data;
+          const pubkey = uris[0].split("@")[0];
+          this.state.pubKey = pubkey;
+        } catch (err) {
+          console.log(err);
+          alert(err.response.data);
+        }
+      }
+      this.$refs["public-key-modal"].show();
+    }
   },
   created() {
     //Get LND Status
@@ -113,11 +247,16 @@ export default {
       .finally(() => {
         // this.state.loading = false;
       });
+
+    this.fetchChannels();
   },
-  computed: {},
-  methods: {},
+  watch: {},
   components: {
-    LightningWallet
+    LightningWallet,
+    CardWidget,
+    BitcoinNetworkStat,
+    QrcodeVue,
+    InputCopy
   }
 };
 </script>

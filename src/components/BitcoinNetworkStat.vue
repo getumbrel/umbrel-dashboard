@@ -8,7 +8,7 @@
         </h3>
         <span class="text-muted d-inline ml-1">{{suffix}}</span>
       </div>
-      <div>
+      <div v-if="change">
         <svg
           width="12"
           height="13"
