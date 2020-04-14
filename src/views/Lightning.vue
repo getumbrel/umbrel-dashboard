@@ -84,7 +84,7 @@
         <lightning-wallet></lightning-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="8">
-        <card-widget header="Overview">
+        <card-widget header="Channels">
           <div class>
             <div class="px-4 pb-2">
               <b-row>

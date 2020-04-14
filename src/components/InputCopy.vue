@@ -1,6 +1,6 @@
 <template>
   <b-input-group size="sm">
-    <b-form-input id="copy-input-field" type="text" readonly v-model="value"></b-form-input>
+    <b-form-input ref="copy-input-field" type="text" readonly v-model="value"></b-form-input>
 
     <b-input-group-append>
       <b-button
@@ -28,7 +28,7 @@ export default {
     copyText() {
       //copy generated invoice's text to clipboard
 
-      const copyText = document.getElementById("copy-input-field");
+      const copyText = this.$refs["copy-input-field"];
       copyText.select();
       copyText.setSelectionRange(0, 99999); /*For mobile devices*/
       document.execCommand("copy");

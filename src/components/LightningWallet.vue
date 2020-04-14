@@ -284,22 +284,7 @@
         </div>
 
         <!-- Copy Invoice Input Field -->
-        <b-input-group class="mb-4 mt-2" size="sm">
-          <b-form-input
-            id="generated-invoice"
-            type="text"
-            readonly
-            v-model="state.receive.invoiceText"
-          ></b-form-input>
-
-          <b-input-group-append>
-            <b-button
-              :variant="state.receive.isInvoiceCopied ? 'success' : 'primary'"
-              @click="copyInvoice"
-              :disabled="!state.receive.invoiceText"
-            >{{ state.receive.isInvoiceCopied ? 'Copied' : 'Copy Invoice' }}</b-button>
-          </b-input-group-append>
-        </b-input-group>
+        <input-copy size="sm" :value="state.receive.invoiceQR" class="mb-4 mt-2"></input-copy>
       </div>
     </transition>
 
@@ -394,7 +379,9 @@
 import axios from "axios";
 import QrcodeVue from "qrcode.vue";
 import moment from "moment";
+
 import CardWidget from "@/components/CardWidget";
+import InputCopy from "@/components/InputCopy";
 
 export default {
   data() {
@@ -429,8 +416,7 @@ export default {
           description: "", //invoice description
           invoiceText: "", //Bolt 11 invoice
           invoiceQR: "1", //used for "generating" animation, is ultimately equal to invoiceText after animation
-          isGeneratingInvoice: false, //used for transitions, animations, etc
-          isInvoiceCopied: false //to toggle between copy/copied state of "copy button"
+          isGeneratingInvoice: false //used for transitions, animations, etc
         },
         send: {
           invoiceText: "", //Bolt 11 as entered by the user
@@ -482,8 +468,7 @@ export default {
         description: "",
         invoiceText: "",
         invoiceQR: "1",
-        isGeneratingInvoice: false,
-        isInvoiceCopied: false
+        isGeneratingInvoice: false
       };
       this.state.send = {
         invoiceText: "",
@@ -572,16 +557,6 @@ export default {
       //     "lightning:lnbc10u1p0xvxt5pp52f3dd2ya8ejas4jkfq8l6k9vz6cpzv00wyanskkn0pvpyqjx5gusdqj23jhxarfdenjqvfjxvcqzpgxqyz5vqldzazcemje3f8llz90smx4rr7q7vlw4h988fvgs7tupehdtz038putaw8kysw34rq2apn5s5suc0xfltfwpsuu97nyuenpuzp4xl6zsqzmslgk";
       //   window.clearInterval(QRAnimation);
       // }, 3000);
-    },
-    copyInvoice() {
-      //copy generated invoice's text to clipboard
-
-      const copyText = document.getElementById("generated-invoice");
-      copyText.select();
-      copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-      document.execCommand("copy");
-
-      return (this.state.receive.isInvoiceCopied = true);
     },
     fetchInvoiceDetails() {
       //fetch invoice details as pasted by user in the "Send" mode/screen
@@ -724,7 +699,8 @@ export default {
   },
   components: {
     CardWidget,
-    QrcodeVue
+    QrcodeVue,
+    InputCopy
   }
 };
 </script>
