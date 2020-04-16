@@ -100,6 +100,14 @@
                   ></bitcoin-network-stat>
                 </b-col>
               </b-row>
+
+              <!-- List of channels -->
+              <!-- <div>
+                <h4
+                  v-for="channel in state.channels"
+                  :key="channel.channelPoint"
+                >{{channel.capacity}}</h4>
+              </div>-->
             </div>
           </div>
         </card-widget>
@@ -110,6 +118,7 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 import QrcodeVue from "qrcode.vue";
 
 import CardWidget from "@/components/CardWidget";
@@ -136,7 +145,12 @@ export default {
         numPeers: 0,
         status: "Loading",
         pubKey: "",
-        channels: []
+        channels: [],
+        transactions: [],
+        btcDepositAddress: "",
+        btcWithdrawAddress: "",
+        btcWithdrawAmount: "",
+        btcWithdrawUnit: "Sats" //sats or btc
       }
     };
   },
@@ -148,7 +162,7 @@ export default {
       // let totalCapacity = 0;
 
       for (let channel of this.state.channels) {
-        // if (!channel.active) continue;
+        if (!channel.active) continue;
         // activeChannels++;
         totalLocalBalance += Number(channel.localBalance);
         totalRemoteBalance += Number(channel.remoteBalance);
@@ -235,6 +249,24 @@ export default {
       //   }
       // }
       this.$refs["public-key-modal"].show();
+    },
+    async showDepositAddress() {
+      try {
+        const res = await axios.get(`v1/lnd/address`);
+        this.state.btcDepositAddress = res.data.address;
+      } catch (err) {
+        console.log(err);
+        alert(err.response.data);
+      }
+      this.$refs["deposit-modal"].show();
+    },
+    changeBtcWithdrawUnit() {
+      console.log(this.state.btcWithdrawUnit);
+      if (this.state.btcWithdrawUnit === "Sats") {
+        this.state.btcWithdrawUnit = "BTC";
+      } else if (this.state.btcWithdrawUnit === "BTC") {
+        this.state.btcWithdrawUnit = "Sats";
+      }
     }
   },
   created() {
@@ -262,7 +294,7 @@ export default {
         // this.state.loading = false;
       });
 
-    //Get LND Info
+    //Get LND Info for showing stats
     axios
       .get(`v1/pages/lnd/`)
       .then(res => {
@@ -270,8 +302,6 @@ export default {
         this.state.lndVersion = res.data.lightningInfo.version;
         this.state.numPeers = res.data.lightningInfo.numPeers;
         this.state.numActiveChannels = res.data.lightningInfo.numActiveChannels;
-
-        window.lnd = res.data;
       })
       .catch(error => {
         console.log(error);
@@ -281,7 +311,36 @@ export default {
         // this.state.loading = false;
       });
 
+    //Get channels
     this.fetchChannels();
+
+    //Get bitcoin onchain transactions
+    axios
+      .get(`v1/lnd/transaction`)
+      .then(res => {
+        const txs = res.data.map(tx => {
+          return {
+            amount:
+              parseInt(tx.amount) > 0
+                ? "+" + parseInt(tx.amount).toLocaleString() + " Sats"
+                : parseInt(tx.amount).toLocaleString() + " Sats",
+            type: tx.type,
+            time: moment(Number(tx.timeStamp) * 1000).format(
+              "MMMM Do YYYY, h:mm:ss A"
+            ),
+            transaction: tx.txHash
+          };
+        });
+
+        this.state.transactions = txs;
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error);
+      })
+      .finally(() => {
+        // this.state.loading = false;
+      });
   },
   watch: {},
   components: {

@@ -12,7 +12,7 @@
   "dependencies": {
     "animate.css": "^3.7.2",
     "axios": "^0.19.2",
-    "bootstrap-vue": "^2.2.2",
+    "bootstrap-vue": "^2.11.0",
     "core-js": "^3.4.4",
     "countup.js": "^2.0.4",
     "moment": "^2.24.0",

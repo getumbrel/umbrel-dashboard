@@ -1,5 +1,5 @@
 <template>
-  <b-input-group size="sm">
+  <b-input-group :size="size">
     <b-form-input ref="copy-input-field" type="text" readonly v-model="value"></b-form-input>
 
     <b-input-group-append>
@@ -14,7 +14,10 @@
 <script>
 export default {
   props: {
-    size: String,
+    size: {
+      type: String,
+      default: "sm"
+    },
     value: String
   },
   data() {

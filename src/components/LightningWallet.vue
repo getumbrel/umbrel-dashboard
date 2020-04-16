@@ -627,7 +627,7 @@ export default {
               type,
               amount: Number(tx.value),
               timestamp: new Date(Number(tx.creationDate) * 1000),
-              description: tx.memo,
+              description: tx.memo || "Direct payment from a node",
               expiresOn: new Date(
                 (Number(tx.creationDate) + Number(tx.expiry)) * 1000
               )
@@ -681,7 +681,7 @@ export default {
 
         if (!tx.description) {
           //example in case of a keysend tx
-          tx.description = "Direct payment to node";
+          tx.description = "Direct payment to a node";
           continue;
         }
 

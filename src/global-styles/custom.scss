@@ -39,6 +39,10 @@ $dark-mode-card-bg: #2A3244;
 }
 
 // Overrides
+a {
+    outline: 0 !important; 
+}
+
 .btn, button {
     outline: 0 !important;
     border: none !important;

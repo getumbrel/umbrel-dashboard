@@ -1708,14 +1708,14 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.npm.taobao.org/boolbase/download/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bootstrap-vue@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.npm.taobao.org/bootstrap-vue/download/bootstrap-vue-2.2.2.tgz#750d461d18352e2fd6cd2debfe52ebeb125c191f"
-  integrity sha1-dQ1GHRg1Li/WzS3r/lLr6xJcGR8=
+bootstrap-vue@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-2.11.0.tgz#9994b9529c4d36c7a89812f91e4aad1299f15829"
+  integrity sha512-T23+aVVSDifX1SsI5y69bYZzbm8iQHlmgiBUw9XxY1KTw/fb4xvUq4+Y01Tsaul04+zmrUah/5zvUGKLwTcH7A==
   dependencies:
     "@nuxt/opencollective" "^0.3.0"
     bootstrap ">=4.4.1 <5.0.0"
-    popper.js "^1.16.0"
+    popper.js "^1.16.1"
     portal-vue "^2.1.7"
     vue-functional-data-merge "^3.1.0"
 
@@ -5954,10 +5954,10 @@ pkg-dir@^4.1.0:
   dependencies:
     find-up "^4.0.0"
 
-popper.js@^1.16.0:
+popper.js@^1.16.1:
   version "1.16.1"
-  resolved "https://registry.npm.taobao.org/popper.js/download/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
-  integrity sha1-KiI8s9x7YhPXQOQDcr5A3kPmWxs=
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
+  integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
 
 portal-vue@^2.1.7:
   version "2.1.7"
