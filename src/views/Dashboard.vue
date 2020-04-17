@@ -9,6 +9,9 @@
         <lightning-wallet></lightning-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
+        <bitcoin-wallet></bitcoin-wallet>
+      </b-col>
+      <b-col col cols="12" md="6" xl="4">
         <card-widget
           header="Bitcoin Core"
           :status="{text: 'Running', variant: 'success', blink: false}"
@@ -42,7 +45,7 @@
               <a href="#" class="card-link">Manage</a>
             </div>
         </card-widget>-->
-        <card-widget
+        <!-- <card-widget
           header="Tor"
           :status="{text: 'Running', variant: 'success', blink: false}"
           title="100%"
@@ -52,7 +55,7 @@
           <div class="px-4 pt-2 pb-3">
             <router-link to="/settings" class="card-link">Manage</router-link>
           </div>
-        </card-widget>
+        </card-widget>-->
         <!-- <card-widget
             header="Example App"
             status="Running"
@@ -71,6 +74,7 @@
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
 import LightningWallet from "@/components/LightningWallet";
+import BitcoinWallet from "@/components/BitcoinWallet";
 
 export default {
   data() {
@@ -91,7 +95,8 @@ export default {
   components: {
     CardWidget,
     Blockchain,
-    LightningWallet
+    LightningWallet,
+    BitcoinWallet
   }
 };
 </script>

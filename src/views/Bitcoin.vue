@@ -64,6 +64,9 @@
     </div>
     <b-row class="row-eq-height">
       <b-col col cols="12" md="6" xl="4">
+        <bitcoin-wallet></bitcoin-wallet>
+      </b-col>
+      <b-col col cols="12" md="6" xl="4">
         <card-widget header="Blockchain" :hasMenu="true">
           <template v-slot:menu>
             <b-dropdown-item variant="danger" href="#">Resync Blockchain</b-dropdown-item>
@@ -91,17 +94,17 @@
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
             <p class="px-4 mb-3">Latest Blocks</p>
-            <blockchain :numBlocks="4"></blockchain>
+            <blockchain :numBlocks="3"></blockchain>
             <div class="px-4 py-2"></div>
           </div>
         </card-widget>
       </b-col>
-      <b-col col cols="12" md="6" xl="8">
+      <b-col col cols="12" md="6" xl="4">
         <card-widget header="Network">
           <div class>
             <div class="px-4 pb-2">
               <b-row>
-                <b-col col cols="6" xl="3" v-for="stat in state.stats" :key="stat.title">
+                <b-col col cols="6" v-for="stat in state.stats" :key="stat.title">
                   <bitcoin-network-stat
                     :title="stat.title"
                     :value="stat.value"
@@ -124,6 +127,7 @@ import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
 import ToggleSwitch from "@/components/ToggleSwitch";
 import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
+import BitcoinWallet from "@/components/BitcoinWallet";
 
 export default {
   data() {
@@ -232,7 +236,8 @@ export default {
     CardWidget,
     Blockchain,
     ToggleSwitch,
-    BitcoinNetworkStat
+    BitcoinNetworkStat,
+    BitcoinWallet
   }
 };
 </script>
