@@ -188,7 +188,6 @@
           size="lg"
           min="1"
           v-model="state.withdraw.address"
-          autofocus
           @input="fetchWithdrawalFees"
         ></b-input>
       </div>
