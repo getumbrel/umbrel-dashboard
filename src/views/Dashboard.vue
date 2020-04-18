@@ -14,10 +14,11 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget
           header="Bitcoin Core"
-          :status="{text: 'Running', variant: 'success', blink: false}"
-          title="100%"
+          :status="{text: syncPercent !== 100 ? 'Synchronizing' : 'Running', variant: 'success', blink: syncPercent !== 100}"
+          :title="`${syncPercent}%`"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
+          :loading="syncPercent !== 100"
         >
           <div class>
             <!-- <div class="d-flex w-100 justify-content-between px-4">
@@ -71,6 +72,9 @@
 
 <script>
 // import Vue from "vue";
+
+import { mapState } from "vuex";
+
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
 import LightningWallet from "@/components/LightningWallet";
@@ -81,6 +85,9 @@ export default {
     return {};
   },
   computed: {
+    ...mapState({
+      syncPercent: state => state.bitcoin.percent
+    }),
     isDarkMode() {
       return this.$store.getters.isDarkMode;
     }
@@ -91,6 +98,9 @@ export default {
     if (this.$store.getters.isDarkMode) {
       this.$store.commit("toggleDarkMode");
     }
+  },
+  created() {
+    this.$store.dispatch("bitcoin/getSync");
   },
   components: {
     CardWidget,

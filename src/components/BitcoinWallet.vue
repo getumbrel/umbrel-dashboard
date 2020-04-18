@@ -8,7 +8,7 @@
       suffix: '',
       prefix: ''
     }"
-    :sub-title="walletUnit"
+    sub-title="Sats"
     icon="icon-app-bitcoin.svg"
     :loading="state.loading"
   >
@@ -39,7 +39,7 @@
         <b-list-group class="pb-2">
           <!-- Transaction -->
           <b-list-group-item
-            v-for="tx in state.txs"
+            v-for="tx in transactions.slice(0, 3)"
             :key="tx.txHash"
             class="tx flex-column align-items-start px-4"
           >
@@ -216,13 +216,13 @@
         </div>
         <div class="d-flex justify-content-between pb-3">
           <span class="text-muted">
-            <b>{{ state.withdraw.fees.fast.total }}</b>
+            <b>{{ fees.fast.total }}</b>
             <small>&nbsp;Sats</small>
             <br />
             <small>Mining fee</small>
           </span>
           <span class="text-right text-muted">
-            <b>{{ walletBalance - state.withdraw.amount - state.withdraw.fees.fast.total }}</b>
+            <b>{{ walletBalance - state.withdraw.amount - fees.fast.total }}</b>
             <small>&nbsp;Sats</small>
             <br />
             <small>Remaining balance</small>
@@ -279,12 +279,12 @@
         <div class="generated-qr mb-3">
           <!-- Popup umbrel logo in the middle of QR code after the QR is generated -->
           <transition name="qr-logo-popup">
-            <img v-show="state.deposit.address" src="@/assets/umbrel-qr-icon.svg" class="qr-logo" />
+            <img v-show="depositAddress" src="@/assets/umbrel-qr-icon.svg" class="qr-logo" />
           </transition>
 
           <!-- QR Code element -->
           <qrcode-vue
-            :value="state.deposit.address"
+            :value="depositAddress"
             :size="200"
             level="H"
             renderAs="svg"
@@ -293,7 +293,7 @@
         </div>
 
         <!-- Copy Address Input Field -->
-        <input-copy size="sm" :value="state.deposit.address" class="mb-4 mt-2"></input-copy>
+        <input-copy size="sm" :value="depositAddress" class="mb-4 mt-2"></input-copy>
       </div>
     </transition>
 
@@ -402,6 +402,7 @@
 <script>
 import QrcodeVue from "qrcode.vue";
 import moment from "moment";
+import { mapState, mapGetters } from "vuex";
 
 import API from "@/helpers/api";
 
@@ -413,7 +414,7 @@ export default {
     return {
       state: {
         //balance: 162500, //net user's balance in sats
-        mode: "balance", //balance (default mode), deposit, withdraw, confirm-withdraw, withdraw
+        mode: "balance", //balance (default mode), deposit, withdraw, review-withdraw, withdrawn
         txs: [
           //array of last 3 txs
           {
@@ -443,32 +444,7 @@ export default {
           feesTimeout: null,
           isTyping: false, //to disable button when the user changes amount/address
           isWithdrawing: false,
-          txHash: "",
-          fees: {
-            fast: {
-              total: "--",
-              perByte: "--",
-              error: false
-            },
-            normal: {
-              total: "--",
-              perByte: "--",
-              error: false
-            },
-            slow: {
-              total: "--",
-              perByte: "--",
-              error: false
-            },
-            cheapest: {
-              total: "--",
-              perByte: "--",
-              error: false
-            }
-          }
-        },
-        deposit: {
-          address: ""
+          txHash: ""
         },
         loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
         error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
@@ -477,12 +453,14 @@ export default {
   },
   props: {},
   computed: {
-    walletBalance() {
-      return this.$store.state.wallet.balance.onChain;
-    },
-    walletUnit() {
-      return this.$store.getters.getWalletUnit;
-    },
+    ...mapState({
+      walletBalance: state => state.bitcoin.balance.total,
+      depositAddress: state => state.bitcoin.depositAddress,
+      fees: state => state.bitcoin.fees
+    }),
+    ...mapGetters({
+      transactions: "bitcoin/transactions"
+    }),
     isBitcoinPage() {
       return this.$router.currentRoute.path === "/bitcoin";
     }
@@ -499,8 +477,7 @@ export default {
 
       //on deposit mode, get new btc address
       if (mode === "deposit") {
-        const depositAddress = await API.get(`v1/lnd/address`);
-        this.state.deposit.address = depositAddress.address;
+        await this.$store.dispatch("bitcoin/getDepositAddress");
       }
 
       return (this.state.mode = mode);
@@ -508,8 +485,12 @@ export default {
     reset() {
       //reset to default mode, clear any inputs/generated invoice, pasted invoice, etc - used by "Back" button
 
-      //refresh txs
-      this.fetchRecentTxs();
+      //to do: refresh balance, txs
+
+      //in case going back from review withdrawal to edit withdrwal
+      if (this.state.mode === "review-withdraw") {
+        return (this.state.mode = "withdraw");
+      }
 
       //reset state
       this.state.withdraw = {
@@ -519,71 +500,12 @@ export default {
         feesTimeout: null,
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false,
-        txHash: "",
-        fees: {
-          fast: {
-            total: "--",
-            perByte: "--",
-            error: false
-          },
-          normal: {
-            total: "--",
-            perByte: "--",
-            error: false
-          },
-          slow: {
-            total: "--",
-            perByte: "--",
-            error: false
-          },
-          cheapest: {
-            total: "--",
-            perByte: "--",
-            error: false
-          }
-        }
-      };
-
-      this.state.deposit = {
-        address: ""
+        txHash: ""
       };
 
       this.state.loading = false;
       this.state.error = "";
       this.state.mode = "balance";
-    },
-    async fetchRecentTxs() {
-      //Get List of transactions
-
-      const txs = await API.get(`v1/lnd/transaction`);
-
-      this.state.txs = txs.slice(0, 3).map(tx => {
-        const amount = Number(tx.amount);
-
-        let type = "incoming";
-        if (amount < 0) {
-          type = "outgoing";
-        }
-
-        let description = "Unknown";
-
-        if (tx.type === "CHANNEL_OPEN" || tx.type === "PENDING_OPEN") {
-          description = "Lightning Wallet";
-        } else if (tx.type === "CHANNEL_CLOSE" || tx.type === "PENDING_CLOSE") {
-          description = "Lightning Wallet";
-        } else if (tx.type === "ON_CHAIN_TRANSACTION_SENT") {
-          description = "Withdrawal";
-        } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
-          description = "Deposit";
-        }
-
-        return {
-          type,
-          amount: amount < 0 ? amount * -1 : amount, //for formatting +/- in view
-          timestamp: new Date(Number(tx.timeStamp) * 1000),
-          description
-        };
-      });
     },
     async fetchWithdrawalFees() {
       if (this.state.withdraw.feesTimeout) {
@@ -605,30 +527,12 @@ export default {
             params.amt = this.state.withdraw.amount;
           }
 
-          const fees = await API.get(`v1/lnd/transaction/estimateFee`, {
-            params
-          });
+          await this.$store.dispatch("bitcoin/getFees", params);
 
-          if (fees) {
-            for (const [speed, estimate] of Object.entries(fees)) {
-              // If the API returned an error message
-              if (estimate.code) {
-                this.state.withdraw.fees[speed].total = "N/A";
-                this.state.withdraw.fees[speed].perByte = "N/A";
-                this.state.withdraw.fees[speed].error = estimate.code;
-              } else {
-                this.state.withdraw.fees[speed].total = estimate.feeSat;
-                this.state.withdraw.fees[speed].perByte =
-                  estimate.feerateSatPerByte;
-                this.state.withdraw.fees[speed].sweepAmount =
-                  estimate.sweepAmount;
-                this.state.withdraw.fees[speed].error = false;
-              }
-            }
-
+          if (this.fees) {
             //show error if any
-            if (fees.fast && fees.fast.code) {
-              this.state.error = fees.fast.text;
+            if (this.fees.fast && this.fees.fast.error.code) {
+              this.state.error = this.fees.fast.error.text;
             } else {
               this.state.error = "";
             }
@@ -670,8 +574,10 @@ export default {
     }
   },
   watch: {},
-  created() {
-    this.fetchRecentTxs();
+  async created() {
+    await this.$store.dispatch("bitcoin/getStatus");
+    this.$store.dispatch("bitcoin/getBalance");
+    this.$store.dispatch("bitcoin/getTransactions");
   },
   components: {
     CardWidget,

@@ -12,6 +12,7 @@
   "dependencies": {
     "animate.css": "^3.7.2",
     "axios": "^0.19.2",
+    "bignumber.js": "^9.0.0",
     "bootstrap-vue": "^2.11.0",
     "core-js": "^3.4.4",
     "countup.js": "^2.0.4",
