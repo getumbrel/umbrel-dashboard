@@ -4,6 +4,7 @@ import axios from "axios";
 
 //Modules
 import bitcoin from './modules/bitcoin';
+import lightning from './modules/lightning';
 
 Vue.use(Vuex);
 
@@ -160,6 +161,7 @@ export default new Vuex.Store({
   actions,
   getters,
   modules: {
-    bitcoin
+    bitcoin,
+    lightning
   }
 });

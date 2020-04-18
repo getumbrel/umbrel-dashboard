@@ -8,7 +8,7 @@
       suffix: '',
       prefix: ''
     }"
-    :sub-title="walletUnit"
+    sub-title="Sats"
     icon="icon-app-lightning.svg"
     :loading="state.loading"
   >
@@ -39,7 +39,7 @@
         <b-list-group class="pb-2">
           <!-- Transaction -->
           <b-list-group-item
-            v-for="tx in state.txs"
+            v-for="tx in transactions.slice(0,3)"
             :key="tx.description"
             class="tx flex-column align-items-start px-4"
           >
@@ -376,9 +376,10 @@
 </template>
 
 <script>
-import axios from "axios";
 import QrcodeVue from "qrcode.vue";
 import moment from "moment";
+
+import { mapState } from "vuex";
 
 import API from "@/helpers/api";
 import CardWidget from "@/components/CardWidget";
@@ -433,12 +434,10 @@ export default {
   },
   props: {},
   computed: {
-    walletBalance() {
-      return this.$store.state.wallet.balance.offChain;
-    },
-    walletUnit() {
-      return this.$store.getters.getWalletUnit;
-    },
+    ...mapState({
+      transactions: state => state.lightning.transactions,
+      walletBalance: state => state.lightning.balance.confirmed
+    }),
     isLightningPage() {
       return this.$router.currentRoute.path === "/lightning";
     }
@@ -457,8 +456,9 @@ export default {
     reset() {
       //reset to default mode, clear any inputs/generated invoice, pasted invoice, etc - used by "Back" button
 
-      //refresh txs
-      this.fetchRecentTxs();
+      //refresh data
+      this.$store.dispatch("lightning/getTransactions");
+      this.$store.dispatch("lightning/getBalance");
 
       //reset state
       this.state.receive = {
@@ -479,7 +479,7 @@ export default {
       this.state.error = "";
       this.state.mode = "balance";
     },
-    sendSats() {
+    async sendSats() {
       //broadcast tx
       if (!this.state.send.isValidInvoice) return; //check if the invoice user pasted is valid
 
@@ -487,35 +487,36 @@ export default {
       this.state.send.isSending = true;
       this.state.error = "";
 
-      axios({
-        method: "post",
-        url: "v1/lnd/lightning/payInvoice",
-        data: {
-          amt: 0, //because payment request already has amount info
-          paymentRequest: this.state.send.invoiceText
+      const payload = {
+        amt: 0, //because payment request already has amount info
+        paymentRequest: this.state.send.invoiceText
+      };
+
+      try {
+        const res = await API.post(`v1/lnd/lightning/payInvoice`, payload);
+        if (res.data.paymentError) {
+          return (this.state.error = res.data.paymentError);
         }
-      })
-        .then(res => {
-          console.log(res);
-          if (res.data.paymentError) {
-            return (this.state.error = res.data.paymentError);
-          }
-          this.state.mode = "sent";
-        })
-        .catch(error => {
-          this.state.error = error.response.data;
-        })
-        .finally(() => {
-          this.state.loading = false;
-          this.state.send.isSending = false;
-        });
+        this.state.mode = "sent";
+
+        //refresh
+        this.$store.dispatch("lightning/getTransactions");
+        this.$store.dispatch("lightning/getBalance");
+      } catch (error) {
+        this.state.error = JSON.stringify(error.response)
+          ? error.response.data
+          : "Error sending payment";
+      }
+
+      this.state.loading = false;
+      this.state.send.isSending = false;
 
       //slight delay in updating the balance so the checkmark's animation completes first
       // window.setTimeout(() => {
       //   this.$store.commit("updateWalletBalance", this.walletBalance - 1000);
       // }, 4000);
     },
-    createInvoice() {
+    async createInvoice() {
       //generate invoice to receive payment
       this.state.loading = true;
       this.state.receive.isGeneratingInvoice = true;
@@ -526,27 +527,28 @@ export default {
         this.state.receive.invoiceQR = `${this.state.receive.invoiceQR}2345`;
       }, 200);
 
-      axios({
-        method: "post",
-        url: "v1/lnd/lightning/addInvoice",
-        data: {
-          amt: this.state.receive.amount,
-          memo: this.state.receive.description
-        }
-      })
-        .then(res => {
-          this.state.receive.invoiceQR = this.state.receive.invoiceText =
-            res.data.paymentRequest;
-        })
-        .catch(error => {
-          console.log(error);
-          alert(error);
-        })
-        .finally(() => {
-          this.state.loading = false;
-          this.state.receive.isGeneratingInvoice = false;
-          window.clearInterval(QRAnimation);
-        });
+      const payload = {
+        amt: this.state.receive.amount,
+        memo: this.state.receive.description
+      };
+
+      try {
+        const res = await API.post(`v1/lnd/lightning/addInvoice`, payload);
+        this.state.receive.invoiceQR = this.state.receive.invoiceText =
+          res.data.paymentRequest;
+
+        //refresh
+        this.$store.dispatch("lightning/getTransactions");
+      } catch (error) {
+        this.state.mode = "receive";
+        this.state.error = JSON.stringify(error.response)
+          ? error.response.data
+          : "Error creating invoice";
+      }
+
+      this.state.loading = false;
+      this.state.receive.isGeneratingInvoice = false;
+      window.clearInterval(QRAnimation);
 
       // window.setTimeout(() => {
       //   this.state.loading = false;
@@ -556,7 +558,7 @@ export default {
       //   window.clearInterval(QRAnimation);
       // }, 3000);
     },
-    fetchInvoiceDetails() {
+    async fetchInvoiceDetails() {
       //fetch invoice details as pasted by user in the "Send" mode/screen
       //if empty field, reset last fetched invoice
       if (!this.state.send.invoiceText) {
@@ -569,117 +571,50 @@ export default {
         return;
       }
 
-      this.state.loading = true;
       this.state.send.description = "";
       this.state.send.isValidInvoice = false;
+      this.state.send.amount = null;
+      this.state.send.description = "";
+      this.state.error = "";
+      this.state.loading = true;
 
-      axios
-        .get(
-          `v1/lnd/lightning/invoice?paymentRequest=${this.state.send.invoiceText}`
-        )
-        .then(res => {
-          //check if invoice is expired
-          const now = Math.floor(new Date().getTime());
-          const invoiceExpiresOn =
-            (Number(res.data.timestamp) + Number(res.data.expiry)) * 1000;
+      const fetchedInvoice = await API.get(
+        `v1/lnd/lightning/invoice?paymentRequest=${this.state.send.invoiceText}`
+      );
 
-          if (now > invoiceExpiresOn) {
-            this.state.send.isValidInvoice = false;
-            this.state.error = `Invoice expired ${moment(
-              invoiceExpiresOn
-            ).fromNow()}`;
-            return;
-          }
-
-          this.state.send.amount = Number(res.data.numSatoshis);
-          this.state.send.description = res.data.description;
-          this.state.send.isValidInvoice = true;
-          this.state.error = "";
-        })
-        .catch(error => {
-          this.state.send.isValidInvoice = false;
-          this.state.error = "Invalid invoice";
-          console.log(error);
-        })
-        .finally(() => {
-          this.state.loading = false;
-        });
-    },
-    async fetchRecentTxs() {
-      //Get List of transactions
-      let transactions = [];
-
-      // Get incoming txs
-      const invoices = await API.get(`v1/lnd/lightning/invoices`);
-
-      const latestInvoices = invoices.slice(0, 3).map(tx => {
-        let type = "incoming";
-        if (tx.state === "CANCELED") {
-          type = "expired";
-        } else if (tx.state === "OPEN") {
-          type = "pending";
-        }
-        return {
-          type,
-          amount: Number(tx.value),
-          timestamp: new Date(Number(tx.creationDate) * 1000),
-          description: tx.memo || "Direct payment from a node",
-          expiresOn: new Date(
-            (Number(tx.creationDate) + Number(tx.expiry)) * 1000
-          )
-        };
-      });
-
-      transactions = [...transactions, ...latestInvoices];
-
-      // Get outgoing txs
-      const payments = await API.get(`v1/lnd/lightning/payments`);
-      const latestPayments = payments.slice(0, 3).map(tx => {
-        return {
-          type: "outgoing",
-          amount: Number(tx.value),
-          timestamp: new Date(Number(tx.creationDate) * 1000),
-          description: tx.paymentRequest //temporarily store payment request in the description as we'll replace it by memo
-        };
-      });
-
-      transactions = [...transactions, ...latestPayments];
-
-      //Sort by recent to oldest
-      transactions.sort(function(tx1, tx2) {
-        return tx2.timestamp - tx1.timestamp;
-      });
-
-      //trim to top 3
-      transactions = transactions.slice(0, 3);
-
-      // Fetch descriptions of all outgoing payments
-      for (let tx of transactions) {
-        if (tx.type !== "outgoing") continue;
-
-        if (!tx.description) {
-          //example in case of a keysend tx
-          tx.description = "Direct payment to a node";
-          continue;
-        }
-
-        try {
-          const invoiceDetails = await axios.get(
-            `v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
-          );
-          tx.description = invoiceDetails.data.description;
-        } catch (error) {
-          alert(error);
-          tx.description = "";
-        }
+      if (!fetchedInvoice) {
+        this.state.send.isValidInvoice = false;
+        this.state.error = "Invalid invoice";
+        this.state.loading = false;
+        return;
       }
 
-      this.state.txs = transactions;
+      //check if invoice is expired
+      const now = Math.floor(new Date().getTime());
+      const invoiceExpiresOn =
+        (Number(fetchedInvoice.timestamp) + Number(fetchedInvoice.expiry)) *
+        1000;
+
+      if (now > invoiceExpiresOn) {
+        this.state.send.isValidInvoice = false;
+        this.state.error = `Invoice expired ${moment(
+          invoiceExpiresOn
+        ).fromNow()}`;
+      } else {
+        this.state.send.amount = Number(fetchedInvoice.numSatoshis);
+        this.state.send.description = fetchedInvoice.description;
+        this.state.send.isValidInvoice = true;
+        this.state.error = "";
+      }
+
+      this.state.loading = false;
     }
   },
   watch: {},
-  created() {
-    this.fetchRecentTxs();
+  async created() {
+    await this.$store.dispatch("lightning/getStatus");
+    this.$store.dispatch("lightning/getTransactions");
+    this.$store.dispatch("lightning/getBalance");
   },
   components: {
     CardWidget,
