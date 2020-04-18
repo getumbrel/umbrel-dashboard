@@ -4,6 +4,7 @@
 
     <!-- <h1 class="text-center mb-2">loading</h1> -->
     <b-spinner class="my-4" variant="primary"></b-spinner>
+
     <p class="text-muted w-75 text-center">{{ text }}</p>
   </div>
 </template>
@@ -13,7 +14,7 @@ export default {
   data() {
     return {};
   },
-  props: { text: String },
+  props: { text: String, progress: Number },
   created() {},
   methods: {},
   components: {}

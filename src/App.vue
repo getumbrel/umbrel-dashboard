@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <loading v-if="loading" :text="loadingText"></loading>
+    <loading v-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
     <!-- component matched by the route will render here -->
     <router-view v-else></router-view>
   </div>
@@ -19,7 +19,8 @@ export default {
   data() {
     return {
       loading: true,
-      loadingText: "Loading..."
+      loadingText: "Loading...",
+      loadingProgress: 0
     };
   },
   computed: {
@@ -40,11 +41,12 @@ export default {
       );
     },
     async checkIfLoading() {
-      // First check if API is activx
+      //First check if API is activx
       await this.$store.dispatch("system/getApi");
       if (!this.isApiOperational) {
         this.loading = true;
         this.loadingText = "Starting API...";
+        this.loadingProgress = 20;
         return;
       }
 
@@ -53,6 +55,7 @@ export default {
       if (!this.isBitcoinOperational) {
         this.loading = true;
         this.loadingText = "Starting Bitcoin Core...";
+        this.loadingProgress = 40;
         return;
       }
 
@@ -60,6 +63,7 @@ export default {
       if (this.isBitcoinCalibrating) {
         this.loading = true;
         this.loadingText = "Calibrating Bitcoin Core...";
+        this.loadingProgress = 50;
         return;
       }
 
@@ -69,6 +73,7 @@ export default {
       if (!this.isLndOperational) {
         this.loading = true;
         this.loadingText = "Starting LND...";
+        this.loadingProgress = 70;
         return;
       }
 
@@ -76,6 +81,7 @@ export default {
       if (!this.isLndUnlocked) {
         this.loading = true;
         this.loadingText = "Unlocking LND...";
+        this.loadingProgress = 90;
         return;
       }
 
@@ -90,9 +96,6 @@ export default {
     //immediately check loading on first load, then check every 3 seconds...
     this.checkIfLoading();
     window.setInterval(this.checkIfLoading, 5000);
-
-    //to do: remove this
-    this.$store.dispatch("fetchWalletBalance");
   },
   mounted() {
     const isDarkMode = this.$store.getters.isDarkMode;
