@@ -117,9 +117,9 @@
 </template>
 
 <script>
-import axios from "axios";
-import moment from "moment";
 import QrcodeVue from "qrcode.vue";
+
+import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
 import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
@@ -143,14 +143,9 @@ export default {
         lndVersion: null,
         numActiveChannels: 0,
         numPeers: 0,
-        status: "Loading",
+        status: "Running",
         pubKey: "",
-        channels: [],
-        transactions: [],
-        btcDepositAddress: "",
-        btcWithdrawAddress: "",
-        btcWithdrawAmount: "",
-        btcWithdrawUnit: "Sats" //sats or btc
+        channels: []
       }
     };
   },
@@ -224,115 +219,43 @@ export default {
     }
   },
   methods: {
-    fetchChannels() {
-      axios
-        .get(`v1/lnd/channel/`)
-        .then(res => {
-          this.state.channels = res.data;
-        })
-        .catch(error => {
-          alert(error.response.data);
-        })
-        .finally(() => {});
-    },
     async showPubKey() {
-      //only fetch pubkey if it wasn't loaded before
-      // if (!this.state.pubKey) {
-      //   try {
-      //     const res = await axios.get(`v1/lnd/info/uris`);
-      //     const uris = res.data;
-      //     const pubkey = uris[0].split("@")[0];
-      //     this.state.pubKey = pubkey;
-      //   } catch (err) {
-      //     console.log(err);
-      //     alert(err.response.data);
-      //   }
-      // }
       this.$refs["public-key-modal"].show();
-    },
-    async showDepositAddress() {
-      try {
-        const res = await axios.get(`v1/lnd/address`);
-        this.state.btcDepositAddress = res.data.address;
-      } catch (err) {
-        console.log(err);
-        alert(err.response.data);
-      }
-      this.$refs["deposit-modal"].show();
-    },
-    changeBtcWithdrawUnit() {
-      console.log(this.state.btcWithdrawUnit);
-      if (this.state.btcWithdrawUnit === "Sats") {
-        this.state.btcWithdrawUnit = "BTC";
-      } else if (this.state.btcWithdrawUnit === "BTC") {
-        this.state.btcWithdrawUnit = "Sats";
-      }
     }
   },
   created() {
     //Get LND Status
-    axios
-      .get(`v1/lnd/info/status`)
-      .then(res => {
-        const { operational, unlocked } = res.data;
+    // axios
+    //   .get(`v1/lnd/info/status`)
+    //   .then(res => {
+    //     const { operational, unlocked } = res.data;
 
-        if (operational && unlocked) {
-          return (this.state.status = "Running");
-        }
-        if (operational && !unlocked) {
-          return (this.state.status = "Waiting");
-        }
-        if (!operational) {
-          return (this.state.status = "Stopped");
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        alert(error);
-      })
-      .finally(() => {
-        // this.state.loading = false;
-      });
+    //     if (operational && unlocked) {
+    //       return (this.state.status = "Running");
+    //     }
+    //     if (operational && !unlocked) {
+    //       return (this.state.status = "Waiting");
+    //     }
+    //     if (!operational) {
+    //       return (this.state.status = "Stopped");
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     alert(error);
+    //   })
+    //   .finally(() => {
+    //     // this.state.loading = false;
+    //   });
 
     //Get LND Info for showing stats
-    axios
-      .get(`v1/pages/lnd/`)
+    API.get(`v1/pages/lnd/`)
       .then(res => {
-        this.state.pubKey = res.data.lightningInfo.identityPubkey;
-        this.state.lndVersion = res.data.lightningInfo.version;
-        this.state.numPeers = res.data.lightningInfo.numPeers;
-        this.state.numActiveChannels = res.data.lightningInfo.numActiveChannels;
-      })
-      .catch(error => {
-        console.log(error);
-        alert(error);
-      })
-      .finally(() => {
-        // this.state.loading = false;
-      });
-
-    //Get channels
-    this.fetchChannels();
-
-    //Get bitcoin onchain transactions
-    axios
-      .get(`v1/lnd/transaction`)
-      .then(res => {
-        const txs = res.data.map(tx => {
-          return {
-            amount:
-              parseInt(tx.amount) > 0
-                ? "+" + parseInt(tx.amount).toLocaleString() + " Sats"
-                : parseInt(tx.amount).toLocaleString() + " Sats",
-            type: tx.type,
-            time: moment(Number(tx.timeStamp) * 1000).format(
-              "MMMM Do YYYY, h:mm:ss A"
-            ),
-            transaction: tx.txHash
-          };
-        });
-
-        this.state.transactions = txs;
+        this.state.pubKey = res.lightningInfo.identityPubkey;
+        this.state.lndVersion = res.lightningInfo.version;
+        this.state.numPeers = res.lightningInfo.numPeers;
+        this.state.numActiveChannels = res.lightningInfo.numActiveChannels;
+        this.state.channels = res.channels;
       })
       .catch(error => {
         console.log(error);
