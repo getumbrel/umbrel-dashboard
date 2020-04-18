@@ -16,7 +16,7 @@
           />-->
           <span v-if="state.showBalance">{{ walletBalance.toLocaleString() }}</span>
           <span v-else>***,***</span>
-          <small style="font-size: 1rem;">&nbsp;{{ walletUnit }}</small>
+          <small style="font-size: 1rem;">&nbsp;Sats</small>
         </h3>
       </div>
       <!-- <div class="py-2"></div> -->
@@ -148,12 +148,9 @@ export default {
   computed: {
     walletBalance() {
       return (
-        this.$store.state.wallet.balance.onChain +
-        this.$store.state.wallet.balance.offChain
+        this.$store.state.bitcoin.balance.total +
+        this.$store.state.lightning.balance.confirmed
       );
-    },
-    walletUnit() {
-      return this.$store.getters.getWalletUnit;
     }
   },
   methods: {

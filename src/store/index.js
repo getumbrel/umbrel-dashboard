@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
 
 //Modules
+import system from './modules/system';
 import bitcoin from './modules/bitcoin';
 import lightning from './modules/lightning';
 
@@ -25,13 +25,6 @@ const state = {
   selectedWifi: "",
   isDarkMode: userSelectedDarkMode,
   isMobileMenuOpen: true,
-  wallet: {
-    balance: {
-      onChain: 0,
-      offChain: 0
-    },
-    unit: 'Sats' //Sats or BTC
-  }
 };
 
 // Getters
@@ -47,12 +40,6 @@ const getters = {
   },
   isMobileMenuOpen(state) {
     return state.isMobileMenuOpen;
-  },
-  getWalletBalance(state) {
-    return state.wallet.balance.onChain + state.wallet.balance.offChain;
-  },
-  getWalletUnit(state) {
-    return state.wallet.unit;
   }
 }
 
@@ -88,16 +75,6 @@ const mutations = {
       document.body.style.overflow = "auto";
       state.isMobileMenuOpen = false
     }
-  },
-  updateWalletBalance(state, { balance, type }) {
-    if (type === 'onChain') {
-      state.wallet.balance.onChain = balance;
-    } else if (type === 'offChain') {
-      state.wallet.balance.offChain = balance;
-    }
-  },
-  changeWalletUnit(state, unit) {
-    state.wallet.unit = unit;
   }
 }
 
@@ -117,41 +94,6 @@ const actions = {
   },
   toggleMobileMenu(context) {
     context.commit('toggleMobileMenu');
-  },
-  // updateWalletBalance(context, newBalance) {
-  //   context.commit('updateWalletBalance', newBalance, 'offChain');
-  // },
-  changeWalletUnit(context, unit) {
-    context.commit('changeWalletUnit', unit);
-  },
-  fetchWalletBalance(context) {
-    axios
-      .get(`v1/lnd/wallet/btc`)
-      .then(res => {
-        const { totalBalance } = res.data;
-        context.commit('updateWalletBalance', { balance: Number(totalBalance), type: 'onChain' });
-      })
-      .catch(error => {
-        console.log(error);
-        alert(error);
-      })
-      .finally(() => {
-        // this.state.loading = false;
-      });
-
-    axios
-      .get(`v1/lnd/wallet/lightning`)
-      .then(res => {
-        const { balance, pendingOpenBalance } = res.data;
-        context.commit('updateWalletBalance', { balance: Number(balance) + Number(pendingOpenBalance), type: 'offChain' });
-      })
-      .catch(error => {
-        console.log(error);
-        alert(error);
-      })
-      .finally(() => {
-        // this.state.loading = false;
-      });
   }
 }
 
@@ -161,6 +103,7 @@ export default new Vuex.Store({
   actions,
   getters,
   modules: {
+    system,
     bitcoin,
     lightning
   }
