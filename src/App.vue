@@ -21,7 +21,8 @@ export default {
       loading: false,
       loadingText: "Loading...",
       loadingProgress: 0,
-      polling: null
+      polling: null,
+      pollInProgress: false
     };
   },
   computed: {
@@ -42,13 +43,20 @@ export default {
       );
     },
     async checkIfLoading() {
-      console.log("checking loading", new Date());
-      //First check if API is activx
+      //prevent multiple polls if previous poll already in progress
+      if (this.pollInProgress) {
+        return;
+      }
+
+      this.pollInProgress = true;
+
+      //First check if API is active
       await this.$store.dispatch("system/getApi");
       if (!this.isApiOperational) {
         this.loading = true;
         this.loadingText = "Starting API...";
         this.loadingProgress = 20;
+        this.pollInProgress = false;
         return;
       }
 
@@ -58,6 +66,7 @@ export default {
         this.loading = true;
         this.loadingText = "Starting Bitcoin Core...";
         this.loadingProgress = 40;
+        this.pollInProgress = false;
         return;
       }
 
@@ -66,6 +75,7 @@ export default {
         this.loading = true;
         this.loadingText = "Calibrating Bitcoin Core...";
         this.loadingProgress = 50;
+        this.pollInProgress = false;
         return;
       }
 
@@ -76,6 +86,7 @@ export default {
         this.loading = true;
         this.loadingText = "Starting LND...";
         this.loadingProgress = 70;
+        this.pollInProgress = false;
         return;
       }
 
@@ -84,12 +95,13 @@ export default {
         this.loading = true;
         this.loadingText = "Starting LND...";
         this.loadingProgress = 90;
+        this.pollInProgress = false;
         return;
       }
 
-      this.loadingProgress = 100;
-
       this.loading = false;
+      this.loadingProgress = 100;
+      this.pollInProgress = false;
     }
   },
   created() {
@@ -113,12 +125,12 @@ export default {
   watch: {
     loading: function(nowLoading) {
       window.clearInterval(this.polling);
-      //if on loading screen, check every 4 seconds
+      //if loading, check every second
       if (nowLoading) {
-        this.polling = window.setInterval(this.checkIfLoading, 4000);
+        this.polling = window.setInterval(this.checkIfLoading, 1000);
       } else {
-        //else slow down the checks
-        window.setInterval(this.checkIfLoading, 20000);
+        //else check every 10s
+        window.setInterval(this.checkIfLoading, 10000);
       }
     }
   },
