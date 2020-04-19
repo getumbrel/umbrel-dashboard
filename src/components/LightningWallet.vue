@@ -35,133 +35,135 @@
     <transition name="lightning-mode-change" mode="out-in">
       <!-- Default Balance/tx screen -->
       <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
-        <!-- List of last 3 transactions -->
-        <b-list-group class="pb-2">
-          <!-- Transaction -->
-          <b-list-group-item
-            v-for="tx in transactions.slice(0,3)"
-            :key="tx.description"
-            class="tx flex-column align-items-start px-4"
-          >
-            <div class="d-flex w-100 justify-content-between">
-              <div>
-                <h6 class="mb-0 font-weight-normal">
-                  <!-- Incoming tx icon -->
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    v-if="tx.type === 'incoming'"
-                  >
-                    <path
-                      d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
-                      fill="#00CD98"
-                    />
-                  </svg>
+        <!-- List of transactions -->
+        <div class="transactions-container">
+          <b-list-group class="pb-2 transactions">
+            <!-- Transaction -->
+            <b-list-group-item
+              v-for="tx in transactions"
+              :key="tx.description"
+              class="flex-column align-items-start px-4"
+            >
+              <div class="d-flex w-100 justify-content-between">
+                <div>
+                  <h6 class="mb-0 font-weight-normal">
+                    <!-- Incoming tx icon -->
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      v-if="tx.type === 'incoming'"
+                    >
+                      <path
+                        d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
+                        fill="#00CD98"
+                      />
+                    </svg>
 
-                  <!-- Outgoing tx icon -->
-                  <svg
-                    width="19"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    v-else-if="tx.type === 'outgoing'"
-                  >
-                    <path
-                      d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
-                      fill="#5351FB"
-                    />
-                  </svg>
+                    <!-- Outgoing tx icon -->
+                    <svg
+                      width="19"
+                      height="19"
+                      viewBox="0 0 19 19"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      v-else-if="tx.type === 'outgoing'"
+                    >
+                      <path
+                        d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
+                        fill="#5351FB"
+                      />
+                    </svg>
 
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    v-else-if="tx.type === 'expired'"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
-                      fill="#F46E6E"
-                    />
-                  </svg>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      v-else-if="tx.type === 'expired'"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                        fill="#F46E6E"
+                      />
+                    </svg>
 
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      v-else-if="tx.type === 'pending'"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10Z"
+                        fill="#C3C6D1"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10Z"
+                        fill="#C3C6D1"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M13 10C13.5523 10 14 9.55228 14 9C14 8.44772 13.5523 8 13 8C12.4477 8 12 8.44772 12 9C12 9.55228 12.4477 10 13 10Z"
+                        fill="#C3C6D1"
+                      />
+                    </svg>
+
+                    <!-- Invoice description -->
+                    <span style="margin-left: 6px;">{{ tx.description }}</span>
+                  </h6>
+
+                  <!-- Timestamp of tx -->
+                  <small
+                    class="text-muted mt-0 tx-timestamp"
+                    style="margin-left: 24px;"
+                    :title="getReadableTime(tx.timestamp)"
+                    v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
+                  >{{getTimeFromNow(tx.timestamp)}}</small>
+
+                  <small
+                    class="text-muted mt-0 tx-timestamp"
+                    style="margin-left: 24px;"
+                    :title="`Invoice expires on ${getReadableTime(tx.expiresOn)}`"
                     v-else-if="tx.type === 'pending'"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10Z"
-                      fill="#C3C6D1"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10Z"
-                      fill="#C3C6D1"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M13 10C13.5523 10 14 9.55228 14 9C14 8.44772 13.5523 8 13 8C12.4477 8 12 8.44772 12 9C12 9.55228 12.4477 10 13 10Z"
-                      fill="#C3C6D1"
-                    />
-                  </svg>
+                  >Unpaid invoice</small>
 
-                  <!-- Invoice description -->
-                  <span style="margin-left: 6px;">{{ tx.description }}</span>
-                </h6>
+                  <small
+                    class="text-muted mt-0 tx-timestamp"
+                    style="margin-left: 24px;"
+                    :title="getReadableTime(tx.expiresOn)"
+                    v-else-if="tx.type === 'expired'"
+                  >Invoice expired {{getTimeFromNow(tx.expiresOn)}}</small>
+                </div>
 
-                <!-- Timestamp of tx -->
-                <small
-                  class="text-muted mt-0 tx-timestamp"
-                  style="margin-left: 24px;"
-                  :title="getReadableTime(tx.timestamp)"
-                  v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
-                >{{getTimeFromNow(tx.timestamp)}}</small>
-
-                <small
-                  class="text-muted mt-0 tx-timestamp"
-                  style="margin-left: 24px;"
-                  :title="`Invoice expires on ${getReadableTime(tx.expiresOn)}`"
-                  v-else-if="tx.type === 'pending'"
-                >Unpaid invoice</small>
-
-                <small
-                  class="text-muted mt-0 tx-timestamp"
-                  style="margin-left: 24px;"
-                  :title="getReadableTime(tx.expiresOn)"
-                  v-else-if="tx.type === 'expired'"
-                >Invoice expired {{getTimeFromNow(tx.expiresOn)}}</small>
+                <div class="text-right">
+                  <span class="font-weight-bold d-block">
+                    <!-- Positive or negative prefix with amount -->
+                    <span v-if="tx.type === 'incoming'">+</span>
+                    <span v-else-if="tx.type === 'outgoing'">-</span>
+                    {{ Number(tx.amount).toLocaleString() }}
+                  </span>
+                  <small class="text-muted">Sats</small>
+                </div>
               </div>
-
-              <div class="text-right">
-                <span class="font-weight-bold d-block">
-                  <!-- Positive or negative prefix with amount -->
-                  <span v-if="tx.type === 'incoming'">+</span>
-                  <span v-else-if="tx.type === 'outgoing'">-</span>
-                  {{ Number(tx.amount).toLocaleString() }}
-                </span>
-                <small class="text-muted">Sats</small>
-              </div>
-            </div>
-          </b-list-group-item>
-        </b-list-group>
+            </b-list-group-item>
+          </b-list-group>
+        </div>
 
         <!-- Link to Lightning Network Page -->
-        <div class="px-4 pb-3" v-if="!isLightningPage">
+        <div class="px-4 py-3" v-if="!isLightningPage">
           <router-link to="/lightning" class="card-link">Manage</router-link>
         </div>
       </div>
@@ -783,5 +785,49 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0) scale(1);
+}
+
+//Transactions
+.transactions-container {
+  position: relative;
+
+  //bottom fade
+  &:before {
+    //nice faded white so the discarded blocks don't abruptly cut off
+    content: "";
+    position: absolute;
+    height: 2rem;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1)
+    );
+  }
+
+  //top fade
+  &:after {
+    //nice faded white so the discarded blocks don't abruptly cut off
+    content: "";
+    position: absolute;
+    height: 2rem;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-image: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1)
+    );
+  }
+}
+.transactions {
+  height: 16rem;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; //momentum scroll on iOS
 }
 </style>
