@@ -55,57 +55,92 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
-      blocks: [
-        {
-          number: 683500, //block number
-          txs: 1802, //num of txs in block
-          timestamp: "few secs ago" //block's mining timestamp
-        },
-        {
-          number: 683499,
-          txs: 1934,
-          timestamp: "10 mins ago"
-        },
-        {
-          number: 683498,
-          txs: 1783,
-          timestamp: "17 mins ago"
-        },
-        {
-          number: 683497,
-          txs: 1723,
-          timestamp: "27 mins ago"
-        },
-        {
-          number: 683496,
-          txs: 1982,
-          timestamp: "42 mins ago"
-        }
-      ]
+      polling: null,
+      pollInProgress: false
     };
   },
-  computed: {},
-  methods: {
-    addFakeBlock() {
-      const tip = this.blocks[0];
-      const newBlock = {
-        number: tip.number + 1,
-        txs: tip.txs + 7,
-        timestamp: "few secs ago"
-      };
-      // this.blocks = [newBlock, ...this.blocks];
-      this.blocks = [newBlock, ...this.blocks].slice(0, this.numBlocks);
+  computed: {
+    ...mapState({
+      syncPercent: state => state.bitcoin.percent
+    }),
+    blocks() {
+      const currentBlock = this.$store.state.bitcoin.currentBlock;
+      if (currentBlock) {
+        return [
+          {
+            number: currentBlock, //block number
+            txs: "1802", //num of txs in block
+            timestamp: "few secs ago" //block's mining timestamp
+          },
+          {
+            number: currentBlock - 1,
+            txs: 1934,
+            timestamp: "few mins ago"
+          },
+          {
+            number: currentBlock - 2,
+            txs: 1783,
+            timestamp: "few mins ago"
+          },
+          {
+            number: currentBlock - 3,
+            txs: 1723,
+            timestamp: "few mins ago"
+          },
+          {
+            number: currentBlock - 4,
+            txs: 1982,
+            timestamp: "few mins ago"
+          }
+        ];
+      } else {
+        return [];
+      }
     }
   },
-  mounted() {
-    //create fake blocks
-    window.setInterval(this.addFakeBlock, 5000);
+  methods: {
+    async fetchBlocks() {
+      //prevent multiple polls if previous poll already in progress
+      if (this.pollInProgress) {
+        return;
+      }
+      this.pollInProgress = true;
+      await this.$store.dispatch("bitcoin/getSync");
+      this.pollInProgress = false;
+    },
+    poller(syncPercent) {
+      window.clearInterval(this.polling);
+      //if syncing, fetch blocks every second
+      if (Number(syncPercent) !== 100) {
+        console.log("Synching... fetching blocks every SECOND");
+        this.polling = window.setInterval(this.fetchBlocks, 1000);
+      } else {
+        //else, slow down and fetch blocks every minute
+        console.log("100% Synched... fetching blocks every MINUTE");
+        this.polling = window.setInterval(this.fetchBlocks, 60 * 1000);
+      }
+    }
+  },
+  created() {
+    //immediately fetch blocks on first load
+    this.fetchBlocks();
+
+    //then start polling
+    this.poller(this.syncPercent);
+  },
+  watcher: {
+    syncPercent: newPercent => {
+      // reset polling depending upon sync %
+      this.poller(newPercent);
+    }
   },
   beforeDestroy() {
-    window.clearInterval(this.addFakeBlock);
+    window.clearInterval(this.polling);
   },
   props: {
     numBlocks: {

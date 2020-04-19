@@ -130,7 +130,7 @@ export default {
         this.polling = window.setInterval(this.checkIfLoading, 1000);
       } else {
         //else check every 10s
-        window.setInterval(this.checkIfLoading, 10000);
+        this.polling = window.setInterval(this.checkIfLoading, 10000);
       }
     }
   },
