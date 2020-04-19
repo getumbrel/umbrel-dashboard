@@ -226,7 +226,7 @@ export default {
   created() {
     //Get LND Status
     // axios
-    //   .get(`v1/lnd/info/status`)
+    //   .get(`api/v1/lnd/info/status`)
     //   .then(res => {
     //     const { operational, unlocked } = res.data;
 
@@ -249,7 +249,7 @@ export default {
     //   });
 
     //Get LND Info for showing stats
-    API.get(`v1/pages/lnd/`)
+    API.get(`api/v1/pages/lnd/`)
       .then(res => {
         this.state.pubKey = res.lightningInfo.identityPubkey;
         this.state.lndVersion = res.lightningInfo.version;

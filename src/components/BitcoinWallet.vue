@@ -557,7 +557,7 @@ export default {
       };
 
       try {
-        const res = await API.post(`v1/lnd/transaction`, payload);
+        const res = await API.post(`api/v1/lnd/transaction`, payload);
         const withdrawTx = res.data;
         this.state.withdraw.txHash = withdrawTx.txid;
         this.changeMode("withdrawn");

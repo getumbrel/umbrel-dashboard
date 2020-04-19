@@ -99,14 +99,14 @@ const mutations = {
 // Functions to get data from the API
 const actions = {
     async getStatus({ commit }) {
-        const status = await API.get(`v1/lnd/info/status`);
+        const status = await API.get(`api/v1/lnd/info/status`);
         commit('isOperational', status.operational);
         commit('isUnlocked', status.unlocked);
 
         // launch unlock modal after 30 sec
         // if (!status.unlocked) {
         //   await sleep(30000);
-        //   const { unlocked } = await API.get(`v1/lnd/info/status`);
+        //   const { unlocked } = await API.get(`api/v1/lnd/info/status`);
         //   commit('isUnlocked', unlocked);
         //   if (!unlocked) {
         //     Events.$emit('unlock-modal-open');
@@ -115,7 +115,7 @@ const actions = {
     },
 
     async getLndPageData({ commit }) {
-        const lightning = await API.get(`v1/pages/lnd`);
+        const lightning = await API.get(`api/v1/pages/lnd`);
 
         if (lightning) {
             const lightningInfo = lightning.lightningInfo;
@@ -125,7 +125,7 @@ const actions = {
     },
 
     async getConnectionCode({ commit }) {
-        const uris = await API.get(`v1/lnd/info/uris`);
+        const uris = await API.get(`api/v1/lnd/info/uris`);
 
         if (uris && uris.length > 0) {
             commit('setConnectionCode', uris[0]);
@@ -139,7 +139,7 @@ const actions = {
     // Instead we can calculate our total balance by getting the sum of each channel's localBalance
     async getBalance({ commit, state }) {
         if (state.operational && state.unlocked) {
-            const balance = await API.get(`v1/lnd/wallet/lightning`);
+            const balance = await API.get(`api/v1/lnd/wallet/lightning`);
 
             if (balance) {
                 commit('setBalance', { confirmed: balance.balance });
@@ -149,7 +149,7 @@ const actions = {
 
     async getChannels({ commit, state }) {
         if (state.operational && state.unlocked) {
-            const rawChannels = await API.get(`v1/lnd/channel`);
+            const rawChannels = await API.get(`api/v1/lnd/channel`);
             const channels = [];
             let confirmedBalance = 0;
             let pendingBalance = 0;
@@ -217,8 +217,8 @@ const actions = {
     async getTransactions({ commit, state }) {
         if (state.operational && state.unlocked) {
             // Get invoices and payments
-            const invoices = await API.get(`v1/lnd/lightning/invoices`);
-            const payments = await API.get(`v1/lnd/lightning/payments`);
+            const invoices = await API.get(`api/v1/lnd/lightning/invoices`);
+            const payments = await API.get(`api/v1/lnd/lightning/payments`);
             let transactions = [];
 
             if (invoices) {
@@ -270,7 +270,7 @@ const actions = {
                 } else {
                     try {
                         const invoiceDetails = await API.get(
-                            `v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
+                            `api/v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
                         );
                         tx.description = invoiceDetails.description;
                     } catch (error) {

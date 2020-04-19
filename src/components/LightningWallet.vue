@@ -493,7 +493,7 @@ export default {
       };
 
       try {
-        const res = await API.post(`v1/lnd/lightning/payInvoice`, payload);
+        const res = await API.post(`api/v1/lnd/lightning/payInvoice`, payload);
         if (res.data.paymentError) {
           return (this.state.error = res.data.paymentError);
         }
@@ -533,7 +533,7 @@ export default {
       };
 
       try {
-        const res = await API.post(`v1/lnd/lightning/addInvoice`, payload);
+        const res = await API.post(`api/v1/lnd/lightning/addInvoice`, payload);
         this.state.receive.invoiceQR = this.state.receive.invoiceText =
           res.data.paymentRequest;
 
@@ -579,7 +579,7 @@ export default {
       this.state.loading = true;
 
       const fetchedInvoice = await API.get(
-        `v1/lnd/lightning/invoice?paymentRequest=${this.state.send.invoiceText}`
+        `api/v1/lnd/lightning/invoice?paymentRequest=${this.state.send.invoiceText}`
       );
 
       if (!fetchedInvoice) {

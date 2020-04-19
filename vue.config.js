@@ -9,6 +9,6 @@ module.exports = {
     //     }
     // }
     devServer: {
-        proxy: 'http://umbrel.local/api/',
+        proxy: 'http://umbrel.local/',
     }
 }
