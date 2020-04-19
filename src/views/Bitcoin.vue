@@ -20,7 +20,7 @@
             </svg>
             <small class="ml-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted">v0.19.1</span>
+            <span class="d-block text-muted">v{{ version }}</span>
           </div>
         </div>
         <div>
@@ -75,7 +75,7 @@
             <div class="px-4 mb-4">
               <div class="w-100 d-flex justify-content-between mb-2">
                 <span>Synchronized</span>
-                <span class="font-weight-bold">100%</span>
+                <span class="font-weight-bold">{{ syncPercent }}%</span>
               </div>
               <b-progress
                 :value="100"
@@ -86,13 +86,14 @@
                 striped
               ></b-progress>
             </div>
-            <div class="d-flex w-100 justify-content-between px-4 mb-4">
+            <!-- low storage mode  -->
+            <!-- <div class="d-flex w-100 justify-content-between px-4 mb-4">
               <div>
                 <span class="d-block">Low Storage Mode</span>
                 <small class="text-muted d-block">Discard old blocks</small>
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
-            </div>
+            </div>-->
             <p class="px-4 mb-3">Latest Blocks</p>
             <blockchain :numBlocks="3"></blockchain>
             <div class="px-4 py-2"></div>
@@ -123,9 +124,11 @@
 
 <script>
 // import Vue from "vue";
+import { mapState } from "vuex";
+
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
-import ToggleSwitch from "@/components/ToggleSwitch";
+// import ToggleSwitch from "@/components/ToggleSwitch";
 import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
 import BitcoinWallet from "@/components/BitcoinWallet";
 
@@ -175,6 +178,10 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      syncPercent: state => state.bitcoin.percent,
+      version: state => state.bitcoin.version
+    }),
     isDarkMode() {
       return this.$store.getters.isDarkMode;
     }
@@ -227,6 +234,8 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch("bitcoin/getVersion");
+
     window.setInterval(this.refreshAPI, 2000);
   },
   beforeDestroy() {
@@ -235,7 +244,7 @@ export default {
   components: {
     CardWidget,
     Blockchain,
-    ToggleSwitch,
+    // ToggleSwitch,
     BitcoinNetworkStat,
     BitcoinWallet
   }

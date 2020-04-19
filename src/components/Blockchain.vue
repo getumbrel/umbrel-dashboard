@@ -74,7 +74,7 @@ export default {
         return [
           {
             number: currentBlock, //block number
-            txs: "1802", //num of txs in block
+            txs: 1802, //num of txs in block
             timestamp: "few secs ago" //block's mining timestamp
           },
           {

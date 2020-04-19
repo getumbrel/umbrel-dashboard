@@ -5,6 +5,7 @@ import { toPrecision } from '@/helpers/units';
 const state = () => ({
     operational: false,
     calibrating: false,
+    version: '',
     ipAddress: '',
     onionAddress: '',
     currentBlock: 0,
@@ -86,6 +87,10 @@ const mutations = {
         } else {
             state.calibrating = false;
         }
+    },
+
+    setVersion(state, version) {
+        state.version = version.version;
     },
 
     peers(state, peers) {
@@ -190,6 +195,16 @@ const actions = {
 
             if (sync) {
                 commit('syncStatus', sync);
+            }
+        }
+    },
+
+    async getVersion({ commit, state }) {
+        if (state.operational) {
+            const version = await API.get(`api/v1/bitcoind/info/version`);
+
+            if (version) {
+                commit('setVersion', version);
             }
         }
     },
