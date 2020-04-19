@@ -18,9 +18,10 @@ export default {
   name: "App",
   data() {
     return {
-      loading: true,
+      loading: false,
       loadingText: "Loading...",
-      loadingProgress: 0
+      loadingProgress: 0,
+      polling: null
     };
   },
   computed: {
@@ -41,6 +42,7 @@ export default {
       );
     },
     async checkIfLoading() {
+      console.log("checking loading", new Date());
       //First check if API is activx
       await this.$store.dispatch("system/getApi");
       if (!this.isApiOperational) {
@@ -80,10 +82,12 @@ export default {
       //Then check if lnd is unlocked
       if (!this.isLndUnlocked) {
         this.loading = true;
-        this.loadingText = "Unlocking LND...";
+        this.loadingText = "Starting LND...";
         this.loadingProgress = 90;
         return;
       }
+
+      this.loadingProgress = 100;
 
       this.loading = false;
     }
@@ -93,9 +97,11 @@ export default {
     //for 100vh consistency
     window.addEventListener("resize", this.updateViewPortHeightCSS);
 
-    //immediately check loading on first load, then check every 3 seconds...
+    //trigger loading watcher
+    this.loading = true;
+
+    //immediately check loading on first load, watcher's interval takes care of polling
     this.checkIfLoading();
-    window.setInterval(this.checkIfLoading, 5000);
   },
   mounted() {
     const isDarkMode = this.$store.getters.isDarkMode;
@@ -104,9 +110,21 @@ export default {
     //dashboard
     document.body.style.background = isDarkMode ? "#1C1C26" : "#F7F9FB";
   },
+  watch: {
+    loading: function(nowLoading) {
+      window.clearInterval(this.polling);
+      //if on loading screen, check every 4 seconds
+      if (nowLoading) {
+        this.polling = window.setInterval(this.checkIfLoading, 4000);
+      } else {
+        //else slow down the checks
+        window.setInterval(this.checkIfLoading, 20000);
+      }
+    }
+  },
   beforeDestroy() {
     window.removeEventListener("resize", this.updateViewPortHeightCSS);
-    window.clearInterval(this.checkIfLoading);
+    window.clearInterval(this.polling);
   },
   components: {
     Loading
