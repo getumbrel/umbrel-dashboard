@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <loading v-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
-    <!-- component matched by the route will render here -->
-    <router-view v-else></router-view>
+    <transition name="loading" mode>
+      <loading v-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
+      <!-- component matched by the route will render here -->
+      <router-view v-else></router-view>
+    </transition>
   </div>
 </template>
 
@@ -144,3 +146,28 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+// Loading transitions
+
+.loading-enter-active,
+.loading-leave-active {
+  transition: filter 0.4s ease;
+}
+.loading-enter {
+  // opacity: 0;
+  filter: blur(70px);
+}
+.loading-enter-to {
+  // opacity: 1;
+  filter: blur(0);
+}
+.loading-leave {
+  // opacity: 1;
+  filter: blur(0);
+}
+.loading-leave-to {
+  // opacity: 0;
+  filter: blur(70px);
+}
+</style>
