@@ -289,7 +289,7 @@ const actions = {
             type,
             amount: Number(tx.value),
             timestamp: new Date(Number(tx.creationDate) * 1000),
-            description: tx.memo || "Direct payment from a node",
+            description: tx.memo || "Payment",
             expiresOn: new Date(
               (Number(tx.creationDate) + Number(tx.expiry)) * 1000
             )
@@ -320,8 +320,8 @@ const actions = {
         if (tx.type !== "outgoing") continue;
 
         if (!tx.description) {
-          //example - in case of a keysend tx
-          tx.description = "Direct payment to a node";
+          //example - in case of a keysend tx or no memo
+          tx.description = "Payment";
           continue;
         } else {
           try {

@@ -1,22 +1,16 @@
 <template>
-  <b-card
-    header-tag="header"
-    footer-tag="footer"
-    no-body
-    class="mb-4 card-custom"
-  >
+  <b-card header-tag="header" footer-tag="footer" no-body class="mb-4 card-custom">
     <div class="card-custom-loading-bar" v-if="loading"></div>
     <!-- <template v-slot:header></template> -->
     <div>
-      <div class="card-custom-header p-4">
+      <div class="card-custom-header p-3 p-xl-4">
         <div class="d-flex w-100 justify-content-between align-items-center">
           <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
           <status
             v-if="!!status"
             :variant="status.variant"
             :blink="!!status.blink"
-            >{{ status.text }}</status
-          >
+          >{{ status.text }}</status>
           <b-dropdown
             variant="link"
             toggle-class="text-decoration-none p-0"
