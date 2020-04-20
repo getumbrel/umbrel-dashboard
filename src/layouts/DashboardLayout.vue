@@ -5,6 +5,8 @@
         <b-navbar-brand to="/dashboard">
           <img src="@/assets/logo.svg" alt="Umbrel" height="50" />
         </b-navbar-brand>
+        <!-- <b-badge variant="info" v-if="process.env.NODE_ENV === 'development'">Development</b-badge> -->
+        <!-- <b-badge variant="info" v-if="process.env.NODE_ENV === 'staging'">Testnet</b-badge> -->
       </div>
 
       <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
@@ -24,8 +26,20 @@
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
+        <!-- Testnet/Development badges -->
+        <b-badge
+          variant="success"
+          v-if="environment === 'development'"
+          class="align-self-center mr-2"
+        >Development</b-badge>
+        <b-badge
+          variant="success"
+          v-else-if="environment === 'staging'"
+          class="align-self-center mr-2"
+        >Testnet</b-badge>
+
         <div
-          class="nav-hamburger-icon d-lg-none d-xl-none"
+          class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
           :class="{active: isMobileMenuOpen}"
           @click="toggleMobileMenu"
         >
@@ -83,7 +97,9 @@ import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavba
 
 export default {
   data() {
-    return {};
+    return {
+      environment: process.env.NODE_ENV
+    };
   },
   computed: {
     isDarkMode() {

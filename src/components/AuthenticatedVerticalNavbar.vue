@@ -93,7 +93,7 @@
     </div>
     <div>
       <b-nav vertical class="px-1">
-        <b-nav-item to="/login" class="my-1" v-if="isMobileMenu" exact-active-class="active">
+        <b-nav-item @click="logout" class="my-1" v-if="isMobileMenu" exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -154,6 +154,10 @@ export default {
     }
   },
   methods: {
+    logout() {
+      this.$store.dispatch("user/logout");
+      this.$router.push("/");
+    },
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);
     }

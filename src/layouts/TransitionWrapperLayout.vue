@@ -1,7 +1,9 @@
 <template>
-  <transition name="change-page" mode="out-in">
-    <router-view></router-view>
-  </transition>
+  <div>
+    <transition name="change-page" mode="out-in">
+      <router-view></router-view>
+    </transition>
+  </div>
 </template>
 
 <script>

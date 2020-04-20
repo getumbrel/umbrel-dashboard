@@ -68,9 +68,9 @@ export default {
     submitPassword() {
       this.state.isLoggingIn = true;
       window.setTimeout(() => {
-        //if testnet, password is "printerg0brrr"
+        //if testnet, password is "printergobrrr"
         if (window.location.host === "testnet.getumbrel.com") {
-          if (this.state.password === "printerg0brrr") {
+          if (this.state.password === "printergobrrr") {
             this.$store.dispatch("user/login");
             return this.$router.push(
               this.$router.history.current.query.redirect || "/dashboard"

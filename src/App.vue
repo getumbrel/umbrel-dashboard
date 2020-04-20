@@ -152,22 +152,22 @@ export default {
 
 .loading-enter-active,
 .loading-leave-active {
-  transition: filter 0.4s ease;
+  transition: opacity 0.4s ease;
 }
 .loading-enter {
-  // opacity: 0;
-  filter: blur(70px);
+  opacity: 0;
+  // filter: blur(70px);
 }
 .loading-enter-to {
-  // opacity: 1;
-  filter: blur(0);
+  opacity: 1;
+  // filter: blur(0);
 }
 .loading-leave {
-  // opacity: 1;
-  filter: blur(0);
+  opacity: 1;
+  // filter: blur(0);
 }
 .loading-leave-to {
-  // opacity: 0;
-  filter: blur(70px);
+  opacity: 0;
+  // filter: blur(70px);
 }
 </style>
