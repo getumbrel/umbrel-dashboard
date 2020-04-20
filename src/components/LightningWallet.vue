@@ -36,7 +36,7 @@
       <!-- Default Balance/tx screen -->
       <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
         <!-- List of transactions -->
-        <div class="transactions-container">
+        <div class="transactions-container" v-if="transactions.length">
           <b-list-group class="pb-2 transactions">
             <!-- Transaction -->
             <b-list-group-item
@@ -296,7 +296,7 @@
     <!-- Buttons for all screens/modes -->
     <div class="mt-3">
       <!-- Buttons: Balance (default mode) -->
-      <b-button-group class="w-100" v-if="this.state.mode === 'balance'">
+      <b-button-group class="w-100" v-if="this.state.mode === 'balance' && walletBalance > 0">
         <b-button
           class="w-50"
           variant="primary"
@@ -339,13 +339,35 @@
         </b-button>
       </b-button-group>
 
+      <b-button
+        class="w-100"
+        variant="success"
+        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        @click="changeMode('receive')"
+        v-else-if="this.state.mode === 'balance' && walletBalance === 0"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 18 18"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="mr-1"
+        >
+          <path
+            d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
+            fill="#FFFFFF"
+          />
+        </svg>Receive
+      </b-button>
+
       <!-- Button: Send (paste invoice send) -->
       <b-button
         class="w-100"
         variant="primary"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="sendSats"
-        v-if="state.mode === 'send'"
+        v-else-if="state.mode === 'send'"
         :disabled="!state.send.invoiceText || !state.send.isValidInvoice || state.send.isSending"
       >
         <svg
@@ -370,7 +392,7 @@
         variant="success"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="createInvoice"
-        v-if="state.mode === 'receive'"
+        v-else-if="state.mode === 'receive'"
         :disabled="!state.receive.amount || state.receive.amount < 1"
       >Create Invoice</b-button>
     </div>
