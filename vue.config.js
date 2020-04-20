@@ -8,7 +8,7 @@ module.exports = {
     //         }
     //     }
     // }
-    devServer: {
-        proxy: 'http://umbrel.local/',
-    }
+    // devServer: {
+    //     proxy: 'http://umbrel.local/',
+    // }
 }

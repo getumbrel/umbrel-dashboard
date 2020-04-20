@@ -107,6 +107,7 @@ export default {
     }
   },
   created() {
+    console.log(process.env.VUE_APP_API_URL, process.env.VUE_APP_NETWORK);
     this.updateViewPortHeightCSS();
     //for 100vh consistency
     window.addEventListener("resize", this.updateViewPortHeightCSS);

@@ -158,7 +158,7 @@ const mutations = {
 // Functions to get data from the API
 const actions = {
     async getStatus({ commit, dispatch }) {
-        const status = await API.get(`api/v1/bitcoind/info/status`);
+        const status = await API.get(`${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/status`);
 
         if (status) {
             commit('isOperational', status.operational);
@@ -172,7 +172,7 @@ const actions = {
     async getAddresses({ commit, state }) {
         // We can only make this request when bitcoind is operational
         if (state.operational) {
-            const addresses = await API.get(`api/v1/bitcoind/info/addresses`);
+            const addresses = await API.get(`${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/addresses`);
 
             // Default onion address to not found.
             commit('onionAddress', 'Could not determine bitcoin onion address');
@@ -191,7 +191,7 @@ const actions = {
 
     async getSync({ commit, state }) {
         if (state.operational) {
-            const sync = await API.get(`api/v1/bitcoind/info/sync`);
+            const sync = await API.get(`${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/sync`);
 
             if (sync) {
                 commit('syncStatus', sync);
@@ -201,7 +201,7 @@ const actions = {
 
     async getVersion({ commit, state }) {
         if (state.operational) {
-            const version = await API.get(`api/v1/bitcoind/info/version`);
+            const version = await API.get(`${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/version`);
 
             if (version) {
                 commit('setVersion', version);
@@ -211,7 +211,7 @@ const actions = {
 
     async getPeers({ commit, state }) {
         if (state.operational) {
-            const peers = await API.get(`api/v1/bitcoind/info/connections`);
+            const peers = await API.get(`${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/connections`);
 
             if (peers) {
                 commit('peers', peers);
@@ -221,7 +221,7 @@ const actions = {
 
     async getBalance({ commit, state }) {
         if (state.operational) {
-            const balance = await API.get(`api/v1/lnd/wallet/btc`);
+            const balance = await API.get(`${process.env.VUE_APP_API_URL}api/v1/lnd/wallet/btc`);
 
             if (balance) {
                 commit('balance', balance);
@@ -231,7 +231,7 @@ const actions = {
 
     async getTransactions({ commit, state }) {
         if (state.operational) {
-            const transactions = await API.get(`api/v1/lnd/transaction`);
+            const transactions = await API.get(`${process.env.VUE_APP_API_URL}api/v1/lnd/transaction`);
             commit('transactions', transactions);
         }
     },
@@ -247,7 +247,7 @@ const actions = {
 
     async getDepositAddress({ commit, state }) {
         if (state.operational) {
-            const { address } = await API.get(`api/v1/lnd/address`);
+            const { address } = await API.get(`${process.env.VUE_APP_API_URL}api/v1/lnd/address`);
 
             if (address) {
                 commit('depositAddress', address);
@@ -257,7 +257,7 @@ const actions = {
 
     async getFees({ commit, state }, { address, confTarget, amt, sweep }) {
         if (state.operational) {
-            const fees = await API.get(`api/v1/lnd/transaction/estimateFee`, {
+            const fees = await API.get(`${process.env.VUE_APP_API_URL}api/v1/lnd/transaction/estimateFee`, {
                 params: { address, confTarget, amt, sweep }
             });
 

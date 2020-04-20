@@ -26,17 +26,12 @@
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <!-- Testnet/Development badges -->
+        <!-- Testnet badge -->
         <b-badge
           variant="success"
-          v-if="environment === 'development'"
-          class="align-self-center mr-2"
-        >Development</b-badge>
-        <b-badge
-          variant="success"
-          v-else-if="environment === 'staging'"
-          class="align-self-center mr-2"
-        >Testnet</b-badge>
+          v-if="network !== 'mainnet'"
+          class="align-self-center mr-2 text-capitalize"
+        >{{ network }}</b-badge>
 
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
@@ -98,7 +93,8 @@ import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavba
 export default {
   data() {
     return {
-      environment: process.env.NODE_ENV
+      environment: process.env.NODE_ENV,
+      network: process.env.VUE_APP_NETWORK
     };
   },
   computed: {
@@ -115,6 +111,7 @@ export default {
       this.$router.push("/");
     },
     toggleMobileMenu() {
+      console.log(process.env.VUE_APP_API_URL);
       this.$store.commit("toggleMobileMenu");
     }
   },
