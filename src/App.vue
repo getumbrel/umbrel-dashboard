@@ -1,11 +1,7 @@
 <template>
   <div id="app">
     <transition name="loading" mode>
-      <loading
-        v-if="loading"
-        :text="loadingText"
-        :progress="loadingProgress"
-      ></loading>
+      <loading v-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
     </transition>
@@ -111,7 +107,6 @@ export default {
     }
   },
   created() {
-    console.log(process.env.VUE_APP_API_URL, process.env.VUE_APP_NETWORK);
     this.updateViewPortHeightCSS();
     //for 100vh consistency
     window.addEventListener("resize", this.updateViewPortHeightCSS);

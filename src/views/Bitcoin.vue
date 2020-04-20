@@ -24,12 +24,7 @@
           </div>
         </div>
         <div>
-          <b-dropdown
-            variant="link"
-            toggle-class="text-decoration-none p-0"
-            no-caret
-            right
-          >
+          <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
             <template v-slot:button-content>
               <svg
                 width="18"
@@ -59,16 +54,10 @@
               </svg>
             </template>
             <b-dropdown-item href="#" disabled>Show QR</b-dropdown-item>
-            <b-dropdown-item href="#" disabled
-              >Check for update</b-dropdown-item
-            >
-            <b-dropdown-item href="#" disabled
-              >View information</b-dropdown-item
-            >
+            <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>View information</b-dropdown-item>
             <b-dropdown-divider />
-            <b-dropdown-item variant="danger" href="#" disabled
-              >Stop Bitcoin Core</b-dropdown-item
-            >
+            <b-dropdown-item variant="danger" href="#" disabled>Stop Bitcoin Core</b-dropdown-item>
           </b-dropdown>
         </div>
       </div>
@@ -80,9 +69,7 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="Blockchain" :hasMenu="true">
           <template v-slot:menu>
-            <b-dropdown-item variant="danger" href="#" disabled
-              >Resync Blockchain</b-dropdown-item
-            >
+            <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
           <div class>
             <div class="px-4 mb-4">
@@ -121,12 +108,7 @@
           <div class>
             <div class="px-4 pb-2">
               <b-row>
-                <b-col
-                  col
-                  cols="6"
-                  v-for="stat in state.stats"
-                  :key="stat.title"
-                >
+                <b-col col cols="6" v-for="stat in state.stats" :key="stat.title">
                   <bitcoin-network-stat
                     :title="stat.title"
                     :value="stat.value"
