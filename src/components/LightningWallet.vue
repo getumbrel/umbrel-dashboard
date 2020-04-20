@@ -163,7 +163,7 @@
         </div>
 
         <!-- Link to Lightning Network Page -->
-        <div class="px-4 pt-3" v-if="!isLightningPage">
+        <div class="px-4 pt-2" v-if="!isLightningPage">
           <router-link to="/lightning" class="card-link">Manage</router-link>
         </div>
       </div>
@@ -848,7 +848,7 @@ export default {
   }
 }
 .transactions {
-  height: 16rem;
+  height: 17rem;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; //momentum scroll on iOS
 }

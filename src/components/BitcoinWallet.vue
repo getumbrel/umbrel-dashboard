@@ -131,7 +131,15 @@
                     style="margin-left: 24px;"
                     :title="getReadableTime(tx.timestamp)"
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
-                  >{{getTimeFromNow(tx.timestamp)}}</small>
+                  >
+                    {{getTimeFromNow(tx.timestamp)}}
+                    <span
+                      v-if="tx.description === 'Lightning Wallet' && tx.type === 'outgoing'"
+                    >&bull; Channel open</span>
+                    <span
+                      v-else-if="tx.description === 'Lightning Wallet' && tx.type === 'incoming'"
+                    >&bull; Channel close</span>
+                  </small>
 
                   <small
                     class="text-muted mt-0 tx-timestamp"
@@ -163,7 +171,7 @@
         </div>
 
         <!-- Link to Bitcoin Network Page -->
-        <div class="px-4 pt-3" v-if="!isBitcoinPage">
+        <div class="px-4 pt-2" v-if="!isBitcoinPage">
           <router-link to="/bitcoin" class="card-link">Manage</router-link>
         </div>
       </div>
@@ -811,7 +819,7 @@ export default {
   }
 }
 .transactions {
-  height: 16rem;
+  height: 17rem;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; //momentum scroll on iOS
 }

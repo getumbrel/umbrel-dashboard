@@ -53,11 +53,11 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#">Show QR</b-dropdown-item>
-            <b-dropdown-item href="#">Check for update</b-dropdown-item>
-            <b-dropdown-item href="#">View information</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>Show QR</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>View information</b-dropdown-item>
             <b-dropdown-divider />
-            <b-dropdown-item variant="danger" href="#">Stop Bitcoin Core</b-dropdown-item>
+            <b-dropdown-item variant="danger" href="#" disabled>Stop Bitcoin Core</b-dropdown-item>
           </b-dropdown>
         </div>
       </div>
@@ -69,7 +69,7 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="Blockchain" :hasMenu="true">
           <template v-slot:menu>
-            <b-dropdown-item variant="danger" href="#">Resync Blockchain</b-dropdown-item>
+            <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
           <div class>
             <div class="px-4 mb-4">
