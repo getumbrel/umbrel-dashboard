@@ -1,13 +1,8 @@
 <template>
   <div>
     <div class="blockchain-container">
-      <!-- transitions for blocks + set max height of blocks container as avg block height = 6rem -->
-      <transition-group
-        name="blockchain"
-        mode="out-in"
-        tag="ul"
-        :style="{ maxHeight: `${numBlocks * 6}rem` }"
-      >
+      <!-- transitions for blocks -->
+      <transition-group name="blockchain" mode="out-in" tag="ul">
         <li
           href="#"
           class="flex-column align-items-start px-4 blockchain-block"
@@ -100,6 +95,26 @@ export default {
             number: currentBlock - 4,
             txs: 1982,
             timestamp: "34 mins ago"
+          },
+          {
+            number: currentBlock - 5,
+            txs: 1934,
+            timestamp: "47 mins ago"
+          },
+          {
+            number: currentBlock - 6,
+            txs: 1783,
+            timestamp: "58 mins ago"
+          },
+          {
+            number: currentBlock - 7,
+            txs: 1723,
+            timestamp: "1 hr ago"
+          },
+          {
+            number: currentBlock - 8,
+            txs: 1982,
+            timestamp: "1 hr ago"
           }
         ];
       } else {
@@ -160,12 +175,15 @@ export default {
   position: relative;
   ul {
     list-style: none;
-    padding: 0;
+    padding: 1rem 0;
     margin: 0;
     // max-height: 18rem;
+    height: 18rem;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch; //momentum scroll on iOS
   }
-  overflow: hidden;
-  &:after {
+  //bottom fade
+  &:before {
     //nice faded white so the discarded blocks don't abruptly cut off
     content: "";
     position: absolute;
@@ -173,8 +191,26 @@ export default {
     width: 100%;
     bottom: 0;
     left: 0;
+    z-index: 2;
     background-image: linear-gradient(
       to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1)
+    );
+  }
+
+  //top fade
+  &:after {
+    //nice faded white so the discarded blocks don't abruptly cut off
+    content: "";
+    position: absolute;
+    height: 2rem;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-image: linear-gradient(
+      to top,
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 1)
     );
