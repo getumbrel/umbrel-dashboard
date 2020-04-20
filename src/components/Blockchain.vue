@@ -6,7 +6,7 @@
         name="blockchain"
         mode="out-in"
         tag="ul"
-        :style="{maxHeight: `${numBlocks * 6}rem`}"
+        :style="{ maxHeight: `${numBlocks * 6}rem` }"
       >
         <li
           href="#"
@@ -42,11 +42,17 @@
                 <div class="blockchain-block-icon-bg"></div>
               </div>
               <div class="align-self-center">
-                <h6 class="mb-1 font-weight-normal">Block {{ block.number.toLocaleString() }}</h6>
-                <small class="text-muted">{{ block.txs.toLocaleString() }} transactions</small>
+                <h6 class="mb-1 font-weight-normal">
+                  Block {{ block.number.toLocaleString() }}
+                </h6>
+                <small class="text-muted"
+                  >{{ block.txs.toLocaleString() }} transactions</small
+                >
               </div>
             </div>
-            <small class="text-muted align-self-center">{{ block.timestamp }}</small>
+            <small class="text-muted align-self-center">{{
+              block.timestamp
+            }}</small>
           </div>
         </li>
       </transition-group>
@@ -80,22 +86,22 @@ export default {
           {
             number: currentBlock - 1,
             txs: 1934,
-            timestamp: "few mins ago"
+            timestamp: "12 mins ago"
           },
           {
             number: currentBlock - 2,
             txs: 1783,
-            timestamp: "few mins ago"
+            timestamp: "19 mins ago"
           },
           {
             number: currentBlock - 3,
             txs: 1723,
-            timestamp: "few mins ago"
+            timestamp: "27 mins ago"
           },
           {
             number: currentBlock - 4,
             txs: 1982,
-            timestamp: "few mins ago"
+            timestamp: "34 mins ago"
           }
         ];
       } else {

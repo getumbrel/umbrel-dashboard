@@ -7,7 +7,7 @@
       viewBox="0 0 8 8"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      :class="{blink: blink}"
+      :class="{ blink: blink }"
     >
       <circle cx="4" cy="4" r="4" fill="#00CD98" :class="`fill-${variant}`" />
     </svg>

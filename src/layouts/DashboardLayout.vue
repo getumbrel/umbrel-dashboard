@@ -31,16 +31,21 @@
           variant="success"
           v-if="network !== 'mainnet'"
           class="align-self-center mr-2 text-capitalize"
-        >{{ network }}</b-badge>
+          >{{ network }}</b-badge
+        >
 
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
-          :class="{active: isMobileMenuOpen}"
+          :class="{ active: isMobileMenuOpen }"
           @click="toggleMobileMenu"
         >
           <div></div>
         </div>
-        <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right no-caret>
+        <b-nav-item-dropdown
+          class="d-none d-lg-block d-xl-block"
+          right
+          no-caret
+        >
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>Satoshi</template>
           <b-dropdown-item @click="logout">Log out</b-dropdown-item>
@@ -50,7 +55,10 @@
 
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
-      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-show="isMobileMenuOpen">
+      <div
+        class="mobile-vertical-menu d-lg-none d-xl-none"
+        v-show="isMobileMenuOpen"
+      >
         <authenticated-vertical-navbar :isMobileMenu="true" />
       </div>
     </transition>

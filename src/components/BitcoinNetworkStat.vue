@@ -1,16 +1,16 @@
 <template>
   <div>
-    <span>{{title}}</span>
+    <span>{{ title }}</span>
     <div class="pt-2 pb-4">
       <div class="mb-1">
         <h3 class="font-weight-normal d-inline">
           <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
           <span>
             <!-- <ICountUp :endVal="value" /> -->
-            {{value}}{{numberSuffix}}
+            {{ value }}{{ numberSuffix }}
           </span>
         </h3>
-        <span class="text-muted d-inline ml-1">{{suffix}}</span>
+        <span class="text-muted d-inline ml-1">{{ suffix }}</span>
       </div>
       <div v-if="change">
         <svg
@@ -20,7 +20,11 @@
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           class="change-arrow"
-          :class="{'rising': change.value > 0, 'declining': change.value < 0, 'neutral': change.value === 0}"
+          :class="{
+            rising: change.value > 0,
+            declining: change.value < 0,
+            neutral: change.value === 0
+          }"
         >
           <path
             fill-rule="evenodd"
@@ -31,8 +35,14 @@
         </svg>
         <span
           class="change-text ml-1"
-          :class="{'text-success': change.value > 0, 'text-danger': change.value < 0, 'text-muted': change.value === 0}"
-        >{{ change.value >= 0 ? '+' : ''}}{{ change.value }}{{ change.suffix }}</span>
+          :class="{
+            'text-success': change.value > 0,
+            'text-danger': change.value < 0,
+            'text-muted': change.value === 0
+          }"
+          >{{ change.value >= 0 ? "+" : "" }}{{ change.value
+          }}{{ change.suffix }}</span
+        >
       </div>
     </div>
   </div>

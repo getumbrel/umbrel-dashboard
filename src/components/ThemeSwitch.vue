@@ -2,11 +2,11 @@
   <div
     @click="toggleDarkMode"
     class="toggle"
-    :class="{'light-toggle' : !isDarkMode, 'dark-toggle' : isDarkMode}"
+    :class="{ 'light-toggle': !isDarkMode, 'dark-toggle': isDarkMode }"
   >
     <div
       class="toggle-switch justify-content-center d-flex"
-      :class="{'toggle-left' : !isDarkMode, 'toggle-right' : isDarkMode}"
+      :class="{ 'toggle-left': !isDarkMode, 'toggle-right': isDarkMode }"
     >
       <img class="align-center" v-if="!isDarkMode" src="@/assets/sun.svg" />
       <img class="align-center" v-if="isDarkMode" src="@/assets/moon.svg" />

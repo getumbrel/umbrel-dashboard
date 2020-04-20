@@ -1,7 +1,7 @@
 <template>
   <card-widget
     header="Lightning Wallet"
-    :status="{text: 'Running', variant: 'success', blink: false}"
+    :status="{ text: 'Running', variant: 'success', blink: false }"
     title
     :numericTitle="{
       value: walletBalance,
@@ -34,7 +34,11 @@
     <!-- transition switching between different modes -->
     <transition name="lightning-mode-change" mode="out-in">
       <!-- Default Balance/tx screen -->
-      <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
+      <div
+        v-if="state.mode === 'balance'"
+        key="mode-balance"
+        class="mode-balance"
+      >
         <!-- List of transactions -->
         <div class="transactions-container" v-if="transactions.length">
           <b-list-group class="pb-2 transactions">
@@ -131,21 +135,26 @@
                     style="margin-left: 24px;"
                     :title="getReadableTime(tx.timestamp)"
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
-                  >{{getTimeFromNow(tx.timestamp)}}</small>
+                    >{{ getTimeFromNow(tx.timestamp) }}</small
+                  >
 
                   <small
                     class="text-muted mt-0 tx-timestamp"
                     style="margin-left: 24px;"
-                    :title="`Invoice expires on ${getReadableTime(tx.expiresOn)}`"
+                    :title="
+                      `Invoice expires on ${getReadableTime(tx.expiresOn)}`
+                    "
                     v-else-if="tx.type === 'pending'"
-                  >Unpaid invoice</small>
+                    >Unpaid invoice</small
+                  >
 
                   <small
                     class="text-muted mt-0 tx-timestamp"
                     style="margin-left: 24px;"
                     :title="getReadableTime(tx.expiresOn)"
                     v-else-if="tx.type === 'expired'"
-                  >Invoice expired {{getTimeFromNow(tx.expiresOn)}}</small>
+                    >Invoice expired {{ getTimeFromNow(tx.expiresOn) }}</small
+                  >
                 </div>
 
                 <div class="text-right">
@@ -215,13 +224,17 @@
         <!-- Invoice amount + description -->
         <p class="text-center mb-4">
           Paid
-          <b>{{state.send.amount}} sats</b> for
-          <b>{{state.send.description}}</b>
+          <b>{{ state.send.amount }} sats</b> for
+          <b>{{ state.send.description }}</b>
         </p>
       </div>
 
       <!-- SCREEN/MODE: Create Invoice (Receive) -->
-      <div class="px-4 mode-receive" v-if="state.mode === 'receive'" key="mode-receive">
+      <div
+        class="px-4 mode-receive"
+        v-if="state.mode === 'receive'"
+        key="mode-receive"
+      >
         <label class="sr-onlsy" for="input-sats">Sats</label>
         <b-input
           id="input-sats"
@@ -250,15 +263,24 @@
       </div>
 
       <!-- SCREEN/MODE: Show Generated Invoice -->
-      <div class="px-4 mode-invoice" v-if="this.state.mode === 'invoice'" key="mode-invoice">
+      <div
+        class="px-4 mode-invoice"
+        v-if="this.state.mode === 'invoice'"
+        key="mode-invoice"
+      >
         <p class="text-center text-muted mb-2">
           <!-- If still generating invoice, show blinking loading text -->
-          <span class="blink" v-if="state.receive.isGeneratingInvoice">Generating Invoice</span>
+          <span class="blink" v-if="state.receive.isGeneratingInvoice"
+            >Generating Invoice</span
+          >
 
           <!-- Invoice amount + description -->
           <span v-else>
             Please pay
-            <b>{{state.receive.amount}} {{ state.receive.amount > 1 ? 'sats' : 'sat'}}</b>
+            <b
+              >{{ state.receive.amount }}
+              {{ state.receive.amount > 1 ? "sats" : "sat" }}</b
+            >
             {{ state.receive.description ? "for" : null }}
             <b>{{ state.receive.description }}</b>
           </span>
@@ -269,7 +291,9 @@
           <!-- Popup umbrel logo in the middle of QR code after the QR is generated -->
           <transition name="qr-logo-popup">
             <img
-              v-show="!state.receive.isGeneratingInvoice && state.receive.invoiceText"
+              v-show="
+                !state.receive.isGeneratingInvoice && state.receive.invoiceText
+              "
               src="@/assets/umbrel-qr-icon.svg"
               class="qr-logo"
             />
@@ -286,17 +310,26 @@
         </div>
 
         <!-- Copy Invoice Input Field -->
-        <input-copy size="sm" :value="state.receive.invoiceQR" class="mb-4 mt-2"></input-copy>
+        <input-copy
+          size="sm"
+          :value="state.receive.invoiceQR"
+          class="mb-4 mt-2"
+        ></input-copy>
       </div>
     </transition>
 
     <!-- Error message -->
-    <small class="text-danger mb-2 d-block px-4" v-if="state.error">{{ state.error }}</small>
+    <small class="text-danger mb-2 d-block px-4" v-if="state.error">{{
+      state.error
+    }}</small>
 
     <!-- Buttons for all screens/modes -->
     <div class="mt-3">
       <!-- Buttons: Balance (default mode) -->
-      <b-button-group class="w-100" v-if="this.state.mode === 'balance' && walletBalance > 0">
+      <b-button-group
+        class="w-100"
+        v-if="this.state.mode === 'balance' && walletBalance > 0"
+      >
         <b-button
           class="w-50"
           variant="primary"
@@ -314,8 +347,8 @@
             <path
               d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
               fill="#FFFFFF"
-            />
-          </svg>Send
+            /></svg
+          >Send
         </b-button>
         <b-button
           class="w-50"
@@ -334,8 +367,8 @@
             <path
               d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
               fill="#FFFFFF"
-            />
-          </svg>Receive
+            /></svg
+          >Receive
         </b-button>
       </b-button-group>
 
@@ -357,8 +390,8 @@
           <path
             d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
             fill="#FFFFFF"
-          />
-        </svg>Receive
+          /></svg
+        >Receive
       </b-button>
 
       <!-- Button: Send (paste invoice send) -->
@@ -368,7 +401,11 @@
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="sendSats"
         v-else-if="state.mode === 'send'"
-        :disabled="!state.send.invoiceText || !state.send.isValidInvoice || state.send.isSending"
+        :disabled="
+          !state.send.invoiceText ||
+            !state.send.isValidInvoice ||
+            state.send.isSending
+        "
       >
         <svg
           width="19"
@@ -383,7 +420,7 @@
             fill="#FFFFFF"
           />
         </svg>
-        {{ this.state.send.isSending ? 'Sending...' : 'Send'}}
+        {{ this.state.send.isSending ? "Sending..." : "Send" }}
       </b-button>
 
       <!-- Button: Create Invoice (receive mode) -->
@@ -394,7 +431,8 @@
         @click="createInvoice"
         v-else-if="state.mode === 'receive'"
         :disabled="!state.receive.amount || state.receive.amount < 1"
-      >Create Invoice</b-button>
+        >Create Invoice</b-button
+      >
     </div>
   </card-widget>
 </template>

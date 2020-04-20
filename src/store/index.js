@@ -2,19 +2,21 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 //Modules
-import user from './modules/user';
-import system from './modules/system';
-import bitcoin from './modules/bitcoin';
-import lightning from './modules/lightning';
+import user from "./modules/user";
+import system from "./modules/system";
+import bitcoin from "./modules/bitcoin";
+import lightning from "./modules/lightning";
 
 Vue.use(Vuex);
-
 
 //Dark Mode
 let userSelectedDarkMode = false;
 
 //if dark mode has never been turned on, then get system preference. Else get user's setting.
-if (!window.localStorage.getItem("isDarkMode") && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+if (
+  !window.localStorage.getItem("isDarkMode") &&
+  window.matchMedia("(prefers-color-scheme: dark)").matches
+) {
   userSelectedDarkMode = true;
 } else {
   userSelectedDarkMode = window.localStorage.getItem("isDarkMode") === "true";
@@ -25,32 +27,32 @@ const state = {
   onboardingStep: 0,
   selectedWifi: "",
   isDarkMode: userSelectedDarkMode,
-  isMobileMenuOpen: true,
+  isMobileMenuOpen: true
 };
 
 // Getters
 const getters = {
   onboardingStep(state) {
-    return state.onboardingStep
+    return state.onboardingStep;
   },
   selectWifi(state) {
     return state.selectWifi;
   },
   isDarkMode(state) {
-    return state.isDarkMode
+    return state.isDarkMode;
   },
   isMobileMenuOpen(state) {
     return state.isMobileMenuOpen;
   }
-}
+};
 
 // Mutations
 const mutations = {
   nextStep(state) {
-    state.onboardingStep++
+    state.onboardingStep++;
   },
   prevStep(state) {
-    state.onboardingStep--
+    state.onboardingStep--;
   },
   selectWifi(state, networkName) {
     state.selectedWifi = networkName;
@@ -74,29 +76,29 @@ const mutations = {
       state.isMobileMenuOpen = true;
     } else {
       document.body.style.overflow = "auto";
-      state.isMobileMenuOpen = false
+      state.isMobileMenuOpen = false;
     }
   }
-}
+};
 
 // Actions
 const actions = {
   nextStep(context) {
-    context.commit('nextStep');
+    context.commit("nextStep");
   },
   prevStep(context) {
-    context.commit('prevStep');
+    context.commit("prevStep");
   },
   selectWifi(context, networkName) {
-    context.commit('selectWifi', networkName);
+    context.commit("selectWifi", networkName);
   },
   triggerDarkMode(context) {
-    context.commit('toggleDarkMode');
+    context.commit("toggleDarkMode");
   },
   toggleMobileMenu(context) {
-    context.commit('toggleMobileMenu');
+    context.commit("toggleMobileMenu");
   }
-}
+};
 
 export default new Vuex.Store({
   state,

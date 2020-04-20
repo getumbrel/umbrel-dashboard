@@ -1,12 +1,18 @@
 <template>
   <b-input-group :size="size">
-    <b-form-input ref="copy-input-field" type="text" readonly v-model="value"></b-form-input>
+    <b-form-input
+      ref="copy-input-field"
+      type="text"
+      readonly
+      v-model="value"
+    ></b-form-input>
 
     <b-input-group-append>
       <b-button
         :variant="state.isCopied ? 'success' : 'primary'"
         @click="copyText"
-      >{{ state.isCopied ? 'Copied' : 'Copy' }}</b-button>
+        >{{ state.isCopied ? "Copied" : "Copy" }}</b-button
+      >
     </b-input-group-append>
   </b-input-group>
 </template>
@@ -42,5 +48,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

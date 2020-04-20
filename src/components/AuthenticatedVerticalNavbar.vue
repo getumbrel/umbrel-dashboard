@@ -5,7 +5,9 @@
         <p class="text-muted">
           Balance
           <span style="cursor: pointer;" @click="toggleBalance">
-            <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon>
+            <b-icon
+              :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"
+            ></b-icon>
           </span>
         </p>
         <h3>
@@ -14,7 +16,9 @@
             :options="{'startVal': walletBalance}"
             v-if="state.showBalance"
           />-->
-          <span v-if="state.showBalance">{{ walletBalance.toLocaleString() }}</span>
+          <span v-if="state.showBalance">{{
+            walletBalance.toLocaleString()
+          }}</span>
           <span v-else>***,***</span>
           <small style="font-size: 1rem;">&nbsp;Sats</small>
         </h3>
@@ -73,7 +77,12 @@
           Lightning
         </b-nav-item>
 
-        <b-nav-item to="/settings" class="my-1" v-if="isMobileMenu" exact-active-class="active">
+        <b-nav-item
+          to="/settings"
+          class="my-1"
+          v-if="isMobileMenu"
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"
@@ -93,7 +102,12 @@
     </div>
     <div>
       <b-nav vertical class="px-1">
-        <b-nav-item @click="logout" class="my-1" v-if="isMobileMenu" exact-active-class="active">
+        <b-nav-item
+          @click="logout"
+          class="my-1"
+          v-if="isMobileMenu"
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"
@@ -113,7 +127,12 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item to="/settings" class="my-1" v-else exact-active-class="active">
+        <b-nav-item
+          to="/settings"
+          class="my-1"
+          v-else
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"

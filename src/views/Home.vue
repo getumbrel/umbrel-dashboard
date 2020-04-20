@@ -1,13 +1,19 @@
 <template>
   <div>
-    <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+    <div
+      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
+    >
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
-      <h1
-        :class="[isDarkMode ? 'text-white' : '', 'text-center mb-2']"
-      >{{ steps[onboardingStep]["heading"] }}</h1>
-      <p class="text-muted w-75 text-center">{{ steps[onboardingStep]["text"] }}</p>
+      <h1 :class="[isDarkMode ? 'text-white' : '', 'text-center mb-2']">
+        {{ steps[onboardingStep]["heading"] }}
+      </h1>
+      <p class="text-muted w-75 text-center">
+        {{ steps[onboardingStep]["text"] }}
+      </p>
 
-      <div class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center">
+      <div
+        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+      >
         <b-form-input
           v-model="name"
           ref="name"
@@ -26,7 +32,7 @@
           <b-list-group-item
             :class="[isDarkMode ? 'dark-mode' : '', 'd-flex']"
             button
-            v-for="(network) in wifiNetworks"
+            v-for="network in wifiNetworks"
             v-bind:key="network.name"
             @click="selectWifi(network)"
           >
@@ -70,7 +76,8 @@
           v-show="onboardingStep !== 3 && onboardingStep !== 7"
           :disabled="!isStepValid"
           class="mt-3 px-4"
-        >{{ onboardingStep === 0 ? 'Start' : 'Next' }}</b-button>
+          >{{ onboardingStep === 0 ? "Start" : "Next" }}</b-button
+        >
 
         <b-button
           variant="success"
@@ -78,7 +85,8 @@
           @click="finish"
           v-show="onboardingStep === 7"
           class="mt-3 px-4"
-        >Continue to Dashboard</b-button>
+          >Continue to Dashboard</b-button
+        >
 
         <b-button
           variant="link"
@@ -86,10 +94,15 @@
           @click="prevStep"
           v-show="onboardingStep > 1 && onboardingStep !== 7"
           class="mt-2"
-        >Back</b-button>
+          >Back</b-button
+        >
       </div>
 
-      <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
+      <b-progress
+        :value="progress"
+        height="1rem"
+        class="onboarding-progress"
+      ></b-progress>
     </div>
   </div>
 </template>

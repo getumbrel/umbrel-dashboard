@@ -24,12 +24,12 @@ const routes = [
     component: TransitionWrapperLayout,
     children: [
       {
-        path: '',
+        path: "",
         component: SimpleLayout,
         children: [
           {
-            path: '',
-            name: 'login',
+            path: "",
+            name: "login",
             component: Login,
             meta: { requiresAuth: false }
           }
@@ -42,9 +42,9 @@ const routes = [
         meta: { requiresAuth: false },
         children: [
           {
-            path: '',
-            component: Home,
-          },
+            path: "",
+            component: Home
+          }
         ]
       },
       {
@@ -54,9 +54,9 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
           {
-            path: '',
-            component: Dashboard,
-          },
+            path: "",
+            component: Dashboard
+          }
         ]
       },
       {
@@ -66,9 +66,9 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
           {
-            path: '',
-            component: Bitcoin,
-          },
+            path: "",
+            component: Bitcoin
+          }
         ]
       },
       {
@@ -78,9 +78,9 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
           {
-            path: '',
-            component: Lightning,
-          },
+            path: "",
+            component: Lightning
+          }
         ]
       },
       {
@@ -90,9 +90,9 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
           {
-            path: '',
-            component: Settings,
-          },
+            path: "",
+            component: Settings
+          }
         ]
       },
       {
@@ -102,9 +102,9 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
           {
-            path: '',
-            component: Logout,
-          },
+            path: "",
+            component: Logout
+          }
         ]
       }
     ]
@@ -115,7 +115,9 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
-  scrollBehavior: () => { return { x: 0, y: 0 } } //scroll to top on page changes
+  scrollBehavior: () => {
+    return { x: 0, y: 0 };
+  } //scroll to top on page changes
 });
 
 //Fake for now
@@ -128,14 +130,14 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (!isLoggedIn()) {
       next({
-        path: '/',
+        path: "/",
         query: { redirect: to.fullPath }
-      })
+      });
     } else {
-      next()
+      next();
     }
   } else {
-    next() // always call next()!
+    next(); // always call next()!
   }
 });
 
@@ -144,6 +146,6 @@ router.afterEach(() => {
   if (store.getters.isMobileMenuOpen) {
     store.commit("toggleMobileMenu");
   }
-})
+});
 
 export default router;

@@ -1,46 +1,46 @@
-import { BigNumber } from 'bignumber.js';
+import { BigNumber } from "bignumber.js";
 
 // Never display numbers as exponents
-BigNumber.config({ EXPONENTIAL_AT: 1e+9 });
+BigNumber.config({ EXPONENTIAL_AT: 1e9 });
 
 export function btcToSats(input) {
-    const btc = new BigNumber(input);
-    const sats = btc.multipliedBy(100000000);
+  const btc = new BigNumber(input);
+  const sats = btc.multipliedBy(100000000);
 
-    if (isNaN(sats)) {
-        return 0;
-    }
+  if (isNaN(sats)) {
+    return 0;
+  }
 
-    return Number(sats);
+  return Number(sats);
 }
 
 export function satsToBtc(input, decimals = 8) {
-    const sats = new BigNumber(input);
-    const btc = sats.dividedBy(100000000);
+  const sats = new BigNumber(input);
+  const btc = sats.dividedBy(100000000);
 
-    if (isNaN(btc)) {
-        return 0;
-    }
+  if (isNaN(btc)) {
+    return 0;
+  }
 
-    return Number(btc.decimalPlaces(decimals));
+  return Number(btc.decimalPlaces(decimals));
 }
 
 export function formatSats(input) {
-    const sats = new BigNumber(input);
+  const sats = new BigNumber(input);
 
-    if (isNaN(sats)) {
-        return 0;
-    }
+  if (isNaN(sats)) {
+    return 0;
+  }
 
-    return Number(sats.toFormat(0));
+  return Number(sats.toFormat(0));
 }
 
 export function toPrecision(input, decimals = 8) {
-    const number = new BigNumber(input);
+  const number = new BigNumber(input);
 
-    if (isNaN(number)) {
-        return 0;
-    }
+  if (isNaN(number)) {
+    return 0;
+  }
 
-    return Number(number.decimalPlaces(decimals));
+  return Number(number.decimalPlaces(decimals));
 }

@@ -2,11 +2,14 @@
   <div
     @click="toggle"
     class="toggle"
-    :class="{'toggle-off' : !state.isOn, 'toggle-on' : state.isOn}"
+    :class="{ 'toggle-off': !state.isOn, 'toggle-on': state.isOn }"
   >
     <div
       class="toggle-switch justify-content-center"
-      :class="{'toggle-switch-off' : !state.isOn, 'toggle-switch-on' : state.isOn}"
+      :class="{
+        'toggle-switch-off': !state.isOn,
+        'toggle-switch-on': state.isOn
+      }"
     ></div>
   </div>
 </template>
