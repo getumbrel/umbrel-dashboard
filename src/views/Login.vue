@@ -5,7 +5,10 @@
       <h1 class="text-center mb-2">welcome back</h1>
       <p class="text-muted w-75 text-center">Enter the password to login to your Umbrel</p>
 
-      <div class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center">
+      <form
+        v-on:submit.prevent="authenticateUser"
+        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+      >
         <input-password
           v-model="state.password"
           ref="password"
@@ -23,16 +26,16 @@
           <transition name="slide-up">
             <b-button
               variant="success"
+              type="submit"
               size="lg"
               class="px-4 login-button"
               :class="{'loading-fade-blink': state.isLoggingIn}"
               v-show="!!state.password && !state.isIncorrectPassword"
-              @click="submitPassword"
               :disabled="state.isLoggingIn"
             >Log in</b-button>
           </transition>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -65,7 +68,7 @@ export default {
     }
   },
   methods: {
-    submitPassword() {
+    authenticateUser() {
       this.state.isLoggingIn = true;
       window.setTimeout(() => {
         //if testnet, password is "printergobrrr"
