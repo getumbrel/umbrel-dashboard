@@ -81,23 +81,23 @@ export default {
 
       // Then check if lnd is operational
 
-      await this.$store.dispatch("lightning/getStatus");
-      if (!this.isLndOperational) {
-        this.loading = true;
-        this.loadingText = "Starting LND...";
-        this.loadingProgress = 70;
-        this.pollInProgress = false;
-        return;
-      }
+      // await this.$store.dispatch("lightning/getStatus");
+      // if (!this.isLndOperational) {
+      //   this.loading = true;
+      //   this.loadingText = "Starting LND...";
+      //   this.loadingProgress = 70;
+      //   this.pollInProgress = false;
+      //   return;
+      // }
 
       //Then check if lnd is unlocked
-      if (!this.isLndUnlocked) {
-        this.loading = true;
-        this.loadingText = "Starting LND...";
-        this.loadingProgress = 90;
-        this.pollInProgress = false;
-        return;
-      }
+      // if (!this.isLndUnlocked) {
+      //   this.loading = true;
+      //   this.loadingText = "Starting LND...";
+      //   this.loadingProgress = 90;
+      //   this.pollInProgress = false;
+      //   return;
+      // }
 
       this.loading = false;
       this.loadingProgress = 100;

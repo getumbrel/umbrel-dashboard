@@ -163,7 +163,7 @@
         </div>
 
         <!-- Link to Bitcoin Network Page -->
-        <div class="px-4 py-3" v-if="!isBitcoinPage">
+        <div class="px-4 pt-3" v-if="!isBitcoinPage">
           <router-link to="/bitcoin" class="card-link">Manage</router-link>
         </div>
       </div>
@@ -303,7 +303,7 @@
     <small class="text-danger mb-2 d-block px-4" v-if="state.error">{{ state.error }}</small>
 
     <!-- Buttons for all screens/modes -->
-    <div class>
+    <div class="mt-3">
       <!-- Buttons: Balance (default mode) -->
       <b-button-group class="w-100" v-if="this.state.mode === 'balance'">
         <b-button

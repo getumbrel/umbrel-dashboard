@@ -14,7 +14,7 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget
           header="Bitcoin Core"
-          :status="{text: syncPercent !== 100 ? 'Synchronizing' : 'Running', variant: 'success', blink: syncPercent !== 100}"
+          :status="{text: syncPercent !== 100 ? 'Synchronizing' : 'Running', variant: 'success', blink: false}"
           :title="`${syncPercent}%`"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"

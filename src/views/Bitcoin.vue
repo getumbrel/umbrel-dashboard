@@ -74,8 +74,11 @@
           <div class>
             <div class="px-4 mb-4">
               <div class="w-100 d-flex justify-content-between mb-2">
-                <span>Synchronized</span>
-                <span class="font-weight-bold">{{ syncPercent }}%</span>
+                <span class="align-self-end">Synchronized</span>
+                <h3 class="font-weight-normal mb-0">
+                  {{ syncPercent }}
+                  <small class>%</small>
+                </h3>
               </div>
               <b-progress
                 :value="100"
