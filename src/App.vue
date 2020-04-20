@@ -3,6 +3,7 @@
     <transition name="loading" mode>
       <loading v-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
       <!-- component matched by the route will render here -->
+
       <router-view v-else></router-view>
     </transition>
   </div>
