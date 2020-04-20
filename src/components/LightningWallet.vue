@@ -705,22 +705,19 @@ export default {
             if (this.state.receive.invoiceStatusPollerInprogress) {
               return;
             }
-
             this.state.receive.invoiceStatusPollerInprogress = true;
-
-            console.log("checking invoice status");
             const invoices = await API.get(
               `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoices`
             );
-            console.log("received invoices");
-            console.log("top invoice", invoices[0]);
-
             const currentInvoice = invoices[0];
             //make sure the latest invoice is the current invoice
             if (currentInvoice.settled) {
               this.changeMode("received");
-              console.log("recieved, clearing interval now");
               window.clearInterval(this.state.receive.invoiceStatusPoller);
+
+              //refresh
+              this.$store.dispatch("lightning/getBalance");
+              this.$store.dispatch("lightning/getTransactions");
             }
 
             this.state.receive.invoiceStatusPollerInprogress = false;
