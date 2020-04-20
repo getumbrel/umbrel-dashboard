@@ -113,7 +113,22 @@ export default {
     toggleMobileMenu() {
       console.log(process.env.VUE_APP_API_URL);
       this.$store.commit("toggleMobileMenu");
+    },
+    fetchData() {
+      this.$store.dispatch("bitcoin/getSync");
+      this.$store.dispatch("bitcoin/getBalance");
+      this.$store.dispatch("bitcoin/getTransactions");
+      this.$store.dispatch("lightning/getTransactions");
+      this.$store.dispatch("lightning/getBalance");
     }
+  },
+  created() {
+    // start polling data every 20s
+    this.fetchData();
+    this.interval = window.setInterval(this.fetchData, 20000);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.interval);
   },
   components: {
     AuthenticatedVerticalNavbar

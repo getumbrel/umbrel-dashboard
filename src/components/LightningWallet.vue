@@ -729,8 +729,6 @@ export default {
   },
   async created() {
     await this.$store.dispatch("lightning/getStatus");
-    this.$store.dispatch("lightning/getTransactions");
-    this.$store.dispatch("lightning/getBalance");
   },
   beforeDestroy() {
     window.clearInterval(this.state.receive.invoiceStatusPoller);

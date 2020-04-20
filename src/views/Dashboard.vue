@@ -103,9 +103,6 @@ export default {
       this.$store.commit("toggleDarkMode");
     }
   },
-  created() {
-    this.$store.dispatch("bitcoin/getSync");
-  },
   components: {
     CardWidget,
     Blockchain,

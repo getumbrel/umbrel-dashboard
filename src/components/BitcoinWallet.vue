@@ -639,9 +639,7 @@ export default {
   },
   watch: {},
   async created() {
-    await this.$store.dispatch("bitcoin/getStatus");
-    this.$store.dispatch("bitcoin/getBalance");
-    this.$store.dispatch("bitcoin/getTransactions");
+    this.$store.dispatch("bitcoin/getStatus");
   },
   components: {
     CardWidget,

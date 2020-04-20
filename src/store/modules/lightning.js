@@ -118,8 +118,10 @@ const actions = {
     const status = await API.get(
       `${process.env.VUE_APP_API_URL}api/v1/lnd/info/status`
     );
-    commit("isOperational", status.operational);
-    commit("isUnlocked", status.unlocked);
+    if (status) {
+      commit("isOperational", status.operational);
+      commit("isUnlocked", status.unlocked);
+    }
 
     // launch unlock modal after 30 sec
     // if (!status.unlocked) {
