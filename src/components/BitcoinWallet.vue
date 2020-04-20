@@ -40,8 +40,8 @@
           <transition-group name="list" class="list-group pb-2 transactions">
             <!-- Transaction -->
             <b-list-group-item
-              v-for="tx in transactions"
-              :key="tx.timestamp.toString()"
+              v-for="(tx, index) in transactions"
+              :key="index"
               class="flex-column align-items-start px-4"
             >
               <div class="d-flex w-100 justify-content-between">
@@ -213,7 +213,7 @@
       <!-- SCREEN/MODE: Review Withdrawal -->
       <div class="px-4" v-if="state.mode === 'review-withdraw'" key="mode-review-withdraw">
         <div class="text-center pb-4">
-          <h3 class="mb-0">{{ state.withdraw.amount }}</h3>
+          <h3 class="mb-0">{{ Number(state.withdraw.amount).toLocaleString() }}</h3>
           <span class="d-block mb-3 text-muted">Sats</span>
 
           <svg
@@ -234,13 +234,13 @@
         </div>
         <div class="d-flex justify-content-between pb-3">
           <span class="text-muted">
-            <b>{{ fees.fast.total }}</b>
+            <b>{{ fees.fast.total.toLocaleString() }}</b>
             <small>&nbsp;Sats</small>
             <br />
             <small>Mining fee</small>
           </span>
           <span class="text-right text-muted">
-            <b>{{ walletBalance - state.withdraw.amount - fees.fast.total }}</b>
+            <b>{{ (walletBalance - state.withdraw.amount - fees.fast.total).toLocaleString() }}</b>
             <small>&nbsp;Sats</small>
             <br />
             <small>Remaining balance</small>
@@ -273,10 +273,7 @@
             Successfully withdrawn
             <b>{{ state.withdraw.amount }} sats</b>
           </span>
-          <a
-            :href="`https://blockstream.info/tx/${state.withdraw.txHash}`"
-            target="_blank"
-          >View transaction</a>
+          <a :href="getTxUrl(state.withdraw.txHash)" target="_blank">View transaction</a>
         </div>
       </div>
 
@@ -525,6 +522,14 @@ export default {
     getReadableTime(timestamp) {
       return moment(timestamp).format("MMMM D, h:mm:ss a"); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
+    getTxUrl(txHash) {
+      let url = `https://blockstream.info`;
+
+      if (process.env.VUE_APP_NETWORK === "testnet") {
+        url += "/testnet";
+      }
+      return `${url}/tx/${txHash}`;
+    },
     async changeMode(mode) {
       //change between different modes/screens of the wallet from - balance (default), withdraw, withdrawan, depsoit
 
@@ -600,13 +605,13 @@ export default {
     },
     async withdrawBtc() {
       this.state.loading = true;
-      this.state.isWithdrawing = true;
+      this.state.withdraw.isWithdrawing = true;
 
       const payload = {
         sweep: this.state.withdraw.sendMax,
         addr: this.state.withdraw.address,
         amt: this.state.withdraw.amount,
-        satPerByte: parseInt(this.state.withdraw.fees.fast.perByte)
+        satPerByte: parseInt(this.fees.fast.perByte)
       };
 
       try {
@@ -617,6 +622,10 @@ export default {
         const withdrawTx = res.data;
         this.state.withdraw.txHash = withdrawTx.txid;
         this.changeMode("withdrawn");
+
+        //update
+        this.$store.dispatch("bitcoin/getBalance");
+        this.$store.dispatch("bitcoin/getTransactions");
       } catch (error) {
         console.log(error);
         this.state.error = error.reponse
@@ -624,9 +633,8 @@ export default {
           : "Error sending BTC";
         console.error("Error sending", error);
       }
-
       this.state.loading = false;
-      this.state.isWithdrawing = false;
+      this.state.withdraw.isWithdrawing = false;
     }
   },
   watch: {},

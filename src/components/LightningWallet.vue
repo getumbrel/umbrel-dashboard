@@ -40,8 +40,8 @@
           <transition-group name="list" class="list-group pb-2 transactions">
             <!-- Transaction -->
             <b-list-group-item
-              v-for="tx in transactions"
-              :key="tx.timestamp.toString()"
+              v-for="(tx, index) in transactions"
+              :key="index"
               class="flex-column align-items-start px-4"
             >
               <div class="d-flex w-100 justify-content-between">

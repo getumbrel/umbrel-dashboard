@@ -302,7 +302,9 @@ const getters = {
     return data;
   },
   transactions(state) {
-    const txs = state.transactions.map(tx => {
+    const txs = [];
+
+    state.transactions.forEach(tx => {
       const amount = Number(tx.amount);
 
       let type = "incoming";
@@ -320,14 +322,17 @@ const getters = {
         description = "Withdrawal";
       } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
         description = "Deposit";
+      } else if (tx.type === "UNKNOWN" && Number(tx.amount) === 0) { //self incoming txs of change
+        console.log("YES");
+        return;
       }
 
-      return {
+      txs.push({
         type,
         amount: amount < 0 ? amount * -1 : amount, //for formatting +/- in view
         timestamp: new Date(Number(tx.timeStamp) * 1000),
         description
-      };
+      });
     });
 
     return txs;
