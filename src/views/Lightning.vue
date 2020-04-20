@@ -20,7 +20,9 @@
             </svg>
             <small class="ml-1 text-success">{{ state.status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
-            <span class="d-block text-muted">lnd v{{ state.lndVersion.split(" commit")[0] }}</span>
+            <span
+              class="d-block text-muted"
+            >{{ this.lndVersion ? this.lndVersion.split(" commit")[0] : '' }}</span>
           </div>
         </div>
         <div>
@@ -67,13 +69,13 @@
           >
             <!-- QR Code element -->
             <qrcode-vue
-              :value="state.pubKey"
+              :value="this.pubkey"
               :size="150"
               level="H"
               renderAs="svg"
               class="d-flex justify-content-center qr-image my-2"
             ></qrcode-vue>
-            <input-copy size="sm" :value="state.pubKey" class="p-2"></input-copy>
+            <input-copy size="sm" :value="this.pubkey" class="p-2"></input-copy>
           </b-modal>
         </div>
       </div>
@@ -100,7 +102,7 @@
               <!-- List of channels -->
               <!-- <div>
                 <h4
-                  v-for="channel in state.channels"
+                  v-for="channel in this.channels"
                   :key="channel.channelPoint"
                 >{{channel.capacity}}</h4>
               </div>-->
@@ -114,8 +116,7 @@
 
 <script>
 import QrcodeVue from "qrcode.vue";
-
-import API from "@/helpers/api";
+import { mapState } from "vuex";
 
 import CardWidget from "@/components/CardWidget";
 import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
@@ -136,23 +137,25 @@ export default {
   data() {
     return {
       state: {
-        lndVersion: null,
-        numActiveChannels: 0,
-        numPeers: 0,
-        status: "Running",
-        pubKey: "",
-        channels: []
+        status: "Running"
       }
     };
   },
   computed: {
+    ...mapState({
+      lndVersion: state => state.lightning.version,
+      numActiveChannels: state => state.lightning.numActiveChannels,
+      numPeers: state => state.lightning.numPeers,
+      pubkey: state => state.lightning.pubkey,
+      channels: state => state.lightning.channels
+    }),
     stats() {
       // let activeChannels = 0;
       let totalLocalBalance = 0;
       let totalRemoteBalance = 0;
       // let totalCapacity = 0;
 
-      for (let channel of this.state.channels) {
+      for (let channel of this.channels) {
         if (!channel.active) continue;
         // activeChannels++;
         totalLocalBalance += Number(channel.localBalance);
@@ -175,7 +178,7 @@ export default {
         // },
         {
           title: "Peers",
-          value: this.state.numPeers,
+          value: this.numPeers,
           suffix: "Peers",
           change: {
             value: 1,
@@ -184,7 +187,7 @@ export default {
         },
         {
           title: "Active Channels",
-          value: this.state.numActiveChannels,
+          value: this.numActiveChannels,
           suffix: "Channels",
           change: {
             value: -42,
@@ -220,46 +223,7 @@ export default {
     }
   },
   created() {
-    //Get LND Status
-    // axios
-    //   .get(`${process.env.VUE_APP_API_URL}api/v1/lnd/info/status`)
-    //   .then(res => {
-    //     const { operational, unlocked } = res.data;
-
-    //     if (operational && unlocked) {
-    //       return (this.state.status = "Running");
-    //     }
-    //     if (operational && !unlocked) {
-    //       return (this.state.status = "Waiting");
-    //     }
-    //     if (!operational) {
-    //       return (this.state.status = "Stopped");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     alert(error);
-    //   })
-    //   .finally(() => {
-    //     // this.state.loading = false;
-    //   });
-
-    //Get LND Info for showing stats
-    API.get(`${process.env.VUE_APP_API_URL}api/v1/pages/lnd/`)
-      .then(res => {
-        this.state.pubKey = res.lightningInfo.identityPubkey;
-        this.state.lndVersion = res.lightningInfo.version;
-        this.state.numPeers = res.lightningInfo.numPeers;
-        this.state.numActiveChannels = res.lightningInfo.numActiveChannels;
-        this.state.channels = res.channels;
-      })
-      .catch(error => {
-        console.log(error);
-        alert(error);
-      })
-      .finally(() => {
-        // this.state.loading = false;
-      });
+    this.$store.dispatch("lightning/getLndPageData");
   },
   watch: {},
   components: {

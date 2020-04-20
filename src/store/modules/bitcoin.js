@@ -304,35 +304,37 @@ const getters = {
   transactions(state) {
     const txs = [];
 
-    state.transactions.forEach(tx => {
-      const amount = Number(tx.amount);
+    if (state.transactions) {
+      state.transactions.forEach(tx => {
+        const amount = Number(tx.amount);
 
-      let type = "incoming";
-      if (amount < 0) {
-        type = "outgoing";
-      }
+        let type = "incoming";
+        if (amount < 0) {
+          type = "outgoing";
+        }
 
-      let description = "Unknown";
+        let description = "Unknown";
 
-      if (tx.type === "CHANNEL_OPEN" || tx.type === "PENDING_OPEN") {
-        description = "Lightning Wallet";
-      } else if (tx.type === "CHANNEL_CLOSE" || tx.type === "PENDING_CLOSE") {
-        description = "Lightning Wallet";
-      } else if (tx.type === "ON_CHAIN_TRANSACTION_SENT") {
-        description = "Withdrawal";
-      } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
-        description = "Deposit";
-      } else if (tx.type === "UNKNOWN" && Number(tx.amount) === 0) { //skip self incoming txs of change
-        return;
-      }
+        if (tx.type === "CHANNEL_OPEN" || tx.type === "PENDING_OPEN") {
+          description = "Lightning Wallet";
+        } else if (tx.type === "CHANNEL_CLOSE" || tx.type === "PENDING_CLOSE") {
+          description = "Lightning Wallet";
+        } else if (tx.type === "ON_CHAIN_TRANSACTION_SENT") {
+          description = "Withdrawal";
+        } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
+          description = "Deposit";
+        } else if (tx.type === "UNKNOWN" && Number(tx.amount) === 0) { //skip self incoming txs of change
+          return;
+        }
 
-      txs.push({
-        type,
-        amount: amount < 0 ? amount * -1 : amount, //for formatting +/- in view
-        timestamp: new Date(Number(tx.timeStamp) * 1000),
-        description
+        txs.push({
+          type,
+          amount: amount < 0 ? amount * -1 : amount, //for formatting +/- in view
+          timestamp: new Date(Number(tx.timeStamp) * 1000),
+          description
+        });
       });
-    });
+    }
 
     return txs;
   }

@@ -19,6 +19,7 @@ import API from "@/helpers/api";
 const state = () => ({
   operational: false,
   unlocked: false,
+  version: "",
   currentBlock: 0,
   blockHeight: 0,
   balance: {
@@ -26,6 +27,9 @@ const state = () => ({
     confirmed: 0,
     pending: 0
   },
+  numPendingChannels: 0,
+  numActiveChannels: 0,
+  numPeers: 0,
   channels: [],
   connectionCode: "unknown",
   maxSend: 0,
@@ -47,8 +51,20 @@ const mutations = {
     state.unlocked = unlocked;
   },
 
+  setVersion(state, version) {
+    state.version = version;
+  },
+
   setConnectionCode(state, code) {
     state.connectionCode = code;
+  },
+
+  setNumPeers(state, numPeers) {
+    state.numPeers = numPeers;
+  },
+
+  setNumActiveChannels(state, numActiveChannels) {
+    state.numActiveChannels = numActiveChannels;
   },
 
   setChannels(state, channels) {
@@ -116,16 +132,25 @@ const actions = {
     // }
   },
 
-  async getLndPageData({ commit }) {
-    const lightning = await API.get(
+  //basically fetches everything
+  async getLndPageData({ commit, dispatch }) {
+    const data = await API.get(
       `${process.env.VUE_APP_API_URL}api/v1/pages/lnd`
     );
 
-    if (lightning) {
-      const lightningInfo = lightning.lightningInfo;
+    if (data) {
+      const channels = data.channels;
+      dispatch('getChannels', channels);
+
+      const lightningInfo = data.lightningInfo;
 
       commit("setPubKey", lightningInfo.identityPubkey);
+      commit("setVersion", lightningInfo.version);
+      commit("setNumPeers", lightningInfo.numPeers);
+      commit("setNumActiveChannels", lightningInfo.numActiveChannels);
+
     }
+
   },
 
   async getConnectionCode({ commit }) {
@@ -155,11 +180,19 @@ const actions = {
     }
   },
 
-  async getChannels({ commit, state }) {
+  async getChannels({ commit, state }, preFetchedChannels = []) {
     if (state.operational && state.unlocked) {
-      const rawChannels = await API.get(
-        `${process.env.VUE_APP_API_URL}api/v1/lnd/channel`
-      );
+
+      let rawChannels;
+
+      if (preFetchedChannels.length) { //eg when used by lnd page 
+        rawChannels = preFetchedChannels;
+      } else {
+        rawChannels = await API.get(
+          `${process.env.VUE_APP_API_URL}api/v1/lnd/channel`
+        );
+      }
+
       const channels = [];
       let confirmedBalance = 0;
       let pendingBalance = 0;
@@ -278,7 +311,7 @@ const actions = {
       }
 
       //Sort by recent to oldest
-      transactions.sort(function(tx1, tx2) {
+      transactions.sort(function (tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
 
