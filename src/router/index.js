@@ -119,7 +119,7 @@ const router = new VueRouter({
 });
 
 //Fake for now
-const isLoggedIn = () => true;
+const isLoggedIn = () => store.state.user.isAuthenticated;
 
 //Authentication Check
 router.beforeEach((to, from, next) => {

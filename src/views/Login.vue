@@ -57,17 +57,41 @@ export default {
     }
   },
   computed: {},
+  created() {
+    //redirect if already logged in
+    console.log(this.$router);
+    if (this.$store.state.user.isAuthenticated) {
+      this.$router.push("/dashboard");
+    }
+  },
   methods: {
     submitPassword() {
       this.state.isLoggingIn = true;
       window.setTimeout(() => {
-        if (this.state.password === "incorrect") {
+        //if testnet, password is "printerg0brrr"
+        if (window.location.host === "testnet.getumbrel.com") {
+          if (this.state.password === "printerg0brrr") {
+            this.$store.dispatch("user/login");
+            return this.$router.push(
+              this.$router.history.current.query.redirect || "/dashboard"
+            );
+          } else {
+            this.state.isIncorrectPassword = true;
+            return (this.state.isLoggingIn = false);
+          }
+        }
+
+        //if locally, then any password will work, except "incorrect"
+        if (this.state.password !== "incorrect") {
+          this.$store.dispatch("user/login");
+          return this.$router.push(
+            this.$router.history.current.query.redirect || "/dashboard"
+          );
+        } else {
           this.state.isIncorrectPassword = true;
           return (this.state.isLoggingIn = false);
-        } else {
-          return this.$router.push("/dashboard");
         }
-      }, 2500);
+      }, 1000);
     }
   },
   components: {

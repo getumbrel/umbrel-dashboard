@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 //Modules
+import user from './modules/user';
 import system from './modules/system';
 import bitcoin from './modules/bitcoin';
 import lightning from './modules/lightning';
@@ -103,6 +104,7 @@ export default new Vuex.Store({
   actions,
   getters,
   modules: {
+    user,
     system,
     bitcoin,
     lightning
