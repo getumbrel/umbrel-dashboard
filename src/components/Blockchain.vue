@@ -42,17 +42,15 @@
                 <div class="blockchain-block-icon-bg"></div>
               </div>
               <div class="align-self-center">
-                <h6 class="mb-1 font-weight-normal">
-                  Block {{ block.number.toLocaleString() }}
-                </h6>
-                <small class="text-muted"
-                  >{{ block.txs.toLocaleString() }} transactions</small
-                >
+                <h6 class="mb-1 font-weight-normal">Block {{ block.number.toLocaleString() }}</h6>
+                <small class="text-muted">{{ block.txs.toLocaleString() }} transactions</small>
               </div>
             </div>
-            <small class="text-muted align-self-center">{{
+            <small class="text-muted align-self-center">
+              {{
               block.timestamp
-            }}</small>
+              }}
+            </small>
           </div>
         </li>
       </transition-group>
@@ -123,11 +121,9 @@ export default {
       window.clearInterval(this.polling);
       //if syncing, fetch blocks every second
       if (Number(syncPercent) !== 100) {
-        console.log("Synching... fetching blocks every SECOND");
         this.polling = window.setInterval(this.fetchBlocks, 1000);
       } else {
         //else, slow down and fetch blocks every minute
-        console.log("100% Synched... fetching blocks every MINUTE");
         this.polling = window.setInterval(this.fetchBlocks, 60 * 1000);
       }
     }
@@ -139,9 +135,9 @@ export default {
     //then start polling
     this.poller(this.syncPercent);
   },
-  watcher: {
-    syncPercent: newPercent => {
-      // reset polling depending upon sync %
+  watch: {
+    syncPercent(newPercent) {
+      // reset polling time depending upon sync %
       this.poller(newPercent);
     }
   },

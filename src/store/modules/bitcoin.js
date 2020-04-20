@@ -322,8 +322,7 @@ const getters = {
         description = "Withdrawal";
       } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
         description = "Deposit";
-      } else if (tx.type === "UNKNOWN" && Number(tx.amount) === 0) { //self incoming txs of change
-        console.log("YES");
+      } else if (tx.type === "UNKNOWN" && Number(tx.amount) === 0) { //skip self incoming txs of change
         return;
       }
 
