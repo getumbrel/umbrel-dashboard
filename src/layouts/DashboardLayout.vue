@@ -107,11 +107,14 @@ export default {
   },
   methods: {
     logout() {
+      //close mobile menu
+      if (this.isMobileMenuOpen) {
+        this.toggleMobileMenu();
+      }
       this.$store.dispatch("user/logout");
       this.$router.push("/");
     },
     toggleMobileMenu() {
-      console.log(process.env.VUE_APP_API_URL);
       this.$store.commit("toggleMobileMenu");
     },
     fetchData() {

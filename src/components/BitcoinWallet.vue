@@ -171,7 +171,7 @@
                     <span
                       style="margin-left: 6px;"
                       :title="tx.description"
-                    >{{ tx.description.length > 25 ? tx.description.substring(0,25) + '...' : tx.description }}</span>
+                    >{{ tx.description.length > 19 ? tx.description.substring(0,19) + '...' : tx.description }}</span>
                   </h6>
 
                   <!-- Timestamp of tx -->

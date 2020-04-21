@@ -129,6 +129,8 @@ export default {
       rgba(255, 255, 255, 0),
       rgba(255, 255, 255, 1)
     );
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
   }
 
   //top fade
