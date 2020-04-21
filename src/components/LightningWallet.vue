@@ -167,7 +167,10 @@
                     </svg>
 
                     <!-- Invoice description -->
-                    <span style="margin-left: 6px;">{{ tx.description }}</span>
+                    <span
+                      style="margin-left: 6px;"
+                      :title="tx.description"
+                    >{{ tx.description.length > 25 ? tx.description.substring(0,25) + '...' : tx.description }}</span>
                   </h6>
 
                   <!-- Timestamp of tx -->
@@ -230,10 +233,13 @@
 
         <!-- Invoice amount + description -->
         <p>
-          <span v-show="state.send.isValidInvoice && state.send.description">
+          <span v-show="state.send.isValidInvoice && state.send.amount">
             Paying
-            <b>{{ state.send.amount }}</b> sats for
-            <b>{{ state.send.description }}</b>
+            <b>{{ state.send.amount }}</b> sats
+            <span v-if="state.send.description">
+              for
+              <b>{{state.send.description}}</b>
+            </span>
           </span>
         </p>
       </div>
@@ -260,8 +266,11 @@
         <!-- Invoice amount + description -->
         <p class="text-center mb-4">
           Paid
-          <b>{{state.send.amount}} sats</b> for
-          <b>{{state.send.description}}</b>
+          <b>{{state.send.amount}} sats</b>
+          <span v-if="state.send.description">
+            for
+            <b>{{state.send.description}}</b>
+          </span>
         </p>
       </div>
 

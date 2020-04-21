@@ -301,7 +301,7 @@ const actions = {
       }
 
       if (payments) {
-        const outgoingTransactions = payments.slice(0, 3).map(tx => {
+        const outgoingTransactions = payments.map(tx => {
           return {
             type: "outgoing",
             amount: Number(tx.value),
@@ -322,21 +322,22 @@ const actions = {
         if (tx.type !== "outgoing") continue;
 
         if (!tx.description) {
-          //example - in case of a keysend tx or no memo
+          //example - in case of a keysend tx there is no payment request
           tx.description = "Payment";
           continue;
-        } else {
-          try {
-            const invoiceDetails = await API.get(
-              `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
-            );
-            tx.description = invoiceDetails.description;
-          } catch (error) {
-            console.log(error);
-            tx.description = "";
-          }
+        }
+
+        try {
+          const invoiceDetails = await API.get(
+            `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
+          );
+          tx.description = invoiceDetails.description || "Payment"; //when there is no memo
+        } catch (error) {
+          console.log(error);
+          tx.description = "Payment";
         }
       }
+
 
       commit("setTransactions", transactions);
     }

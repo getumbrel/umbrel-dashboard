@@ -168,7 +168,10 @@
                     </svg>
 
                     <!-- Invoice description -->
-                    <span style="margin-left: 6px;">{{ tx.description }}</span>
+                    <span
+                      style="margin-left: 6px;"
+                      :title="tx.description"
+                    >{{ tx.description.length > 25 ? tx.description.substring(0,25) + '...' : tx.description }}</span>
                   </h6>
 
                   <!-- Timestamp of tx -->
