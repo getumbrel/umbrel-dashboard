@@ -22,7 +22,7 @@
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
             <span
               class="d-block text-muted"
-            >{{ this.lndVersion ? this.lndVersion.split(" commit")[0] : '' }}</span>
+            >{{ this.lndVersion ? this.lndVersion.split(" commit")[0] : '...' }}</span>
           </div>
         </div>
         <div>
@@ -87,7 +87,7 @@
       <b-col col cols="12" md="6" xl="8">
         <card-widget header="Channels">
           <div class>
-            <div class="px-4 pb-2">
+            <div class="px-4">
               <b-row>
                 <b-col col cols="6" xl="3" v-for="stat in stats" :key="stat.title">
                   <bitcoin-network-stat
@@ -98,15 +98,8 @@
                   ></bitcoin-network-stat>
                 </b-col>
               </b-row>
-
-              <!-- List of channels -->
-              <!-- <div>
-                <h4
-                  v-for="channel in this.channels"
-                  :key="channel.channelPoint"
-                >{{channel.capacity}}</h4>
-              </div>-->
             </div>
+            <channel-list></channel-list>
           </div>
         </card-widget>
       </b-col>
@@ -122,6 +115,7 @@ import CardWidget from "@/components/CardWidget";
 import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
 import LightningWallet from "@/components/LightningWallet";
 import InputCopy from "@/components/InputCopy";
+import ChannelList from "@/components/ChannelList";
 
 const abbreviateNumber = n => {
   if (n < 1e3) return [Number(n.toFixed(1)), ""];
@@ -231,7 +225,8 @@ export default {
     CardWidget,
     BitcoinNetworkStat,
     QrcodeVue,
-    InputCopy
+    InputCopy,
+    ChannelList
   }
 };
 </script>

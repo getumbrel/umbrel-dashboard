@@ -10,7 +10,7 @@
             {{ value }}{{ numberSuffix }}
           </span>
         </h3>
-        <span class="text-muted d-inline ml-1">{{ suffix }}</span>
+        <span class="text-muted d-inline">{{ suffix }}</span>
       </div>
       <div v-if="change">
         <svg
@@ -40,9 +40,10 @@
             'text-danger': change.value < 0,
             'text-muted': change.value === 0
           }"
-          >{{ change.value >= 0 ? "+" : "" }}{{ change.value
-          }}{{ change.suffix }}</span
         >
+          {{ change.value >= 0 ? "+" : "" }}{{ change.value
+          }}{{ change.suffix }}
+        </span>
       </div>
     </div>
   </div>

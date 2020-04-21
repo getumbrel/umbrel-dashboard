@@ -20,7 +20,7 @@
             </svg>
             <small class="ml-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted">{{ version }}</span>
+            <span class="d-block text-muted">{{ version ? version : '...' }}</span>
           </div>
         </div>
         <div>
