@@ -572,7 +572,7 @@ export default {
 
       //refresh data
       this.$store.dispatch("lightning/getTransactions");
-      this.$store.dispatch("lightning/getBalance");
+      this.$store.dispatch("lightning/getChannels");
 
       //clear any intervals
       window.clearInterval(this.state.receive.invoiceStatusPoller);
@@ -623,7 +623,7 @@ export default {
 
         //refresh
         this.$store.dispatch("lightning/getTransactions");
-        this.$store.dispatch("lightning/getBalance");
+        this.$store.dispatch("lightning/getChannels");
       } catch (error) {
         this.state.error = JSON.stringify(error.response)
           ? error.response.data
@@ -770,7 +770,7 @@ export default {
               window.clearInterval(this.state.receive.invoiceStatusPoller);
 
               //refresh
-              this.$store.dispatch("lightning/getBalance");
+              this.$store.dispatch("lightning/getChannels");
               this.$store.dispatch("lightning/getTransactions");
             }
 
