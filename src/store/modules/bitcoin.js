@@ -311,6 +311,8 @@ const getters = {
         let type = "incoming";
         if (amount < 0) {
           type = "outgoing";
+        } else if (amount === 0) { //skip self incoming txs of change
+          return;
         }
 
         let description = "Unknown";
@@ -323,8 +325,6 @@ const getters = {
           description = "Withdrawal";
         } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
           description = "Deposit";
-        } else if (tx.type === "UNKNOWN" && Number(tx.amount) === 0) { //skip self incoming txs of change
-          return;
         }
 
         txs.push({
