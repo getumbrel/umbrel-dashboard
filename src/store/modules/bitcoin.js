@@ -24,7 +24,7 @@ const state = () => ({
     pendingIn: 0,
     pendingOut: 0
   },
-  transactions: [],
+  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
   pending: [],
   price: 0,
   fees: {
@@ -107,7 +107,7 @@ const mutations = {
 
   transactions(state, transactions) {
     // Clear previously loaded data
-    state.transactions = [];
+    // state.transactions = [];
     // state.pending = [];
 
     // Loop through transactions and sort them by type
@@ -121,6 +121,7 @@ const mutations = {
     //         }
     //     }
     // });
+    // console.log(transactions);
 
     state.transactions = transactions;
   },
@@ -303,6 +304,11 @@ const getters = {
   },
   transactions(state) {
     const txs = [];
+
+    //return default "loading" transactions until txs aren't fetched
+    if (state.transactions && state.transactions.length && state.transactions[0]['type'] === 'loading') {
+      return state.transactions;
+    }
 
     if (state.transactions) {
       state.transactions.forEach(tx => {

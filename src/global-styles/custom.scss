@@ -194,3 +194,28 @@ a {
         right: auto;
     }
   }
+
+  //Loading placeholders
+
+  .loading-placeholder {
+      display: inline-block;
+      height: 1rem;
+      width: 100%;
+      background-color: #EDEEF1;
+      border-radius: 0.5rem;
+      animation: loading-placeholder 1.5s infinite ease;
+      &.loading-placeholder-sm {
+          height: 0.75rem;
+          border-radius: 0.375rem;
+      }
+  }
+  
+  @keyframes loading-placeholder {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
