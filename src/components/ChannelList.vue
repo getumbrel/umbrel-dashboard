@@ -151,7 +151,7 @@ export default {
   }
 }
 .channel-list {
-  height: 20rem; //to do: change to max-height
+  height: 20.4rem; //to do: change to max-height
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; //momentum scroll on iOS
 }
