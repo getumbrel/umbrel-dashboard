@@ -2,7 +2,7 @@
   <div class="channel-list-container">
     <div class="channel-list">
       <transition-group name="list" appear>
-        <div v-for="(channel, index) in channels" :key="index" class="py-3 px-4 channel">
+        <div v-for="(channel, index) in channels" :key="index" class="py-3 px-3 px-sm-4 channel">
           <b-row align-v="center">
             <b-col col cols="12" xl="3">
               <!-- on large screens -->

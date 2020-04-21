@@ -3,7 +3,7 @@
     <div class="card-custom-loading-bar" v-if="loading"></div>
     <!-- <template v-slot:header></template> -->
     <div>
-      <div class="card-custom-header p-3 p-xl-4">
+      <div class="card-custom-header py-4 px-3 px-sm-4">
         <div class="d-flex w-100 justify-content-between align-items-center">
           <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
           <status
@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="card-custom-body">
-        <div class="card-app-info px-4" v-if="title || numericTitle">
+        <div class="card-app-info px-3 px-sm-4" v-if="title || numericTitle">
           <div class="d-flex w-100 justify-content-between mb-4">
             <div>
               <h3 class="mb-1">{{ title }}</h3>

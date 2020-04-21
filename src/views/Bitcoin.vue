@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2">
+  <div class="p-sm-2">
     <div class="my-3 pb-2">
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-start align-items-center">
@@ -72,7 +72,7 @@
             <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
           <div class>
-            <div class="px-4 mb-4">
+            <div class="px-3 px-sm-4 mb-4">
               <div class="w-100 d-flex justify-content-between mb-2">
                 <span class="align-self-end">Synchronized</span>
                 <h3 class="font-weight-normal mb-0">
@@ -90,23 +90,23 @@
               ></b-progress>
             </div>
             <!-- low storage mode  -->
-            <!-- <div class="d-flex w-100 justify-content-between px-4 mb-4">
+            <!-- <div class="d-flex w-100 justify-content-between px-3 px-sm-4 mb-4">
               <div>
                 <span class="d-block">Low Storage Mode</span>
                 <small class="text-muted d-block">Discard old blocks</small>
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>-->
-            <p class="px-4 mb-3">Latest Blocks</p>
+            <p class="px-3 px-sm-4 mb-3">Latest Blocks</p>
             <blockchain :numBlocks="3"></blockchain>
-            <div class="px-4 py-2"></div>
+            <div class="px-3 px-sm-4 py-2"></div>
           </div>
         </card-widget>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="Network">
           <div class>
-            <div class="px-4 pb-2">
+            <div class="px-3 px-sm-4 pb-2">
               <b-row>
                 <b-col col cols="6" v-for="stat in state.stats" :key="stat.title">
                   <bitcoin-network-stat

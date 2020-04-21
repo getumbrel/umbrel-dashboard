@@ -13,7 +13,7 @@
     :loading="state.loading"
   >
     <!-- Back Button -->
-    <div class="px-4 pt-2 pb-3" v-if="state.mode != 'balance'">
+    <div class="px-3 px-sm-4 pt-2 pb-3" v-if="state.mode != 'balance'">
       <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
         <svg
           width="7"
@@ -39,7 +39,7 @@
 
         <!-- No transactions -->
         <div
-          class="d-flex flex-column justify-content-center px-4 zero-transactions-container"
+          class="d-flex flex-column justify-content-center px-3 px-sm-4 zero-transactions-container"
           v-if="!transactions.length"
         >
           <svg
@@ -71,7 +71,7 @@
             <b-list-group-item
               v-for="(tx, index) in transactions"
               :key="index"
-              class="flex-column align-items-start px-4"
+              class="flex-column align-items-start px-3 px-sm-4"
             >
               <!-- Loading Transactions Placeholder -->
               <div class="d-flex w-100 justify-content-between" v-if="tx.type === 'loading'">
@@ -211,13 +211,13 @@
         </div>
 
         <!-- Link to Lightning Network Page -->
-        <div class="px-4 pt-2" v-if="!isLightningPage">
+        <div class="px-3 px-sm-4 pt-2" v-if="!isLightningPage">
           <router-link to="/lightning" class="card-link">Manage</router-link>
         </div>
       </div>
 
       <!-- SCREEN/MODE: Paste Invoice Screen -->
-      <div class="px-4 mode-send" v-else-if="state.mode === 'send'" key="mode-send">
+      <div class="px-3 px-sm-4 mode-send" v-else-if="state.mode === 'send'" key="mode-send">
         <label class="sr-onlsy" for="input-sats">Paste Invoice</label>
         <b-input
           id="input-sats"
@@ -245,7 +245,7 @@
       </div>
 
       <!-- SCREEN/MODE: Successfully paid invoice -->
-      <div class="px-4 mode-sent" v-else-if="state.mode === 'sent'" key="mode-sent">
+      <div class="px-3 px-sm-4 mode-sent" v-else-if="state.mode === 'sent'" key="mode-sent">
         <!-- Big green checkmark -->
         <div class="checkmark mb-4">
           <svg
@@ -275,7 +275,11 @@
       </div>
 
       <!-- SCREEN/MODE: Create Invoice (Receive) -->
-      <div class="px-4 mode-receive" v-else-if="state.mode === 'receive'" key="mode-receive">
+      <div
+        class="px-3 px-sm-4 mode-receive"
+        v-else-if="state.mode === 'receive'"
+        key="mode-receive"
+      >
         <label class="sr-onlsy" for="input-sats">Sats</label>
         <b-input
           id="input-sats"
@@ -304,7 +308,11 @@
       </div>
 
       <!-- SCREEN/MODE: Show Generated Invoice -->
-      <div class="px-4 mode-invoice" v-else-if="this.state.mode === 'invoice'" key="mode-invoice">
+      <div
+        class="px-3 px-sm-4 mode-invoice"
+        v-else-if="this.state.mode === 'invoice'"
+        key="mode-invoice"
+      >
         <p class="text-center text-muted mb-2">
           <!-- If still generating invoice, show blinking loading text -->
           <span class="blink" v-if="state.receive.isGeneratingInvoice">Generating Invoice</span>
@@ -351,7 +359,7 @@
       </div>
 
       <!-- SCREEN/MODE: Received (invoice settled) -->
-      <div class="px-4 mode-sent" v-else-if="state.mode === 'received'" key="mode-sent">
+      <div class="px-3 px-sm-4 mode-sent" v-else-if="state.mode === 'received'" key="mode-sent">
         <!-- Big green checkmark -->
         <div class="checkmark mb-4">
           <svg
@@ -379,7 +387,7 @@
     </transition>
 
     <!-- Error message -->
-    <small class="text-danger mb-2 d-block px-4" v-if="state.error">{{ state.error }}</small>
+    <small class="text-danger mb-2 d-block px-3 px-sm-4" v-if="state.error">{{ state.error }}</small>
 
     <!-- Buttons for all screens/modes -->
     <div class="mt-3">

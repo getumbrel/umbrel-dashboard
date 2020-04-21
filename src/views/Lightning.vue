@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2">
+  <div class="p-sm-2">
     <div class="my-3 pb-2">
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-start align-items-center">
@@ -87,7 +87,7 @@
       <b-col col cols="12" md="6" xl="8">
         <card-widget header="Channels">
           <div class>
-            <div class="px-4">
+            <div class="px-3 px-sm-4">
               <b-row>
                 <b-col col cols="6" xl="3" v-for="stat in stats" :key="stat.title">
                   <bitcoin-network-stat

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2">
+  <div class="p-sm-2">
     <div class="my-3 pb-2">
       <h1>welcome back, satoshi</h1>
       <p class="text-muted">This is your Umbrel's dashboard</p>
@@ -25,13 +25,13 @@
           :loading="syncPercent !== 100"
         >
           <div class>
-            <!-- <div class="d-flex w-100 justify-content-between px-4">
+            <!-- <div class="d-flex w-100 justify-content-between px-3 px-sm-4">
                 <p class="mb-1">Connected Peers</p>
                 <p>8</p>
             </div>-->
-            <!-- <p class="px-4">Latest Blocks</p> -->
+            <!-- <p class="px-3 px-sm-4">Latest Blocks</p> -->
             <blockchain></blockchain>
-            <div class="px-4 py-3">
+            <div class="px-3 px-sm-4 py-3">
               <router-link to="/bitcoin" class="card-link">Manage</router-link>
             </div>
           </div>
@@ -46,7 +46,7 @@
             sub-title="New orders today"
             icon="icon-app-btcpay.svg"
           >
-            <div class="px-4 pt-2 pb-3">
+            <div class="px-3 px-sm-4 pt-2 pb-3">
               <a href="#" class="card-link">Manage</a>
             </div>
         </card-widget>-->
@@ -57,7 +57,7 @@
           sub-title="Traffic relayed over Tor"
           icon="icon-app-tor.svg"
         >
-          <div class="px-4 pt-2 pb-3">
+          <div class="px-3 px-sm-4 pt-2 pb-3">
             <router-link to="/settings" class="card-link">Manage</router-link>
           </div>
         </card-widget>-->
