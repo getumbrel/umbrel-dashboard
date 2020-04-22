@@ -106,6 +106,9 @@
       </b-col>
       <b-col col cols="12" md="6" xl="8">
         <card-widget header="Channels">
+          <template v-slot:header-right>
+            <b-button variant="outline-dark" size="sm" v-b-modal.open-channel-modal>+ Open Channel</b-button>
+          </template>
           <div class>
             <div class="px-3 px-sm-4">
               <b-row>
@@ -119,12 +122,6 @@
                 </b-col>
               </b-row>
             </div>
-
-            <b-button
-              class="mx-4"
-              variant="outline-primary"
-              v-b-modal.open-channel-modal
-            >Open Channel</b-button>
 
             <b-modal
               id="open-channel-modal"

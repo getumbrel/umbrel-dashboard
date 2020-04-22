@@ -2,10 +2,11 @@
   <form @submit.prevent="openChannel">
     <b-row>
       <b-col col cols="12" sm="6">
-        <label class="sr-onlsy" for="peer-connection">Peer connection code</label>
+        <label class="sr-onlsy" for="peer-connection">Peer address</label>
         <b-input
           id="peer-connection"
           class="mb-3 neu-input"
+          placeholder="pubkey@ip:port"
           type="text"
           size="lg"
           v-model="peerConnectionCode"
@@ -13,7 +14,7 @@
         ></b-input>
       </b-col>
       <b-col col cols="12" sm="6">
-        <label class="sr-onlsy" for="funding-amount">Channel funding amount</label>
+        <label class="sr-onlsy" for="funding-amount">Sats</label>
         <b-input
           id="funding-amount"
           class="mb-3 neu-input"
@@ -165,10 +166,8 @@ export default {
       if (this.feeTimeout) {
         clearTimeout(this.feeTimeout);
       }
-
-      this.error = "";
-
       this.feeTimeout = setTimeout(async () => {
+        this.error = "";
         if (this.fundingAmount) {
           const payload = {
             confTarget: 0,

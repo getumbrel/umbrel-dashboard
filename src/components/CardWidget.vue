@@ -48,6 +48,7 @@
             </template>
             <slot name="menu"></slot>
           </b-dropdown>
+          <slot name="header-right" v-else></slot>
         </div>
       </div>
       <div class="card-custom-body">
