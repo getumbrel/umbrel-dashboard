@@ -122,6 +122,7 @@
                       />
                     </svg>
 
+                    <!-- expired icon -->
                     <svg
                       width="18"
                       height="18"
@@ -760,7 +761,6 @@ export default {
 
       //if payment request is generated, fetch invoices to check settlement status as long as the user is on the generated invoice mode
       if (paymentRequest) {
-        console.log("Payment request", paymentRequest);
         this.state.receive.invoiceStatusPoller = window.setInterval(
           async () => {
             //if previous poll awaited then skip
@@ -771,17 +771,18 @@ export default {
             const invoices = await API.get(
               `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoices`
             );
-            const currentInvoice = invoices[0];
-            //make sure the latest invoice is the current invoice
-            if (currentInvoice.settled) {
-              this.changeMode("received");
-              window.clearInterval(this.state.receive.invoiceStatusPoller);
+            if (invoices && invoices.length) {
+              const currentInvoice = invoices[0];
+              //make sure the latest invoice is the current invoice
+              if (currentInvoice.settled) {
+                this.changeMode("received");
+                window.clearInterval(this.state.receive.invoiceStatusPoller);
 
-              //refresh
-              this.$store.dispatch("lightning/getChannels");
-              this.$store.dispatch("lightning/getTransactions");
+                //refresh
+                this.$store.dispatch("lightning/getChannels");
+                this.$store.dispatch("lightning/getTransactions");
+              }
             }
-
             this.state.receive.invoiceStatusPollerInprogress = false;
           },
           1000
@@ -804,14 +805,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// all text input fields
-.neu-input {
-  background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.08);
-  color: rgba(0, 0, 0, 0.8);
-}
-
 // big circle checkmark on successful send
 .checkmark {
   display: block;

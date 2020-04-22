@@ -4,7 +4,10 @@
       <b-col col cols="12" xl="3">
         <!-- on large screens -->
         <div class="d-none d-xl-block">
-          <status variant="success" size="sm">Online</status>
+          <status
+            :variant="getStatus(channel.type)['variant']"
+            size="sm"
+          >{{ getStatus(channel.type)['text'] }}</status>
           <div>
             <!-- Outbound icon -->
             <svg
@@ -44,7 +47,10 @@
 
         <!-- on small screens -->
         <div class="d-xl-none d-flex justify-content-between align-items-center mb-1">
-          <status variant="success" size="sm">Online</status>
+          <status
+            :variant="getStatus(channel.type)['variant']"
+            size="sm"
+          >{{ getStatus(channel.type)['text'] }}</status>
           <div>
             <!-- Outbound icon -->
             <svg
@@ -117,7 +123,37 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    getStatus() {
+      if (this.channel.type === "OPEN") {
+        return {
+          text: "Online",
+          variant: "success"
+        };
+      }
+      if (this.channel.type === "PENDING_OPEN_CHANNEL") {
+        return {
+          text: "Opening",
+          variant: "warning"
+        };
+      }
+      if (
+        this.channel.type === "WAITING_CLOSING_CHANNEL" ||
+        this.channel.type === "PENDING_CLOSING_CHANNEL"
+      ) {
+        return {
+          text: "Closing",
+          variant: "warning"
+        };
+      }
+      if (this.channel.type === "FORCE_CLOSING_CHANNEL") {
+        return {
+          text: "Force Closing",
+          variant: "danger"
+        };
+      }
+    }
+  },
   props: {
     channel: Object
   },

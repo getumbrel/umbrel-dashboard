@@ -10,7 +10,7 @@
       :class="{ blink: blink }"
       v-if="size === 'md'"
     >
-      <circle cx="4" cy="4" r="4" fill="#00CD98" :class="`fill-${variant}`" />
+      <circle cx="4" cy="4" r="4" :class="`fill-${variant}`" />
     </svg>
     <svg
       width="6"
@@ -22,7 +22,7 @@
       :class="{ blink: blink }"
       v-else-if="size === 'sm'"
     >
-      <circle cx="3" cy="3" r="3" fill="#00CD98" :class="`fill-${variant}`" />
+      <circle cx="3" cy="3" r="3" :class="`fill-${variant}`" />
     </svg>
 
     <span>

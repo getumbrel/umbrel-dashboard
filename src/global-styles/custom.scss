@@ -16,6 +16,9 @@ $dark-mode-card-bg: #2A3244;
     &success {
         fill: $green;
     }
+    &warning {
+        fill: $yellow;
+    }
     &danger {
         fill: $red;
     }
@@ -68,6 +71,19 @@ a {
         }
     }
 }
+
+.neu-input {
+    background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, 0.8);
+    transition: box-shadow 0.3s ease;
+    &:focus {
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.2);
+    }
+}
+  
 
 .dropdown-menu {
     background: #ffffff;
@@ -219,3 +235,60 @@ a {
       opacity: 1;
     }
   }
+
+  // toasts
+
+  .b-toast {
+    .toast {
+        outline: none !important;
+        .toast-header {
+            color: rgba(0,0,0,0.5);
+            .close {
+                text-shadow: none;
+                opacity: 0.3;
+            }
+        }
+        .toast-body {
+            padding-top: 0;
+        }
+    }
+
+    &.b-toast-success {
+        .toast {
+            .toast-header {
+                color: #fff;
+                background: $green;
+            }
+            .toast-body {
+                color: #fff;
+                background: $green;
+            }
+        }
+    }
+    &.b-toast-warning {
+        .toast {
+            .toast-header {
+                color: #fff;
+                background: $yellow;
+            }
+            .toast-body {
+                color: #fff;
+                background: $yellow;
+            }
+        }
+    }
+    &.b-toast-danger {
+        .toast {
+            .toast-header {
+                color: #fff;
+                background: $red;
+            }
+            .toast-body {
+                color: #fff;
+                background: $red;
+            }
+        }
+    }
+  }
+
+  

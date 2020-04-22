@@ -707,14 +707,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// all text input fields
-.neu-input {
-  background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.08);
-  color: rgba(0, 0, 0, 0.8);
-}
-
 // big circle checkmark on successful send
 .checkmark {
   display: block;
