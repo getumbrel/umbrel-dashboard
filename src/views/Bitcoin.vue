@@ -72,7 +72,7 @@
             <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
           <div class>
-            <div class="px-3 px-sm-4 mb-4">
+            <div class="px-3 px-sm-4 mb-3">
               <div class="w-100 d-flex justify-content-between mb-2">
                 <span class="align-self-end">Synchronized</span>
                 <h3 class="font-weight-normal mb-0">
