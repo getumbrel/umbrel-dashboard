@@ -35,6 +35,13 @@
           >{{ channel.isPrivate ? 'Private' : 'Public' }} Channel</span>
         </div>
 
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Remote Peer Alias</span>
+          <div class="w-75 text-right">
+            <span class="font-weight-bold" style="overflow-wrap: break-word;">{{ alias }}</span>
+          </div>
+        </div>
+
         <div
           class="d-flex justify-content-between align-items-center mb-3"
           v-if="channel.status !== 'Closing'"
@@ -77,7 +84,7 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Remote Pub key</span>
+          <span class="text-muted">Remote Pub Key</span>
           <div class="w-75 text-right">
             <small
               class="font-weight-bold"
@@ -126,8 +133,17 @@ export default {
   data() {
     return {
       isReviewingChannelClose: false,
-      isClosing: false
+      isClosing: false,
+      alias: ""
     };
+  },
+  async mounted() {
+    const nodeAlias = await axios.get(
+      `${process.env.VUE_APP_API_URL}api/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
+    );
+    if (nodeAlias && nodeAlias.data) {
+      this.alias = nodeAlias.data.alias;
+    }
   },
   computed: {
     canCloseChannel() {

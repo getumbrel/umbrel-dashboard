@@ -6,10 +6,7 @@
         <div class="d-none d-xl-block">
           <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
           <div v-if="channel.status !== 'Closing'">
-            <span
-              class
-              style="margin-left: 2px;"
-            >{{ channel.initiator ? `Opened by you` : `Opened by peer` }}</span>
+            <span class style="margin-left: 2px;">{{ alias }}</span>
           </div>
         </div>
 
@@ -17,10 +14,7 @@
         <div class="d-xl-none d-flex justify-content-between align-items-center mb-1">
           <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
           <div v-if="channel.status !== 'Closing'">
-            <small
-              class
-              style="margin-left: 2px;"
-            >{{ channel.initiator ? `Opened by you` : `Opened by peer` }}</small>
+            <small class style="margin-left: 2px;">{{ alias }}</small>
           </div>
         </div>
       </b-col>
@@ -50,6 +44,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 import Status from "@/components/Status";
 import Bar from "@/components/Channels/Bar";
 
@@ -75,7 +71,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      alias: ""
+    };
   },
   methods: {
     getStatusVariant() {
@@ -106,6 +104,14 @@ export default {
           variant: "danger"
         };
       }
+    }
+  },
+  async created() {
+    const nodeAlias = await axios.get(
+      `${process.env.VUE_APP_API_URL}api/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
+    );
+    if (nodeAlias && nodeAlias.data) {
+      this.alias = nodeAlias.data.alias;
     }
   },
   props: {

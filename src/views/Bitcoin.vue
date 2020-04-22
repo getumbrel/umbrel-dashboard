@@ -90,7 +90,8 @@
               ></b-progress>
               <small
                 class="text-muted d-block text-right"
-              >{{ currentBlock.toLocaleString() }} of {{ blockHeight.toLocaleString() }}</small>
+                v-if="currentBlock < (blockHeight - 1)"
+              >{{ currentBlock.toLocaleString() }} of {{ blockHeight.toLocaleString() }} blocks</small>
             </div>
             <!-- low storage mode  -->
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-sm-4 mb-4">
