@@ -82,12 +82,15 @@
               </div>
               <b-progress
                 :value="100"
-                class="mb-3"
+                class="mb-1"
                 variant="success"
                 :style="{ height: '4px' }"
                 animated
                 striped
               ></b-progress>
+              <small
+                class="text-muted d-block text-right"
+              >{{ currentBlock.toLocaleString() }} of {{ blockHeight.toLocaleString() }}</small>
             </div>
             <!-- low storage mode  -->
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-sm-4 mb-4">
@@ -186,7 +189,9 @@ export default {
   computed: {
     ...mapState({
       syncPercent: state => state.bitcoin.percent,
-      version: state => state.bitcoin.version
+      version: state => state.bitcoin.version,
+      currentBlock: state => state.bitcoin.currentBlock,
+      blockHeight: state => state.bitcoin.blockHeight
     }),
     isDarkMode() {
       return this.$store.getters.isDarkMode;
