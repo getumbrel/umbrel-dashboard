@@ -35,7 +35,10 @@
           >{{ channel.isPrivate ? 'Private' : 'Public' }} Channel</span>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div
+          class="d-flex justify-content-between align-items-center mb-3"
+          v-if="channel.status !== 'Closing'"
+        >
           <span class="text-muted">Opened By</span>
           <span
             class="text-capitalize font-weight-bold"
@@ -63,7 +66,10 @@
           >{{ parseInt(channel.capacity).toLocaleString() }} Sats</span>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div
+          class="d-flex justify-content-between align-items-center mb-3"
+          v-if="channel.status !== 'Closing' && channel.status !== 'Opening'"
+        >
           <span class="text-muted">Withdrawal Timelock</span>
           <span
             class="text-capitalize font-weight-bold"
@@ -80,7 +86,7 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end" v-if="canCloseChannel">
           <b-button class="mt-2" variant="danger" @click="reviewChannelClose">Close Channel</b-button>
         </div>
       </div>
@@ -89,7 +95,7 @@
         <h3 class="mb-3">Are you sure you want to close this channel?</h3>
         <p>
           Your local channel balance of
-          <b>{{ parseInt(channel.localBalance).toLocaleString() }} Sats</b> will be returned to your Bitcoin wallet.
+          <b>{{ parseInt(channel.localBalance).toLocaleString() }} Sats</b> (excluding mining fee) will be returned to your Bitcoin wallet.
         </p>
         <b-alert
           variant="warning"
@@ -123,7 +129,17 @@ export default {
       isClosing: false
     };
   },
-  computed: {},
+  computed: {
+    canCloseChannel() {
+      if (
+        this.channel.status === "Opening" ||
+        this.channel.status === "Closing"
+      ) {
+        return false;
+      }
+      return true;
+    }
+  },
   methods: {
     reviewChannelClose() {
       this.isReviewingChannelClose = true;

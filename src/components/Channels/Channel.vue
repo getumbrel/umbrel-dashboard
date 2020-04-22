@@ -4,11 +4,8 @@
       <b-col col cols="12" xl="3">
         <!-- on large screens -->
         <div class="d-none d-xl-block">
-          <status
-            :variant="getStatus(channel.type)['variant']"
-            size="sm"
-          >{{ getStatus(channel.type)['text'] }}</status>
-          <div>
+          <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
+          <div v-if="channel.status !== 'Closing'">
             <span
               class
               style="margin-left: 2px;"
@@ -18,11 +15,8 @@
 
         <!-- on small screens -->
         <div class="d-xl-none d-flex justify-content-between align-items-center mb-1">
-          <status
-            :variant="getStatus(channel.type)['variant']"
-            size="sm"
-          >{{ getStatus(channel.type)['text'] }}</status>
-          <div>
+          <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
+          <div v-if="channel.status !== 'Closing'">
             <small
               class
               style="margin-left: 2px;"
@@ -60,12 +54,31 @@ import Status from "@/components/Status";
 import Bar from "@/components/Channels/Bar";
 
 export default {
-  computed: {},
+  computed: {
+    statusVariant() {
+      if (this.channel.status === "Online") {
+        return "success";
+      }
+      if (this.channel.status === "Offline") {
+        return "default";
+      }
+      if (this.channel.status === "Opening") {
+        return "warning";
+      }
+      if (this.channel.status === "Closing") {
+        return "danger";
+      }
+      if (this.channel.status === "Unkown") {
+        return "danger";
+      }
+      return "default";
+    }
+  },
   data() {
     return {};
   },
   methods: {
-    getStatus() {
+    getStatusVariant() {
       if (this.channel.type === "OPEN") {
         return {
           text: "Online",

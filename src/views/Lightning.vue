@@ -105,7 +105,7 @@
         <lightning-wallet></lightning-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="8">
-        <card-widget header="Channels">
+        <card-widget header="Payment Channels">
           <template v-slot:header-right>
             <b-button
               variant="outline-primary"

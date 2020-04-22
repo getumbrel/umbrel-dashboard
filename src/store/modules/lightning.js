@@ -211,9 +211,9 @@ const actions = {
 
           if (channel.type === "OPEN") {
             if (channel.active) {
-              channel.status = "online";
+              channel.status = "Online";
             } else {
-              channel.status = "offline";
+              channel.status = "Offline";
             }
 
             if (remoteBalance > maxReceive) {
@@ -227,7 +227,7 @@ const actions = {
             confirmedBalance += localBalance;
           } else if (channel.type === "PENDING_OPEN_CHANNEL") {
             pendingBalance += localBalance;
-            channel.status = "opening";
+            channel.status = "Opening";
           } else if (
             [
               "WAITING_CLOSING_CHANNEL",
@@ -236,13 +236,13 @@ const actions = {
             ].indexOf(channel.type) > -1
           ) {
             pendingBalance += localBalance;
-            channel.status = "closing";
+            channel.status = "Closing";
 
             // Lnd doesn't provide initiator or autopilot data via rpc. So, we just display a generic closing message.
             channel.name = "Closing Channel";
             channel.purpose = "A channel that is in the process of closing";
           } else {
-            channel.status = "unknown";
+            channel.status = "Unknown";
           }
 
           if (channel.name === "" && !channel.initiator) {
