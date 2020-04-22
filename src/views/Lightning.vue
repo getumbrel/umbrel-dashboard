@@ -18,7 +18,7 @@
             >
               <circle cx="4" cy="4" r="4" fill="#00CD98" />
             </svg>
-            <small class="ml-1 text-success">{{ state.status }}</small>
+            <small class="ml-1 text-success">{{ status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
             <span
               class="d-block text-muted"
@@ -107,7 +107,11 @@
       <b-col col cols="12" md="6" xl="8">
         <card-widget header="Channels">
           <template v-slot:header-right>
-            <b-button variant="outline-dark" size="sm" v-b-modal.open-channel-modal>+ Open Channel</b-button>
+            <b-button
+              variant="outline-primary"
+              size="sm"
+              v-b-modal.open-channel-modal
+            >+ Open Channel</b-button>
           </template>
           <div class>
             <div class="px-3 px-sm-4">
@@ -156,7 +160,43 @@
                 <channel-open v-on:channelopen="onChannelOpen"></channel-open>
               </div>
             </b-modal>
-            <channel-list></channel-list>
+
+            <!-- manage channel modal -->
+            <b-modal
+              id="manage-channel-modal"
+              ref="manage-channel-modal"
+              size="lg"
+              centered
+              hide-footer
+            >
+              <template v-slot:modal-header="{ close }">
+                <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                  <h2>channel details</h2>
+                  <!-- Emulate built in modal header close button action -->
+                  <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                        fill="#6c757d"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </template>
+              <div class="px-2 px-sm-3 py-2">
+                <channel-manage :channel="selectedChannel" v-on:channelclose="onChannelClose"></channel-manage>
+              </div>
+            </b-modal>
+
+            <channel-list v-on:selectchannel="manageChannel"></channel-list>
           </div>
         </card-widget>
       </b-col>
@@ -174,6 +214,7 @@ import LightningWallet from "@/components/LightningWallet";
 import InputCopy from "@/components/InputCopy";
 import ChannelList from "@/components/Channels/List";
 import ChannelOpen from "@/components/Channels/Open";
+import ChannelManage from "@/components/Channels/Manage";
 
 const abbreviateNumber = n => {
   if (n < 1e3) return [Number(n.toFixed(1)), ""];
@@ -188,10 +229,8 @@ window.abv = abbreviateNumber;
 export default {
   data() {
     return {
-      state: {
-        status: "Running",
-        showOpenChannelModal: true
-      }
+      status: "Running",
+      selectedChannel: {}
     };
   },
   computed: {
@@ -274,10 +313,21 @@ export default {
     showPubKey() {
       this.$refs["public-key-modal"].show();
     },
+    manageChannel(channel) {
+      if (channel) {
+        this.selectedChannel = channel;
+        this.$refs["manage-channel-modal"].show();
+      }
+    },
     onChannelOpen() {
       //refresh channels
       this.$store.dispatch("lightning/getLndPageData");
       this.$refs["open-channel-modal"].hide();
+    },
+    onChannelClose() {
+      //refresh channels
+      this.$store.dispatch("lightning/getLndPageData");
+      this.$refs["manage-channel-modal"].hide();
     }
   },
   created() {
@@ -291,7 +341,8 @@ export default {
     QrcodeVue,
     InputCopy,
     ChannelList,
-    ChannelOpen
+    ChannelOpen,
+    ChannelManage
   }
 };
 </script>

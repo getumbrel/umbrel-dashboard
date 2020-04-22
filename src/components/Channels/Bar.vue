@@ -1,10 +1,42 @@
 <template>
-  <div class="channel-bar" :style="{background: getChannelBarGradient(local, remote)}"></div>
+  <div class="channel-bar" :style="style"></div>
 </template>
 
 <script>
 export default {
-  computed: {},
+  computed: {
+    style() {
+      const leftValue = this.local;
+      const rightValue = this.remote;
+      const leftPercent = Math.round(
+        (leftValue * 100) / (leftValue + rightValue)
+      );
+
+      let background;
+      if (leftPercent === 100) {
+        background = `#5351FB`;
+      } else if (leftPercent === 0) {
+        background = `#00CD98`;
+      } else {
+        background = `linear-gradient(90deg, #5351FB 0%, #5351FB ${leftPercent -
+          7}%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
+      }
+
+      let height = "4px";
+      let borderRadius = "4px";
+
+      if (this.size === "lg") {
+        height = "8px";
+        borderRadius = "8px";
+      }
+
+      return {
+        background,
+        height,
+        borderRadius
+      };
+    }
+  },
   data() {
     return {};
   },
@@ -25,7 +57,11 @@ export default {
   },
   props: {
     local: Number,
-    remote: Number
+    remote: Number,
+    size: {
+      type: String, //sm, lg
+      default: "sm"
+    }
   },
   components: {}
 };

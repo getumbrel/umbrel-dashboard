@@ -10,7 +10,7 @@
           >{{ getStatus(channel.type)['text'] }}</status>
           <div>
             <span
-              class="text-muted"
+              class
               style="margin-left: 2px;"
             >{{ channel.initiator ? `Opened by you` : `Opened by peer` }}</span>
           </div>
@@ -24,20 +24,20 @@
           >{{ getStatus(channel.type)['text'] }}</status>
           <div>
             <small
-              class="text-muted"
+              class
               style="margin-left: 2px;"
             >{{ channel.initiator ? `Opened by you` : `Opened by peer` }}</small>
           </div>
         </div>
       </b-col>
       <b-col col cols="12" xl="9">
-        <div class="channel">
-          <div class="channel-balances d-flex justify-content-between">
+        <div class>
+          <div class="d-flex justify-content-between">
             <span
-              class="text-primary font-weight-"
+              class="text-primary font-weight-bold"
             >{{ Number(channel.localBalance).toLocaleString() }} Sats</span>
             <span
-              class="text-success font-weight-"
+              class="text-success text-right font-weight-bold"
             >{{ Number(channel.remoteBalance).toLocaleString() }} Sats</span>
           </div>
           <bar
@@ -45,9 +45,9 @@
             :remote="Number(channel.remoteBalance)"
             class="my-1"
           ></bar>
-          <div class="channel-balances d-flex justify-content-between">
-            <small class="text-muted">Max Send</small>
-            <small class="text-muted">Max Receive</small>
+          <div class="d-flex justify-content-between">
+            <small class="text-muted font-weight-bold">Max Send</small>
+            <small class="text-muted font-weight-bold text-right">Max Receive</small>
           </div>
         </div>
       </b-col>
@@ -107,10 +107,13 @@ export default {
 
 <style lang="scss" scoped>
 .channel {
-  transition: background-color 0.2s ease;
+  transition: box-shadow 0.3s, background 0.3s ease;
   &:hover {
     cursor: pointer;
-    background-color: #f4f5f7;
+    background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.08);
+    // box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    // transform: translateY(-5px);
   }
 }
 </style>

@@ -2,7 +2,13 @@
   <div class="channel-list-container">
     <div class="channel-list">
       <transition-group name="list" appear>
-        <channel v-for="(channel, index) in channels" :channel="channel" :key="index"></channel>
+        <div
+          v-for="(channel, index) in channels"
+          :key="index"
+          @click="$emit('selectchannel', channel)"
+        >
+          <channel :channel="channel"></channel>
+        </div>
       </transition-group>
     </div>
   </div>
