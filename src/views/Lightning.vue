@@ -115,7 +115,7 @@ import CardWidget from "@/components/CardWidget";
 import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
 import LightningWallet from "@/components/LightningWallet";
 import InputCopy from "@/components/InputCopy";
-import ChannelList from "@/components/ChannelList";
+import ChannelList from "@/components/Channels/List";
 
 const abbreviateNumber = n => {
   if (n < 1e3) return [Number(n.toFixed(1)), ""];
