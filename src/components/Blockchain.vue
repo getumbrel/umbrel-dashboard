@@ -44,7 +44,11 @@
                 </small>
               </div>
             </div>
-            <small class="text-muted align-self-center" v-if="block.timestamp">
+            <small
+              class="text-muted align-self-center"
+              v-if="block.timestamp"
+              :title="blockReadableTime(block.timestamp)"
+            >
               {{
               blockTime(block.timestamp)
               }}
@@ -72,60 +76,6 @@ export default {
       syncPercent: state => state.bitcoin.percent,
       blocks: state => state.bitcoin.blocks
     })
-    // blocks() {
-    //   const currentBlock = this.$store.state.bitcoin.currentBlock;
-    //   if (currentBlock) {
-    //     return [
-    //       {
-    //         number: currentBlock, //block number
-    //         txs: 1802, //num of txs in block
-    //         timestamp: "few secs ago" //block's mining timestamp
-    //       },
-    //       {
-    //         number: currentBlock - 1,
-    //         txs: 1934,
-    //         timestamp: "12 mins ago"
-    //       },
-    //       {
-    //         number: currentBlock - 2,
-    //         txs: 1783,
-    //         timestamp: "19 mins ago"
-    //       },
-    //       {
-    //         number: currentBlock - 3,
-    //         txs: 1723,
-    //         timestamp: "27 mins ago"
-    //       },
-    //       {
-    //         number: currentBlock - 4,
-    //         txs: 1982,
-    //         timestamp: "34 mins ago"
-    //       },
-    //       {
-    //         number: currentBlock - 5,
-    //         txs: 1934,
-    //         timestamp: "47 mins ago"
-    //       },
-    //       {
-    //         number: currentBlock - 6,
-    //         txs: 1783,
-    //         timestamp: "58 mins ago"
-    //       },
-    //       {
-    //         number: currentBlock - 7,
-    //         txs: 1723,
-    //         timestamp: "1 hr ago"
-    //       },
-    //       {
-    //         number: currentBlock - 8,
-    //         txs: 1982,
-    //         timestamp: "1 hr ago"
-    //       }
-    //     ];
-    //   } else {
-    //     return [];
-    //   }
-    // }
   },
   methods: {
     async fetchBlocks() {
@@ -155,6 +105,9 @@ export default {
       } else {
         return "now";
       }
+    },
+    blockReadableTime(timestamp) {
+      return moment(timestamp * 1000).format("MMMM D, h:mm:ss a");
     }
   },
   created() {

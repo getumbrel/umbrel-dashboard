@@ -27,7 +27,7 @@
           }"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
-          :loading="syncPercent !== 100"
+          :loading="syncPercent !== 100 || blocks.length === 0"
         >
           <div class>
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-sm-4">
@@ -95,7 +95,8 @@ export default {
   },
   computed: {
     ...mapState({
-      syncPercent: state => state.bitcoin.percent
+      syncPercent: state => state.bitcoin.percent,
+      blocks: state => state.bitcoin.blocks
     }),
     isDarkMode() {
       return this.$store.getters.isDarkMode;

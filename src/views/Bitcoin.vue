@@ -67,7 +67,11 @@
         <bitcoin-wallet></bitcoin-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
-        <card-widget header="Blockchain" :hasMenu="true">
+        <card-widget
+          header="Blockchain"
+          :hasMenu="true"
+          :loading="syncPercent !== 100 || blocks.length === 0"
+        >
           <template v-slot:menu>
             <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
@@ -190,6 +194,7 @@ export default {
   computed: {
     ...mapState({
       syncPercent: state => state.bitcoin.percent,
+      blocks: state => state.bitcoin.blocks,
       version: state => state.bitcoin.version,
       currentBlock: state => state.bitcoin.currentBlock,
       blockHeight: state => state.bitcoin.blockHeight
