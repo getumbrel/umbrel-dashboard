@@ -1173,7 +1173,7 @@ svg.icon-clock {
   height: 15px;
   width: 15px;
   fill: none;
-  stroke: #c4c4c4;
+  stroke: #6c757d;
   stroke-width: 3;
   stroke-linecap: round;
   transform: rotate(-90deg);

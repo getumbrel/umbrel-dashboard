@@ -175,45 +175,22 @@ a {
     opacity: 0.25;
     display: block;
     border-radius: 1px;
-    animation: card-custom-loading-bar-animation infinite 2s;
-    // animation-timing-function: ease-in-out;
+    width: 100%;
+    animation: card-custom-loading-bar-animation ease-in-out infinite 2s;
 }
 
 @keyframes card-custom-loading-bar-animation {
     0% {
-        width: 0;
-        left: 0;
-        right: auto;
+        transform: translate3d(0, 0, 0);
     }
     25% {
-        width: 100%;
-        left: 0;
-        right: auto;
-    }
-    26% {
-        width: 100%;
-        left: auto;
-        right: 0;
-    }
-    50% {
-        width: 0;
-        left: auto;
-        right: 0;
+        transform: translate3d(100% ,0, 0);
     }
     75% {
-        width: 100%;
-        left: auto;
-        right: 0;
-    }
-    76% {
-        width: 100%;
-        left: 0;
-        right: auto;
+        transform: translate3d(-100% ,0, 0);
     }
     100% {
-        width: 0;
-        left: 0;
-        right: auto;
+        transform: translate3d(0, 0, 0);
     }
   }
 

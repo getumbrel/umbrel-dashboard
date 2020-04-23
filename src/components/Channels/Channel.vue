@@ -1,6 +1,6 @@
 <template>
   <div class="py-3 px-3 px-sm-4 channel">
-    <b-row align-v>
+    <b-row>
       <b-col col cols="12" xl="3">
         <!-- on large screens -->
         <div class="d-none d-xl-block">
