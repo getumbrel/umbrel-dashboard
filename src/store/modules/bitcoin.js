@@ -10,6 +10,7 @@ const state = () => ({
   onionAddress: "",
   currentBlock: 0,
   blockHeight: 0,
+  blocks: [],
   percent: -1, //for loading state
   depositAddress: "",
   peers: {
@@ -87,6 +88,10 @@ const mutations = {
     } else {
       state.calibrating = false;
     }
+  },
+
+  setBlocks(state, blocks) {
+    state.blocks = blocks;
   },
 
   setVersion(state, version) {
@@ -201,6 +206,82 @@ const actions = {
       if (sync) {
         commit("syncStatus", sync);
       }
+    }
+  },
+
+  async getBlocks({ commit, state, dispatch }) {
+    if (state.operational) {
+      await dispatch("getSync");
+
+      //cache block height array of latest 3 blocks for loading view
+      const currentBlock = state.currentBlock;
+
+      //dont fetch blocks if no new block
+      if (state.blocks.length && currentBlock === state.blocks[0]['height']) {
+        return;
+      }
+
+      if (currentBlock < 4) {
+        return;
+      }
+
+      const blocks = [
+        {
+          height: currentBlock, //block height
+          txs: null,
+          timestamp: null,
+          size: null
+        },
+        {
+          height: currentBlock - 1, //block height
+          txs: null,
+          timestamp: null,
+          size: null
+        },
+        {
+          height: currentBlock - 2, //block number
+          txs: null,
+          timestamp: null,
+          size: null
+        }
+      ];
+      // commit("setBlocks", blocks);
+
+
+      //fetch info per block;
+
+      const blocksWithInfo = [];
+
+      for (let block of blocks) {
+        //get hash
+        const blockHash = await API.get(
+          `${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/block?height=${block.height}`
+        );
+
+        if (!blockHash || !blockHash.hash) {
+          return;
+        }
+
+        //gete block info
+        const blockInfo = await API.get(
+          `${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/block?hash=${blockHash.hash}`
+        );
+
+        if (!blockInfo || !blockInfo.block) {
+          return;
+        }
+
+        blocksWithInfo.push({
+          height: blockInfo.height,
+          txs: blockInfo.transactions.length,
+          timestamp: blockInfo.blocktime,
+          size: blockInfo.size
+        })
+      }
+
+      // update blocks
+      commit("setBlocks", blocksWithInfo);
+
     }
   },
 

@@ -7,7 +7,7 @@
           href="#"
           class="flex-column align-items-start px-3 px-sm-4 blockchain-block"
           v-for="block in blocks"
-          :key="block.number"
+          :key="block.height"
         >
           <div class="d-flex w-100 justify-content-between">
             <div class="d-flex">
@@ -37,13 +37,16 @@
                 <div class="blockchain-block-icon-bg"></div>
               </div>
               <div class="align-self-center">
-                <h6 class="mb-1 font-weight-normal">Block {{ block.number.toLocaleString() }}</h6>
-                <small class="text-muted">{{ block.txs.toLocaleString() }} transactions</small>
+                <h6 class="mb-1 font-weight-normal">Block {{ block.height.toLocaleString() }}</h6>
+                <small class="text-muted" v-if="block.txs">
+                  {{ block.txs.toLocaleString() }} transactions
+                  <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
+                </small>
               </div>
             </div>
-            <small class="text-muted align-self-center">
+            <small class="text-muted align-self-center" v-if="block.timestamp">
               {{
-              block.timestamp
+              blockTime(block.timestamp)
               }}
             </small>
           </div>
@@ -54,6 +57,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapState } from "vuex";
 
 export default {
@@ -65,62 +69,63 @@ export default {
   },
   computed: {
     ...mapState({
-      syncPercent: state => state.bitcoin.percent
-    }),
-    blocks() {
-      const currentBlock = this.$store.state.bitcoin.currentBlock;
-      if (currentBlock) {
-        return [
-          {
-            number: currentBlock, //block number
-            txs: 1802, //num of txs in block
-            timestamp: "few secs ago" //block's mining timestamp
-          },
-          {
-            number: currentBlock - 1,
-            txs: 1934,
-            timestamp: "12 mins ago"
-          },
-          {
-            number: currentBlock - 2,
-            txs: 1783,
-            timestamp: "19 mins ago"
-          },
-          {
-            number: currentBlock - 3,
-            txs: 1723,
-            timestamp: "27 mins ago"
-          },
-          {
-            number: currentBlock - 4,
-            txs: 1982,
-            timestamp: "34 mins ago"
-          },
-          {
-            number: currentBlock - 5,
-            txs: 1934,
-            timestamp: "47 mins ago"
-          },
-          {
-            number: currentBlock - 6,
-            txs: 1783,
-            timestamp: "58 mins ago"
-          },
-          {
-            number: currentBlock - 7,
-            txs: 1723,
-            timestamp: "1 hr ago"
-          },
-          {
-            number: currentBlock - 8,
-            txs: 1982,
-            timestamp: "1 hr ago"
-          }
-        ];
-      } else {
-        return [];
-      }
-    }
+      syncPercent: state => state.bitcoin.percent,
+      blocks: state => state.bitcoin.blocks
+    })
+    // blocks() {
+    //   const currentBlock = this.$store.state.bitcoin.currentBlock;
+    //   if (currentBlock) {
+    //     return [
+    //       {
+    //         number: currentBlock, //block number
+    //         txs: 1802, //num of txs in block
+    //         timestamp: "few secs ago" //block's mining timestamp
+    //       },
+    //       {
+    //         number: currentBlock - 1,
+    //         txs: 1934,
+    //         timestamp: "12 mins ago"
+    //       },
+    //       {
+    //         number: currentBlock - 2,
+    //         txs: 1783,
+    //         timestamp: "19 mins ago"
+    //       },
+    //       {
+    //         number: currentBlock - 3,
+    //         txs: 1723,
+    //         timestamp: "27 mins ago"
+    //       },
+    //       {
+    //         number: currentBlock - 4,
+    //         txs: 1982,
+    //         timestamp: "34 mins ago"
+    //       },
+    //       {
+    //         number: currentBlock - 5,
+    //         txs: 1934,
+    //         timestamp: "47 mins ago"
+    //       },
+    //       {
+    //         number: currentBlock - 6,
+    //         txs: 1783,
+    //         timestamp: "58 mins ago"
+    //       },
+    //       {
+    //         number: currentBlock - 7,
+    //         txs: 1723,
+    //         timestamp: "1 hr ago"
+    //       },
+    //       {
+    //         number: currentBlock - 8,
+    //         txs: 1982,
+    //         timestamp: "1 hr ago"
+    //       }
+    //     ];
+    //   } else {
+    //     return [];
+    //   }
+    // }
   },
   methods: {
     async fetchBlocks() {
@@ -129,7 +134,7 @@ export default {
         return;
       }
       this.pollInProgress = true;
-      await this.$store.dispatch("bitcoin/getSync");
+      await this.$store.dispatch("bitcoin/getBlocks");
       this.pollInProgress = false;
     },
     poller(syncPercent) {
@@ -140,6 +145,15 @@ export default {
       } else {
         //else, slow down and fetch blocks every minute
         this.polling = window.setInterval(this.fetchBlocks, 60 * 1000);
+      }
+    },
+    blockTime(timestamp) {
+      const minedAt = timestamp * 1000;
+      //sometimes the block can have a timestamp with a few seconds in the future compared to browser's time
+      if (moment(minedAt).isBefore(moment())) {
+        return moment(minedAt).fromNow();
+      } else {
+        return "now";
       }
     }
   },
@@ -178,9 +192,9 @@ export default {
     padding: 1rem 0;
     margin: 0;
     // max-height: 18rem;
-    height: 18rem;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch; //momentum scroll on iOS
+    height: 19rem;
+    // overflow-y: scroll;
+    // -webkit-overflow-scrolling: touch; //momentum scroll on iOS
   }
   //bottom fade
   &:before {
