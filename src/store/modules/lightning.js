@@ -279,6 +279,11 @@ const actions = {
       const payments = await API.get(
         `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/payments`
       );
+
+      if (!invoices || !payments) {
+        return;
+      }
+
       let transactions = [];
 
       if (invoices) {
@@ -292,11 +297,12 @@ const actions = {
           return {
             type,
             amount: Number(tx.value),
-            timestamp: new Date(Number(tx.creationDate) * 1000),
-            description: tx.memo || "Payment",
+            timestamp: tx.settled ? new Date(Number(tx.settleDate) * 1000) : new Date(Number(tx.creationDate) * 1000),
+            description: tx.memo || "",
             expiresOn: new Date(
               (Number(tx.creationDate) + Number(tx.expiry)) * 1000
-            )
+            ),
+            paymentRequest: tx.paymentRequest
           };
         });
         transactions = [...transactions, ...incomingTransactions];
@@ -308,7 +314,9 @@ const actions = {
             type: "outgoing",
             amount: Number(tx.value),
             timestamp: new Date(Number(tx.creationDate) * 1000),
-            description: tx.paymentRequest //temporarily store payment request in the description as we'll replace it by memo
+            paymentRequest: tx.paymentRequest,
+            fee: Number(tx.feeSat),
+            description: ""
           };
         });
         transactions = [...transactions, ...outgoingTransactions];
@@ -323,24 +331,20 @@ const actions = {
       for (let tx of transactions) {
         if (tx.type !== "outgoing") continue;
 
-        if (!tx.description) {
+        if (!tx.paymentRequest) {
           //example - in case of a keysend tx there is no payment request
-          tx.description = "Payment";
           continue;
         }
 
         try {
           const invoiceDetails = await API.get(
-            `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
+            `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoice?paymentRequest=${tx.paymentRequest}`
           );
           if (invoiceDetails && invoiceDetails.description) {
             tx.description = invoiceDetails.description;
-          } else {
-            tx.description = "Payment"
           }
         } catch (error) {
           console.log(error);
-          tx.description = "Payment";
         }
       }
       commit("setTransactions", transactions);

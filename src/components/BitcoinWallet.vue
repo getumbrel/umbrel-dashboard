@@ -74,6 +74,8 @@
               v-for="(tx, index) in transactions"
               :key="index"
               class="flex-column align-items-start px-3 px-sm-4"
+              :href="getTxUrl(tx.hash)"
+              target="_blank"
             >
               <!-- Loading Transactions Placeholder -->
               <div class="d-flex w-100 justify-content-between" v-if="tx.type === 'loading'">
@@ -522,28 +524,6 @@ export default {
       state: {
         //balance: 162500, //net user's balance in sats
         mode: "balance", //balance (default mode), deposit, withdraw, review-withdraw, withdrawn
-        txs: [
-          //array of last 3 txs
-          {
-            type: "incoming", //incoming, outgoing, pending, expired
-            amount: 125000, //amount transacted
-            timestamp: new Date(new Date().setSeconds(0)), //time of tx
-            description: "Tips from Reddit", //tx's invoice description
-            expiry: new Date(new Date().setSeconds(0))
-          },
-          {
-            type: "outgoing",
-            amount: 37,
-            timestamp: new Date(new Date().setMinutes(0)),
-            description: "Blockstream Satellite"
-          },
-          {
-            type: "incoming",
-            amount: 1302532,
-            timestamp: new Date(new Date().setHours(0)),
-            description: "Michael Shwebz"
-          }
-        ],
         withdraw: {
           amount: "",
           address: "",

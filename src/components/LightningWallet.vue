@@ -42,6 +42,7 @@
           class="d-flex flex-column justify-content-center px-3 px-sm-4 zero-transactions-container"
           v-if="!transactions.length"
         >
+          <!-- Piggy bank icon -->
           <svg
             width="150"
             height="150"
@@ -66,12 +67,15 @@
           <small class="align-self-center mt-3 text-muted">No transactions</small>
         </div>
 
+        <!-- Actual Transactions -->
         <div class="transactions-container" v-else>
           <transition-group name="list" class="list-group pb-2 transactions" appear>
             <b-list-group-item
               v-for="(tx, index) in transactions"
               :key="index"
               class="flex-column align-items-start px-3 px-sm-4"
+              href="#"
+              @click.prevent="showTransactionInfo(tx)"
             >
               <!-- Loading Transactions Placeholder -->
               <div class="d-flex w-100 justify-content-between" v-if="tx.type === 'loading'">
@@ -122,7 +126,7 @@
                       />
                     </svg>
 
-                    <!-- expired icon -->
+                    <!-- Expired invoice icon -->
                     <svg
                       width="18"
                       height="18"
@@ -139,6 +143,7 @@
                       />
                     </svg>
 
+                    <!-- Pending invoice tx -->
                     <svg
                       width="18"
                       height="18"
@@ -171,7 +176,11 @@
                     <span
                       style="margin-left: 6px;"
                       :title="tx.description"
+                      v-if="tx.description"
                     >{{ tx.description.length > 19 ? tx.description.substring(0,19) + '...' : tx.description }}</span>
+
+                    <!-- If no description -->
+                    <span style="margin-left: 6px;" v-else>Payment</span>
                   </h6>
 
                   <!-- Timestamp of tx -->
@@ -182,6 +191,7 @@
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                   >{{getTimeFromNow(tx.timestamp)}}</small>
 
+                  <!-- if invoice isn't settled -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
                     style="margin-left: 24px;"
@@ -189,6 +199,7 @@
                     v-else-if="tx.type === 'pending'"
                   >Unpaid invoice</small>
 
+                  <!-- If invoice expired -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
                     style="margin-left: 24px;"
@@ -267,7 +278,7 @@
         <!-- Invoice amount + description -->
         <p class="text-center mb-4">
           Paid
-          <b>{{state.send.amount}} sats</b>
+          <b>{{state.send.amount.toLocaleString()}} sats</b>
           <span v-if="state.send.description">
             for
             <b>{{state.send.description}}</b>
@@ -320,8 +331,8 @@
 
           <!-- Invoice amount + description -->
           <span v-else>
-            Please pay
-            <b>{{state.receive.amount}} {{ state.receive.amount > 1 ? 'sats' : 'sat'}}</b>
+            Invoice of
+            <b>{{state.receive.amount.toLocaleString()}} {{ state.receive.amount > 1 ? 'sats' : 'sat'}}</b>
             {{ state.receive.description ? "for" : null }}
             <b>{{ state.receive.description }}</b>
           </span>
@@ -330,7 +341,7 @@
         <!-- QR Code -->
         <div class="generated-qr mb-3 pb-2">
           <!-- Popup umbrel logo in the middle of QR code after the QR is generated -->
-          <transition name="qr-logo-popup">
+          <transition name="qr-logo-popup" appear>
             <img
               v-show="!state.receive.isGeneratingInvoice && state.receive.paymentRequest"
               src="@/assets/umbrel-qr-icon.svg"
@@ -349,13 +360,13 @@
         </div>
 
         <!-- Copy Invoice Input Field -->
-        <transition name="slide-up">
-          <input-copy
-            size="sm"
-            :value="state.receive.invoiceQR"
-            class="mb-2 mt-2"
-            v-show="!state.receive.isGeneratingInvoice"
-          ></input-copy>
+        <transition name="slide-up" appear>
+          <div v-show="!state.receive.isGeneratingInvoice">
+            <input-copy size="sm" :value="state.receive.invoiceQR" class="mb-2 mt-2"></input-copy>
+            <small
+              class="text-center d-block"
+            >This invoice will expire {{ getTimeFromNow(state.receive.expiresOn) }}</small>
+          </div>
         </transition>
       </div>
 
@@ -381,8 +392,82 @@
         <!-- Invoice amount + description -->
         <p class="text-center mb-4">
           Received
-          <b>{{state.receive.amount}} sats</b> for
-          <b>{{state.receive.description}}</b>
+          <b>{{ state.receive.amount.toLocaleString() }} sats</b>
+          <span v-if="state.receive.description">
+            for
+            <b>{{state.receive.description}}</b>
+          </span>
+          <br />
+          <small>{{ getReadableTime(state.receive.timestamp) }}</small>
+        </p>
+      </div>
+
+      <!-- SCREEN/MODE: payment info -->
+      <div
+        class="px-3 px-sm-4 mode-payment-success"
+        v-else-if="state.mode === 'payment-success'"
+        key="payment-success"
+      >
+        <!-- Big green checkmark -->
+        <div class="checkmark mb-4">
+          <svg
+            width="54"
+            height="43"
+            viewBox="0 0 54 43"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="checkmark-icon"
+          >
+            <path
+              d="M47.657 1.26266C48.9446 -0.245227 51.2166 -0.428585 52.7315 0.853121C54.2464 2.13483 54.4306 4.39624 53.1429 5.90413L22.543 41.7374C21.2351 43.2689 18.9176 43.4303 17.4083 42.0948L1.20832 27.7615C-0.27769 26.4468 -0.411537 24.1818 0.909365 22.7027C2.23027 21.2236 4.50572 21.0903 5.99173 22.4051L19.4408 34.3045L47.657 1.26266Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+
+        <!-- Payment amount + description -->
+        <p class="text-center mb-1">
+          Paid
+          <b>{{ state.paymentInfo.amount.toLocaleString() }} sats</b>
+          <span v-if="state.paymentInfo.description">
+            for
+            <b>{{state.paymentInfo.description}}</b>
+          </span>
+          <br />
+          <small>{{ getReadableTime(state.paymentInfo.timestamp) }}</small>
+          <br />
+          <small>Fee: {{ state.paymentInfo.fee > 1 ? `${state.paymentInfo.fee} Sats` : `${state.paymentInfo.fee} Sat`}}</small>
+        </p>
+      </div>
+
+      <!-- SCREEN/MODE: invoice expired -->
+      <div
+        class="px-3 px-sm-4 mode-invoice-expired"
+        v-else-if="this.state.mode === 'invoice-expired'"
+        key="mode-invoice-info"
+      >
+        <!-- Big red checkmark -->
+        <div class="checkmark checkmark-danger mb-4">
+          <svg
+            width="44"
+            height="44"
+            viewBox="0 0 44 44"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="checkmark-icon"
+          >
+            <path
+              d="M0.828729 0.82797C-0.274715 1.93193 -0.274714 3.7218 0.82873 4.82576L17.5344 21.5393L0.827583 38.2539C-0.275861 39.3579 -0.275861 41.1477 0.827583 42.2517C1.93103 43.3557 3.72006 43.3556 4.82351 42.2517L21.5303 25.537L38.2369 42.2514C39.3403 43.3554 41.1294 43.3554 42.2328 42.2514C43.3362 41.1474 43.3362 39.3576 42.2328 38.2536L25.5263 21.5393L42.2317 4.82605C43.3351 3.72209 43.3351 1.93222 42.2317 0.828259C41.1282 -0.275701 39.3392 -0.2757 38.2357 0.828259L21.5303 17.5415L4.82465 0.82797C3.72121 -0.27599 1.93217 -0.27599 0.828729 0.82797Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+
+        <!-- Invoice amount + description -->
+        <p class="text-center mb-4">
+          This invoice was not paid.
+          <br />
+          <small>Expired on {{ getReadableTime(state.expiredInvoice.expiresOn) }}</small>
         </p>
       </div>
     </transition>
@@ -511,35 +596,14 @@ export default {
     return {
       state: {
         //balance: 162500, //net user's balance in sats
-        mode: "balance", //balance (default mode), receive (create invoice), invoice, send, sent
-        txs: [
-          //array of last 3 txs
-          {
-            type: "incoming", //incoming, outgoing, pending, expired
-            amount: 125000, //amount transacted
-            timestamp: new Date(new Date().setSeconds(0)), //time of tx
-            description: "Tips from Reddit", //tx's invoice description
-            expiry: new Date(new Date().setSeconds(0))
-          },
-          {
-            type: "outgoing",
-            amount: 37,
-            timestamp: new Date(new Date().setMinutes(0)),
-            description: "Blockstream Satellite"
-          },
-          {
-            type: "incoming",
-            amount: 1302532,
-            timestamp: new Date(new Date().setHours(0)),
-            description: "Michael Shwebz"
-          }
-        ],
+        mode: "balance", //balance (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
         receive: {
           amount: null, //invoice amount
           description: "", //invoice description
           paymentRequest: "", //Bolt 11 invoice
           invoiceQR: "1", //used for "generating" animation, is ultimately equal to paymentRequest after animation
           isGeneratingInvoice: false, //used for transitions, animations, etc
+          expiresOn: null, //invoice expiry date
           invoiceStatusPoller: null, // = setInterval used to fetch invoice settlement status
           invoiceStatusPollerInprogress: false //to lock to 1 poll at a time
         },
@@ -549,6 +613,16 @@ export default {
           amount: null, //invoice amount
           isValidInvoice: false, //check if invoice entered by user is a valid Bolt 11 invoice
           isSending: false //used for transition while tx is being broadcasted
+        },
+        paymentInfo: {
+          amount: null,
+          description: "",
+          timestamp: null,
+          fee: null,
+          paymentRequest: ""
+        },
+        expiredInvoice: {
+          expiresOn: null
         },
         loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
         error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
@@ -593,6 +667,7 @@ export default {
         paymentRequest: "",
         invoiceQR: "1",
         isGeneratingInvoice: false,
+        expiresOn: null,
         invoiceStatusPoller: null,
         invoiceStatusPollerInprogress: false
       };
@@ -602,6 +677,16 @@ export default {
         amount: null,
         isValidInvoice: false,
         isSending: false
+      };
+      this.state.paymentInfo = {
+        amount: null,
+        description: "",
+        timestamp: null,
+        fee: null,
+        paymentRequest: ""
+      };
+      this.state.expiredInvoice = {
+        expiresOn: null
       };
       this.state.loading = false;
       this.state.error = "";
@@ -671,13 +756,11 @@ export default {
             `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/addInvoice`,
             payload
           );
-          // const res = {
-          //   data: {
-          //     paymentRequest: "lolololololol"
-          //   }
-          // };
           this.state.receive.invoiceQR = this.state.receive.paymentRequest =
             res.data.paymentRequest;
+
+          // to do: find a cleaner way to make this dynamic as per backend's expiry setting. for now invoice expiries are 1 hr
+          this.state.receive.expiresOn = moment().add(1, "hour");
 
           //refresh txs
           this.$store.dispatch("lightning/getTransactions");
@@ -753,6 +836,44 @@ export default {
       }
 
       this.state.loading = false;
+    },
+    showTransactionInfo(tx) {
+      if (!tx || tx.type === "loading") return; //eg. when tx is loading
+
+      //if outgoing payment, show success
+      if (tx.type === "outgoing") {
+        this.state.paymentInfo = {
+          amount: tx.amount,
+          description: tx.description,
+          timestamp: tx.timestamp,
+          fee: tx.fee,
+          paymentRequest: tx.paymentRequest
+        };
+        return this.changeMode("payment-success");
+      }
+
+      //if pending, show generated invoice screen (receive, so it also triggers poller)
+      if (tx.type === "pending") {
+        this.state.receive.amount = tx.amount;
+        this.state.receive.description = tx.description;
+        this.state.receive.paymentRequest = tx.paymentRequest;
+        this.state.receive.invoiceQR = tx.paymentRequest;
+        this.state.receive.isGeneratingInvoice = false;
+        this.state.receive.expiresOn = tx.expiresOn;
+        return this.changeMode("invoice");
+      }
+
+      if (tx.type === "incoming") {
+        this.state.receive.amount = tx.amount;
+        this.state.receive.description = tx.description;
+        this.state.receive.timestamp = tx.timestamp;
+        return this.changeMode("received");
+      }
+
+      if (tx.type === "expired") {
+        this.state.expiredInvoice.expiresOn = tx.expiresOn;
+        this.changeMode("invoice-expired");
+      }
     }
   },
   watch: {
@@ -772,9 +893,12 @@ export default {
               `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoices`
             );
             if (invoices && invoices.length) {
-              const currentInvoice = invoices[0];
-              //make sure the latest invoice is the current invoice
-              if (currentInvoice.settled) {
+              //search for invoice
+              const currentInvoice = invoices.filter(inv => {
+                return inv.paymentRequest === this.state.receive.paymentRequest;
+              })[0];
+
+              if (currentInvoice && currentInvoice.settled) {
                 this.changeMode("received");
                 window.clearInterval(this.state.receive.invoiceStatusPoller);
 
@@ -791,6 +915,7 @@ export default {
     }
   },
   async created() {
+    window.moment = moment;
     await this.$store.dispatch("lightning/getStatus");
   },
   beforeDestroy() {
@@ -826,6 +951,9 @@ export default {
     box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
     border-radius: 50%;
     z-index: 0;
+  }
+  &.checkmark-danger:before {
+    background: #f46e6e;
   }
   .checkmark-icon {
     position: absolute;
