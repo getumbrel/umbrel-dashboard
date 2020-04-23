@@ -31,6 +31,7 @@
           variant="success"
           v-if="network !== 'mainnet'"
           class="align-self-center mr-2 text-capitalize"
+          pill
         >{{ network }}</b-badge>
 
         <div

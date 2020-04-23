@@ -34,7 +34,7 @@ const state = () => ({
   connectionCode: "unknown",
   maxSend: 0,
   maxReceive: 0,
-  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
+  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
   confirmedTransactions: [],
   pendingTransactions: [],
   pendingChannelEdit: {},

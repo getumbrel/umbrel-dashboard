@@ -10,7 +10,7 @@
     }"
     sub-title="Sats"
     icon="icon-app-lightning.svg"
-    :loading="state.loading"
+    :loading="state.loading || transactions[0]['type'] === 'loading'"
   >
     <!-- Back Button -->
     <div class="px-3 px-sm-4 pt-2 pb-3" v-if="state.mode != 'balance'">
@@ -143,33 +143,11 @@
                       />
                     </svg>
 
-                    <!-- Pending invoice tx -->
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      v-else-if="tx.type === 'pending'"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10Z"
-                        fill="#C3C6D1"
-                      />
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10Z"
-                        fill="#C3C6D1"
-                      />
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M13 10C13.5523 10 14 9.55228 14 9C14 8.44772 13.5523 8 13 8C12.4477 8 12 8.44772 12 9C12 9.55228 12.4477 10 13 10Z"
-                        fill="#C3C6D1"
-                      />
+                    <!-- Pending invoice icon -->
+                    <svg class="icon-clock" viewBox="0 0 40 40" v-else-if="tx.type === 'pending'">
+                      <circle cx="20" cy="20" r="18" />
+                      <line x1="0" y1="0" x2="8" y2="0" class="hour" />
+                      <line x1="0" y1="0" x2="12" y2="0" class="minute" />
                     </svg>
 
                     <!-- Invoice description -->
@@ -233,7 +211,7 @@
         <label class="sr-onlsy" for="input-sats">Paste Invoice</label>
         <b-input
           id="input-sats"
-          class="mb-3 neu-input"
+          class="mb-4 neu-input"
           type="text"
           size="lg"
           min="1"
@@ -276,7 +254,7 @@
         </div>
 
         <!-- Invoice amount + description -->
-        <p class="text-center mb-4">
+        <p class="text-center mb-4 pb-1">
           Paid
           <b>{{state.send.amount.toLocaleString()}} sats</b>
           <span v-if="state.send.description">
@@ -325,7 +303,7 @@
         v-else-if="this.state.mode === 'invoice'"
         key="mode-invoice"
       >
-        <p class="text-center text-muted mb-2">
+        <p class="text-center text-muted mb-3">
           <!-- If still generating invoice, show blinking loading text -->
           <span class="blink" v-if="state.receive.isGeneratingInvoice">Generating Invoice</span>
 
@@ -339,7 +317,7 @@
         </p>
 
         <!-- QR Code -->
-        <div class="generated-qr mb-3 pb-2">
+        <div class="generated-qr mb-2 pb-2">
           <!-- Popup umbrel logo in the middle of QR code after the QR is generated -->
           <transition name="qr-logo-popup" appear>
             <img
@@ -361,10 +339,10 @@
 
         <!-- Copy Invoice Input Field -->
         <transition name="slide-up" appear>
-          <div v-show="!state.receive.isGeneratingInvoice">
-            <input-copy size="sm" :value="state.receive.invoiceQR" class="mb-2 mt-2"></input-copy>
+          <div class="pb-2" v-show="!state.receive.isGeneratingInvoice">
+            <input-copy size="sm" :value="state.receive.invoiceQR" class="mb-2"></input-copy>
             <small
-              class="text-center d-block"
+              class="text-center d-block text-muted"
             >This invoice will expire {{ getTimeFromNow(state.receive.expiresOn) }}</small>
           </div>
         </transition>
@@ -390,7 +368,7 @@
         </div>
 
         <!-- Invoice amount + description -->
-        <p class="text-center mb-4">
+        <p class="text-center mb-4 pb-1">
           Received
           <b>{{ state.receive.amount.toLocaleString() }} sats</b>
           <span v-if="state.receive.description">
@@ -398,7 +376,7 @@
             <b>{{state.receive.description}}</b>
           </span>
           <br />
-          <small>{{ getReadableTime(state.receive.timestamp) }}</small>
+          <small class="text-muted">{{ getReadableTime(state.receive.timestamp) }}</small>
         </p>
       </div>
 
@@ -426,7 +404,7 @@
         </div>
 
         <!-- Payment amount + description -->
-        <p class="text-center mb-1">
+        <p class="text-center mb-4">
           Paid
           <b>{{ state.paymentInfo.amount.toLocaleString() }} sats</b>
           <span v-if="state.paymentInfo.description">
@@ -434,9 +412,11 @@
             <b>{{state.paymentInfo.description}}</b>
           </span>
           <br />
-          <small>{{ getReadableTime(state.paymentInfo.timestamp) }}</small>
+          <small class="text-muted">{{ getReadableTime(state.paymentInfo.timestamp) }}</small>
           <br />
-          <small>Fee: {{ state.paymentInfo.fee > 1 ? `${state.paymentInfo.fee} Sats` : `${state.paymentInfo.fee} Sat`}}</small>
+          <small
+            class="text-muted"
+          >Fee: {{ state.paymentInfo.fee > 1 ? `${state.paymentInfo.fee} Sats` : `${state.paymentInfo.fee} Sat`}}</small>
         </p>
       </div>
 
@@ -464,10 +444,10 @@
         </div>
 
         <!-- Invoice amount + description -->
-        <p class="text-center mb-4">
-          This invoice was not paid.
+        <p class="text-center mb-4 pb-1">
+          This invoice was not paid
           <br />
-          <small>Expired on {{ getReadableTime(state.expiredInvoice.expiresOn) }}</small>
+          <small class="text-muted">Expired on {{ getReadableTime(state.expiredInvoice.expiresOn) }}</small>
         </p>
       </div>
     </transition>
@@ -1186,5 +1166,59 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+//clock pending invoice icon
+svg.icon-clock {
+  height: 15px;
+  width: 15px;
+  fill: none;
+  stroke: #c4c4c4;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  --start-seconds: 57;
+  --start-minutes: 45;
+  --start-hours: 11;
+  circle {
+    fill: none;
+  }
+
+  .seconds,
+  .minute,
+  .hour {
+    transform: translate(20px, 20px) rotate(0deg);
+  }
+
+  .minute {
+    transform: translate(20px, 20px) rotate(calc(var(--start-minutes) * 6deg));
+    stroke-width: 3;
+    animation: rotateMinuteHand 10s linear infinite;
+  }
+
+  .hour {
+    transform: translate(20px, 20px) rotate(calc(var(--start-hours) * 30deg));
+    animation: rotateHourHand 60s linear infinite;
+    stroke-width: 3;
+  }
+}
+@keyframes rotateMinuteHand {
+  from {
+    transform: translate(20px, 20px) rotate(calc(var(--start-minutes) * 6deg));
+  }
+  to {
+    transform: translate(20px, 20px)
+      rotate(calc(var(--start-minutes) * 6deg + 360deg));
+  }
+}
+
+@keyframes rotateHourHand {
+  from {
+    transform: translate(20px, 20px) rotate(calc(var(--start-hours) * 30deg));
+  }
+  to {
+    transform: translate(20px, 20px)
+      rotate(calc(var(--start-hours) * 30deg + 360deg));
+  }
 }
 </style>

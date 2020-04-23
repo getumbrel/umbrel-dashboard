@@ -53,7 +53,6 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" disabled>Show QR</b-dropdown-item>
             <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
             <b-dropdown-item href="#" disabled>View information</b-dropdown-item>
             <b-dropdown-divider />

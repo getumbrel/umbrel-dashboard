@@ -25,7 +25,7 @@ const state = () => ({
     pendingIn: -1,
     pendingOut: -1
   },
-  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
+  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
   pending: [],
   price: 0,
   fees: {
