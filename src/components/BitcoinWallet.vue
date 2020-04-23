@@ -230,9 +230,9 @@
         </div>
 
         <!-- Link to Bitcoin Network Page -->
-        <div class="px-3 px-sm-4 pt-2" v-if="!isBitcoinPage">
+        <!-- <div class="px-3 px-sm-4 pt-2" v-if="!isBitcoinPage">
           <router-link to="/bitcoin" class="card-link">Manage</router-link>
-        </div>
+        </div>-->
       </div>
 
       <!-- SCREEN/MODE: Withdraw Screen -->
@@ -379,7 +379,7 @@
     </small>
 
     <!-- Buttons for all screens/modes -->
-    <div class="mt-3">
+    <div class="mt-2">
       <!-- Buttons: Balance (default mode) if balance > 0 -->
       <b-button-group class="w-100" v-if="this.state.mode === 'balance' && walletBalance > 0">
         <b-button
@@ -878,13 +878,13 @@ export default {
   }
 }
 .transactions {
-  height: 17rem;
+  height: 20rem;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; //momentum scroll on iOS
 }
 
 .zero-transactions-container {
-  height: 17rem;
+  height: 20rem;
 }
 
 //transactions list transitions

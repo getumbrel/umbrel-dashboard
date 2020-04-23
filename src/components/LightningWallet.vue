@@ -223,9 +223,9 @@
         </div>
 
         <!-- Link to Lightning Network Page -->
-        <div class="px-3 px-sm-4 pt-2" v-if="!isLightningPage">
+        <!-- <div class="px-3 px-sm-4 pt-2" v-if="!isLightningPage">
           <router-link to="/lightning" class="card-link">Manage</router-link>
-        </div>
+        </div>-->
       </div>
 
       <!-- SCREEN/MODE: Paste Invoice Screen -->
@@ -476,7 +476,7 @@
     <small class="text-danger mb-2 d-block px-3 px-sm-4" v-if="state.error">{{ state.error }}</small>
 
     <!-- Buttons for all screens/modes -->
-    <div class="mt-3">
+    <div class="mt-2">
       <!-- Buttons: Balance (default mode) -->
       <b-button-group class="w-100" v-if="this.state.mode === 'balance' && walletBalance > 0">
         <b-button
@@ -1124,13 +1124,13 @@ export default {
   }
 }
 .transactions {
-  height: 17rem;
+  height: 20rem;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; //momentum scroll on iOS
 }
 
 .zero-transactions-container {
-  height: 17rem;
+  height: 20rem;
 }
 
 //slide up copy invoice field transition
