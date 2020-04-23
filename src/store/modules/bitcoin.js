@@ -10,7 +10,7 @@ const state = () => ({
   onionAddress: "",
   currentBlock: 0,
   blockHeight: 0,
-  percent: 0,
+  percent: -1, //for loading state
   depositAddress: "",
   peers: {
     total: 0,
@@ -18,11 +18,11 @@ const state = () => ({
     outbound: 0
   },
   balance: {
-    total: 0,
-    confirmed: 0,
-    pending: 0,
-    pendingIn: 0,
-    pendingOut: 0
+    total: -1, //loading
+    confirmed: -1,
+    pending: -1,
+    pendingIn: -1,
+    pendingOut: -1
   },
   transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
   pending: [],

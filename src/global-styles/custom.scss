@@ -230,6 +230,10 @@ a {
           height: 0.75rem;
           border-radius: 0.375rem;
       }
+      &.loading-placeholder-lg {
+        height: 1.25rem;
+        border-radius: 0.625rem;
+    }
   }
   
   @keyframes loading-placeholder {

@@ -23,9 +23,9 @@ const state = () => ({
   currentBlock: 0,
   blockHeight: 0,
   balance: {
-    total: 0,
-    confirmed: 0,
-    pending: 0
+    total: -1,
+    confirmed: -1,
+    pending: -1
   },
   numPendingChannels: 0,
   numActiveChannels: 0,
@@ -333,14 +333,16 @@ const actions = {
           const invoiceDetails = await API.get(
             `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
           );
-          tx.description = invoiceDetails.description || "Payment"; //when there is no memo
+          if (invoiceDetails && invoiceDetails.description) {
+            tx.description = invoiceDetails.description;
+          } else {
+            tx.description = "Payment"
+          }
         } catch (error) {
           console.log(error);
           tx.description = "Payment";
         }
       }
-
-
       commit("setTransactions", transactions);
     }
   },

@@ -320,14 +320,22 @@ export default {
       }
     },
     onChannelOpen() {
-      //refresh channels
+      //refresh channels, balance and txs
       this.$store.dispatch("lightning/getLndPageData");
       this.$refs["open-channel-modal"].hide();
+
+      //refresh bitcoin balance and txs
+      this.$store.dispatch("bitcoin/getBalance");
+      this.$store.dispatch("bitcoin/getTransactions");
     },
     onChannelClose() {
-      //refresh channels
+      //refresh channels, balance and txs
       this.$store.dispatch("lightning/getLndPageData");
       this.$refs["manage-channel-modal"].hide();
+
+      //refresh bitcoin balance and txs
+      this.$store.dispatch("bitcoin/getBalance");
+      this.$store.dispatch("bitcoin/getTransactions");
     }
   },
   created() {

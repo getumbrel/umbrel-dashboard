@@ -1,11 +1,11 @@
 <template>
   <div class="py-3 px-3 px-sm-4 channel">
-    <b-row align-v="center">
+    <b-row align-v>
       <b-col col cols="12" xl="3">
         <!-- on large screens -->
         <div class="d-none d-xl-block">
           <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
-          <div v-if="channel.status !== 'Closing'">
+          <div>
             <span class style="margin-left: 2px;">{{ alias }}</span>
           </div>
         </div>
@@ -13,7 +13,7 @@
         <!-- on small screens -->
         <div class="d-xl-none d-flex justify-content-between align-items-center mb-1">
           <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
-          <div v-if="channel.status !== 'Closing'">
+          <div>
             <small class style="margin-left: 2px;">{{ alias }}</small>
           </div>
         </div>

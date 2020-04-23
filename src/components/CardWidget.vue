@@ -55,15 +55,32 @@
         <div class="card-app-info px-3 px-sm-4" v-if="title || numericTitle">
           <div class="d-flex w-100 justify-content-between mb-4">
             <div>
-              <h3 class="mb-1">{{ title }}</h3>
-              <h3 class="mb-1" v-if="numericTitle">
-                <!-- <ICountUp
-                  :endVal="numericTitle.value"
-                  :options="{'prefix': numericTitle.prefix, 'suffix': numericTitle.suffix, 'startVal': numericTitle.value}"
-                />-->
-                {{ numericTitle.value.toLocaleString() }}
-              </h3>
-              <p class="text-muted mb-0" v-if="subTitle">{{ subTitle }}</p>
+              <div v-if="title">
+                <h3 class="mb-1">{{ title }}</h3>
+                <p class="text-muted mb-0" v-if="subTitle">{{ subTitle }}</p>
+              </div>
+
+              <div v-else-if="numericTitle">
+                <div>
+                  <h3 class="mb-1">
+                    <CountUp
+                      :endVal="numericTitle.value"
+                      :options="{'prefix': numericTitle.prefix, 'suffix': numericTitle.suffix, 'startVal': numericTitle.value}"
+                      v-if="numericTitle.value >=0"
+                    />
+                    <span
+                      class="loading-placeholder loading-placeholder-lg"
+                      style="width: 140px;"
+                      v-else
+                    ></span>
+                  </h3>
+                </div>
+
+                <div v-if="subTitle">
+                  <p class="text-muted mb-0" v-if="numericTitle.value > 0">{{ subTitle }}</p>
+                  <span class="loading-placeholder loading-placeholder-sm w-50" style v-else></span>
+                </div>
+              </div>
             </div>
             <img :alt="header" :src="require(`@/assets/${icon}`)" v-if="icon" />
           </div>
@@ -76,7 +93,7 @@
 </template>
 
 <script>
-// import ICountUp from "vue-countup-v2";
+import CountUp from "@/components/Utility/CountUp";
 import Status from "@/components/Status";
 
 export default {
@@ -96,7 +113,7 @@ export default {
   computed: {},
   methods: {},
   components: {
-    // ICountUp,
+    CountUp,
     Status
   }
 };

@@ -19,7 +19,12 @@
             variant: 'success',
             blink: false
           }"
-          :title="`${syncPercent}%`"
+          title
+          :numericTitle="{
+            value: syncPercent,
+            suffix: '%',
+            prefix: ''
+          }"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
           :loading="syncPercent !== 100"

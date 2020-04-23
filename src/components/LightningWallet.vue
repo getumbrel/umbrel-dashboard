@@ -559,7 +559,7 @@ export default {
   computed: {
     ...mapState({
       transactions: state => state.lightning.transactions,
-      walletBalance: state => state.lightning.balance.confirmed
+      walletBalance: state => state.lightning.balance.total
     }),
     isLightningPage() {
       return this.$router.currentRoute.path === "/lightning";
