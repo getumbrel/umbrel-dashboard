@@ -179,11 +179,11 @@ export default {
             }
           },
           {
-            title: "Best Fee",
-            value: 34,
-            suffix: "Sats/vbyte",
+            title: "Blockchain Size",
+            value: 304,
+            suffix: "Gb",
             change: {
-              value: -26,
+              value: 0.5,
               suffix: "%"
             }
           }
@@ -238,11 +238,11 @@ export default {
           }
         },
         {
-          title: "Best Fee",
-          value: this.random(10, 70),
-          suffix: "Sats/vbyte",
+          title: "Blockchain Size",
+          value: "304",
+          suffix: "Gb",
           change: {
-            value: this.random(-60, 40),
+            value: 0.5,
             suffix: "%"
           }
         }
