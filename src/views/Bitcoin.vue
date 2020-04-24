@@ -110,12 +110,12 @@
           </div>
         </card-widget>
       </b-col>
-      <b-col col cols="12" md="6" xl="4">
+      <b-col col cols="12" xl="4">
         <card-widget header="Network">
           <div class>
             <div class="px-3 px-sm-4 pb-2">
               <b-row>
-                <b-col col cols="6" v-for="stat in state.stats" :key="stat.title">
+                <b-col col cols="6" md="3" xl="6" v-for="stat in state.stats" :key="stat.title">
                   <bitcoin-network-stat
                     :title="stat.title"
                     :value="stat.value"

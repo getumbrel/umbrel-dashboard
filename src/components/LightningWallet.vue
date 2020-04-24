@@ -10,7 +10,7 @@
     }"
     sub-title="Sats"
     icon="icon-app-lightning.svg"
-    :loading="state.loading || transactions[0]['type'] === 'loading'"
+    :loading="state.loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
   >
     <!-- Back Button -->
     <div class="px-3 px-sm-4 pt-2 pb-3" v-if="state.mode != 'balance'">
@@ -458,7 +458,7 @@
     <!-- Buttons for all screens/modes -->
     <div class="mt-2">
       <!-- Buttons: Balance (default mode) -->
-      <b-button-group class="w-100" v-if="this.state.mode === 'balance' && walletBalance > 0">
+      <b-button-group class="w-100" v-if="this.state.mode === 'balance'">
         <b-button
           class="w-50"
           variant="primary"

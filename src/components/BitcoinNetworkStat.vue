@@ -2,8 +2,8 @@
   <div>
     <span>{{ title }}</span>
     <div class="pt-2 pb-4">
-      <div class="mb-1">
-        <h3 class="font-weight-normal d-inline">
+      <div class="mb-1 d-flex align-items-end">
+        <h3 class="font-weight-normal d-inline mb-0">
           <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
           <span>
             <CountUp :endVal="value" :suffix="numberSuffix" />

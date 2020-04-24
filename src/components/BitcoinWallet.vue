@@ -10,7 +10,7 @@
     }"
     sub-title="Sats"
     icon="icon-app-bitcoin.svg"
-    :loading="state.loading || transactions[0]['type'] === 'loading'"
+    :loading="state.loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
   >
     <!-- Back Button -->
     <div class="px-3 px-sm-4 pt-2 pb-3" v-if="state.mode != 'balance'">

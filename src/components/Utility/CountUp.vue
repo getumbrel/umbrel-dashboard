@@ -39,7 +39,6 @@ export default {
   computed: {},
   mounted() {
     const that = this;
-    console.log(this.suffix);
     that.create();
   },
   beforeDestroy() {
