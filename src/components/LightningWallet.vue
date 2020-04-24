@@ -165,6 +165,7 @@
                   <small
                     class="text-muted mt-0 tx-timestamp"
                     style="margin-left: 24px;"
+                    v-b-tooltip.hover.bottomright
                     :title="getReadableTime(tx.timestamp)"
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                   >{{getTimeFromNow(tx.timestamp)}}</small>

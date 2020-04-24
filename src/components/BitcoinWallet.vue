@@ -169,7 +169,7 @@
                       />
                     </svg>
 
-                    <!-- Invoice description -->
+                    <!-- tx description -->
                     <span
                       style="margin-left: 6px;"
                       :title="tx.description"
@@ -180,14 +180,23 @@
                   <small
                     class="text-muted mt-0 tx-timestamp"
                     style="margin-left: 24px;"
-                    :title="getReadableTime(tx.timestamp)"
+                    v-b-tooltip.hover.bottomright
+                    :title="`${getReadableTime(tx.timestamp)} | ${tx.confirmations} confirmations`"
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                   >
                     {{ getTimeFromNow(tx.timestamp) }}
                     <span
-                      v-if="tx.confirmations > 0"
-                    >&bull; {{ tx.confirmations }} confirmations</span>
-                    <span v-else>&bull; Unconfirmed</span>
+                      v-if="
+                        tx.description === 'Lightning Wallet' &&
+                          tx.type === 'outgoing'
+                      "
+                    >&bull; Channel open</span>
+                    <span
+                      v-else-if="
+                        tx.description === 'Lightning Wallet' &&
+                          tx.type === 'incoming'
+                      "
+                    >&bull; Channel close</span>
                   </small>
 
                   <small
