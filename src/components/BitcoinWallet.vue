@@ -40,7 +40,7 @@
         <!-- No transactions -->
         <div
           class="d-flex flex-column justify-content-center px-3 px-sm-4 zero-transactions-container"
-          v-if="!transactions.length"
+          v-if="transactions.length === 0"
         >
           <svg
             width="150"

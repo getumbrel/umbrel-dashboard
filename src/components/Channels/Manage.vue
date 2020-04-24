@@ -32,7 +32,7 @@
           <span class="text-muted">Channel Type</span>
           <span
             class="text-capitalize font-weight-bold"
-          >{{ channel.isPrivate ? 'Private' : 'Public' }} Channel</span>
+          >{{ channel.private ? 'Private' : 'Public' }} Channel</span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
