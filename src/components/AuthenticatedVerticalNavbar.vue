@@ -5,7 +5,7 @@
         <p class="text-muted">
           Balance
           <span style="cursor: pointer;" @click="toggleBalance">
-            <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon>
+            <!-- <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon> -->
           </span>
         </p>
         <h3>
