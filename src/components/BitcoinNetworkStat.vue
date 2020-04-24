@@ -11,7 +11,7 @@
         </h3>
         <span class="text-muted d-inline" style="margin-left: 0.5rem;">{{ suffix }}</span>
       </div>
-      <div v-if="change">
+      <div v-if="(showNumericChange || showPercentChange) && change.value !== 0">
         <svg
           width="12"
           height="13"
@@ -59,16 +59,54 @@ export default {
       type: String,
       default: ""
     },
-    change: {
-      value: Number,
-      suffix: String
+    showNumericChange: {
+      type: Boolean,
+      default: false
+    },
+    showPercentChange: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {},
   data() {
-    return {};
+    return {
+      change: {
+        value: 0,
+        suffix: ""
+      }
+    };
   },
   methods: {},
+  watch: {
+    value(newValue, oldValue) {
+      if (this.showNumericChange) {
+        if (oldValue === 0) {
+          this.change = {
+            value: 0,
+            suffix: ""
+          };
+        } else {
+          this.change = {
+            value: newValue - oldValue,
+            suffix: ""
+          };
+        }
+      } else if (this.showPercentChange) {
+        if (oldValue === 0) {
+          this.change = {
+            value: 0,
+            suffix: "%"
+          };
+        } else {
+          this.change = {
+            value: Math.round(((newValue - oldValue) * 100) / oldValue),
+            suffix: "%"
+          };
+        }
+      }
+    }
+  },
   components: {
     CountUp
   }

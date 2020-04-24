@@ -115,7 +115,7 @@
           <div class>
             <div class="px-3 px-sm-4 pb-2">
               <b-row>
-                <b-col col cols="6" md="3" xl="6" v-for="stat in state.stats" :key="stat.title">
+                <!-- <b-col col cols="6" md="3" xl="6" v-for="stat in stats" :key="stat.title">
                   <bitcoin-network-stat
                     :title="stat.title"
                     :value="stat.value"
@@ -124,6 +124,38 @@
                       value: stat.change.value,
                       suffix: stat.change.suffix
                     }"
+                  ></bitcoin-network-stat>
+                </b-col>-->
+                <b-col col cols="6" md="3" xl="6">
+                  <bitcoin-network-stat
+                    title="Connections"
+                    :value="stats.peers"
+                    suffix="Peers"
+                    showNumericChange
+                  ></bitcoin-network-stat>
+                </b-col>
+                <b-col col cols="6" md="3" xl="6">
+                  <bitcoin-network-stat
+                    title="Mempool"
+                    :value="stats.mempool"
+                    suffix="MB"
+                    showPercentChange
+                  ></bitcoin-network-stat>
+                </b-col>
+                <b-col col cols="6" md="3" xl="6">
+                  <bitcoin-network-stat
+                    title="Hashrate"
+                    :value="stats.hashrate"
+                    suffix="Ehash/s"
+                    showPercentChange
+                  ></bitcoin-network-stat>
+                </b-col>
+                <b-col col cols="6" md="3" xl="6">
+                  <bitcoin-network-stat
+                    title="Blockchain Size"
+                    :value="stats.blockchainSize"
+                    suffix="GB"
+                    showPercentChange
                   ></bitcoin-network-stat>
                 </b-col>
               </b-row>
@@ -196,7 +228,8 @@ export default {
       blocks: state => state.bitcoin.blocks,
       version: state => state.bitcoin.version,
       currentBlock: state => state.bitcoin.currentBlock,
-      blockHeight: state => state.bitcoin.blockHeight
+      blockHeight: state => state.bitcoin.blockHeight,
+      stats: state => state.bitcoin.stats
     }),
     isDarkMode() {
       return this.$store.getters.isDarkMode;
@@ -206,56 +239,17 @@ export default {
     random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    refreshAPI() {
-      const randomStat = this.random(0, 3);
-      const updatedStats = [
-        {
-          title: "Connections",
-          value: this.random(4, 8),
-          suffix: "Peers",
-          change: {
-            value: this.random(-4, 4),
-            suffix: ""
-          }
-        },
-        {
-          title: "Mempool",
-          value: this.random(2, 20),
-          suffix: "Mb",
-          change: {
-            value: this.random(-40, 40),
-            suffix: "%"
-          }
-        },
-        {
-          title: "Hashrate",
-          value: this.random(95, 105),
-          suffix: "Ehash/s",
-          change: {
-            value: this.random(-5, 5),
-            suffix: "%"
-          }
-        },
-        {
-          title: "Blockchain Size",
-          value: "304",
-          suffix: "Gb",
-          change: {
-            value: 0.5,
-            suffix: "%"
-          }
-        }
-      ];
-      this.state.stats.splice(randomStat, 1, updatedStats[randomStat]);
+    refreshStats() {
+      this.$store.dispatch("bitcoin/getStats");
     }
   },
   created() {
     this.$store.dispatch("bitcoin/getVersion");
-
-    window.setInterval(this.refreshAPI, 2000);
+    this.$store.dispatch("bitcoin/getStats");
+    // this.interval = window.setInterval(this.refreshStats, 5000);
   },
   beforeDestroy() {
-    window.clearInterval(this.refreshAPI);
+    window.clearInterval(this.refreshStats);
   },
   components: {
     CardWidget,

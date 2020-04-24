@@ -13,6 +13,12 @@ const state = () => ({
   blocks: [],
   percent: -1, //for loading state
   depositAddress: "",
+  stats: {
+    peers: 0,
+    mempool: 0,
+    hashrate: 0,
+    blockchainSize: 0
+  },
   peers: {
     total: 0,
     inbound: 0,
@@ -96,6 +102,10 @@ const mutations = {
 
   setVersion(state, version) {
     state.version = version.version;
+  },
+
+  setStats(state, stats) {
+    setTimeout(() => state.stats = stats, 1000);
   },
 
   peers(state, peers) {
@@ -305,6 +315,23 @@ const actions = {
 
       if (peers) {
         commit("peers", peers);
+      }
+    }
+  },
+
+  async getStats({ commit, state }) {
+    if (state.operational) {
+      // const stats = await API.get(
+      //   `${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/stats`
+      // );
+      const stats = {
+        peers: 8,
+        mempool: 2,
+        hashrate: 102,
+        blockchainSize: 304
+      };
+      if (stats) {
+        commit("setStats", stats);
       }
     }
   },
