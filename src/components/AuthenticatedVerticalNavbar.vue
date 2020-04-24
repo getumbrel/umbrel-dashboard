@@ -19,7 +19,11 @@
           </span>
           <span v-else>***,***</span>
           <div>
-            <small class="d-block" style="font-size: 1rem;" v-if="balanceLoaded">&nbsp;Sats</small>
+            <small
+              class="d-block text-muted mt-1"
+              style="font-size: 1rem;"
+              v-if="balanceLoaded"
+            >&nbsp;Sats</small>
             <span class="d-block loading-placeholder w-50" v-else></span>
           </div>
         </h3>

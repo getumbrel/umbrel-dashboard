@@ -41,12 +41,12 @@
                   <h6 class="mb-1 font-weight-normal">Block {{ block.height.toLocaleString() }}</h6>
                   <small class="text-muted" v-if="block.txs">
                     {{ block.txs.toLocaleString() }} transactions
-                    <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
+                    <!-- <span>&bull; {{ Math.round(block.size / 1000) }} KB</span> -->
                   </small>
                 </div>
               </div>
               <small
-                class="text-muted align-self-center"
+                class="text-muted align-self-center text-right"
                 v-if="block.timestamp"
                 :title="blockReadableTime(block.timestamp)"
               >
@@ -102,7 +102,7 @@
                 </div>
               </div>
               <span
-                class="loading-placeholder loading-placeholder-sm align-self-center"
+                class="loading-placeholder loading-placeholder-sm align-self-center text-right"
                 style="width: 40px"
               ></span>
             </div>
@@ -142,8 +142,8 @@ export default {
     },
     poller(syncPercent) {
       window.clearInterval(this.polling);
-      //if syncing, fetch blocks every second
-      if (Number(syncPercent) !== 100) {
+      //if syncing or first load, fetch blocks every second
+      if (Number(syncPercent) !== 100 || this.blocks.length === 0) {
         this.polling = window.setInterval(this.fetchBlocks, 1000);
       } else {
         //else, slow down and fetch blocks every minute

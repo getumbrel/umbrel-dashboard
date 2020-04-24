@@ -22,7 +22,7 @@
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
             <span
               class="d-block text-muted"
-            >{{ this.lndVersion ? this.lndVersion.split(" commit")[0] : '...' }}</span>
+            >{{ this.lndVersion ? `v${this.lndVersion.split(" commit")[0]}` : '...' }}</span>
           </div>
         </div>
         <div>

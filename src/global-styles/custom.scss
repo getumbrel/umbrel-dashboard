@@ -1,3 +1,6 @@
+// Roboto font for Chrome
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
 //Custom Variables (outside Bootstrap's scope)
 
 $dark-mode-dark: #1C1C26;
@@ -76,6 +79,11 @@ a {
             box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.5);
         }
     }
+    // Loading bar safari bug https://gist.github.com/ayamflow/b602ab436ac9f05660d9c15190f4fd7b
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
 }
 
 .neu-input {
@@ -171,8 +179,7 @@ a {
     position: absolute;
     top: 0;
     height: 4px;
-    background-color: $black;
-    opacity: 0.25;
+    background-color: #c3c6d1;
     display: block;
     border-radius: 1px;
     width: 100%;
