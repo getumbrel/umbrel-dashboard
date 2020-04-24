@@ -419,7 +419,8 @@ const getters = {
           amount: amount < 0 ? amount * -1 : amount, //for formatting +/- in view
           timestamp: new Date(Number(tx.timeStamp) * 1000),
           description,
-          hash: tx.txHash
+          hash: tx.txHash,
+          confirmations: tx.numConfirmations
         });
       });
 

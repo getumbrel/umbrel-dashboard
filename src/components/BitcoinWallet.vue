@@ -185,17 +185,9 @@
                   >
                     {{ getTimeFromNow(tx.timestamp) }}
                     <span
-                      v-if="
-                        tx.description === 'Lightning Wallet' &&
-                          tx.type === 'outgoing'
-                      "
-                    >&bull; Channel open</span>
-                    <span
-                      v-else-if="
-                        tx.description === 'Lightning Wallet' &&
-                          tx.type === 'incoming'
-                      "
-                    >&bull; Channel close</span>
+                      v-if="tx.confirmations > 0"
+                    >&bull; {{ tx.confirmations }} confirmations</span>
+                    <span v-else>&bull; Unconfirmed</span>
                   </small>
 
                   <small
