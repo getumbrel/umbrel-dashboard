@@ -1,5 +1,8 @@
 <template>
-  <span></span>
+  <span class="d-flex">
+    <span ref="number"></span>
+    {{ suffix }}
+  </span>
 </template>
 
 <script>
@@ -21,6 +24,11 @@ export default {
     options: {
       type: Object,
       required: false
+    },
+    suffix: {
+      type: String,
+      required: false,
+      default: ""
     }
   },
   data() {
@@ -31,7 +39,7 @@ export default {
   computed: {},
   mounted() {
     const that = this;
-    // console.log('mounted');
+    console.log(this.suffix);
     that.create();
   },
   beforeDestroy() {
@@ -45,7 +53,7 @@ export default {
       if (that.instance) {
         return;
       }
-      const dom = that.$el;
+      const dom = that.$refs.number;
       const instance = new CountUp(dom, that.endVal, that.options);
       if (instance.error) {
         // error

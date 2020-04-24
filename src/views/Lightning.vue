@@ -224,8 +224,6 @@ const abbreviateNumber = n => {
   if (n >= 1e12) return [Number(+(n / 1e12).toFixed(1)), "T"];
 };
 
-window.abv = abbreviateNumber;
-
 export default {
   data() {
     return {
@@ -237,41 +235,19 @@ export default {
     ...mapState({
       lndVersion: state => state.lightning.version,
       numActiveChannels: state => state.lightning.numActiveChannels,
+      maxReceive: state => state.lightning.maxReceive,
+      maxSend: state => state.lightning.maxSend,
       numPeers: state => state.lightning.numPeers,
       pubkey: state => state.lightning.pubkey,
       channels: state => state.lightning.channels
     }),
     stats() {
-      // let activeChannels = 0;
-      let totalLocalBalance = 0;
-      let totalRemoteBalance = 0;
-      // let totalCapacity = 0;
-
-      for (let channel of this.channels) {
-        if (!channel.active) continue;
-        // activeChannels++;
-        totalLocalBalance += Number(channel.localBalance);
-        totalRemoteBalance += Number(channel.remoteBalance);
-        // totalCapacity += Number(channel.capacity);
-      }
-
-      // totalCapacity = totalLocalBalance + totalRemoteBalance;
-
       return [
-        // {
-        //   title: "Total Capacity",
-        //   value: abbreviateNumber(totalCapacity)[0],
-        //   numberSuffix: abbreviateNumber(totalCapacity)[1],
-        //   suffix: "Sats",
-        //   change: {
-        //     value: 1,
-        //     suffix: ""
-        //   }
-        // },
         {
           title: "Peers",
           value: this.numPeers,
           suffix: "Peers",
+          numberSuffix: "",
           change: {
             value: 1,
             suffix: ""
@@ -281,6 +257,7 @@ export default {
           title: "Active Channels",
           value: this.numActiveChannels,
           suffix: "Channels",
+          numberSuffix: "",
           change: {
             value: -42,
             suffix: ""
@@ -288,8 +265,8 @@ export default {
         },
         {
           title: "Max Send",
-          value: abbreviateNumber(totalLocalBalance)[0],
-          numberSuffix: abbreviateNumber(totalLocalBalance)[1],
+          value: abbreviateNumber(this.maxSend)[0],
+          numberSuffix: abbreviateNumber(this.maxSend)[1],
           suffix: "Sats",
           change: {
             value: 7,
@@ -298,8 +275,8 @@ export default {
         },
         {
           title: "Max Receive",
-          value: abbreviateNumber(totalRemoteBalance)[0],
-          numberSuffix: abbreviateNumber(totalRemoteBalance)[1],
+          value: abbreviateNumber(this.maxReceive)[0],
+          numberSuffix: abbreviateNumber(this.maxReceive)[1],
           suffix: "Sats",
           change: {
             value: -26,

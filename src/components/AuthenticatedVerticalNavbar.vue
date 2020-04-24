@@ -12,7 +12,7 @@
           <span v-if="state.showBalance">
             <CountUp
               :endVal="walletBalance"
-              :options="{'prefix': '', 'suffix': '', 'startVal': walletBalance}"
+              :options="{'startVal': walletBalance}"
               v-if="balanceLoaded"
             />
             <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>

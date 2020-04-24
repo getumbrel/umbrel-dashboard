@@ -422,6 +422,11 @@ const getters = {
           hash: tx.txHash
         });
       });
+
+      //sort txs by date
+      txs.sort(function (tx1, tx2) {
+        return tx2.timestamp - tx1.timestamp;
+      });
     }
 
     return txs;

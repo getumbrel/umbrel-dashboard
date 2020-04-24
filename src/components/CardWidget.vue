@@ -65,7 +65,8 @@
                   <h3 class="mb-1">
                     <CountUp
                       :endVal="numericTitle.value"
-                      :options="{'prefix': numericTitle.prefix, 'suffix': numericTitle.suffix, 'startVal': numericTitle.value}"
+                      :options="{'prefix': numericTitle.prefix, 'startVal': numericTitle.value}"
+                      :suffix="numericTitle.suffix"
                       v-if="numericTitle.value >=0"
                     />
                     <span
@@ -77,7 +78,7 @@
                 </div>
 
                 <div v-if="subTitle">
-                  <p class="text-muted mb-0" v-if="numericTitle.value > 0">{{ subTitle }}</p>
+                  <p class="text-muted mb-0" v-if="numericTitle.value >=0">{{ subTitle }}</p>
                   <span class="loading-placeholder loading-placeholder-sm w-50" style v-else></span>
                 </div>
               </div>

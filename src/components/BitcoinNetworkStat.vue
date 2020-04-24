@@ -6,7 +6,7 @@
         <h3 class="font-weight-normal d-inline">
           <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
           <span>
-            <CountUp :endVal="value" :options="{'suffix': numberSuffix ? numberSuffix : ''}" />
+            <CountUp :endVal="value" :suffix="numberSuffix" />
           </span>
         </h3>
         <span class="text-muted d-inline" style="margin-left: 0.5rem;">{{ suffix }}</span>
