@@ -721,7 +721,7 @@ export default {
       this.state.error = "";
 
       //start animated QR invoice until real invoice is fetched from the node
-      const QRAnimation = window.setInterval(() => {
+      this.QRAnimation = window.setInterval(() => {
         this.state.receive.invoiceQR = `${this.state.receive.invoiceQR}2345`;
       }, 200);
 
@@ -753,7 +753,7 @@ export default {
         }
         this.state.loading = false;
         this.state.receive.isGeneratingInvoice = false;
-        window.clearInterval(QRAnimation);
+        window.clearInterval(this.QRAnimation);
       }, 2500);
 
       // setTimeout(() => {
@@ -764,7 +764,7 @@ export default {
       //   this.state.receive.isGeneratingInvoice = false;
       //   this.state.receive.invoiceQR = this.state.receive.paymentRequest =
       //     "lightning:lnbc10u1p0xvxt5pp52f3dd2ya8ejas4jkfq8l6k9vz6cpzv00wyanskkn0pvpyqjx5gusdqj23jhxarfdenjqvfjxvcqzpgxqyz5vqldzazcemje3f8llz90smx4rr7q7vlw4h988fvgs7tupehdtz038putaw8kysw34rq2apn5s5suc0xfltfwpsuu97nyuenpuzp4xl6zsqzmslgk";
-      //   window.clearInterval(QRAnimation);
+      //   window.clearInterval(this.QRAnimation);
       // }, 3000);
     },
     async fetchInvoiceDetails() {
@@ -900,6 +900,7 @@ export default {
     await this.$store.dispatch("lightning/getStatus");
   },
   beforeDestroy() {
+    window.clearInterval(this.QRAnimation);
     window.clearInterval(this.state.receive.invoiceStatusPoller);
   },
   components: {
@@ -1167,59 +1168,5 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
-}
-
-//clock pending invoice icon
-svg.icon-clock {
-  height: 15px;
-  width: 15px;
-  fill: none;
-  stroke: #6c757d;
-  stroke-width: 3;
-  stroke-linecap: round;
-  transform: rotate(-90deg);
-  --start-seconds: 57;
-  --start-minutes: 45;
-  --start-hours: 11;
-  circle {
-    fill: none;
-  }
-
-  .seconds,
-  .minute,
-  .hour {
-    transform: translate(20px, 20px) rotate(0deg);
-  }
-
-  .minute {
-    transform: translate(20px, 20px) rotate(calc(var(--start-minutes) * 6deg));
-    stroke-width: 3;
-    animation: rotateMinuteHand 10s linear infinite;
-  }
-
-  .hour {
-    transform: translate(20px, 20px) rotate(calc(var(--start-hours) * 30deg));
-    animation: rotateHourHand 60s linear infinite;
-    stroke-width: 3;
-  }
-}
-@keyframes rotateMinuteHand {
-  from {
-    transform: translate(20px, 20px) rotate(calc(var(--start-minutes) * 6deg));
-  }
-  to {
-    transform: translate(20px, 20px)
-      rotate(calc(var(--start-minutes) * 6deg + 360deg));
-  }
-}
-
-@keyframes rotateHourHand {
-  from {
-    transform: translate(20px, 20px) rotate(calc(var(--start-hours) * 30deg));
-  }
-  to {
-    transform: translate(20px, 20px)
-      rotate(calc(var(--start-hours) * 30deg + 360deg));
-  }
 }
 </style>

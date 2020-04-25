@@ -429,6 +429,11 @@ const getters = {
           return;
         }
 
+        // if (tx.numConfirmations === 0) {
+
+        // }
+        // type = "pending";
+
         let description = "Unknown";
 
         if (tx.type === "CHANNEL_OPEN" || tx.type === "PENDING_OPEN") {
@@ -436,18 +441,11 @@ const getters = {
         } else if (tx.type === "CHANNEL_CLOSE" || tx.type === "PENDING_CLOSE") {
           description = "Lightning Wallet";
         } else if (tx.type === "ON_CHAIN_TRANSACTION_SENT") {
-          if (tx.numConfirmations > 0) {
-            description = "Withdrawal";
-          } else {
-            description = "Pending Withdrawal";
-          }
+          description = "Withdrawal";
         } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
-          if (tx.numConfirmations > 0) {
-            description = "Deposit";
-          } else {
-            description = "Pending Deposit";
-          }
+          description = "Deposit";
         }
+
 
         txs.push({
           type,

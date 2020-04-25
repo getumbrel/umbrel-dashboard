@@ -276,7 +276,7 @@ export default {
     },
     onChannelOpen() {
       //refresh channels, balance and txs
-      this.$store.dispatch("lightning/getLndPageData");
+      this.fetchPageData();
       this.$refs["open-channel-modal"].hide();
 
       //refresh bitcoin balance and txs
@@ -285,16 +285,24 @@ export default {
     },
     onChannelClose() {
       //refresh channels, balance and txs
-      this.$store.dispatch("lightning/getLndPageData");
+      this.fetchPageData();
       this.$refs["manage-channel-modal"].hide();
 
       //refresh bitcoin balance and txs
       this.$store.dispatch("bitcoin/getBalance");
       this.$store.dispatch("bitcoin/getTransactions");
+    },
+    fetchPageData() {
+      console.log("fetching...");
+      this.$store.dispatch("lightning/getLndPageData");
     }
   },
   created() {
-    this.$store.dispatch("lightning/getLndPageData");
+    this.fetchPageData();
+    this.interval = window.setInterval(this.fetchPageData, 10000);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.interval);
   },
   watch: {},
   components: {

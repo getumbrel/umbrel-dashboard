@@ -208,7 +208,7 @@ export default {
     this.interval = window.setInterval(this.refreshStats, 5000);
   },
   beforeDestroy() {
-    window.clearInterval(this.refreshStats);
+    window.clearInterval(this.interval);
   },
   components: {
     CardWidget,
