@@ -122,6 +122,8 @@
                     :value="stat.value"
                     :suffix="stat.suffix"
                     :numberSuffix="stat.numberSuffix || ''"
+                    :abbreviateValue="stat.abbreviateValue"
+                    showNumericChange
                   ></bitcoin-network-stat>
                 </b-col>
               </b-row>
@@ -216,14 +218,6 @@ import ChannelList from "@/components/Channels/List";
 import ChannelOpen from "@/components/Channels/Open";
 import ChannelManage from "@/components/Channels/Manage";
 
-const abbreviateNumber = n => {
-  if (n < 1e3) return [Number(n.toFixed(1)), ""];
-  if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "K"];
-  if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "M"];
-  if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "B"];
-  if (n >= 1e12) return [Number(+(n / 1e12).toFixed(1)), "T"];
-};
-
 export default {
   data() {
     return {
@@ -247,41 +241,25 @@ export default {
           title: "Peers",
           value: this.numPeers,
           suffix: "Peers",
-          numberSuffix: "",
-          change: {
-            value: 1,
-            suffix: ""
-          }
+          abbreviateValue: false
         },
         {
           title: "Active Channels",
           value: this.numActiveChannels,
           suffix: "Channels",
-          numberSuffix: "",
-          change: {
-            value: -42,
-            suffix: ""
-          }
+          abbreviateValue: false
         },
         {
           title: "Max Send",
-          value: abbreviateNumber(this.maxSend)[0],
-          numberSuffix: abbreviateNumber(this.maxSend)[1],
+          value: this.maxSend,
           suffix: "Sats",
-          change: {
-            value: 7,
-            suffix: ""
-          }
+          abbreviateValue: true
         },
         {
           title: "Max Receive",
-          value: abbreviateNumber(this.maxReceive)[0],
-          numberSuffix: abbreviateNumber(this.maxReceive)[1],
+          value: this.maxReceive,
           suffix: "Sats",
-          change: {
-            value: -26,
-            suffix: ""
-          }
+          abbreviateValue: true
         }
       ];
     }

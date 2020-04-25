@@ -216,13 +216,20 @@ const actions = {
               channel.status = "Offline";
             }
 
-            if (remoteBalance > maxReceive) {
-              maxReceive = remoteBalance;
-            }
+            //max receive = max remote balance in a channel
+            //max send = max local balance in a channel
 
-            if (localBalance > maxSend) {
-              maxSend = localBalance;
-            }
+            // if (remoteBalance > maxReceive) {
+            //   maxReceive = remoteBalance;
+            // }
+
+            // if (localBalance > maxSend) {
+            //   maxSend = localBalance;
+            // }
+
+            maxReceive += remoteBalance;
+            maxSend += localBalance;
+
 
             confirmedBalance += localBalance;
           } else if (channel.type === "PENDING_OPEN_CHANNEL") {

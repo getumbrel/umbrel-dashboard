@@ -1,12 +1,12 @@
 <template>
   <div>
     <span>{{ title }}</span>
-    <div class="pt-2 pb-4">
+    <div class="pt-2 pb-3">
       <div class="mb-1 d-flex align-items-end">
         <h3 class="font-weight-normal d-inline mb-0">
           <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
           <span>
-            <CountUp :endVal="value" :suffix="numberSuffix" />
+            <CountUp :endVal="numberValue" :suffix="numberSuffix" />
           </span>
         </h3>
         <span class="text-muted d-inline" style="margin-left: 0.5rem;">{{ suffix }}</span>
@@ -44,20 +44,32 @@
           }}{{ change.suffix }}
         </span>
       </div>
+      <div class="d-block" v-else>
+        <span style="opacity: 0;">.</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import CountUp from "@/components/Utility/CountUp";
+
+const abbreviate = n => {
+  if (n < 1e3) return [Number(n.toFixed(1)), ""];
+  if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "K"];
+  if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "M"];
+  if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "B"];
+  if (n >= 1e12) return [Number(+(n / 1e12).toFixed(1)), "T"];
+};
+
 export default {
   props: {
     title: String,
     value: Number,
     suffix: String,
-    numberSuffix: {
-      type: String,
-      default: ""
+    abbreviateValue: {
+      type: Boolean,
+      default: false
     },
     showNumericChange: {
       type: Boolean,
@@ -68,7 +80,22 @@ export default {
       default: false
     }
   },
-  computed: {},
+  computed: {
+    numberValue() {
+      if (!this.abbreviateValue) {
+        return this.value;
+      } else {
+        return abbreviate(this.value)[0];
+      }
+    },
+    numberSuffix() {
+      if (!this.abbreviateValue) {
+        return "";
+      } else {
+        return abbreviate(this.value)[1];
+      }
+    }
+  },
   data() {
     return {
       change: {
@@ -87,10 +114,25 @@ export default {
             suffix: ""
           };
         } else {
-          this.change = {
-            value: newValue - oldValue,
-            suffix: ""
-          };
+          if (!this.abbreviateValue) {
+            this.change = {
+              value: newValue - oldValue,
+              suffix: ""
+            };
+          } else {
+            //because fn abbreviate doesn't work with negative numbers
+            if (newValue - oldValue < 0) {
+              this.change = {
+                value: abbreviate(oldValue - newValue)[0] * -1,
+                suffix: abbreviate(oldValue - newValue)[1]
+              };
+            } else {
+              this.change = {
+                value: abbreviate(newValue - oldValue)[0],
+                suffix: abbreviate(newValue - oldValue)[1]
+              };
+            }
+          }
         }
       } else if (this.showPercentChange) {
         if (oldValue === 0) {

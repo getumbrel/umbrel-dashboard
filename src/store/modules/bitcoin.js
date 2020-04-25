@@ -436,9 +436,17 @@ const getters = {
         } else if (tx.type === "CHANNEL_CLOSE" || tx.type === "PENDING_CLOSE") {
           description = "Lightning Wallet";
         } else if (tx.type === "ON_CHAIN_TRANSACTION_SENT") {
-          description = "Withdrawal";
+          if (tx.numConfirmations > 0) {
+            description = "Withdrawal";
+          } else {
+            description = "Pending Withdrawal";
+          }
         } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
-          description = "Deposit";
+          if (tx.numConfirmations > 0) {
+            description = "Deposit";
+          } else {
+            description = "Pending Deposit";
+          }
         }
 
         txs.push({

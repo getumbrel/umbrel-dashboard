@@ -179,48 +179,7 @@ import BitcoinWallet from "@/components/BitcoinWallet";
 
 export default {
   data() {
-    return {
-      state: {
-        stats: [
-          {
-            title: "Connections",
-            value: 8,
-            suffix: "Peers",
-            change: {
-              value: 1,
-              suffix: ""
-            }
-          },
-          {
-            title: "Mempool",
-            value: 4,
-            suffix: "Mb",
-            change: {
-              value: -42,
-              suffix: "%"
-            }
-          },
-          {
-            title: "Hashrate",
-            value: 102,
-            suffix: "Ehash/s",
-            change: {
-              value: 7,
-              suffix: "%"
-            }
-          },
-          {
-            title: "Blockchain Size",
-            value: 304,
-            suffix: "Gb",
-            change: {
-              value: 0.5,
-              suffix: "%"
-            }
-          }
-        ]
-      }
-    };
+    return {};
   },
   computed: {
     ...mapState({
@@ -246,7 +205,7 @@ export default {
   created() {
     this.$store.dispatch("bitcoin/getVersion");
     this.$store.dispatch("bitcoin/getStats");
-    // this.interval = window.setInterval(this.refreshStats, 5000);
+    this.interval = window.setInterval(this.refreshStats, 5000);
   },
   beforeDestroy() {
     window.clearInterval(this.refreshStats);
