@@ -1,7 +1,7 @@
 <template>
   <card-widget
     header="Bitcoin Wallet"
-    :status="{ text: 'Running', variant: 'success', blink: false }"
+    :status="{ text: 'Active', variant: 'success', blink: false }"
     title
     :numericTitle="{
       value: walletBalance,
