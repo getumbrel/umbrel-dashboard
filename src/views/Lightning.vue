@@ -293,7 +293,6 @@ export default {
       this.$store.dispatch("bitcoin/getTransactions");
     },
     fetchPageData() {
-      console.log("fetching...");
       this.$store.dispatch("lightning/getLndPageData");
     }
   },
