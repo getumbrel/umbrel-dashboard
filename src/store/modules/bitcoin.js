@@ -105,7 +105,10 @@ const mutations = {
   },
 
   setStats(state, stats) {
-    setTimeout(() => state.stats = stats, 1000);
+    state.stats.peers = stats.peers;
+    state.stats.mempool = stats.mempool;
+    state.stats.blockchainSize = stats.blockchainSize;
+    state.stats.hashrate = stats.hashrate;
   },
 
   peers(state, peers) {
@@ -321,17 +324,22 @@ const actions = {
 
   async getStats({ commit, state }) {
     if (state.operational) {
-      // const stats = await API.get(
-      //   `${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/stats`
-      // );
-      const stats = {
-        peers: 8,
-        mempool: 2,
-        hashrate: 102,
-        blockchainSize: 304
-      };
+      const stats = await API.get(
+        `${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/stats`
+      );
+
       if (stats) {
-        commit("setStats", stats);
+        const peers = stats.connections;
+        const mempool = stats.mempool;
+        const hashrate = stats.networkhashps;
+        const blockchainSize = stats.size;
+
+        commit("setStats", {
+          peers,
+          mempool,
+          hashrate,
+          blockchainSize
+        });
       }
     }
   },

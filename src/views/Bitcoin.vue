@@ -146,14 +146,15 @@
                   <bitcoin-network-stat
                     title="Hashrate"
                     :value="stats.hashrate"
-                    suffix="Ehash/s"
+                    suffix="Hash/s"
+                    abbreviateValue
                     showPercentChange
                   ></bitcoin-network-stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
                   <bitcoin-network-stat
                     title="Blockchain Size"
-                    :value="stats.blockchainSize"
+                    :value="Math.round(stats.blockchainSize / 1e+9)"
                     suffix="GB"
                     showPercentChange
                   ></bitcoin-network-stat>
@@ -198,14 +199,14 @@ export default {
     random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    refreshStats() {
+    fetchStats() {
       this.$store.dispatch("bitcoin/getStats");
     }
   },
   created() {
     this.$store.dispatch("bitcoin/getVersion");
-    this.$store.dispatch("bitcoin/getStats");
-    this.interval = window.setInterval(this.refreshStats, 5000);
+    this.fetchStats();
+    this.interval = window.setInterval(this.fetchStats, 5000);
   },
   beforeDestroy() {
     window.clearInterval(this.interval);
