@@ -238,7 +238,7 @@ export default {
     stats() {
       return [
         {
-          title: "Peers",
+          title: "Connections",
           value: this.numPeers,
           suffix: "Peers",
           abbreviateValue: false
