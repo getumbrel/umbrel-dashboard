@@ -65,15 +65,17 @@
     </transition>
 
     <b-row class="mx-0">
-      <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0">
+      <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2">
         <authenticated-vertical-navbar />
       </b-col>
 
       <b-col col lg="9" xl="10">
-        <!-- Content -->
-        <transition name="change-page" mode="out-in">
-          <router-view></router-view>
-        </transition>
+        <div class="pr-xl-2">
+          <transition name="change-page" mode="out-in">
+            <!-- Content -->
+            <router-view></router-view>
+          </transition>
+        </div>
 
         <!-- Footer -->
         <footer class="d-flex justify-content-end text-muted pr-3">

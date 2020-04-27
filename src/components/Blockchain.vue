@@ -6,7 +6,7 @@
         <transition-group name="blockchain" mode="out-in" tag="ul">
           <li
             href="#"
-            class="flex-column align-items-start px-3 px-sm-4 blockchain-block"
+            class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
             v-for="block in blocks"
             :key="block.height"
           >
@@ -62,7 +62,7 @@
         <ul>
           <li
             href="#"
-            class="flex-column align-items-start px-3 px-sm-4 blockchain-block"
+            class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
             v-for="(fake, index) in [1,2,3]"
             :key="index"
           >

@@ -75,7 +75,7 @@
             <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
           <div class>
-            <div class="px-3 px-sm-4 mb-3">
+            <div class="px-3 px-lg-4 mb-3">
               <div class="w-100 d-flex justify-content-between mb-2">
                 <span class="align-self-end">Synchronized</span>
                 <h3 class="font-weight-normal mb-0">
@@ -97,23 +97,23 @@
               >{{ currentBlock.toLocaleString() }} of {{ blockHeight.toLocaleString() }} blocks</small>
             </div>
             <!-- low storage mode  -->
-            <!-- <div class="d-flex w-100 justify-content-between px-3 px-sm-4 mb-4">
+            <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Low Storage Mode</span>
                 <small class="text-muted d-block">Discard old blocks</small>
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>-->
-            <p class="px-3 px-sm-4 mb-3">Latest Blocks</p>
+            <p class="px-3 px-lg-4 mb-3">Latest Blocks</p>
             <blockchain :numBlocks="3"></blockchain>
-            <div class="px-3 px-sm-4 py-2"></div>
+            <div class="px-3 px-lg-4 py-2"></div>
           </div>
         </card-widget>
       </b-col>
       <b-col col cols="12" xl="4">
         <card-widget header="Network">
           <div class>
-            <div class="px-3 px-sm-4 pb-2">
+            <div class="px-3 px-lg-4 pb-2">
               <b-row>
                 <!-- <b-col col cols="6" md="3" xl="6" v-for="stat in stats" :key="stat.title">
                   <bitcoin-network-stat

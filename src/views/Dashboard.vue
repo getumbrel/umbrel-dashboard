@@ -25,46 +25,52 @@
           :loading="syncPercent !== 100 || blocks.length === 0"
         >
           <div class>
-            <!-- <div class="d-flex w-100 justify-content-between px-3 px-sm-4">
+            <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
                 <p class="mb-1">Connected Peers</p>
                 <p>8</p>
             </div>-->
-            <!-- <p class="px-3 px-sm-4">Latest Blocks</p> -->
+            <!-- <p class="px-3 px-lg-4">Latest Blocks</p> -->
             <blockchain></blockchain>
-            <div class="px-3 px-sm-4 py-3">
+            <div class="px-3 px-lg-4 py-3">
               <router-link to="/bitcoin" class="card-link">Manage</router-link>
             </div>
           </div>
         </card-widget>
       </b-col>
-      <b-col col cols="12" md="6" xl="4">
-        <card-widget
-          header="Bitcoin Wallet"
-          :status="{text: 'Active', variant: 'success', blink: false}"
-          title
-          :numericTitle="{
+      <b-col col cols="12" xl="4">
+        <b-row>
+          <b-col col cols="12" md="6" xl="12">
+            <card-widget
+              header="Bitcoin Wallet"
+              :status="{text: 'Active', variant: 'success', blink: false}"
+              title
+              :numericTitle="{
             value: btcBalance,
             suffix: '',
             prefix: ''
           }"
-          sub-title="Sats"
-          icon="icon-app-bitcoin.svg"
-        >
-          <div class="px-3 px-sm-4 pt-2 pb-3">
-            <router-link to="/bitcoin" class="card-link">Manage</router-link>
-          </div>
-        </card-widget>
-        <card-widget
-          header="Tor"
-          :status="{text: 'Running', variant: 'success', blink: false}"
-          title="100%"
-          sub-title="Traffic relayed through Tor"
-          icon="icon-app-tor.svg"
-        >
-          <div class="px-3 px-sm-4 pt-2 pb-3">
-            <router-link to="/settings" class="card-link">Manage</router-link>
-          </div>
-        </card-widget>
+              sub-title="Sats"
+              icon="icon-app-bitcoin.svg"
+            >
+              <div class="px-3 px-lg-4 pt-2 pb-3">
+                <router-link to="/bitcoin" class="card-link">Manage</router-link>
+              </div>
+            </card-widget>
+          </b-col>
+          <b-col col cols="12" md="6" xl="12">
+            <card-widget
+              header="Tor"
+              :status="{text: 'Running', variant: 'success', blink: false}"
+              title="100%"
+              sub-title="Traffic relayed through Tor"
+              icon="icon-app-tor.svg"
+            >
+              <div class="px-3 px-lg-4 pt-2 pb-3">
+                <router-link to="/settings" class="card-link">Manage</router-link>
+              </div>
+            </card-widget>
+          </b-col>
+        </b-row>
         <!-- <card-widget
             header="Example App"
             status="Running"

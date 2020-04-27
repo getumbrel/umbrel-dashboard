@@ -13,7 +13,7 @@
     :loading="state.loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
   >
     <!-- Back Button -->
-    <div class="px-3 px-sm-4 pt-2 pb-3" v-if="state.mode != 'balance'">
+    <div class="px-3 px-lg-4 pt-2 pb-3" v-if="state.mode != 'balance'">
       <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
         <svg
           width="7"
@@ -39,7 +39,7 @@
 
         <!-- No transactions -->
         <div
-          class="d-flex flex-column justify-content-center px-3 px-sm-4 zero-transactions-container"
+          class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-transactions-container"
           v-if="transactions.length === 0"
         >
           <svg
@@ -73,7 +73,7 @@
             <b-list-group-item
               v-for="(tx, index) in transactions"
               :key="index"
-              class="flex-column align-items-start px-3 px-sm-4"
+              class="flex-column align-items-start px-3 px-lg-4"
               :href="getTxUrl(tx.hash)"
               target="_blank"
             >
@@ -179,13 +179,13 @@
         </div>
 
         <!-- Link to Bitcoin Network Page -->
-        <!-- <div class="px-3 px-sm-4 pt-2" v-if="!isBitcoinPage">
+        <!-- <div class="px-3 px-lg-4 pt-2" v-if="!isBitcoinPage">
           <router-link to="/bitcoin" class="card-link">Manage</router-link>
         </div>-->
       </div>
 
       <!-- SCREEN/MODE: Withdraw Screen -->
-      <div class="px-3 px-sm-4" v-if="state.mode === 'withdraw'" key="mode-withdraw">
+      <div class="px-3 px-lg-4" v-if="state.mode === 'withdraw'" key="mode-withdraw">
         <label class="sr-onlsy" for="input-withdrawal-amount">Sats</label>
         <b-input
           id="input-withdrawal-amount"
@@ -211,7 +211,7 @@
       </div>
 
       <!-- SCREEN/MODE: Review Withdrawal -->
-      <div class="px-3 px-sm-4" v-if="state.mode === 'review-withdraw'" key="mode-review-withdraw">
+      <div class="px-3 px-lg-4" v-if="state.mode === 'review-withdraw'" key="mode-review-withdraw">
         <div class="text-center pb-4">
           <h3 class="mb-0">{{ Number(state.withdraw.amount).toLocaleString() }}</h3>
           <span class="d-block mb-3 text-muted">Sats</span>
@@ -250,7 +250,7 @@
 
       <!-- SCREEN/MODE: Successfully Withdrawn -->
       <div
-        class="px-3 px-sm-4 mode-withdrawn"
+        class="px-3 px-lg-4 mode-withdrawn"
         v-if="state.mode === 'withdrawn'"
         key="mode-withdrawn"
       >
@@ -283,7 +283,7 @@
 
       <!-- SCREEN/MODE: Show Deposit Address -->
       <div
-        class="px-3 px-sm-4 mode-deposit"
+        class="px-3 px-lg-4 mode-deposit"
         v-if="this.state.mode === 'deposit'"
         key="mode-deposit"
       >
@@ -321,7 +321,7 @@
     </transition>
 
     <!-- Error message -->
-    <small class="text-danger mb-2 d-block px-3 px-sm-4" v-if="state.error">
+    <small class="text-danger mb-2 d-block px-3 px-lg-4" v-if="state.error">
       {{
       state.error
       }}

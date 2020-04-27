@@ -114,7 +114,7 @@
             >+ Open Channel</b-button>
           </template>
           <div class>
-            <div class="px-3 px-sm-4">
+            <div class="px-3 px-lg-4">
               <b-row>
                 <b-col col cols="6" xl="3" v-for="stat in stats" :key="stat.title">
                   <bitcoin-network-stat
