@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       state: {
-        isOn: false
+        isOn: true
       }
     };
   },

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2">
+  <div class="p-sm-2">
     <div class="my-3 pb-2">
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-start align-items-center">
@@ -18,21 +18,15 @@
             >
               <circle cx="4" cy="4" r="4" fill="#00CD98" />
             </svg>
-            <small class="ml-1 text-success">{{ state.status }}</small>
+            <small class="ml-1 text-success">{{ status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
-            <span class="d-block text-muted" v-if="state.lndVersion"
-              >lnd v{{ state.lndVersion.split(" commit")[0] }}</span
-            >
-            <span class="d-block text-muted" v-else>&nbsp;</span>
+            <span
+              class="d-block text-muted"
+            >{{ this.lndVersion ? `v${this.lndVersion.split(" commit")[0]}` : '...' }}</span>
           </div>
         </div>
         <div>
-          <b-dropdown
-            variant="link"
-            toggle-class="text-decoration-none p-0"
-            no-caret
-            right
-          >
+          <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
             <template v-slot:button-content>
               <svg
                 width="18"
@@ -61,37 +55,47 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" @click="showPubKey"
-              >View Public Key</b-dropdown-item
-            >
-            <b-dropdown-item href="#" disabled
-              >Check for update</b-dropdown-item
-            >
+            <b-dropdown-item href="#" @click="showPubKey">View Public Key</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
             <b-dropdown-divider />
-            <b-dropdown-item variant="danger" href="#" disabled
-              >Stop Lightning</b-dropdown-item
-            >
+            <b-dropdown-item variant="danger" href="#" disabled>Stop Lightning</b-dropdown-item>
           </b-dropdown>
-          <b-modal
-            id="public-key-modal"
-            ref="public-key-modal"
-            title="Node Public Key"
-            centered
-            hide-footer
-          >
-            <!-- QR Code element -->
-            <qrcode-vue
-              :value="state.pubKey"
-              :size="150"
-              level="H"
-              renderAs="svg"
-              class="d-flex justify-content-center qr-image my-2"
-            ></qrcode-vue>
-            <input-copy
-              size="sm"
-              :value="state.pubKey"
-              class="p-2"
-            ></input-copy>
+          <b-modal id="public-key-modal" ref="public-key-modal" centered hide-footer>
+            <template v-slot:modal-header="{ close }">
+              <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                <h3>node public key</h3>
+                <!-- Emulate built in modal header close button action -->
+                <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                      fill="#6c757d"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </template>
+            <div class="px-2 d-flex">
+              <!-- QR Code element -->
+              <qrcode-vue
+                :value="this.pubkey"
+                :size="150"
+                level="H"
+                renderAs="svg"
+                class="d-flex justify-content-center qr-image mb-2"
+              ></qrcode-vue>
+              <div class="w-100 align-self-center ml-2">
+                <input-copy size="sm" :value="this.pubkey"></input-copy>
+              </div>
+            </div>
           </b-modal>
         </div>
       </div>
@@ -101,34 +105,100 @@
         <lightning-wallet></lightning-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="8">
-        <card-widget header="Channels">
+        <card-widget header="Payment Channels">
+          <template v-slot:header-right>
+            <b-button
+              variant="outline-primary"
+              size="sm"
+              v-b-modal.open-channel-modal
+            >+ Open Channel</b-button>
+          </template>
           <div class>
-            <div class="px-4 pb-2">
+            <div class="px-3 px-lg-4">
               <b-row>
-                <b-col
-                  col
-                  cols="6"
-                  xl="3"
-                  v-for="stat in stats"
-                  :key="stat.title"
-                >
+                <b-col col cols="6" xl="3" v-for="stat in stats" :key="stat.title">
                   <bitcoin-network-stat
                     :title="stat.title"
                     :value="stat.value"
                     :suffix="stat.suffix"
                     :numberSuffix="stat.numberSuffix || ''"
+                    :abbreviateValue="stat.abbreviateValue"
+                    showNumericChange
                   ></bitcoin-network-stat>
                 </b-col>
               </b-row>
-
-              <!-- List of channels -->
-              <!-- <div>
-                <h4
-                  v-for="channel in state.channels"
-                  :key="channel.channelPoint"
-                >{{channel.capacity}}</h4>
-              </div>-->
             </div>
+
+            <b-modal
+              id="open-channel-modal"
+              ref="open-channel-modal"
+              size="lg"
+              centered
+              hide-footer
+            >
+              <template v-slot:modal-header="{ close }">
+                <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                  <h2>open channel</h2>
+                  <!-- Emulate built in modal header close button action -->
+                  <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                        fill="#6c757d"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </template>
+              <div class="px-2 px-sm-3 py-2">
+                <channel-open v-on:channelopen="onChannelOpen"></channel-open>
+              </div>
+            </b-modal>
+
+            <!-- manage channel modal -->
+            <b-modal
+              id="manage-channel-modal"
+              ref="manage-channel-modal"
+              size="lg"
+              centered
+              hide-footer
+            >
+              <template v-slot:modal-header="{ close }">
+                <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                  <h2>channel details</h2>
+                  <!-- Emulate built in modal header close button action -->
+                  <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                        fill="#6c757d"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </template>
+              <div class="px-2 px-sm-3 py-2">
+                <channel-manage :channel="selectedChannel" v-on:channelclose="onChannelClose"></channel-manage>
+              </div>
+            </b-modal>
+
+            <channel-list v-on:selectchannel="manageChannel"></channel-list>
           </div>
         </card-widget>
       </b-col>
@@ -138,152 +208,100 @@
 
 <script>
 import QrcodeVue from "qrcode.vue";
-
-import API from "@/helpers/api";
+import { mapState } from "vuex";
 
 import CardWidget from "@/components/CardWidget";
 import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
 import LightningWallet from "@/components/LightningWallet";
 import InputCopy from "@/components/InputCopy";
-
-const abbreviateNumber = n => {
-  if (n < 1e3) return [Number(n.toFixed(1)), ""];
-  if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "K"];
-  if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "M"];
-  if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "B"];
-  if (n >= 1e12) return [Number(+(n / 1e12).toFixed(1)), "T"];
-};
-
-window.abv = abbreviateNumber;
+import ChannelList from "@/components/Channels/List";
+import ChannelOpen from "@/components/Channels/Open";
+import ChannelManage from "@/components/Channels/Manage";
 
 export default {
   data() {
     return {
-      state: {
-        lndVersion: null,
-        numActiveChannels: 0,
-        numPeers: 0,
-        status: "Running",
-        pubKey: "",
-        channels: []
-      }
+      status: "Running",
+      selectedChannel: {}
     };
   },
   computed: {
+    ...mapState({
+      lndVersion: state => state.lightning.version,
+      numActiveChannels: state => state.lightning.numActiveChannels,
+      maxReceive: state => state.lightning.maxReceive,
+      maxSend: state => state.lightning.maxSend,
+      numPeers: state => state.lightning.numPeers,
+      pubkey: state => state.lightning.pubkey,
+      channels: state => state.lightning.channels
+    }),
     stats() {
-      // let activeChannels = 0;
-      let totalLocalBalance = 0;
-      let totalRemoteBalance = 0;
-      // let totalCapacity = 0;
-
-      for (let channel of this.state.channels) {
-        if (!channel.active) continue;
-        // activeChannels++;
-        totalLocalBalance += Number(channel.localBalance);
-        totalRemoteBalance += Number(channel.remoteBalance);
-        // totalCapacity += Number(channel.capacity);
-      }
-
-      // totalCapacity = totalLocalBalance + totalRemoteBalance;
-
       return [
-        // {
-        //   title: "Total Capacity",
-        //   value: abbreviateNumber(totalCapacity)[0],
-        //   numberSuffix: abbreviateNumber(totalCapacity)[1],
-        //   suffix: "Sats",
-        //   change: {
-        //     value: 1,
-        //     suffix: ""
-        //   }
-        // },
         {
-          title: "Peers",
-          value: this.state.numPeers,
+          title: "Connections",
+          value: this.numPeers,
           suffix: "Peers",
-          change: {
-            value: 1,
-            suffix: ""
-          }
+          abbreviateValue: false
         },
         {
           title: "Active Channels",
-          value: this.state.numActiveChannels,
+          value: this.numActiveChannels,
           suffix: "Channels",
-          change: {
-            value: -42,
-            suffix: ""
-          }
+          abbreviateValue: false
         },
         {
           title: "Max Send",
-          value: abbreviateNumber(totalLocalBalance)[0],
-          numberSuffix: abbreviateNumber(totalLocalBalance)[1],
+          value: this.maxSend,
           suffix: "Sats",
-          change: {
-            value: 7,
-            suffix: ""
-          }
+          abbreviateValue: true
         },
         {
           title: "Max Receive",
-          value: abbreviateNumber(totalRemoteBalance)[0],
-          numberSuffix: abbreviateNumber(totalRemoteBalance)[1],
+          value: this.maxReceive,
           suffix: "Sats",
-          change: {
-            value: -26,
-            suffix: ""
-          }
+          abbreviateValue: true
         }
       ];
     }
   },
   methods: {
-    async showPubKey() {
+    showPubKey() {
       this.$refs["public-key-modal"].show();
+    },
+    manageChannel(channel) {
+      if (channel) {
+        this.selectedChannel = channel;
+        this.$refs["manage-channel-modal"].show();
+      }
+    },
+    onChannelOpen() {
+      //refresh channels, balance and txs
+      this.fetchPageData();
+      this.$refs["open-channel-modal"].hide();
+
+      //refresh bitcoin balance and txs
+      this.$store.dispatch("bitcoin/getBalance");
+      this.$store.dispatch("bitcoin/getTransactions");
+    },
+    onChannelClose() {
+      //refresh channels, balance and txs
+      this.fetchPageData();
+      this.$refs["manage-channel-modal"].hide();
+
+      //refresh bitcoin balance and txs
+      this.$store.dispatch("bitcoin/getBalance");
+      this.$store.dispatch("bitcoin/getTransactions");
+    },
+    fetchPageData() {
+      this.$store.dispatch("lightning/getLndPageData");
     }
   },
   created() {
-    //Get LND Status
-    // axios
-    //   .get(`${process.env.VUE_APP_API_URL}api/v1/lnd/info/status`)
-    //   .then(res => {
-    //     const { operational, unlocked } = res.data;
-
-    //     if (operational && unlocked) {
-    //       return (this.state.status = "Running");
-    //     }
-    //     if (operational && !unlocked) {
-    //       return (this.state.status = "Waiting");
-    //     }
-    //     if (!operational) {
-    //       return (this.state.status = "Stopped");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     alert(error);
-    //   })
-    //   .finally(() => {
-    //     // this.state.loading = false;
-    //   });
-
-    //Get LND Info for showing stats
-    API.get(`${process.env.VUE_APP_API_URL}api/v1/pages/lnd/`)
-      .then(res => {
-        this.state.pubKey = res.lightningInfo.identityPubkey;
-        this.state.lndVersion = res.lightningInfo.version;
-        this.state.numPeers = res.lightningInfo.numPeers;
-        this.state.numActiveChannels = res.lightningInfo.numActiveChannels;
-        this.state.channels = res.channels;
-      })
-      .catch(error => {
-        console.log(error);
-        alert(error);
-      })
-      .finally(() => {
-        // this.state.loading = false;
-      });
+    this.fetchPageData();
+    this.interval = window.setInterval(this.fetchPageData, 10000);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.interval);
   },
   watch: {},
   components: {
@@ -291,7 +309,10 @@ export default {
     CardWidget,
     BitcoinNetworkStat,
     QrcodeVue,
-    InputCopy
+    InputCopy,
+    ChannelList,
+    ChannelOpen,
+    ChannelManage
   }
 };
 </script>

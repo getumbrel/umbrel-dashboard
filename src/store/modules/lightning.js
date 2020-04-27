@@ -19,18 +19,22 @@ import API from "@/helpers/api";
 const state = () => ({
   operational: false,
   unlocked: false,
+  version: "",
   currentBlock: 0,
   blockHeight: 0,
   balance: {
-    total: 0,
-    confirmed: 0,
-    pending: 0
+    total: -1,
+    confirmed: -1,
+    pending: -1
   },
+  numPendingChannels: 0,
+  numActiveChannels: 0,
+  numPeers: 0,
   channels: [],
   connectionCode: "unknown",
   maxSend: 0,
   maxReceive: 0,
-  transactions: [],
+  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
   confirmedTransactions: [],
   pendingTransactions: [],
   pendingChannelEdit: {},
@@ -47,12 +51,26 @@ const mutations = {
     state.unlocked = unlocked;
   },
 
+  setVersion(state, version) {
+    state.version = version;
+  },
+
   setConnectionCode(state, code) {
     state.connectionCode = code;
   },
 
+  setNumPeers(state, numPeers) {
+    state.numPeers = numPeers;
+  },
+
+  setNumActiveChannels(state, numActiveChannels) {
+    state.numActiveChannels = numActiveChannels;
+  },
+
   setChannels(state, channels) {
     state.channels = channels;
+    // state.channels = [{ "active": true, "remotePubkey": "0270685ca81a8e4d4d01beec5781f4cc924684072ae52c507f8ebe9daf0caaab7b", "channelPoint": "032ea4291bc9c675a01cc418cd4e916dcfe58cb5b57da5da1bacbf74a4da2214:1", "chanId": "1892181446084919297", "capacity": "16000000", "localBalance": "8949695", "remoteBalance": "7050305", "commitFee": "363", "commitWeight": "724", "feePerKw": "500", "unsettledBalance": "0", "totalSatoshisSent": "52004", "totalSatoshisReceived": "1700", "numUpdates": "12", "pendingHtlcs": [], "csvDelay": 1922, "private": false, "initiator": false, "chanStatusFlags": "ChanStatusDefault", "localChanReserveSat": "160000", "remoteChanReserveSat": "160000", "staticRemoteKey": true, "type": "OPEN", "managed": false, "name": "", "purpose": "" }, { "active": true, "remotePubkey": "03d5e17a3c213fe490e1b0c389f8cfcfcea08a29717d50a9f453735e0ab2a7c003", "channelPoint": "ff605dd7456f132304ad7c720a316320c4884fdeb70af26f4f977ed5079e0034:0", "chanId": "1892195739728281600", "capacity": "2500000", "localBalance": "2000000", "remoteBalance": "500000", "commitFee": "183", "commitWeight": "600", "feePerKw": "253", "unsettledBalance": "0", "totalSatoshisSent": "0", "totalSatoshisReceived": "0", "numUpdates": "0", "pendingHtlcs": [], "csvDelay": 300, "private": false, "initiator": true, "chanStatusFlags": "ChanStatusDefault", "localChanReserveSat": "25000", "remoteChanReserveSat": "25000", "staticRemoteKey": true, "type": "OPEN", "managed": false, "name": "", "purpose": "" }, { "active": true, "remotePubkey": "03d5e17a3c213fe490e1b0c389f8cfcfcea08a29717d50a9f453735e0ab2a7c003", "channelPoint": "bb271316280c0bf18b1bee875f1cbce7d481f20a2f8bc926140017bad26f77c2:1", "chanId": "1892192441198903297", "capacity": "1000000", "localBalance": "90000", "remoteBalance": "1000000", "commitFee": "183", "commitWeight": "552", "feePerKw": "253", "unsettledBalance": "0", "totalSatoshisSent": "0", "totalSatoshisReceived": "0", "numUpdates": "0", "pendingHtlcs": [], "csvDelay": 144, "private": false, "initiator": false, "chanStatusFlags": "ChanStatusDefault", "localChanReserveSat": "10000", "remoteChanReserveSat": "10000", "staticRemoteKey": true, "type": "OPEN", "managed": false, "name": "", "purpose": "" }]
+
   },
 
   setChannelFocus(state, channel) {
@@ -102,8 +120,10 @@ const actions = {
     const status = await API.get(
       `${process.env.VUE_APP_API_URL}api/v1/lnd/info/status`
     );
-    commit("isOperational", status.operational);
-    commit("isUnlocked", status.unlocked);
+    if (status) {
+      commit("isOperational", status.operational);
+      commit("isUnlocked", status.unlocked);
+    }
 
     // launch unlock modal after 30 sec
     // if (!status.unlocked) {
@@ -116,16 +136,25 @@ const actions = {
     // }
   },
 
-  async getLndPageData({ commit }) {
-    const lightning = await API.get(
+  //basically fetches everything
+  async getLndPageData({ commit, dispatch }) {
+    const data = await API.get(
       `${process.env.VUE_APP_API_URL}api/v1/pages/lnd`
     );
 
-    if (lightning) {
-      const lightningInfo = lightning.lightningInfo;
+    if (data) {
+      const channels = data.channels;
+      dispatch('getChannels', channels);
+
+      const lightningInfo = data.lightningInfo;
 
       commit("setPubKey", lightningInfo.identityPubkey);
+      commit("setVersion", lightningInfo.version);
+      commit("setNumPeers", lightningInfo.numPeers);
+      commit("setNumActiveChannels", lightningInfo.numActiveChannels);
+
     }
+
   },
 
   async getConnectionCode({ commit }) {
@@ -155,11 +184,19 @@ const actions = {
     }
   },
 
-  async getChannels({ commit, state }) {
+  async getChannels({ commit, state }, preFetchedChannels = []) {
     if (state.operational && state.unlocked) {
-      const rawChannels = await API.get(
-        `${process.env.VUE_APP_API_URL}api/v1/lnd/channel`
-      );
+
+      let rawChannels;
+
+      if (preFetchedChannels.length) { //eg when used by lnd page 
+        rawChannels = preFetchedChannels;
+      } else {
+        rawChannels = await API.get(
+          `${process.env.VUE_APP_API_URL}api/v1/lnd/channel`
+        );
+      }
+
       const channels = [];
       let confirmedBalance = 0;
       let pendingBalance = 0;
@@ -174,23 +211,30 @@ const actions = {
 
           if (channel.type === "OPEN") {
             if (channel.active) {
-              channel.status = "online";
+              channel.status = "Online";
             } else {
-              channel.status = "offline";
+              channel.status = "Offline";
             }
 
-            if (remoteBalance > maxReceive) {
-              maxReceive = remoteBalance;
-            }
+            //max receive = max remote balance in a channel
+            //max send = max local balance in a channel
 
-            if (localBalance > maxSend) {
-              maxSend = localBalance;
-            }
+            // if (remoteBalance > maxReceive) {
+            //   maxReceive = remoteBalance;
+            // }
+
+            // if (localBalance > maxSend) {
+            //   maxSend = localBalance;
+            // }
+
+            maxReceive += remoteBalance;
+            maxSend += localBalance;
+
 
             confirmedBalance += localBalance;
           } else if (channel.type === "PENDING_OPEN_CHANNEL") {
             pendingBalance += localBalance;
-            channel.status = "opening";
+            channel.status = "Opening";
           } else if (
             [
               "WAITING_CLOSING_CHANNEL",
@@ -199,13 +243,13 @@ const actions = {
             ].indexOf(channel.type) > -1
           ) {
             pendingBalance += localBalance;
-            channel.status = "closing";
+            channel.status = "Closing";
 
             // Lnd doesn't provide initiator or autopilot data via rpc. So, we just display a generic closing message.
             channel.name = "Closing Channel";
             channel.purpose = "A channel that is in the process of closing";
           } else {
-            channel.status = "unknown";
+            channel.status = "Unknown";
           }
 
           if (channel.name === "" && !channel.initiator) {
@@ -242,6 +286,11 @@ const actions = {
       const payments = await API.get(
         `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/payments`
       );
+
+      if (!invoices || !payments) {
+        return;
+      }
+
       let transactions = [];
 
       if (invoices) {
@@ -255,30 +304,33 @@ const actions = {
           return {
             type,
             amount: Number(tx.value),
-            timestamp: new Date(Number(tx.creationDate) * 1000),
-            description: tx.memo || "Direct payment from a node",
+            timestamp: tx.settled ? new Date(Number(tx.settleDate) * 1000) : new Date(Number(tx.creationDate) * 1000),
+            description: tx.memo || "",
             expiresOn: new Date(
               (Number(tx.creationDate) + Number(tx.expiry)) * 1000
-            )
+            ),
+            paymentRequest: tx.paymentRequest
           };
         });
         transactions = [...transactions, ...incomingTransactions];
       }
 
       if (payments) {
-        const outgoingTransactions = payments.slice(0, 3).map(tx => {
+        const outgoingTransactions = payments.map(tx => {
           return {
             type: "outgoing",
             amount: Number(tx.value),
             timestamp: new Date(Number(tx.creationDate) * 1000),
-            description: tx.paymentRequest //temporarily store payment request in the description as we'll replace it by memo
+            paymentRequest: tx.paymentRequest,
+            fee: Number(tx.feeSat),
+            description: ""
           };
         });
         transactions = [...transactions, ...outgoingTransactions];
       }
 
       //Sort by recent to oldest
-      transactions.sort(function(tx1, tx2) {
+      transactions.sort(function (tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
 
@@ -286,23 +338,22 @@ const actions = {
       for (let tx of transactions) {
         if (tx.type !== "outgoing") continue;
 
-        if (!tx.description) {
-          //example - in case of a keysend tx
-          tx.description = "Direct payment to a node";
+        if (!tx.paymentRequest) {
+          //example - in case of a keysend tx there is no payment request
           continue;
-        } else {
-          try {
-            const invoiceDetails = await API.get(
-              `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoice?paymentRequest=${tx.description}`
-            );
+        }
+
+        try {
+          const invoiceDetails = await API.get(
+            `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoice?paymentRequest=${tx.paymentRequest}`
+          );
+          if (invoiceDetails && invoiceDetails.description) {
             tx.description = invoiceDetails.description;
-          } catch (error) {
-            console.log(error);
-            tx.description = "";
           }
+        } catch (error) {
+          console.log(error);
         }
       }
-
       commit("setTransactions", transactions);
     }
   },

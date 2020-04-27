@@ -16,6 +16,7 @@ const API = {
 
       try {
         const startTime = new Date();
+        // await new Promise(resolve => setTimeout(resolve, 2000)) //2s API delay
         response = (await axios.get(url, config)).data;
         const endTime = new Date();
 

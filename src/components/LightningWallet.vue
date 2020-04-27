@@ -1,7 +1,7 @@
 <template>
   <card-widget
     header="Lightning Wallet"
-    :status="{text: 'Running', variant: 'success', blink: false}"
+    :status="{text: 'Active', variant: 'success', blink: false}"
     title
     :numericTitle="{
       value: walletBalance,
@@ -10,10 +10,10 @@
     }"
     sub-title="Sats"
     icon="icon-app-lightning.svg"
-    :loading="state.loading || !transactions.length"
+    :loading="state.loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
   >
     <!-- Back Button -->
-    <div class="px-4 pt-2 pb-3" v-if="state.mode != 'balance'">
+    <div class="px-3 px-lg-4 pt-2 pb-3" v-if="state.mode != 'balance'">
       <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
         <svg
           width="7"
@@ -36,15 +36,64 @@
       <!-- Default Balance/tx screen -->
       <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
         <!-- List of transactions -->
-        <div class="transactions-container">
-          <transition-group name="list" class="list-group pb-2 transactions">
-            <!-- Transaction -->
+
+        <!-- No transactions -->
+        <div
+          class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-transactions-container"
+          v-if="transactions.length === 0"
+        >
+          <!-- Piggy bank icon -->
+          <svg
+            width="150"
+            height="150"
+            viewBox="0 0 150 150"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="align-self-center"
+          >
+            <path
+              d="M123.78 79.2812C122.574 79.2812 121.597 80.2586 121.597 81.4642C121.597 82.9926 120.354 84.2359 118.825 84.2359C117.297 84.2359 116.054 82.9926 116.054 81.4642C116.054 80.2583 115.076 79.2812 113.871 79.2812C112.665 79.2812 111.688 80.2586 111.688 81.4642C111.688 85.3999 114.89 88.6018 118.825 88.6018C122.761 88.6018 125.963 85.3996 125.963 81.4642C125.963 80.258 124.986 79.2812 123.78 79.2812Z"
+              fill="#EDEEF1"
+            />
+            <path
+              d="M144.271 79.6377L138.127 77.6695C137.34 77.4173 136.719 76.7892 136.468 75.9891C135.173 71.872 133.219 68.0068 130.66 64.5006C129.493 62.9025 128.196 61.3764 126.78 59.9235C127.686 55.9471 128.179 51.4468 128.115 47.5588C128.024 41.9968 126.912 38.7346 124.717 37.585C123.535 36.965 119.937 35.0818 100.465 43.9957C100.003 44.2066 99.5728 44.4665 99.174 44.7642C97.8612 44.4114 96.5194 44.0851 95.1694 43.7921C95.0068 43.7566 94.8393 43.7253 94.6755 43.6907C96.2534 40.2437 97.1748 36.4998 97.348 32.635C97.4019 31.4303 96.4693 30.4102 95.2647 30.3565C94.0632 30.2968 93.0398 31.2349 92.9862 32.4396C92.7018 38.7943 90.0656 44.7735 85.5639 49.2756C82.8741 51.9653 79.7247 53.9192 76.3682 55.1496C70.5472 54.3328 64.6181 54.3328 58.7971 55.1496C55.4402 53.9192 52.2911 51.9653 49.6014 49.2756C44.7984 44.4727 42.1532 38.0868 42.1532 31.2943C42.1532 24.5016 44.7984 18.116 49.6014 13.3131C54.4043 8.50987 60.7904 5.86465 67.5826 5.86465C74.3748 5.86465 80.7609 8.50987 85.5639 13.3131C87.4939 15.2432 89.0889 17.4457 90.3044 19.8589C90.8467 20.9358 92.1595 21.3694 93.2361 20.8269C94.3131 20.2849 94.7464 18.9721 94.2041 17.8954C92.7794 15.0656 90.9111 12.4855 88.6515 10.2255C83.0238 4.59785 75.5414 1.49854 67.5829 1.49854C59.6244 1.49854 52.142 4.59785 46.5144 10.2255C40.8867 15.8534 37.7874 23.3356 37.7874 31.2941C37.7874 39.2525 40.8867 46.735 46.5144 52.3626C48.1377 53.9859 49.9037 55.3819 51.7717 56.5515C51.7723 56.5515 51.7729 56.5512 51.7734 56.5512C50.4161 56.9039 49.069 57.3 47.7369 57.7453C46.5935 58.1276 45.9765 59.3643 46.3588 60.508C46.7408 61.6515 47.978 62.2685 49.1212 61.8864C61.0263 57.9065 74.1396 57.9065 86.0446 61.8864C86.2743 61.9632 86.5075 61.9995 86.7369 61.9995C87.6501 61.9995 88.5015 61.4218 88.807 60.508C89.1894 59.3646 88.5724 58.1276 87.4289 57.7453C86.0968 57.3 84.7497 56.9036 83.3924 56.5512C83.393 56.5512 83.3936 56.5515 83.3941 56.5515C85.2624 55.3819 87.0281 53.9859 88.6515 52.3626C90.0876 50.9265 91.3553 49.3582 92.456 47.6915C93.0577 47.8084 93.6551 47.9309 94.2437 48.0586C95.0276 48.2288 95.8081 48.4116 96.5815 48.6035C96.5572 48.6984 96.5323 48.7931 96.5121 48.8895C95.4475 53.9417 95.5166 58.4101 96.7175 62.1697C97.7968 65.5491 99.7447 68.2869 102.507 70.3075C105.762 72.6888 109.692 73.7174 113.251 73.7174C115.931 73.7174 118.401 73.1344 120.215 72.1069C122.267 70.9447 123.986 68.4958 125.347 64.8191C125.976 65.5532 126.572 66.3053 127.134 67.0752C129.412 70.1965 131.152 73.6365 132.304 77.2992C132.98 79.4505 134.659 81.1433 136.795 81.8279L142.939 83.7961C144.552 84.3126 145.635 85.7965 145.635 87.4893V97.6773C145.635 99.37 144.552 100.854 142.939 101.37L133.04 104.541C131.457 105.049 130.116 106.137 129.266 107.606C125.377 114.328 119.263 119.89 111.091 124.138C110.147 124.629 109.494 125.508 109.297 126.549L106.126 143.337C106.039 143.8 105.633 144.135 105.163 144.135H94.8539C94.3831 144.135 93.9779 143.799 93.8903 143.337L92.1343 134.059C91.7886 132.234 90.0765 131.021 88.2337 131.3C83.7932 131.972 79.2176 132.312 74.6347 132.312C71.2251 132.312 67.8592 132.122 64.6298 131.746C62.8441 131.541 61.1807 132.758 60.847 134.521L59.1782 143.337C59.0906 143.8 58.6854 144.135 58.2146 144.135H47.906C47.4352 144.135 47.03 143.799 46.9412 143.33L43.8885 127.474C43.6919 126.452 43.0503 125.584 42.1272 125.091C28.1982 117.655 20.8359 105.232 20.8359 89.1654C20.8359 81.0478 22.6119 73.8697 26.1144 67.8299C29.3827 62.1935 34.1563 57.5332 40.3025 53.978C41.3461 53.3742 41.7026 52.0389 41.0991 50.995C40.4956 49.9515 39.1603 49.5955 38.1164 50.1984C26.1987 57.0926 19.0107 67.7285 17.0317 81.2373V81.237C16.8217 81.218 16.6113 81.1998 16.4019 81.1781C16.4399 79.7206 16.1763 78.2499 15.6021 76.8226C14.3355 73.6743 11.734 71.4021 8.97393 71.0338C6.79893 70.7426 4.7291 71.666 3.29268 73.5639C1.20996 76.316 1.54951 78.494 2.20078 79.8363C3.30029 82.1019 6.12656 83.7044 10.8167 84.7119C10.6878 84.905 10.546 85.0989 10.3907 85.2938C7.61953 88.7693 4.35469 89.5377 2.23477 89.6101C0.99375 89.652 0 90.6484 0 91.8903V91.9008C0 93.1257 0.966504 94.1247 2.19023 94.1807C2.34697 94.188 2.51074 94.1918 2.68125 94.1918C5.36367 94.1918 9.66885 93.2025 13.805 88.016C14.458 87.1975 14.99 86.3338 15.399 85.4414C15.8109 85.488 16.2067 85.5278 16.5858 85.563C16.5858 85.5621 16.5858 85.5615 16.5861 85.5607C16.5117 86.7437 16.4704 87.944 16.4704 89.1654C16.4704 98.2556 18.6375 106.361 22.911 113.256C26.8515 119.614 32.4932 124.819 39.685 128.734L42.6527 144.149C43.13 146.67 45.3393 148.501 47.906 148.501H58.2146C60.7813 148.501 62.9906 146.67 63.4679 144.149L64.9767 136.177C68.1103 136.509 71.3546 136.678 74.6344 136.678C79.1344 136.678 83.6291 136.364 88.0096 135.745L89.6001 144.149C90.0776 146.671 92.2869 148.501 94.8533 148.501H105.162C107.729 148.501 109.938 146.671 110.416 144.148L113.503 127.803C122.224 123.191 128.797 117.133 133.045 109.793C133.351 109.264 133.822 108.875 134.372 108.699L144.271 105.529C147.698 104.43 150 101.275 150 97.6767V87.4887C150 83.8904 147.698 80.7355 144.271 79.6377ZM123.421 53.6933C122.581 60.8786 120.327 67.0251 118.063 68.3077C115.489 69.7658 109.546 70.0474 105.084 66.7834C100.617 63.5156 99.1298 57.6393 100.784 49.7895C100.784 49.7892 100.784 49.7892 100.784 49.7892C100.95 49.0008 101.51 48.3188 102.282 47.9654C113.211 42.9627 119.512 41.3265 121.852 41.3265C122.206 41.3265 122.469 41.3637 122.644 41.4322C123.347 42.1816 124.269 46.4417 123.421 53.6933ZM6.1292 77.93C5.90332 77.4642 6.43652 76.6453 6.77461 76.1983C7.31045 75.4904 7.8041 75.3457 8.17705 75.3457C8.25586 75.3457 8.32939 75.3522 8.39678 75.3612C9.40049 75.4951 10.8067 76.5996 11.5518 78.4515C11.7272 78.8874 11.9552 79.6096 12.0085 80.5102C8.98652 79.8841 6.63867 78.9815 6.1292 77.93Z"
+              fill="#EDEEF1"
+            />
+            <path
+              d="M76.6653 27.1865C76.6157 27.0954 76.5438 27.0197 76.4569 26.967C76.37 26.9144 76.2712 26.8866 76.1708 26.8866H68.7232L69.9718 16.9612C69.9852 16.8283 69.9552 16.6947 69.8868 16.5817C69.8183 16.4687 69.7152 16.383 69.5942 16.3384C69.4732 16.2938 69.3413 16.2928 69.2197 16.3356C69.0981 16.3785 68.9939 16.4627 68.9239 16.5746L59.8669 33.0831C59.814 33.1727 59.7849 33.2754 59.7828 33.3805C59.7807 33.4858 59.8056 33.5897 59.855 33.6814C59.9043 33.7732 59.9763 33.8498 60.0635 33.903C60.1507 33.9562 60.25 33.9843 60.3512 33.9843H67.6874L66.6979 43.9247C66.6882 44.0571 66.7213 44.1891 66.792 44.2996C66.8626 44.4102 66.9668 44.4929 67.0879 44.5347C67.209 44.5767 67.3401 44.5751 67.4603 44.5305C67.5805 44.4859 67.6829 44.4007 67.7512 44.2887L76.6586 27.7819C76.7101 27.6922 76.738 27.5898 76.7392 27.4852C76.7404 27.3806 76.7149 27.2775 76.6653 27.1865Z"
+              fill="#EDEEF1"
+            />
+          </svg>
+          <small class="align-self-center mt-3 text-muted">No transactions</small>
+        </div>
+
+        <!-- Actual Transactions -->
+        <div class="transactions-container" v-else>
+          <transition-group name="list" class="list-group pb-2 transactions" appear>
             <b-list-group-item
               v-for="(tx, index) in transactions"
               :key="index"
-              class="flex-column align-items-start px-4"
+              class="flex-column align-items-start px-3 px-lg-4"
+              href="#"
+              @click.prevent="showTransactionInfo(tx)"
             >
-              <div class="d-flex w-100 justify-content-between">
+              <!-- Loading Transactions Placeholder -->
+              <div class="d-flex w-100 justify-content-between" v-if="tx.type === 'loading'">
+                <div class="w-50">
+                  <span class="loading-placeholder"></span>
+
+                  <!-- Timestamp of tx -->
+                  <span class="loading-placeholder loading-placeholder-sm" style="width: 40%"></span>
+                </div>
+
+                <div class="w-25 text-right">
+                  <span class="loading-placeholder"></span>
+                  <span class="loading-placeholder loading-placeholder-sm" style="width: 30%"></span>
+                </div>
+              </div>
+
+              <!-- Transaction -->
+              <div class="d-flex w-100 justify-content-between" v-else>
                 <div>
                   <h6 class="mb-0 font-weight-normal">
                     <!-- Incoming tx icon -->
@@ -77,6 +126,7 @@
                       />
                     </svg>
 
+                    <!-- Expired invoice icon -->
                     <svg
                       width="18"
                       height="18"
@@ -93,56 +143,45 @@
                       />
                     </svg>
 
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      v-else-if="tx.type === 'pending'"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M5 10C5.55228 10 6 9.55228 6 9C6 8.44772 5.55228 8 5 8C4.44772 8 4 8.44772 4 9C4 9.55228 4.44772 10 5 10Z"
-                        fill="#C3C6D1"
-                      />
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10Z"
-                        fill="#C3C6D1"
-                      />
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M13 10C13.5523 10 14 9.55228 14 9C14 8.44772 13.5523 8 13 8C12.4477 8 12 8.44772 12 9C12 9.55228 12.4477 10 13 10Z"
-                        fill="#C3C6D1"
-                      />
+                    <!-- Pending invoice icon -->
+                    <svg class="icon-clock" viewBox="0 0 40 40" v-else-if="tx.type === 'pending'">
+                      <circle cx="20" cy="20" r="18" />
+                      <line x1="0" y1="0" x2="8" y2="0" class="hour" />
+                      <line x1="0" y1="0" x2="12" y2="0" class="minute" />
                     </svg>
 
                     <!-- Invoice description -->
-                    <span style="margin-left: 6px;">{{ tx.description }}</span>
+                    <span
+                      style="margin-left: 6px;"
+                      :title="tx.description"
+                      v-if="tx.description"
+                    >{{ tx.description.length > 19 ? tx.description.substring(0,19) + '...' : tx.description }}</span>
+
+                    <!-- If no description -->
+                    <span style="margin-left: 6px;" v-else>Payment</span>
                   </h6>
 
                   <!-- Timestamp of tx -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
-                    style="margin-left: 24px;"
+                    style="margin-left: 25px;"
+                    v-b-tooltip.hover.bottomright
                     :title="getReadableTime(tx.timestamp)"
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                   >{{getTimeFromNow(tx.timestamp)}}</small>
 
+                  <!-- if invoice isn't settled -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
-                    style="margin-left: 24px;"
+                    style="margin-left: 21px;"
                     :title="`Invoice expires on ${getReadableTime(tx.expiresOn)}`"
                     v-else-if="tx.type === 'pending'"
                   >Unpaid invoice</small>
 
+                  <!-- If invoice expired -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
-                    style="margin-left: 24px;"
+                    style="margin-left: 25px;"
                     :title="getReadableTime(tx.expiresOn)"
                     v-else-if="tx.type === 'expired'"
                   >Invoice expired {{getTimeFromNow(tx.expiresOn)}}</small>
@@ -163,17 +202,17 @@
         </div>
 
         <!-- Link to Lightning Network Page -->
-        <div class="px-4 pt-2" v-if="!isLightningPage">
+        <!-- <div class="px-3 px-lg-4 pt-2" v-if="!isLightningPage">
           <router-link to="/lightning" class="card-link">Manage</router-link>
-        </div>
+        </div>-->
       </div>
 
       <!-- SCREEN/MODE: Paste Invoice Screen -->
-      <div class="px-4 mode-send" v-else-if="state.mode === 'send'" key="mode-send">
+      <div class="px-3 px-lg-4 mode-send" v-else-if="state.mode === 'send'" key="mode-send">
         <label class="sr-onlsy" for="input-sats">Paste Invoice</label>
         <b-input
           id="input-sats"
-          class="mb-3 neu-input"
+          class="mb-4 neu-input"
           type="text"
           size="lg"
           min="1"
@@ -185,16 +224,19 @@
 
         <!-- Invoice amount + description -->
         <p>
-          <span v-show="state.send.isValidInvoice && state.send.description">
+          <span v-show="state.send.isValidInvoice && state.send.amount">
             Paying
-            <b>{{ state.send.amount }}</b> sats for
-            <b>{{ state.send.description }}</b>
+            <b>{{ state.send.amount }}</b> sats
+            <span v-if="state.send.description">
+              for
+              <b>{{state.send.description}}</b>
+            </span>
           </span>
         </p>
       </div>
 
       <!-- SCREEN/MODE: Successfully paid invoice -->
-      <div class="px-4 mode-sent" v-else-if="state.mode === 'sent'" key="mode-sent">
+      <div class="px-3 px-lg-4 mode-sent" v-else-if="state.mode === 'sent'" key="mode-sent">
         <!-- Big green checkmark -->
         <div class="checkmark mb-4">
           <svg
@@ -213,15 +255,22 @@
         </div>
 
         <!-- Invoice amount + description -->
-        <p class="text-center mb-4">
+        <p class="text-center mb-4 pb-1">
           Paid
-          <b>{{state.send.amount}} sats</b> for
-          <b>{{state.send.description}}</b>
+          <b>{{state.send.amount.toLocaleString()}} sats</b>
+          <span v-if="state.send.description">
+            for
+            <b>{{state.send.description}}</b>
+          </span>
         </p>
       </div>
 
       <!-- SCREEN/MODE: Create Invoice (Receive) -->
-      <div class="px-4 mode-receive" v-else-if="state.mode === 'receive'" key="mode-receive">
+      <div
+        class="px-3 px-lg-4 mode-receive"
+        v-else-if="state.mode === 'receive'"
+        key="mode-receive"
+      >
         <label class="sr-onlsy" for="input-sats">Sats</label>
         <b-input
           id="input-sats"
@@ -250,24 +299,28 @@
       </div>
 
       <!-- SCREEN/MODE: Show Generated Invoice -->
-      <div class="px-4 mode-invoice" v-else-if="this.state.mode === 'invoice'" key="mode-invoice">
-        <p class="text-center text-muted mb-2">
+      <div
+        class="px-3 px-lg-4 mode-invoice"
+        v-else-if="this.state.mode === 'invoice'"
+        key="mode-invoice"
+      >
+        <p class="text-center text-muted mb-3">
           <!-- If still generating invoice, show blinking loading text -->
           <span class="blink" v-if="state.receive.isGeneratingInvoice">Generating Invoice</span>
 
           <!-- Invoice amount + description -->
           <span v-else>
-            Please pay
-            <b>{{state.receive.amount}} {{ state.receive.amount > 1 ? 'sats' : 'sat'}}</b>
+            Invoice of
+            <b>{{state.receive.amount.toLocaleString()}} {{ state.receive.amount > 1 ? 'sats' : 'sat'}}</b>
             {{ state.receive.description ? "for" : null }}
             <b>{{ state.receive.description }}</b>
           </span>
         </p>
 
         <!-- QR Code -->
-        <div class="generated-qr mb-3 pb-2">
+        <div class="generated-qr mb-2 pb-2">
           <!-- Popup umbrel logo in the middle of QR code after the QR is generated -->
-          <transition name="qr-logo-popup">
+          <transition name="qr-logo-popup" appear>
             <img
               v-show="!state.receive.isGeneratingInvoice && state.receive.paymentRequest"
               src="@/assets/umbrel-qr-icon.svg"
@@ -286,18 +339,18 @@
         </div>
 
         <!-- Copy Invoice Input Field -->
-        <transition name="slide-up">
-          <input-copy
-            size="sm"
-            :value="state.receive.invoiceQR"
-            class="mb-2 mt-2"
-            v-show="!state.receive.isGeneratingInvoice"
-          ></input-copy>
+        <transition name="slide-up" appear>
+          <div class="pb-2" v-show="!state.receive.isGeneratingInvoice">
+            <input-copy size="sm" :value="state.receive.invoiceQR" class="mb-2"></input-copy>
+            <small
+              class="text-center d-block text-muted"
+            >This invoice will expire {{ getTimeFromNow(state.receive.expiresOn) }}</small>
+          </div>
         </transition>
       </div>
 
       <!-- SCREEN/MODE: Received (invoice settled) -->
-      <div class="px-4 mode-sent" v-else-if="state.mode === 'received'" key="mode-sent">
+      <div class="px-3 px-lg-4 mode-sent" v-else-if="state.mode === 'received'" key="mode-sent">
         <!-- Big green checkmark -->
         <div class="checkmark mb-4">
           <svg
@@ -316,21 +369,97 @@
         </div>
 
         <!-- Invoice amount + description -->
-        <p class="text-center mb-4">
+        <p class="text-center mb-4 pb-1">
           Received
-          <b>{{state.receive.amount}} sats</b> for
-          <b>{{state.receive.description}}</b>
+          <b>{{ state.receive.amount.toLocaleString() }} sats</b>
+          <span v-if="state.receive.description">
+            for
+            <b>{{state.receive.description}}</b>
+          </span>
+          <br />
+          <small class="text-muted">{{ getReadableTime(state.receive.timestamp) }}</small>
+        </p>
+      </div>
+
+      <!-- SCREEN/MODE: payment info -->
+      <div
+        class="px-3 px-lg-4 mode-payment-success"
+        v-else-if="state.mode === 'payment-success'"
+        key="payment-success"
+      >
+        <!-- Big green checkmark -->
+        <div class="checkmark mb-4">
+          <svg
+            width="54"
+            height="43"
+            viewBox="0 0 54 43"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="checkmark-icon"
+          >
+            <path
+              d="M47.657 1.26266C48.9446 -0.245227 51.2166 -0.428585 52.7315 0.853121C54.2464 2.13483 54.4306 4.39624 53.1429 5.90413L22.543 41.7374C21.2351 43.2689 18.9176 43.4303 17.4083 42.0948L1.20832 27.7615C-0.27769 26.4468 -0.411537 24.1818 0.909365 22.7027C2.23027 21.2236 4.50572 21.0903 5.99173 22.4051L19.4408 34.3045L47.657 1.26266Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+
+        <!-- Payment amount + description -->
+        <p class="text-center mb-4">
+          Paid
+          <b>{{ state.paymentInfo.amount.toLocaleString() }} sats</b>
+          <span v-if="state.paymentInfo.description">
+            for
+            <b>{{state.paymentInfo.description}}</b>
+          </span>
+          <br />
+          <small class="text-muted">{{ getReadableTime(state.paymentInfo.timestamp) }}</small>
+          <br />
+          <small
+            class="text-muted"
+          >Fee: {{ state.paymentInfo.fee > 1 ? `${state.paymentInfo.fee} Sats` : `${state.paymentInfo.fee} Sat`}}</small>
+        </p>
+      </div>
+
+      <!-- SCREEN/MODE: invoice expired -->
+      <div
+        class="px-3 px-lg-4 mode-invoice-expired"
+        v-else-if="this.state.mode === 'invoice-expired'"
+        key="mode-invoice-info"
+      >
+        <!-- Big red checkmark -->
+        <div class="checkmark checkmark-danger mb-4">
+          <svg
+            width="44"
+            height="44"
+            viewBox="0 0 44 44"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="checkmark-icon"
+          >
+            <path
+              d="M0.828729 0.82797C-0.274715 1.93193 -0.274714 3.7218 0.82873 4.82576L17.5344 21.5393L0.827583 38.2539C-0.275861 39.3579 -0.275861 41.1477 0.827583 42.2517C1.93103 43.3557 3.72006 43.3556 4.82351 42.2517L21.5303 25.537L38.2369 42.2514C39.3403 43.3554 41.1294 43.3554 42.2328 42.2514C43.3362 41.1474 43.3362 39.3576 42.2328 38.2536L25.5263 21.5393L42.2317 4.82605C43.3351 3.72209 43.3351 1.93222 42.2317 0.828259C41.1282 -0.275701 39.3392 -0.2757 38.2357 0.828259L21.5303 17.5415L4.82465 0.82797C3.72121 -0.27599 1.93217 -0.27599 0.828729 0.82797Z"
+              fill="white"
+            />
+          </svg>
+        </div>
+
+        <!-- Invoice amount + description -->
+        <p class="text-center mb-4 pb-1">
+          This invoice was not paid
+          <br />
+          <small class="text-muted">Expired on {{ getReadableTime(state.expiredInvoice.expiresOn) }}</small>
         </p>
       </div>
     </transition>
 
     <!-- Error message -->
-    <small class="text-danger mb-2 d-block px-4" v-if="state.error">{{ state.error }}</small>
+    <small class="text-danger mb-2 d-block px-3 px-lg-4" v-if="state.error">{{ state.error }}</small>
 
     <!-- Buttons for all screens/modes -->
-    <div class="mt-3">
+    <div class="mt-2">
       <!-- Buttons: Balance (default mode) -->
-      <b-button-group class="w-100" v-if="this.state.mode === 'balance' && walletBalance > 0">
+      <b-button-group class="w-100" v-if="this.state.mode === 'balance'">
         <b-button
           class="w-50"
           variant="primary"
@@ -448,35 +577,14 @@ export default {
     return {
       state: {
         //balance: 162500, //net user's balance in sats
-        mode: "balance", //balance (default mode), receive (create invoice), invoice, send, sent
-        txs: [
-          //array of last 3 txs
-          {
-            type: "incoming", //incoming, outgoing, pending, expired
-            amount: 125000, //amount transacted
-            timestamp: new Date(new Date().setSeconds(0)), //time of tx
-            description: "Tips from Reddit", //tx's invoice description
-            expiry: new Date(new Date().setSeconds(0))
-          },
-          {
-            type: "outgoing",
-            amount: 37,
-            timestamp: new Date(new Date().setMinutes(0)),
-            description: "Blockstream Satellite"
-          },
-          {
-            type: "incoming",
-            amount: 1302532,
-            timestamp: new Date(new Date().setHours(0)),
-            description: "Michael Shwebz"
-          }
-        ],
+        mode: "balance", //balance (default mode), receive (create invoice), invoice, send, sent, payment-success, invoice-info
         receive: {
           amount: null, //invoice amount
           description: "", //invoice description
           paymentRequest: "", //Bolt 11 invoice
           invoiceQR: "1", //used for "generating" animation, is ultimately equal to paymentRequest after animation
           isGeneratingInvoice: false, //used for transitions, animations, etc
+          expiresOn: null, //invoice expiry date
           invoiceStatusPoller: null, // = setInterval used to fetch invoice settlement status
           invoiceStatusPollerInprogress: false //to lock to 1 poll at a time
         },
@@ -487,6 +595,16 @@ export default {
           isValidInvoice: false, //check if invoice entered by user is a valid Bolt 11 invoice
           isSending: false //used for transition while tx is being broadcasted
         },
+        paymentInfo: {
+          amount: null,
+          description: "",
+          timestamp: null,
+          fee: null,
+          paymentRequest: ""
+        },
+        expiredInvoice: {
+          expiresOn: null
+        },
         loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
         error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
       }
@@ -496,7 +614,7 @@ export default {
   computed: {
     ...mapState({
       transactions: state => state.lightning.transactions,
-      walletBalance: state => state.lightning.balance.confirmed
+      walletBalance: state => state.lightning.balance.total
     }),
     isLightningPage() {
       return this.$router.currentRoute.path === "/lightning";
@@ -518,7 +636,7 @@ export default {
 
       //refresh data
       this.$store.dispatch("lightning/getTransactions");
-      this.$store.dispatch("lightning/getBalance");
+      this.$store.dispatch("lightning/getChannels");
 
       //clear any intervals
       window.clearInterval(this.state.receive.invoiceStatusPoller);
@@ -530,6 +648,7 @@ export default {
         paymentRequest: "",
         invoiceQR: "1",
         isGeneratingInvoice: false,
+        expiresOn: null,
         invoiceStatusPoller: null,
         invoiceStatusPollerInprogress: false
       };
@@ -539,6 +658,16 @@ export default {
         amount: null,
         isValidInvoice: false,
         isSending: false
+      };
+      this.state.paymentInfo = {
+        amount: null,
+        description: "",
+        timestamp: null,
+        fee: null,
+        paymentRequest: ""
+      };
+      this.state.expiredInvoice = {
+        expiresOn: null
       };
       this.state.loading = false;
       this.state.error = "";
@@ -569,7 +698,7 @@ export default {
 
         //refresh
         this.$store.dispatch("lightning/getTransactions");
-        this.$store.dispatch("lightning/getBalance");
+        this.$store.dispatch("lightning/getChannels");
       } catch (error) {
         this.state.error = JSON.stringify(error.response)
           ? error.response.data
@@ -592,7 +721,7 @@ export default {
       this.state.error = "";
 
       //start animated QR invoice until real invoice is fetched from the node
-      const QRAnimation = window.setInterval(() => {
+      this.QRAnimation = window.setInterval(() => {
         this.state.receive.invoiceQR = `${this.state.receive.invoiceQR}2345`;
       }, 200);
 
@@ -608,13 +737,11 @@ export default {
             `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/addInvoice`,
             payload
           );
-          // const res = {
-          //   data: {
-          //     paymentRequest: "lolololololol"
-          //   }
-          // };
           this.state.receive.invoiceQR = this.state.receive.paymentRequest =
             res.data.paymentRequest;
+
+          // to do: find a cleaner way to make this dynamic as per backend's expiry setting. for now invoice expiries are 1 hr
+          this.state.receive.expiresOn = moment().add(1, "hour");
 
           //refresh txs
           this.$store.dispatch("lightning/getTransactions");
@@ -626,7 +753,7 @@ export default {
         }
         this.state.loading = false;
         this.state.receive.isGeneratingInvoice = false;
-        window.clearInterval(QRAnimation);
+        window.clearInterval(this.QRAnimation);
       }, 2500);
 
       // setTimeout(() => {
@@ -637,7 +764,7 @@ export default {
       //   this.state.receive.isGeneratingInvoice = false;
       //   this.state.receive.invoiceQR = this.state.receive.paymentRequest =
       //     "lightning:lnbc10u1p0xvxt5pp52f3dd2ya8ejas4jkfq8l6k9vz6cpzv00wyanskkn0pvpyqjx5gusdqj23jhxarfdenjqvfjxvcqzpgxqyz5vqldzazcemje3f8llz90smx4rr7q7vlw4h988fvgs7tupehdtz038putaw8kysw34rq2apn5s5suc0xfltfwpsuu97nyuenpuzp4xl6zsqzmslgk";
-      //   window.clearInterval(QRAnimation);
+      //   window.clearInterval(this.QRAnimation);
       // }, 3000);
     },
     async fetchInvoiceDetails() {
@@ -690,6 +817,44 @@ export default {
       }
 
       this.state.loading = false;
+    },
+    showTransactionInfo(tx) {
+      if (!tx || tx.type === "loading") return; //eg. when tx is loading
+
+      //if outgoing payment, show success
+      if (tx.type === "outgoing") {
+        this.state.paymentInfo = {
+          amount: tx.amount,
+          description: tx.description,
+          timestamp: tx.timestamp,
+          fee: tx.fee,
+          paymentRequest: tx.paymentRequest
+        };
+        return this.changeMode("payment-success");
+      }
+
+      //if pending, show generated invoice screen (receive, so it also triggers poller)
+      if (tx.type === "pending") {
+        this.state.receive.amount = tx.amount;
+        this.state.receive.description = tx.description;
+        this.state.receive.paymentRequest = tx.paymentRequest;
+        this.state.receive.invoiceQR = tx.paymentRequest;
+        this.state.receive.isGeneratingInvoice = false;
+        this.state.receive.expiresOn = tx.expiresOn;
+        return this.changeMode("invoice");
+      }
+
+      if (tx.type === "incoming") {
+        this.state.receive.amount = tx.amount;
+        this.state.receive.description = tx.description;
+        this.state.receive.timestamp = tx.timestamp;
+        return this.changeMode("received");
+      }
+
+      if (tx.type === "expired") {
+        this.state.expiredInvoice.expiresOn = tx.expiresOn;
+        this.changeMode("invoice-expired");
+      }
     }
   },
   watch: {
@@ -698,31 +863,31 @@ export default {
 
       //if payment request is generated, fetch invoices to check settlement status as long as the user is on the generated invoice mode
       if (paymentRequest) {
-        console.log("Payment request", paymentRequest);
         this.state.receive.invoiceStatusPoller = window.setInterval(
           async () => {
             //if previous poll awaited then skip
             if (this.state.receive.invoiceStatusPollerInprogress) {
               return;
             }
-
             this.state.receive.invoiceStatusPollerInprogress = true;
-
-            console.log("checking invoice status");
             const invoices = await API.get(
               `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoices`
             );
-            console.log("received invoices");
-            console.log("top invoice", invoices[0]);
+            if (invoices && invoices.length) {
+              //search for invoice
+              const currentInvoice = invoices.filter(inv => {
+                return inv.paymentRequest === this.state.receive.paymentRequest;
+              })[0];
 
-            const currentInvoice = invoices[0];
-            //make sure the latest invoice is the current invoice
-            if (currentInvoice.settled) {
-              this.changeMode("received");
-              console.log("recieved, clearing interval now");
-              window.clearInterval(this.state.receive.invoiceStatusPoller);
+              if (currentInvoice && currentInvoice.settled) {
+                this.changeMode("received");
+                window.clearInterval(this.state.receive.invoiceStatusPoller);
+
+                //refresh
+                this.$store.dispatch("lightning/getChannels");
+                this.$store.dispatch("lightning/getTransactions");
+              }
             }
-
             this.state.receive.invoiceStatusPollerInprogress = false;
           },
           1000
@@ -731,11 +896,11 @@ export default {
     }
   },
   async created() {
+    window.moment = moment;
     await this.$store.dispatch("lightning/getStatus");
-    this.$store.dispatch("lightning/getTransactions");
-    this.$store.dispatch("lightning/getBalance");
   },
   beforeDestroy() {
+    window.clearInterval(this.QRAnimation);
     window.clearInterval(this.state.receive.invoiceStatusPoller);
   },
   components: {
@@ -747,14 +912,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// all text input fields
-.neu-input {
-  background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.08);
-  color: rgba(0, 0, 0, 0.8);
-}
-
 // big circle checkmark on successful send
 .checkmark {
   display: block;
@@ -776,6 +933,9 @@ export default {
     box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
     border-radius: 50%;
     z-index: 0;
+  }
+  &.checkmark-danger:before {
+    background: #f46e6e;
   }
   .checkmark-icon {
     position: absolute;
@@ -946,9 +1106,13 @@ export default {
   }
 }
 .transactions {
-  height: 17rem;
+  height: 20rem;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; //momentum scroll on iOS
+}
+
+.zero-transactions-container {
+  height: 20rem;
 }
 
 //slide up copy invoice field transition
@@ -994,6 +1158,15 @@ export default {
 }
 .list-leave-to {
   transform: translate3d(0, 10px, 0);
+  opacity: 0;
+}
+
+//fade transition
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 </style>

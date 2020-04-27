@@ -3,6 +3,7 @@
     <transition name="loading" mode>
       <loading v-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
       <!-- component matched by the route will render here -->
+
       <router-view v-else></router-view>
     </transition>
   </div>
@@ -133,7 +134,7 @@ export default {
         this.polling = window.setInterval(this.checkIfLoading, 1000);
       } else {
         //else check every 10s
-        this.polling = window.setInterval(this.checkIfLoading, 10000);
+        this.polling = window.setInterval(this.checkIfLoading, 20000);
       }
     }
   },

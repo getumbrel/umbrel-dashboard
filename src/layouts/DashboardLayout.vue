@@ -31,8 +31,8 @@
           variant="success"
           v-if="network !== 'mainnet'"
           class="align-self-center mr-2 text-capitalize"
-          >{{ network }}</b-badge
-        >
+          pill
+        >{{ network }}</b-badge>
 
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
@@ -41,11 +41,7 @@
         >
           <div></div>
         </div>
-        <b-nav-item-dropdown
-          class="d-none d-lg-block d-xl-block"
-          right
-          no-caret
-        >
+        <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right no-caret>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>Satoshi</template>
           <b-dropdown-item @click="logout">Log out</b-dropdown-item>
@@ -55,10 +51,7 @@
 
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
-      <div
-        class="mobile-vertical-menu d-lg-none d-xl-none"
-        v-show="isMobileMenuOpen"
-      >
+      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-show="isMobileMenuOpen">
         <authenticated-vertical-navbar :isMobileMenu="true" />
       </div>
     </transition>
@@ -72,15 +65,17 @@
     </transition>
 
     <b-row class="mx-0">
-      <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0">
+      <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2">
         <authenticated-vertical-navbar />
       </b-col>
 
       <b-col col lg="9" xl="10">
-        <!-- Content -->
-        <transition name="change-page" mode="out-in">
-          <router-view></router-view>
-        </transition>
+        <div class="pr-xl-2">
+          <transition name="change-page" mode="out-in">
+            <!-- Content -->
+            <router-view></router-view>
+          </transition>
+        </div>
 
         <!-- Footer -->
         <footer class="d-flex justify-content-end text-muted pr-3">
@@ -115,13 +110,31 @@ export default {
   },
   methods: {
     logout() {
+      //close mobile menu
+      if (this.isMobileMenuOpen) {
+        this.toggleMobileMenu();
+      }
       this.$store.dispatch("user/logout");
       this.$router.push("/");
     },
     toggleMobileMenu() {
-      console.log(process.env.VUE_APP_API_URL);
       this.$store.commit("toggleMobileMenu");
+    },
+    fetchData() {
+      this.$store.dispatch("bitcoin/getSync");
+      this.$store.dispatch("bitcoin/getBalance");
+      this.$store.dispatch("bitcoin/getTransactions");
+      this.$store.dispatch("lightning/getTransactions");
+      this.$store.dispatch("lightning/getChannels");
     }
+  },
+  created() {
+    // start polling data every 20s
+    this.fetchData();
+    this.interval = window.setInterval(this.fetchData, 20000);
+  },
+  beforeDestroy() {
+    window.clearInterval(this.interval);
   },
   components: {
     AuthenticatedVerticalNavbar

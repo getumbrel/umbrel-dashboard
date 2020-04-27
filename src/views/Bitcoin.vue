@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2">
+  <div class="p-sm-2">
     <div class="my-3 pb-2">
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-start align-items-center">
@@ -20,7 +20,7 @@
             </svg>
             <small class="ml-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted">v{{ version }}</span>
+            <span class="d-block text-muted">{{ version ? `v${version}` : '...' }}</span>
           </div>
         </div>
         <div>
@@ -53,7 +53,6 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" disabled>Show QR</b-dropdown-item>
             <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
             <b-dropdown-item href="#" disabled>View information</b-dropdown-item>
             <b-dropdown-divider />
@@ -67,12 +66,16 @@
         <bitcoin-wallet></bitcoin-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
-        <card-widget header="Blockchain" :hasMenu="true">
+        <card-widget
+          header="Blockchain"
+          :hasMenu="true"
+          :loading="syncPercent !== 100 || blocks.length === 0"
+        >
           <template v-slot:menu>
             <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
           <div class>
-            <div class="px-4 mb-4">
+            <div class="px-3 px-lg-4 mb-3">
               <div class="w-100 d-flex justify-content-between mb-2">
                 <span class="align-self-end">Synchronized</span>
                 <h3 class="font-weight-normal mb-0">
@@ -82,33 +85,37 @@
               </div>
               <b-progress
                 :value="100"
-                class="mb-3"
+                class="mb-1"
                 variant="success"
                 :style="{ height: '4px' }"
                 animated
                 striped
               ></b-progress>
+              <small
+                class="text-muted d-block text-right"
+                v-if="currentBlock < (blockHeight - 1)"
+              >{{ currentBlock.toLocaleString() }} of {{ blockHeight.toLocaleString() }} blocks</small>
             </div>
             <!-- low storage mode  -->
-            <!-- <div class="d-flex w-100 justify-content-between px-4 mb-4">
+            <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Low Storage Mode</span>
                 <small class="text-muted d-block">Discard old blocks</small>
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>-->
-            <p class="px-4 mb-3">Latest Blocks</p>
+            <p class="px-3 px-lg-4 mb-3">Latest Blocks</p>
             <blockchain :numBlocks="3"></blockchain>
-            <div class="px-4 py-2"></div>
+            <div class="px-3 px-lg-4 py-2"></div>
           </div>
         </card-widget>
       </b-col>
-      <b-col col cols="12" md="6" xl="4">
+      <b-col col cols="12" xl="4">
         <card-widget header="Network">
           <div class>
-            <div class="px-4 pb-2">
+            <div class="px-3 px-lg-4 pb-2">
               <b-row>
-                <b-col col cols="6" v-for="stat in state.stats" :key="stat.title">
+                <!-- <b-col col cols="6" md="3" xl="6" v-for="stat in stats" :key="stat.title">
                   <bitcoin-network-stat
                     :title="stat.title"
                     :value="stat.value"
@@ -117,6 +124,38 @@
                       value: stat.change.value,
                       suffix: stat.change.suffix
                     }"
+                  ></bitcoin-network-stat>
+                </b-col>-->
+                <b-col col cols="6" md="3" xl="6">
+                  <bitcoin-network-stat
+                    title="Connections"
+                    :value="stats.peers"
+                    suffix="Peers"
+                    showNumericChange
+                  ></bitcoin-network-stat>
+                </b-col>
+                <b-col col cols="6" md="3" xl="6">
+                  <bitcoin-network-stat
+                    title="Mempool"
+                    :value="stats.mempool"
+                    suffix="MB"
+                    showPercentChange
+                  ></bitcoin-network-stat>
+                </b-col>
+                <b-col col cols="6" md="3" xl="6">
+                  <bitcoin-network-stat
+                    title="Hashrate"
+                    :value="abbreviateHashRate(stats.hashrate)[0]"
+                    :suffix="abbreviateHashRate(stats.hashrate)[1]"
+                    showPercentChange
+                  ></bitcoin-network-stat>
+                </b-col>
+                <b-col col cols="6" md="3" xl="6">
+                  <bitcoin-network-stat
+                    title="Blockchain Size"
+                    :value="Math.round(stats.blockchainSize / 1e9)"
+                    suffix="GB"
+                    showPercentChange
                   ></bitcoin-network-stat>
                 </b-col>
               </b-row>
@@ -140,53 +179,16 @@ import BitcoinWallet from "@/components/BitcoinWallet";
 
 export default {
   data() {
-    return {
-      state: {
-        stats: [
-          {
-            title: "Connections",
-            value: 8,
-            suffix: "Peers",
-            change: {
-              value: 1,
-              suffix: ""
-            }
-          },
-          {
-            title: "Mempool",
-            value: 4,
-            suffix: "Mb",
-            change: {
-              value: -42,
-              suffix: "%"
-            }
-          },
-          {
-            title: "Hashrate",
-            value: 102,
-            suffix: "Ehash/s",
-            change: {
-              value: 7,
-              suffix: "%"
-            }
-          },
-          {
-            title: "Best Fee",
-            value: 34,
-            suffix: "Sats/vbyte",
-            change: {
-              value: -26,
-              suffix: "%"
-            }
-          }
-        ]
-      }
-    };
+    return {};
   },
   computed: {
     ...mapState({
       syncPercent: state => state.bitcoin.percent,
-      version: state => state.bitcoin.version
+      blocks: state => state.bitcoin.blocks,
+      version: state => state.bitcoin.version,
+      currentBlock: state => state.bitcoin.currentBlock,
+      blockHeight: state => state.bitcoin.blockHeight,
+      stats: state => state.bitcoin.stats
     }),
     isDarkMode() {
       return this.$store.getters.isDarkMode;
@@ -196,56 +198,27 @@ export default {
     random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    refreshAPI() {
-      const randomStat = this.random(0, 3);
-      const updatedStats = [
-        {
-          title: "Connections",
-          value: this.random(4, 8),
-          suffix: "Peers",
-          change: {
-            value: this.random(-4, 4),
-            suffix: ""
-          }
-        },
-        {
-          title: "Mempool",
-          value: this.random(2, 20),
-          suffix: "Mb",
-          change: {
-            value: this.random(-40, 40),
-            suffix: "%"
-          }
-        },
-        {
-          title: "Hashrate",
-          value: this.random(95, 105),
-          suffix: "Ehash/s",
-          change: {
-            value: this.random(-5, 5),
-            suffix: "%"
-          }
-        },
-        {
-          title: "Best Fee",
-          value: this.random(10, 70),
-          suffix: "Sats/vbyte",
-          change: {
-            value: this.random(-60, 40),
-            suffix: "%"
-          }
-        }
-      ];
-      this.state.stats.splice(randomStat, 1, updatedStats[randomStat]);
+    abbreviateHashRate(n) {
+      if (n < 1e3) return [Number(n.toFixed(1)), ""];
+      if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "kH/s"];
+      if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "MH/s"];
+      if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "GH/s"];
+      if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), "TH/s"];
+      if (n >= 1e15 && n < 1e18) return [Number((n / 1e15).toFixed(1)), "PH/s"];
+      if (n >= 1e18 && n < 1e21) return [Number((n / 1e18).toFixed(1)), "EH/s"];
+      if (n >= 1e21) return [Number(+(n / 1e21).toFixed(1)), "ZH/s"];
+    },
+    fetchStats() {
+      this.$store.dispatch("bitcoin/getStats");
     }
   },
   created() {
     this.$store.dispatch("bitcoin/getVersion");
-
-    window.setInterval(this.refreshAPI, 2000);
+    this.fetchStats();
+    this.interval = window.setInterval(this.fetchStats, 5000);
   },
   beforeDestroy() {
-    window.clearInterval(this.refreshAPI);
+    window.clearInterval(this.interval);
   },
   components: {
     CardWidget,

@@ -8,9 +8,23 @@
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       :class="{ blink: blink }"
+      v-if="size === 'md'"
     >
-      <circle cx="4" cy="4" r="4" fill="#00CD98" :class="`fill-${variant}`" />
+      <circle cx="4" cy="4" r="4" :class="`fill-${variant}`" />
     </svg>
+    <svg
+      width="6"
+      height="6"
+      class="mr-1"
+      viewBox="0 0 6 6"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      :class="{ blink: blink }"
+      v-else-if="size === 'sm'"
+    >
+      <circle cx="3" cy="3" r="3" :class="`fill-${variant}`" />
+    </svg>
+
     <span>
       <slot></slot>
     </span>
@@ -25,6 +39,10 @@ export default {
     blink: {
       type: Boolean,
       default: false
+    },
+    size: {
+      type: String,
+      default: "md" //sm or md
     }
   },
   computed: {},

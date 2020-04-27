@@ -10,21 +10,28 @@ const state = () => ({
   onionAddress: "",
   currentBlock: 0,
   blockHeight: 0,
-  percent: 0,
+  blocks: [],
+  percent: -1, //for loading state
   depositAddress: "",
+  stats: {
+    peers: 0,
+    mempool: 0,
+    hashrate: 0,
+    blockchainSize: 0
+  },
   peers: {
     total: 0,
     inbound: 0,
     outbound: 0
   },
   balance: {
-    total: 0,
-    confirmed: 0,
-    pending: 0,
-    pendingIn: 0,
-    pendingOut: 0
+    total: -1, //loading
+    confirmed: -1,
+    pending: -1,
+    pendingIn: -1,
+    pendingOut: -1
   },
-  transactions: [],
+  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
   pending: [],
   price: 0,
   fees: {
@@ -89,8 +96,19 @@ const mutations = {
     }
   },
 
+  setBlocks(state, blocks) {
+    state.blocks = blocks;
+  },
+
   setVersion(state, version) {
     state.version = version.version;
+  },
+
+  setStats(state, stats) {
+    state.stats.peers = stats.peers;
+    state.stats.mempool = stats.mempool;
+    state.stats.blockchainSize = stats.blockchainSize;
+    state.stats.hashrate = stats.hashrate;
   },
 
   peers(state, peers) {
@@ -107,7 +125,7 @@ const mutations = {
 
   transactions(state, transactions) {
     // Clear previously loaded data
-    state.transactions = [];
+    // state.transactions = [];
     // state.pending = [];
 
     // Loop through transactions and sort them by type
@@ -121,6 +139,7 @@ const mutations = {
     //         }
     //     }
     // });
+    // console.log(transactions);
 
     state.transactions = transactions;
   },
@@ -203,6 +222,82 @@ const actions = {
     }
   },
 
+  async getBlocks({ commit, state, dispatch }) {
+    if (state.operational) {
+      await dispatch("getSync");
+
+      //cache block height array of latest 3 blocks for loading view
+      const currentBlock = state.currentBlock;
+
+      //dont fetch blocks if no new block
+      if (state.blocks.length && currentBlock === state.blocks[0]['height']) {
+        return;
+      }
+
+      if (currentBlock < 4) {
+        return;
+      }
+
+      const blocks = [
+        {
+          height: currentBlock, //block height
+          txs: null,
+          timestamp: null,
+          size: null
+        },
+        {
+          height: currentBlock - 1, //block height
+          txs: null,
+          timestamp: null,
+          size: null
+        },
+        {
+          height: currentBlock - 2, //block number
+          txs: null,
+          timestamp: null,
+          size: null
+        }
+      ];
+      // commit("setBlocks", blocks);
+
+
+      //fetch info per block;
+
+      const blocksWithInfo = [];
+
+      for (let block of blocks) {
+        //get hash
+        const blockHash = await API.get(
+          `${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/block?height=${block.height}`
+        );
+
+        if (!blockHash || !blockHash.hash) {
+          return;
+        }
+
+        //gete block info
+        const blockInfo = await API.get(
+          `${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/block?hash=${blockHash.hash}`
+        );
+
+        if (!blockInfo || !blockInfo.block) {
+          return;
+        }
+
+        blocksWithInfo.push({
+          height: blockInfo.height,
+          txs: blockInfo.transactions.length,
+          timestamp: blockInfo.blocktime,
+          size: blockInfo.size
+        })
+      }
+
+      // update blocks
+      commit("setBlocks", blocksWithInfo);
+
+    }
+  },
+
   async getVersion({ commit, state }) {
     if (state.operational) {
       const version = await API.get(
@@ -223,6 +318,28 @@ const actions = {
 
       if (peers) {
         commit("peers", peers);
+      }
+    }
+  },
+
+  async getStats({ commit, state }) {
+    if (state.operational) {
+      const stats = await API.get(
+        `${process.env.VUE_APP_API_URL}api/v1/bitcoind/info/stats`
+      );
+
+      if (stats) {
+        const peers = stats.connections;
+        const mempool = stats.mempool;
+        const hashrate = stats.networkhashps;
+        const blockchainSize = stats.size;
+
+        commit("setStats", {
+          peers,
+          mempool,
+          hashrate,
+          blockchainSize
+        });
       }
     }
   },
@@ -304,35 +421,55 @@ const getters = {
   transactions(state) {
     const txs = [];
 
-    state.transactions.forEach(tx => {
-      const amount = Number(tx.amount);
+    //return default "loading" transactions until txs aren't fetched
+    if (state.transactions && state.transactions.length && state.transactions[0]['type'] === 'loading') {
+      return state.transactions;
+    }
 
-      let type = "incoming";
-      if (amount < 0) {
-        type = "outgoing";
-      }
+    if (state.transactions) {
+      state.transactions.forEach(tx => {
+        const amount = Number(tx.amount);
 
-      let description = "Unknown";
+        let type = "incoming";
+        if (amount < 0) {
+          type = "outgoing";
+        } else if (amount === 0) { //skip self incoming txs of change
+          return;
+        }
 
-      if (tx.type === "CHANNEL_OPEN" || tx.type === "PENDING_OPEN") {
-        description = "Lightning Wallet";
-      } else if (tx.type === "CHANNEL_CLOSE" || tx.type === "PENDING_CLOSE") {
-        description = "Lightning Wallet";
-      } else if (tx.type === "ON_CHAIN_TRANSACTION_SENT") {
-        description = "Withdrawal";
-      } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
-        description = "Deposit";
-      } else if (tx.type === "UNKNOWN" && Number(tx.amount) === 0) { //skip self incoming txs of change
-        return;
-      }
+        // if (tx.numConfirmations === 0) {
 
-      txs.push({
-        type,
-        amount: amount < 0 ? amount * -1 : amount, //for formatting +/- in view
-        timestamp: new Date(Number(tx.timeStamp) * 1000),
-        description
+        // }
+        // type = "pending";
+
+        let description = "Unknown";
+
+        if (tx.type === "CHANNEL_OPEN" || tx.type === "PENDING_OPEN") {
+          description = "Lightning Wallet";
+        } else if (tx.type === "CHANNEL_CLOSE" || tx.type === "PENDING_CLOSE") {
+          description = "Lightning Wallet";
+        } else if (tx.type === "ON_CHAIN_TRANSACTION_SENT") {
+          description = "Withdrawal";
+        } else if (tx.type === "ON_CHAIN_TRANSACTION_RECEIVED") {
+          description = "Deposit";
+        }
+
+
+        txs.push({
+          type,
+          amount: amount < 0 ? amount * -1 : amount, //for formatting +/- in view
+          timestamp: new Date(Number(tx.timeStamp) * 1000),
+          description,
+          hash: tx.txHash,
+          confirmations: tx.numConfirmations
+        });
       });
-    });
+
+      //sort txs by date
+      txs.sort(function (tx1, tx2) {
+        return tx2.timestamp - tx1.timestamp;
+      });
+    }
 
     return txs;
   }
