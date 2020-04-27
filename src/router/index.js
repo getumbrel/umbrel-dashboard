@@ -20,7 +20,6 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "root",
     component: TransitionWrapperLayout,
     children: [
       {
@@ -37,72 +36,72 @@ const routes = [
       },
       {
         path: "/start",
-        name: "start",
         component: SimpleLayout,
         meta: { requiresAuth: false },
         children: [
           {
             path: "",
+            name: "start",
             component: Home
           }
         ]
       },
       {
         path: "/dashboard",
-        name: "dashboard",
         component: DashboardLayout,
         meta: { requiresAuth: true },
         children: [
           {
             path: "",
+            name: "dashboard",
             component: Dashboard
           }
         ]
       },
       {
         path: "/bitcoin",
-        name: "bitcoin",
         component: DashboardLayout,
         meta: { requiresAuth: true },
         children: [
           {
             path: "",
+            name: "bitcoin",
             component: Bitcoin
           }
         ]
       },
       {
         path: "/lightning",
-        name: "lightning",
         component: DashboardLayout,
         meta: { requiresAuth: true },
         children: [
           {
             path: "",
+            name: "lightning",
             component: Lightning
           }
         ]
       },
       {
         path: "/settings",
-        name: "settings",
         component: DashboardLayout,
         meta: { requiresAuth: true },
         children: [
           {
             path: "",
+            name: "settings",
             component: Settings
           }
         ]
       },
       {
         path: "/logout",
-        name: "logout",
         component: DashboardLayout,
         meta: { requiresAuth: true },
         children: [
           {
             path: "",
+            name: "logout",
             component: Logout
           }
         ]
