@@ -145,16 +145,15 @@
                 <b-col col cols="6" md="3" xl="6">
                   <bitcoin-network-stat
                     title="Hashrate"
-                    :value="stats.hashrate"
-                    suffix="Hash/s"
-                    abbreviateValue
+                    :value="abbreviateHashRate(stats.hashrate)[0]"
+                    :suffix="abbreviateHashRate(stats.hashrate)[1]"
                     showPercentChange
                   ></bitcoin-network-stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
                   <bitcoin-network-stat
                     title="Blockchain Size"
-                    :value="Math.round(stats.blockchainSize / 1e+9)"
+                    :value="Math.round(stats.blockchainSize / 1e9)"
                     suffix="GB"
                     showPercentChange
                   ></bitcoin-network-stat>
@@ -198,6 +197,16 @@ export default {
   methods: {
     random(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    abbreviateHashRate(n) {
+      if (n < 1e3) return [Number(n.toFixed(1)), ""];
+      if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "kH/s"];
+      if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "MH/s"];
+      if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "GH/s"];
+      if (n >= 1e12 && n < 1e15) return [Number((n / 1e12).toFixed(1)), "TH/s"];
+      if (n >= 1e15 && n < 1e18) return [Number((n / 1e15).toFixed(1)), "PH/s"];
+      if (n >= 1e18 && n < 1e21) return [Number((n / 1e18).toFixed(1)), "EH/s"];
+      if (n >= 1e21) return [Number(+(n / 1e21).toFixed(1)), "ZH/s"];
     },
     fetchStats() {
       this.$store.dispatch("bitcoin/getStats");
