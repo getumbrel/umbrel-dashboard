@@ -2,14 +2,14 @@
   <div>
     <span>{{ title }}</span>
     <div class="pt-2 pb-3">
-      <div class="mb-1 d-flex align-items-end">
-        <h3 class="font-weight-normal d-inline mb-0">
+      <div class="mb-1 d-flex align-items-baseline">
+        <h3 class="font-weight-normal mb-0">
           <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
           <span>
             <CountUp :endVal="numberValue" :suffix="numberSuffix" />
           </span>
         </h3>
-        <span class="text-muted d-inline" style="margin-left: 0.5rem;">{{ suffix }}</span>
+        <span class="text-muted" style="margin-left: 0.5rem;">{{ suffix }}</span>
       </div>
       <div v-if="(showNumericChange || showPercentChange) && change.value !== 0">
         <svg
