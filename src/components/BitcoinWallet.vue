@@ -140,9 +140,10 @@
                   </h6>
 
                   <!-- Timestamp of tx -->
+                  <!-- TODO: Clean this -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
-                    style="margin-left: 24px;"
+                    :style="tx.confirmations > 0 ? 'margin-left: 25px;' : 'margin-left: 21px;'"
                     v-b-tooltip.hover.bottomright
                     :title="`${getReadableTime(tx.timestamp)} | ${tx.confirmations} confirmations`"
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"

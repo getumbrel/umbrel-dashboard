@@ -164,7 +164,7 @@
                   <!-- Timestamp of tx -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
-                    style="margin-left: 24px;"
+                    style="margin-left: 25px;"
                     v-b-tooltip.hover.bottomright
                     :title="getReadableTime(tx.timestamp)"
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
@@ -173,7 +173,7 @@
                   <!-- if invoice isn't settled -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
-                    style="margin-left: 24px;"
+                    style="margin-left: 21px;"
                     :title="`Invoice expires on ${getReadableTime(tx.expiresOn)}`"
                     v-else-if="tx.type === 'pending'"
                   >Unpaid invoice</small>
@@ -181,7 +181,7 @@
                   <!-- If invoice expired -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
-                    style="margin-left: 24px;"
+                    style="margin-left: 25px;"
                     :title="getReadableTime(tx.expiresOn)"
                     v-else-if="tx.type === 'expired'"
                   >Invoice expired {{getTimeFromNow(tx.expiresOn)}}</small>
