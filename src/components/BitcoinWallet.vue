@@ -10,31 +10,12 @@
     }"
     sub-title="Sats"
     icon="icon-app-bitcoin.svg"
-    :loading="state.loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
+    :loading="loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
   >
-    <!-- Back Button -->
-    <div class="px-3 px-lg-4 pt-2 pb-3" v-if="state.mode != 'balance'">
-      <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
-        <svg
-          width="7"
-          height="13"
-          viewBox="0 0 7 13"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
-            fill="#C3C6D1"
-          />
-        </svg>
-        Back
-      </a>
-    </div>
-
     <!-- transition switching between different modes -->
     <transition name="lightning-mode-change" mode="out-in">
       <!-- Default Balance/tx screen -->
-      <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
+      <div v-if="mode === 'transactions'" key="mode-balance" class="mode-balance">
         <!-- List of transactions -->
 
         <!-- No transactions -->
@@ -180,7 +161,25 @@
       </div>
 
       <!-- SCREEN/MODE: Withdraw Screen -->
-      <div class="px-3 px-lg-4" v-if="state.mode === 'withdraw'" key="mode-withdraw">
+      <div class="px-3 px-lg-4" v-else-if="mode === 'withdraw'" key="mode-withdraw">
+        <!-- Back Button -->
+        <div class="pt-2 pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
         <label class="sr-onlsy" for="input-withdrawal-amount">Sats</label>
         <b-input
           id="input-withdrawal-amount"
@@ -188,7 +187,7 @@
           type="number"
           size="lg"
           min="1"
-          v-model="state.withdraw.amount"
+          v-model="withdraw.amount"
           autofocus
           @input="fetchWithdrawalFees"
         ></b-input>
@@ -200,15 +199,33 @@
           type="text"
           size="lg"
           min="1"
-          v-model="state.withdraw.address"
+          v-model="withdraw.address"
           @input="fetchWithdrawalFees"
         ></b-input>
       </div>
 
       <!-- SCREEN/MODE: Review Withdrawal -->
-      <div class="px-3 px-lg-4" v-if="state.mode === 'review-withdraw'" key="mode-review-withdraw">
+      <div class="px-3 px-lg-4" v-else-if="mode === 'review-withdraw'" key="mode-review-withdraw">
+        <!-- Back Button -->
+        <div class="pt-2 pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
         <div class="text-center pb-4">
-          <h3 class="mb-0">{{ Number(state.withdraw.amount).toLocaleString() }}</h3>
+          <h3 class="mb-0">{{ Number(withdraw.amount).toLocaleString() }}</h3>
           <span class="d-block mb-3 text-muted">Sats</span>
 
           <svg
@@ -225,7 +242,7 @@
             />
           </svg>
 
-          <b class="d-block mt-3">{{ state.withdraw.address }}</b>
+          <b class="d-block mt-3">{{ withdraw.address }}</b>
         </div>
         <div class="d-flex justify-content-between pb-3">
           <span class="text-muted">
@@ -235,7 +252,7 @@
             <small>Mining fee</small>
           </span>
           <span class="text-right text-muted">
-            <b>{{ (walletBalance - state.withdraw.amount - fees.fast.total).toLocaleString() }}</b>
+            <b>{{ (walletBalance - withdraw.amount - fees.fast.total).toLocaleString() }}</b>
             <small>&nbsp;Sats</small>
             <br />
             <small>Remaining balance</small>
@@ -246,9 +263,27 @@
       <!-- SCREEN/MODE: Successfully Withdrawn -->
       <div
         class="px-3 px-lg-4 mode-withdrawn"
-        v-if="state.mode === 'withdrawn'"
+        v-else-if="mode === 'withdrawn'"
         key="mode-withdrawn"
       >
+        <!-- Back Button -->
+        <div class="pt-2 pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
         <!-- Big green checkmark -->
         <circular-checkmark class="mb-4" success></circular-checkmark>
 
@@ -256,18 +291,32 @@
         <div class="text-center mb-4">
           <span class="d-block mb-2">
             Successfully withdrawn
-            <b>{{ state.withdraw.amount }} sats</b>
+            <b>{{ withdraw.amount }} sats</b>
           </span>
-          <a :href="getTxUrl(state.withdraw.txHash)" target="_blank">View transaction</a>
+          <a :href="getTxUrl(withdraw.txHash)" target="_blank">View transaction</a>
         </div>
       </div>
 
       <!-- SCREEN/MODE: Show Deposit Address -->
-      <div
-        class="px-3 px-lg-4 mode-deposit"
-        v-if="this.state.mode === 'deposit'"
-        key="mode-deposit"
-      >
+      <div class="px-3 px-lg-4 mode-deposit" v-else-if="this.mode === 'deposit'" key="mode-deposit">
+        <!-- Back Button -->
+        <div class="pt-2 pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
         <p class="text-center text-muted mb-2">
           <span>
             Send
@@ -284,16 +333,16 @@
     </transition>
 
     <!-- Error message -->
-    <small class="text-danger mb-2 d-block px-3 px-lg-4" v-if="state.error">
+    <small class="text-danger mb-2 d-block px-3 px-lg-4" v-if="error">
       {{
-      state.error
+      error
       }}
     </small>
 
     <!-- Buttons for all screens/modes -->
     <div class="mt-2">
       <!-- Buttons: Balance (default mode) if balance > 0 -->
-      <b-button-group class="w-100" v-if="this.state.mode === 'balance'">
+      <b-button-group class="w-100" v-if="this.mode === 'transactions'">
         <b-button
           class="w-50"
           variant="primary"
@@ -341,7 +390,7 @@
         variant="success"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="changeMode('deposit')"
-        v-else-if="this.state.mode === 'balance' && walletBalance === 0"
+        v-else-if="this.mode === 'transactions' && walletBalance === 0"
       >
         <svg
           width="18"
@@ -364,12 +413,12 @@
         variant="primary"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="changeMode('review-withdraw')"
-        v-else-if="state.mode === 'withdraw'"
+        v-else-if="mode === 'withdraw'"
         :disabled="
-          !!state.error ||
-            !state.withdraw.amount ||
-            !state.withdraw.address ||
-            state.withdraw.isTyping
+          !!error ||
+            !withdraw.amount ||
+            !withdraw.address ||
+            withdraw.isTyping
         "
       >Review Withdrawal</b-button>
 
@@ -379,11 +428,11 @@
         variant="primary"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="withdrawBtc"
-        v-else-if="state.mode === 'review-withdraw'"
-        :disabled="state.withdraw.isWithdrawing"
+        v-else-if="mode === 'review-withdraw'"
+        :disabled="withdraw.isWithdrawing"
       >
         {{
-        this.state.withdraw.isWithdrawing
+        this.withdraw.isWithdrawing
         ? "Withdrawing..."
         : "Confirm Withdrawal"
         }}
@@ -406,21 +455,19 @@ import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
 export default {
   data() {
     return {
-      state: {
-        //balance: 162500, //net user's balance in sats
-        mode: "balance", //balance (default mode), deposit, withdraw, review-withdraw, withdrawn
-        withdraw: {
-          amount: "",
-          address: "",
-          sendMax: false,
-          feesTimeout: null,
-          isTyping: false, //to disable button when the user changes amount/address
-          isWithdrawing: false,
-          txHash: ""
-        },
-        loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
-        error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
-      }
+      //balance: 162500, //net user's balance in sats
+      mode: "transactions", //transactions (default mode), deposit, withdraw, review-withdraw, withdrawn
+      withdraw: {
+        amount: "", //withdrawal amount
+        address: "", //withdrawal address
+        sendMax: false, //sweep = send all funds?
+        feesTimeout: null, //window.setTimeout for fee fetching
+        isTyping: false, //to disable button when the user changes amount/address
+        isWithdrawing: false, //awaiting api response for withdrawal request?
+        txHash: "" //tx hash of withdrawal tx
+      },
+      loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
+      error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     };
   },
   props: {},
@@ -450,14 +497,14 @@ export default {
       return `${url}/tx/${txHash}`;
     },
     async changeMode(mode) {
-      //change between different modes/screens of the wallet from - balance (default), withdraw, withdrawan, depsoit
+      //change between different modes/screens of the wallet from - transactions (default), withdraw, withdrawan, depsoit
 
       //on deposit mode, get new btc address
       if (mode === "deposit") {
         await this.$store.dispatch("bitcoin/getDepositAddress");
       }
 
-      return (this.state.mode = mode);
+      return (this.mode = mode);
     },
     reset() {
       //reset to default mode, clear any inputs/generated invoice, pasted invoice, etc - used by "Back" button
@@ -465,12 +512,12 @@ export default {
       //to do: refresh balance, txs
 
       //in case going back from review withdrawal to edit withdrwal
-      if (this.state.mode === "review-withdraw") {
-        return (this.state.mode = "withdraw");
+      if (this.mode === "review-withdraw") {
+        return (this.mode = "withdraw");
       }
 
       //reset state
-      this.state.withdraw = {
+      this.withdraw = {
         amount: "",
         address: "",
         sendMax: false,
@@ -480,28 +527,28 @@ export default {
         txHash: ""
       };
 
-      this.state.loading = false;
-      this.state.error = "";
-      this.state.mode = "balance";
+      this.loading = false;
+      this.error = "";
+      this.mode = "transactions";
     },
     async fetchWithdrawalFees() {
-      if (this.state.withdraw.feesTimeout) {
-        clearTimeout(this.state.withdraw.feesTimeout);
+      if (this.withdraw.feesTimeout) {
+        clearTimeout(this.withdraw.feesTimeout);
       }
-      this.state.withdraw.isTyping = true;
+      this.withdraw.isTyping = true;
 
-      this.state.withdraw.feesTimeout = setTimeout(async () => {
-        this.state.loading = true;
-        if (this.state.withdraw.amount && this.state.withdraw.address) {
+      this.withdraw.feesTimeout = setTimeout(async () => {
+        this.loading = true;
+        if (this.withdraw.amount && this.withdraw.address) {
           const params = {
-            address: this.state.withdraw.address,
+            address: this.withdraw.address,
             confTarget: 0
           };
 
-          if (this.state.withdraw.sendMax) {
+          if (this.withdraw.sendMax) {
             params.sweep = true;
           } else {
-            params.amt = this.state.withdraw.amount;
+            params.amt = this.withdraw.amount;
           }
 
           await this.$store.dispatch("bitcoin/getFees", params);
@@ -509,27 +556,27 @@ export default {
           if (this.fees) {
             //show error if any
             if (this.fees.fast && this.fees.fast.error.code) {
-              this.state.error = this.fees.fast.error.text;
+              this.error = this.fees.fast.error.text;
             } else {
-              this.state.error = "";
+              this.error = "";
             }
-            // if (this.state.withdraw.sendMax) {
+            // if (this.withdraw.sendMax) {
             // this.estimateSweep();
             // }
           }
         }
-        this.state.loading = false;
-        this.state.withdraw.isTyping = false;
+        this.loading = false;
+        this.withdraw.isTyping = false;
       }, 500);
     },
     async withdrawBtc() {
-      this.state.loading = true;
-      this.state.withdraw.isWithdrawing = true;
+      this.loading = true;
+      this.withdraw.isWithdrawing = true;
 
       const payload = {
-        sweep: this.state.withdraw.sendMax,
-        addr: this.state.withdraw.address,
-        amt: this.state.withdraw.amount,
+        sweep: this.withdraw.sendMax,
+        addr: this.withdraw.address,
+        amt: this.withdraw.amount,
         satPerByte: parseInt(this.fees.fast.perByte)
       };
 
@@ -539,7 +586,7 @@ export default {
           payload
         );
         const withdrawTx = res.data;
-        this.state.withdraw.txHash = withdrawTx.txid;
+        this.withdraw.txHash = withdrawTx.txid;
         this.changeMode("withdrawn");
 
         //update
@@ -547,13 +594,11 @@ export default {
         this.$store.dispatch("bitcoin/getTransactions");
       } catch (error) {
         console.log(error);
-        this.state.error = error.reponse
-          ? error.response.data
-          : "Error sending BTC";
+        this.error = error.reponse ? error.response.data : "Error sending BTC";
         console.error("Error sending", error);
       }
-      this.state.loading = false;
-      this.state.withdraw.isWithdrawing = false;
+      this.loading = false;
+      this.withdraw.isWithdrawing = false;
     }
   },
   watch: {},
