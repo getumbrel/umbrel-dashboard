@@ -136,7 +136,7 @@ export default {
 
       try {
         await API.post(
-          `${process.env.VUE_APP_API_URL}api/v1/lnd/channel/open`,
+          `${process.env.VUE_APP_API_URL}/v1/lnd/channel/open`,
           payload
         );
         this.isOpening = false;
@@ -175,7 +175,7 @@ export default {
           };
 
           const estimates = await API.get(
-            `${process.env.VUE_APP_API_URL}api/v1/lnd/channel/estimateFee`,
+            `${process.env.VUE_APP_API_URL}/v1/lnd/channel/estimateFee`,
             { params: payload }
           );
 

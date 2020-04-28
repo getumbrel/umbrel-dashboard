@@ -250,21 +250,7 @@
         key="mode-withdrawn"
       >
         <!-- Big green checkmark -->
-        <div class="checkmark mb-4">
-          <svg
-            width="54"
-            height="43"
-            viewBox="0 0 54 43"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="checkmark-icon"
-          >
-            <path
-              d="M47.657 1.26266C48.9446 -0.245227 51.2166 -0.428585 52.7315 0.853121C54.2464 2.13483 54.4306 4.39624 53.1429 5.90413L22.543 41.7374C21.2351 43.2689 18.9176 43.4303 17.4083 42.0948L1.20832 27.7615C-0.27769 26.4468 -0.411537 24.1818 0.909365 22.7027C2.23027 21.2236 4.50572 21.0903 5.99173 22.4051L19.4408 34.3045L47.657 1.26266Z"
-              fill="white"
-            />
-          </svg>
-        </div>
+        <circular-checkmark class="mb-4" success></circular-checkmark>
 
         <!-- Invoice amount + description -->
         <div class="text-center mb-4">
@@ -407,7 +393,6 @@
 </template>
 
 <script>
-import QrCode from "@/components/Utility/QrCode.vue";
 import moment from "moment";
 import { mapState, mapGetters } from "vuex";
 
@@ -415,6 +400,8 @@ import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/InputCopy";
+import QrCode from "@/components/Utility/QrCode.vue";
+import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
 
 export default {
   data() {
@@ -548,7 +535,7 @@ export default {
 
       try {
         const res = await API.post(
-          `${process.env.VUE_APP_API_URL}api/v1/lnd/transaction`,
+          `${process.env.VUE_APP_API_URL}/v1/lnd/transaction`,
           payload
         );
         const withdrawTx = res.data;
@@ -576,115 +563,13 @@ export default {
   components: {
     CardWidget,
     QrCode,
-    InputCopy
+    InputCopy,
+    CircularCheckmark
   }
 };
 </script>
 
 <style lang="scss" scoped>
-// big circle checkmark on successful send
-.checkmark {
-  display: block;
-  position: relative;
-  width: 150px;
-  height: 150px;
-  margin-left: auto;
-  margin-right: auto;
-  &:before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    transform: translate3d(-50%, -50%, 0) scale(1); //animated
-    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    background: #00cd98;
-    box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
-    border-radius: 50%;
-    z-index: 0;
-  }
-  .checkmark-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0) scale(1); //animated
-    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transition-delay: 0.3s;
-  }
-}
-
-// Transitions between mode/screen changes
-
-.lightning-mode-change-enter-active,
-.lightning-mode-change-leave-active {
-  transition: transform 0.3s, opacity 0.3s linear;
-}
-
-//reverse delay in check mark when leaving (first tick contracts, then the circle)
-.lightning-mode-change-leave-active {
-  .checkmark {
-    &:before {
-      transition-delay: 0.2s;
-    }
-    .checkmark-icon {
-      transition-delay: 0s;
-    }
-  }
-}
-
-.lightning-mode-change-enter {
-  transform: translate3d(20px, 0, 0);
-  opacity: 0;
-  .checkmark {
-    &:before {
-      transform: translate3d(-50%, -50%, 0) scale(0);
-    }
-    .checkmark-icon {
-      transform: translate3d(-50%, -50%, 0) scale(0);
-    }
-  }
-}
-
-.lightning-mode-change-enter-to {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-  .checkmark {
-    &:before {
-      transform: translate3d(-50%, -50%, 0) scale(1);
-    }
-    .checkmark-icon {
-      transform: translate3d(-50%, -50%, 0) scale(1);
-    }
-  }
-}
-
-.lightning-mode-change-leave {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-  .checkmark {
-    &:before {
-      transform: translate3d(-50%, -50%, 0) scale(1);
-    }
-    .checkmark-icon {
-      transform: translate3d(-50%, -50%, 0) scale(1);
-    }
-  }
-}
-
-.lightning-mode-change-leave-to {
-  transform: translate3d(-20px, 0, 0);
-  opacity: 0;
-  .checkmark {
-    &:before {
-      transform: translate3d(-50%, -50%, 0) scale(0);
-    }
-    .checkmark-icon {
-      transform: translate3d(-50%, -50%, 0) scale(0);
-    }
-  }
-}
-
 //Transactions
 .transactions-container {
   position: relative;
