@@ -12,25 +12,6 @@
     icon="icon-app-lightning.svg"
     :loading="loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
   >
-    <!-- Back Button -->
-    <div class="px-3 px-lg-4 pt-2 pb-3" v-if="mode != 'transactions'">
-      <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
-        <svg
-          width="7"
-          height="13"
-          viewBox="0 0 7 13"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
-            fill="#C3C6D1"
-          />
-        </svg>
-        Back
-      </a>
-    </div>
-
     <!-- transition switching between different modes -->
     <transition name="lightning-mode-change" mode="out-in">
       <!-- Default tx mode -->
@@ -204,6 +185,25 @@
 
       <!-- SCREEN/MODE: Paste Invoice Screen -->
       <div class="px-3 px-lg-4 mode-send" v-else-if="mode === 'send'" key="mode-send">
+        <!-- Back Button -->
+        <div class="pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
+
         <label class="sr-onlsy" for="input-sats">Paste Invoice</label>
         <b-input
           id="input-sats"
@@ -232,6 +232,25 @@
 
       <!-- SCREEN/MODE: Successfully paid invoice -->
       <div class="px-3 px-lg-4 mode-sent" v-else-if="mode === 'sent'" key="mode-sent">
+        <!-- Back Button -->
+        <div class="pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
+
         <!-- Big green checkmark -->
         <circular-checkmark class="mb-4" success></circular-checkmark>
 
@@ -248,6 +267,25 @@
 
       <!-- SCREEN/MODE: Create Invoice (Receive) -->
       <div class="px-3 px-lg-4 mode-receive" v-else-if="mode === 'receive'" key="mode-receive">
+        <!-- Back Button -->
+        <div class="pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
+
         <label class="sr-onlsy" for="input-sats">Sats</label>
         <b-input
           id="input-sats"
@@ -275,7 +313,26 @@
 
       <!-- SCREEN/MODE: Show Generated Invoice -->
       <div class="px-3 px-lg-4 mode-invoice" v-else-if="this.mode === 'invoice'" key="mode-invoice">
-        <p class="text-center text-muted mb-3">
+        <!-- Back Button -->
+        <div class="pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
+
+        <p class="text-center text-muted mb-2">
           <!-- If still generating invoice, show blinking loading text -->
           <span class="blink" v-if="receive.isGeneratingInvoice">Generating Invoice</span>
 
@@ -290,7 +347,7 @@
 
         <!-- QR Code -->
         <qr-code
-          class="mb-2 pb-2"
+          class="mb-2 pb-3"
           :showLogo="!receive.isGeneratingInvoice"
           :value="receive.invoiceQR"
         ></qr-code>
@@ -308,6 +365,25 @@
 
       <!-- SCREEN/MODE: Received (invoice settled) -->
       <div class="px-3 px-lg-4 mode-sent" v-else-if="mode === 'received'" key="mode-sent">
+        <!-- Back Button -->
+        <div class="pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
+
         <!-- Big green checkmark -->
         <circular-checkmark class="mb-4" success></circular-checkmark>
 
@@ -330,6 +406,25 @@
         v-else-if="mode === 'payment-success'"
         key="payment-success"
       >
+        <!-- Back Button -->
+        <div class="pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
+
         <circular-checkmark class="mb-4" success></circular-checkmark>
 
         <!-- Payment amount + description -->
@@ -355,6 +450,24 @@
         v-else-if="this.mode === 'invoice-expired'"
         key="mode-invoice-info"
       >
+        <!-- Back Button -->
+        <div class="pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
         <!-- Big red checkmark -->
         <circular-checkmark class="mb-4" danger></circular-checkmark>
 
@@ -866,7 +979,7 @@ export default {
 //fade transition
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.5s ease;
 }
 .fade-enter,
 .fade-leave-to {
