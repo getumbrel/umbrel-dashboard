@@ -200,11 +200,6 @@
             </b-list-group-item>
           </transition-group>
         </div>
-
-        <!-- Link to Lightning Network Page -->
-        <!-- <div class="px-3 px-lg-4 pt-2" v-if="!isLightningPage">
-          <router-link to="/lightning" class="card-link">Manage</router-link>
-        </div>-->
       </div>
 
       <!-- SCREEN/MODE: Paste Invoice Screen -->
@@ -283,8 +278,6 @@
           :disabled="state.receive.isGeneratingInvoice"
         ></b-input>
 
-        <!-- <small class="text-right">{{ state.receive.amount }}</small> -->
-
         <label class="sr-onlsy" for="input-description">
           Description
           <small class="text-muted">(optional)</small>
@@ -318,25 +311,11 @@
         </p>
 
         <!-- QR Code -->
-        <div class="generated-qr mb-2 pb-2">
-          <!-- Popup umbrel logo in the middle of QR code after the QR is generated -->
-          <transition name="qr-logo-popup" appear>
-            <img
-              v-show="!state.receive.isGeneratingInvoice && state.receive.paymentRequest"
-              src="@/assets/umbrel-qr-icon.svg"
-              class="qr-logo"
-            />
-          </transition>
-
-          <!-- QR Code element -->
-          <qrcode-vue
-            :value="state.receive.invoiceQR"
-            :size="200"
-            level="H"
-            renderAs="svg"
-            class="d-flex justify-content-center qr-image"
-          ></qrcode-vue>
-        </div>
+        <qr-code
+          class="mb-2 pb-2"
+          :showLogo="!state.receive.isGeneratingInvoice"
+          :value="state.receive.invoiceQR"
+        ></qr-code>
 
         <!-- Copy Invoice Input Field -->
         <transition name="slide-up" appear>
@@ -563,7 +542,6 @@
 </template>
 
 <script>
-import QrcodeVue from "qrcode.vue";
 import moment from "moment";
 
 import { mapState } from "vuex";
@@ -571,6 +549,7 @@ import { mapState } from "vuex";
 import API from "@/helpers/api";
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/InputCopy";
+import QrCode from "@/components/Utility/QrCode.vue";
 
 export default {
   data() {
@@ -707,11 +686,6 @@ export default {
 
       this.state.loading = false;
       this.state.send.isSending = false;
-
-      //slight delay in updating the balance so the checkmark's animation completes first
-      // window.setTimeout(() => {
-      //   this.$store.commit("updateWalletBalance", this.walletBalance - 1000);
-      // }, 4000);
     },
     async createInvoice() {
       //generate invoice to receive payment
@@ -740,7 +714,7 @@ export default {
           this.state.receive.invoiceQR = this.state.receive.paymentRequest =
             res.data.paymentRequest;
 
-          // to do: find a cleaner way to make this dynamic as per backend's expiry setting. for now invoice expiries are 1 hr
+          //TODO: find a cleaner way to make this dynamic as per backend's expiry setting. for now invoice expiries are 1 hr
           this.state.receive.expiresOn = moment().add(1, "hour");
 
           //refresh txs
@@ -755,17 +729,6 @@ export default {
         this.state.receive.isGeneratingInvoice = false;
         window.clearInterval(this.QRAnimation);
       }, 2500);
-
-      // setTimeout(() => {
-      //   this.changeMode("received");
-      // }, 3500);
-      // window.setTimeout(() => {
-      //   this.state.loading = false;
-      //   this.state.receive.isGeneratingInvoice = false;
-      //   this.state.receive.invoiceQR = this.state.receive.paymentRequest =
-      //     "lightning:lnbc10u1p0xvxt5pp52f3dd2ya8ejas4jkfq8l6k9vz6cpzv00wyanskkn0pvpyqjx5gusdqj23jhxarfdenjqvfjxvcqzpgxqyz5vqldzazcemje3f8llz90smx4rr7q7vlw4h988fvgs7tupehdtz038putaw8kysw34rq2apn5s5suc0xfltfwpsuu97nyuenpuzp4xl6zsqzmslgk";
-      //   window.clearInterval(this.QRAnimation);
-      // }, 3000);
     },
     async fetchInvoiceDetails() {
       //fetch invoice details as pasted by user in the "Send" mode/screen
@@ -905,7 +868,7 @@ export default {
   },
   components: {
     CardWidget,
-    QrcodeVue,
+    QrCode,
     InputCopy
   }
 };
@@ -1031,40 +994,6 @@ export default {
   50% {
     opacity: 0.6;
   }
-}
-
-// Transition for umbrel logo popping up on generated invoice
-.qr-logo-popup-enter-active,
-.qr-logo-popup-leave-active {
-  &.qr-logo {
-    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-}
-
-.qr-logo-popup-enter {
-  &.qr-logo {
-    transform: translate3d(-50%, -50%, 0) scale(0);
-    opacity: 0;
-  }
-}
-
-.qr-logo-popup-enter-to,
-.qr-logo-popup-leave,
-.qr-logo-popup-leave-to {
-  &.qr-logo {
-    transform: translate3d(-50%, -50%, 0) scale(1);
-    opacity: 1;
-  }
-}
-
-.generated-qr {
-  position: relative;
-}
-.qr-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0) scale(1);
 }
 
 //Transactions
