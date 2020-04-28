@@ -10,36 +10,17 @@
     }"
     sub-title="Sats"
     icon="icon-app-bitcoin.svg"
-    :loading="state.loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
+    :loading="loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
   >
-    <!-- Back Button -->
-    <div class="px-3 px-lg-4 pt-2 pb-3" v-if="state.mode != 'balance'">
-      <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
-        <svg
-          width="7"
-          height="13"
-          viewBox="0 0 7 13"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
-            fill="#C3C6D1"
-          />
-        </svg>
-        Back
-      </a>
-    </div>
-
     <!-- transition switching between different modes -->
     <transition name="lightning-mode-change" mode="out-in">
       <!-- Default Balance/tx screen -->
-      <div v-if="state.mode === 'balance'" key="mode-balance" class="mode-balance">
+      <div v-if="mode === 'transactions'" key="mode-balance" class="mode-balance">
         <!-- List of transactions -->
 
         <!-- No transactions -->
         <div
-          class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-transactions-container"
+          class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
           v-if="transactions.length === 0"
         >
           <svg
@@ -67,8 +48,8 @@
           <small class="align-self-center mt-3 text-muted">No transactions</small>
         </div>
 
-        <div class="transactions-container" v-else>
-          <transition-group name="list" class="list-group pb-2 transactions" appear>
+        <div class="wallet-transactions-container" v-else>
+          <transition-group name="slide-up" class="list-group pb-2 transactions">
             <!-- Transaction -->
             <b-list-group-item
               v-for="(tx, index) in transactions"
@@ -180,7 +161,25 @@
       </div>
 
       <!-- SCREEN/MODE: Withdraw Screen -->
-      <div class="px-3 px-lg-4" v-if="state.mode === 'withdraw'" key="mode-withdraw">
+      <div class="px-3 px-lg-4" v-else-if="mode === 'withdraw'" key="mode-withdraw">
+        <!-- Back Button -->
+        <div class="pt-2 pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
         <label class="sr-onlsy" for="input-withdrawal-amount">Sats</label>
         <b-input
           id="input-withdrawal-amount"
@@ -188,7 +187,7 @@
           type="number"
           size="lg"
           min="1"
-          v-model="state.withdraw.amount"
+          v-model="withdraw.amount"
           autofocus
           @input="fetchWithdrawalFees"
         ></b-input>
@@ -200,15 +199,33 @@
           type="text"
           size="lg"
           min="1"
-          v-model="state.withdraw.address"
+          v-model="withdraw.address"
           @input="fetchWithdrawalFees"
         ></b-input>
       </div>
 
       <!-- SCREEN/MODE: Review Withdrawal -->
-      <div class="px-3 px-lg-4" v-if="state.mode === 'review-withdraw'" key="mode-review-withdraw">
+      <div class="px-3 px-lg-4" v-else-if="mode === 'review-withdraw'" key="mode-review-withdraw">
+        <!-- Back Button -->
+        <div class="pt-2 pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
         <div class="text-center pb-4">
-          <h3 class="mb-0">{{ Number(state.withdraw.amount).toLocaleString() }}</h3>
+          <h3 class="mb-0">{{ Number(withdraw.amount).toLocaleString() }}</h3>
           <span class="d-block mb-3 text-muted">Sats</span>
 
           <svg
@@ -225,7 +242,7 @@
             />
           </svg>
 
-          <b class="d-block mt-3">{{ state.withdraw.address }}</b>
+          <b class="d-block mt-3">{{ withdraw.address }}</b>
         </div>
         <div class="d-flex justify-content-between pb-3">
           <span class="text-muted">
@@ -235,7 +252,7 @@
             <small>Mining fee</small>
           </span>
           <span class="text-right text-muted">
-            <b>{{ (walletBalance - state.withdraw.amount - fees.fast.total).toLocaleString() }}</b>
+            <b>{{ (walletBalance - withdraw.amount - fees.fast.total).toLocaleString() }}</b>
             <small>&nbsp;Sats</small>
             <br />
             <small>Remaining balance</small>
@@ -246,42 +263,60 @@
       <!-- SCREEN/MODE: Successfully Withdrawn -->
       <div
         class="px-3 px-lg-4 mode-withdrawn"
-        v-if="state.mode === 'withdrawn'"
+        v-else-if="mode === 'withdrawn'"
         key="mode-withdrawn"
       >
-        <!-- Big green checkmark -->
-        <div class="checkmark mb-4">
-          <svg
-            width="54"
-            height="43"
-            viewBox="0 0 54 43"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="checkmark-icon"
-          >
-            <path
-              d="M47.657 1.26266C48.9446 -0.245227 51.2166 -0.428585 52.7315 0.853121C54.2464 2.13483 54.4306 4.39624 53.1429 5.90413L22.543 41.7374C21.2351 43.2689 18.9176 43.4303 17.4083 42.0948L1.20832 27.7615C-0.27769 26.4468 -0.411537 24.1818 0.909365 22.7027C2.23027 21.2236 4.50572 21.0903 5.99173 22.4051L19.4408 34.3045L47.657 1.26266Z"
-              fill="white"
-            />
-          </svg>
+        <!-- Back Button -->
+        <div class="pt-2 pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
         </div>
+        <!-- Big green checkmark -->
+        <circular-checkmark class="mb-4" success></circular-checkmark>
 
         <!-- Invoice amount + description -->
         <div class="text-center mb-4">
           <span class="d-block mb-2">
             Successfully withdrawn
-            <b>{{ state.withdraw.amount }} sats</b>
+            <b>{{ withdraw.amount }} sats</b>
           </span>
-          <a :href="getTxUrl(state.withdraw.txHash)" target="_blank">View transaction</a>
+          <a :href="getTxUrl(withdraw.txHash)" target="_blank">View transaction</a>
         </div>
       </div>
 
       <!-- SCREEN/MODE: Show Deposit Address -->
-      <div
-        class="px-3 px-lg-4 mode-deposit"
-        v-if="this.state.mode === 'deposit'"
-        key="mode-deposit"
-      >
+      <div class="px-3 px-lg-4 mode-deposit" v-else-if="this.mode === 'deposit'" key="mode-deposit">
+        <!-- Back Button -->
+        <div class="pt-2 pb-3">
+          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+            <svg
+              width="7"
+              height="13"
+              viewBox="0 0 7 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+                fill="#C3C6D1"
+              />
+            </svg>
+            Back
+          </a>
+        </div>
         <p class="text-center text-muted mb-2">
           <span>
             Send
@@ -298,16 +333,16 @@
     </transition>
 
     <!-- Error message -->
-    <small class="text-danger mb-2 d-block px-3 px-lg-4" v-if="state.error">
+    <small class="text-danger mb-2 d-block px-3 px-lg-4" v-if="error">
       {{
-      state.error
+      error
       }}
     </small>
 
     <!-- Buttons for all screens/modes -->
     <div class="mt-2">
       <!-- Buttons: Balance (default mode) if balance > 0 -->
-      <b-button-group class="w-100" v-if="this.state.mode === 'balance'">
+      <b-button-group class="w-100" v-if="this.mode === 'transactions'">
         <b-button
           class="w-50"
           variant="primary"
@@ -355,7 +390,7 @@
         variant="success"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="changeMode('deposit')"
-        v-else-if="this.state.mode === 'balance' && walletBalance === 0"
+        v-else-if="this.mode === 'transactions' && walletBalance === 0"
       >
         <svg
           width="18"
@@ -378,12 +413,12 @@
         variant="primary"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="changeMode('review-withdraw')"
-        v-else-if="state.mode === 'withdraw'"
+        v-else-if="mode === 'withdraw'"
         :disabled="
-          !!state.error ||
-            !state.withdraw.amount ||
-            !state.withdraw.address ||
-            state.withdraw.isTyping
+          !!error ||
+            !withdraw.amount ||
+            !withdraw.address ||
+            withdraw.isTyping
         "
       >Review Withdrawal</b-button>
 
@@ -393,11 +428,11 @@
         variant="primary"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="withdrawBtc"
-        v-else-if="state.mode === 'review-withdraw'"
-        :disabled="state.withdraw.isWithdrawing"
+        v-else-if="mode === 'review-withdraw'"
+        :disabled="withdraw.isWithdrawing"
       >
         {{
-        this.state.withdraw.isWithdrawing
+        this.withdraw.isWithdrawing
         ? "Withdrawing..."
         : "Confirm Withdrawal"
         }}
@@ -407,7 +442,6 @@
 </template>
 
 <script>
-import QrCode from "@/components/Utility/QrCode.vue";
 import moment from "moment";
 import { mapState, mapGetters } from "vuex";
 
@@ -415,25 +449,25 @@ import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/InputCopy";
+import QrCode from "@/components/Utility/QrCode.vue";
+import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
 
 export default {
   data() {
     return {
-      state: {
-        //balance: 162500, //net user's balance in sats
-        mode: "balance", //balance (default mode), deposit, withdraw, review-withdraw, withdrawn
-        withdraw: {
-          amount: "",
-          address: "",
-          sendMax: false,
-          feesTimeout: null,
-          isTyping: false, //to disable button when the user changes amount/address
-          isWithdrawing: false,
-          txHash: ""
-        },
-        loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
-        error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
-      }
+      //balance: 162500, //net user's balance in sats
+      mode: "transactions", //transactions (default mode), deposit, withdraw, review-withdraw, withdrawn
+      withdraw: {
+        amount: "", //withdrawal amount
+        address: "", //withdrawal address
+        sendMax: false, //sweep = send all funds?
+        feesTimeout: null, //window.setTimeout for fee fetching
+        isTyping: false, //to disable button when the user changes amount/address
+        isWithdrawing: false, //awaiting api response for withdrawal request?
+        txHash: "" //tx hash of withdrawal tx
+      },
+      loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
+      error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     };
   },
   props: {},
@@ -463,14 +497,14 @@ export default {
       return `${url}/tx/${txHash}`;
     },
     async changeMode(mode) {
-      //change between different modes/screens of the wallet from - balance (default), withdraw, withdrawan, depsoit
+      //change between different modes/screens of the wallet from - transactions (default), withdraw, withdrawan, depsoit
 
       //on deposit mode, get new btc address
       if (mode === "deposit") {
         await this.$store.dispatch("bitcoin/getDepositAddress");
       }
 
-      return (this.state.mode = mode);
+      return (this.mode = mode);
     },
     reset() {
       //reset to default mode, clear any inputs/generated invoice, pasted invoice, etc - used by "Back" button
@@ -478,12 +512,12 @@ export default {
       //to do: refresh balance, txs
 
       //in case going back from review withdrawal to edit withdrwal
-      if (this.state.mode === "review-withdraw") {
-        return (this.state.mode = "withdraw");
+      if (this.mode === "review-withdraw") {
+        return (this.mode = "withdraw");
       }
 
       //reset state
-      this.state.withdraw = {
+      this.withdraw = {
         amount: "",
         address: "",
         sendMax: false,
@@ -493,28 +527,28 @@ export default {
         txHash: ""
       };
 
-      this.state.loading = false;
-      this.state.error = "";
-      this.state.mode = "balance";
+      this.loading = false;
+      this.error = "";
+      this.mode = "transactions";
     },
     async fetchWithdrawalFees() {
-      if (this.state.withdraw.feesTimeout) {
-        clearTimeout(this.state.withdraw.feesTimeout);
+      if (this.withdraw.feesTimeout) {
+        clearTimeout(this.withdraw.feesTimeout);
       }
-      this.state.withdraw.isTyping = true;
+      this.withdraw.isTyping = true;
 
-      this.state.withdraw.feesTimeout = setTimeout(async () => {
-        this.state.loading = true;
-        if (this.state.withdraw.amount && this.state.withdraw.address) {
+      this.withdraw.feesTimeout = setTimeout(async () => {
+        this.loading = true;
+        if (this.withdraw.amount && this.withdraw.address) {
           const params = {
-            address: this.state.withdraw.address,
+            address: this.withdraw.address,
             confTarget: 0
           };
 
-          if (this.state.withdraw.sendMax) {
+          if (this.withdraw.sendMax) {
             params.sweep = true;
           } else {
-            params.amt = this.state.withdraw.amount;
+            params.amt = this.withdraw.amount;
           }
 
           await this.$store.dispatch("bitcoin/getFees", params);
@@ -522,37 +556,37 @@ export default {
           if (this.fees) {
             //show error if any
             if (this.fees.fast && this.fees.fast.error.code) {
-              this.state.error = this.fees.fast.error.text;
+              this.error = this.fees.fast.error.text;
             } else {
-              this.state.error = "";
+              this.error = "";
             }
-            // if (this.state.withdraw.sendMax) {
+            // if (this.withdraw.sendMax) {
             // this.estimateSweep();
             // }
           }
         }
-        this.state.loading = false;
-        this.state.withdraw.isTyping = false;
+        this.loading = false;
+        this.withdraw.isTyping = false;
       }, 500);
     },
     async withdrawBtc() {
-      this.state.loading = true;
-      this.state.withdraw.isWithdrawing = true;
+      this.loading = true;
+      this.withdraw.isWithdrawing = true;
 
       const payload = {
-        sweep: this.state.withdraw.sendMax,
-        addr: this.state.withdraw.address,
-        amt: this.state.withdraw.amount,
+        sweep: this.withdraw.sendMax,
+        addr: this.withdraw.address,
+        amt: this.withdraw.amount,
         satPerByte: parseInt(this.fees.fast.perByte)
       };
 
       try {
         const res = await API.post(
-          `${process.env.VUE_APP_API_URL}api/v1/lnd/transaction`,
+          `${process.env.VUE_APP_API_URL}/v1/lnd/transaction`,
           payload
         );
         const withdrawTx = res.data;
-        this.state.withdraw.txHash = withdrawTx.txid;
+        this.withdraw.txHash = withdrawTx.txid;
         this.changeMode("withdrawn");
 
         //update
@@ -560,13 +594,11 @@ export default {
         this.$store.dispatch("bitcoin/getTransactions");
       } catch (error) {
         console.log(error);
-        this.state.error = error.reponse
-          ? error.response.data
-          : "Error sending BTC";
+        this.error = error.reponse ? error.response.data : "Error sending BTC";
         console.error("Error sending", error);
       }
-      this.state.loading = false;
-      this.state.withdraw.isWithdrawing = false;
+      this.loading = false;
+      this.withdraw.isWithdrawing = false;
     }
   },
   watch: {},
@@ -576,182 +608,42 @@ export default {
   components: {
     CardWidget,
     QrCode,
-    InputCopy
+    InputCopy,
+    CircularCheckmark
   }
 };
 </script>
 
 <style lang="scss" scoped>
-// big circle checkmark on successful send
-.checkmark {
-  display: block;
-  position: relative;
-  width: 150px;
-  height: 150px;
-  margin-left: auto;
-  margin-right: auto;
-  &:before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    transform: translate3d(-50%, -50%, 0) scale(1); //animated
-    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    background: #00cd98;
-    box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
-    border-radius: 50%;
-    z-index: 0;
-  }
-  .checkmark-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0) scale(1); //animated
-    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transition-delay: 0.3s;
-  }
-}
-
 // Transitions between mode/screen changes
-
 .lightning-mode-change-enter-active,
 .lightning-mode-change-leave-active {
   transition: transform 0.3s, opacity 0.3s linear;
 }
-
-//reverse delay in check mark when leaving (first tick contracts, then the circle)
-.lightning-mode-change-leave-active {
-  .checkmark {
-    &:before {
-      transition-delay: 0.2s;
-    }
-    .checkmark-icon {
-      transition-delay: 0s;
-    }
-  }
-}
-
 .lightning-mode-change-enter {
   transform: translate3d(20px, 0, 0);
   opacity: 0;
-  .checkmark {
-    &:before {
-      transform: translate3d(-50%, -50%, 0) scale(0);
-    }
-    .checkmark-icon {
-      transform: translate3d(-50%, -50%, 0) scale(0);
-    }
-  }
 }
-
 .lightning-mode-change-enter-to {
   transform: translate3d(0, 0, 0);
   opacity: 1;
-  .checkmark {
-    &:before {
-      transform: translate3d(-50%, -50%, 0) scale(1);
-    }
-    .checkmark-icon {
-      transform: translate3d(-50%, -50%, 0) scale(1);
-    }
-  }
 }
-
 .lightning-mode-change-leave {
   transform: translate3d(0, 0, 0);
   opacity: 1;
-  .checkmark {
-    &:before {
-      transform: translate3d(-50%, -50%, 0) scale(1);
-    }
-    .checkmark-icon {
-      transform: translate3d(-50%, -50%, 0) scale(1);
-    }
-  }
 }
-
 .lightning-mode-change-leave-to {
   transform: translate3d(-20px, 0, 0);
   opacity: 0;
-  .checkmark {
-    &:before {
-      transform: translate3d(-50%, -50%, 0) scale(0);
-    }
-    .checkmark-icon {
-      transform: translate3d(-50%, -50%, 0) scale(0);
-    }
-  }
 }
 
-//Transactions
-.transactions-container {
-  position: relative;
-
-  //bottom fade
-  &:before {
-    //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
-    position: absolute;
-    height: 2rem;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 1)
-    );
-  }
-
-  //top fade
-  &:after {
-    //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
-    position: absolute;
-    height: 2rem;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    background-image: linear-gradient(
-      to top,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 1)
-    );
-  }
-}
-.transactions {
-  height: 20rem;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch; //momentum scroll on iOS
-}
-
-.zero-transactions-container {
-  height: 20rem;
-}
-
-//transactions list transitions
-
-.list-enter-active,
-.list-leave-active {
+//slide up transition with fade
+.slide-up-enter-active,
+.slide-up-leave-active {
   transition: transform 0.8s, opacity 0.8s ease;
 }
-.list-enter {
-  transform: translate3d(0, 10px, 0);
-  opacity: 0;
-}
-.list-enter-to {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-.list-leave {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-.list-leave-to {
+.slide-up-enter,
+.slide-up-leave-to {
   transform: translate3d(0, 10px, 0);
   opacity: 0;
 }

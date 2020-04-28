@@ -112,7 +112,7 @@ export default {
     },
     async updateNodeAlias() {
       const nodeAlias = await axios.get(
-        `${process.env.VUE_APP_API_URL}api/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
+        `${process.env.VUE_APP_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
       );
       if (nodeAlias && nodeAlias.data) {
         this.alias = nodeAlias.data.alias;

@@ -118,7 +118,7 @@ const mutations = {
 const actions = {
   async getStatus({ commit }) {
     const status = await API.get(
-      `${process.env.VUE_APP_API_URL}api/v1/lnd/info/status`
+      `${process.env.VUE_APP_API_URL}/v1/lnd/info/status`
     );
     if (status) {
       commit("isOperational", status.operational);
@@ -128,7 +128,7 @@ const actions = {
     // launch unlock modal after 30 sec
     // if (!status.unlocked) {
     //   await sleep(30000);
-    //   const { unlocked } = await API.get(`${process.env.VUE_APP_API_URL}api/v1/lnd/info/status`);
+    //   const { unlocked } = await API.get(`${process.env.VUE_APP_API_URL}/v1/lnd/info/status`);
     //   commit('isUnlocked', unlocked);
     //   if (!unlocked) {
     //     Events.$emit('unlock-modal-open');
@@ -139,7 +139,7 @@ const actions = {
   //basically fetches everything
   async getLndPageData({ commit, dispatch }) {
     const data = await API.get(
-      `${process.env.VUE_APP_API_URL}api/v1/pages/lnd`
+      `${process.env.VUE_APP_API_URL}/v1/pages/lnd`
     );
 
     if (data) {
@@ -159,7 +159,7 @@ const actions = {
 
   async getConnectionCode({ commit }) {
     const uris = await API.get(
-      `${process.env.VUE_APP_API_URL}api/v1/lnd/info/uris`
+      `${process.env.VUE_APP_API_URL}/v1/lnd/info/uris`
     );
 
     if (uris && uris.length > 0) {
@@ -175,7 +175,7 @@ const actions = {
   async getBalance({ commit, state }) {
     if (state.operational && state.unlocked) {
       const balance = await API.get(
-        `${process.env.VUE_APP_API_URL}api/v1/lnd/wallet/lightning`
+        `${process.env.VUE_APP_API_URL}/v1/lnd/wallet/lightning`
       );
 
       if (balance) {
@@ -193,7 +193,7 @@ const actions = {
         rawChannels = preFetchedChannels;
       } else {
         rawChannels = await API.get(
-          `${process.env.VUE_APP_API_URL}api/v1/lnd/channel`
+          `${process.env.VUE_APP_API_URL}/v1/lnd/channel`
         );
       }
 
@@ -281,10 +281,10 @@ const actions = {
     if (state.operational && state.unlocked) {
       // Get invoices and payments
       const invoices = await API.get(
-        `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoices`
+        `${process.env.VUE_APP_API_URL}/v1/lnd/lightning/invoices`
       );
       const payments = await API.get(
-        `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/payments`
+        `${process.env.VUE_APP_API_URL}/v1/lnd/lightning/payments`
       );
 
       if (!invoices || !payments) {
@@ -345,7 +345,7 @@ const actions = {
 
         try {
           const invoiceDetails = await API.get(
-            `${process.env.VUE_APP_API_URL}api/v1/lnd/lightning/invoice?paymentRequest=${tx.paymentRequest}`
+            `${process.env.VUE_APP_API_URL}/v1/lnd/lightning/invoice?paymentRequest=${tx.paymentRequest}`
           );
           if (invoiceDetails && invoiceDetails.description) {
             tx.description = invoiceDetails.description;

@@ -139,7 +139,7 @@ export default {
   },
   async mounted() {
     const nodeAlias = await axios.get(
-      `${process.env.VUE_APP_API_URL}api/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
+      `${process.env.VUE_APP_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
     );
     if (nodeAlias && nodeAlias.data) {
       this.alias = nodeAlias.data.alias;
@@ -171,7 +171,7 @@ export default {
           }
         };
         await axios.delete(
-          `${process.env.VUE_APP_API_URL}api/v1/lnd/channel/close`,
+          `${process.env.VUE_APP_API_URL}/v1/lnd/channel/close`,
           payload
         );
         this.$emit("channelclose");
