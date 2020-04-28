@@ -84,14 +84,8 @@
               </div>
             </template>
             <div class="px-2 d-flex">
-              <!-- QR Code element -->
-              <qrcode-vue
-                :value="this.pubkey"
-                :size="150"
-                level="H"
-                renderAs="svg"
-                class="d-flex justify-content-center qr-image mb-2"
-              ></qrcode-vue>
+              <!-- Pubkey QR Code -->
+              <qr-code :value="this.pubkey" :size="150" class="qr-image" showLogo></qr-code>
               <div class="w-100 align-self-center ml-2">
                 <input-copy size="sm" :value="this.pubkey"></input-copy>
               </div>
@@ -207,12 +201,12 @@
 </template>
 
 <script>
-import QrcodeVue from "qrcode.vue";
 import { mapState } from "vuex";
 
 import CardWidget from "@/components/CardWidget";
 import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
 import LightningWallet from "@/components/LightningWallet";
+import QrCode from "@/components/Utility/QrCode.vue";
 import InputCopy from "@/components/InputCopy";
 import ChannelList from "@/components/Channels/List";
 import ChannelOpen from "@/components/Channels/Open";
@@ -308,7 +302,7 @@ export default {
     LightningWallet,
     CardWidget,
     BitcoinNetworkStat,
-    QrcodeVue,
+    QrCode,
     InputCopy,
     ChannelList,
     ChannelOpen,

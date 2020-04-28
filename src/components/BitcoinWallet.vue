@@ -177,11 +177,6 @@
             </b-list-group-item>
           </transition-group>
         </div>
-
-        <!-- Link to Bitcoin Network Page -->
-        <!-- <div class="px-3 px-lg-4 pt-2" v-if="!isBitcoinPage">
-          <router-link to="/bitcoin" class="card-link">Manage</router-link>
-        </div>-->
       </div>
 
       <!-- SCREEN/MODE: Withdraw Screen -->
@@ -288,32 +283,14 @@
         key="mode-deposit"
       >
         <p class="text-center text-muted mb-2">
-          <!-- If still generating invoice, show blinking loading text -->
-          <!-- <span class="blink" v-if="state.receive.isGeneratingInvoice">Getting Address</span> -->
-
-          <!-- Invoice amount + description -->
           <span>
             Send
             <b>only Bitcoin</b> to this address
           </span>
         </p>
 
-        <!-- QR Code -->
-        <div class="generated-qr mb-3">
-          <!-- Popup umbrel logo in the middle of QR code after the QR is generated -->
-          <transition name="qr-logo-popup">
-            <img v-show="depositAddress" src="@/assets/umbrel-qr-icon.svg" class="qr-logo" />
-          </transition>
-
-          <!-- QR Code element -->
-          <qrcode-vue
-            :value="depositAddress"
-            :size="200"
-            level="H"
-            renderAs="svg"
-            class="d-flex justify-content-center qr-image"
-          ></qrcode-vue>
-        </div>
+        <!-- Deposit Address QR Code -->
+        <qr-code class="mb-3" :value="depositAddress" showLogo></qr-code>
 
         <!-- Copy Address Input Field -->
         <input-copy size="sm" :value="depositAddress" class="mb-4 mt-2"></input-copy>
@@ -408,22 +385,7 @@
             !state.withdraw.address ||
             state.withdraw.isTyping
         "
-      >
-        <!-- <svg
-          width="19"
-          height="19"
-          viewBox="0 0 19 19"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="mr-1"
-        >
-          <path
-            d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
-            fill="#FFFFFF"
-          />
-        </svg>-->
-        Review Withdrawal
-      </b-button>
+      >Review Withdrawal</b-button>
 
       <!-- Button: Confirm Withdrawal -->
       <b-button
@@ -434,19 +396,6 @@
         v-else-if="state.mode === 'review-withdraw'"
         :disabled="state.withdraw.isWithdrawing"
       >
-        <!-- <svg
-          width="19"
-          height="19"
-          viewBox="0 0 19 19"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          class="mr-1"
-        >
-          <path
-            d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
-            fill="#FFFFFF"
-          />
-        </svg>-->
         {{
         this.state.withdraw.isWithdrawing
         ? "Withdrawing..."
@@ -458,7 +407,7 @@
 </template>
 
 <script>
-import QrcodeVue from "qrcode.vue";
+import QrCode from "@/components/Utility/QrCode.vue";
 import moment from "moment";
 import { mapState, mapGetters } from "vuex";
 
@@ -496,10 +445,7 @@ export default {
     }),
     ...mapGetters({
       transactions: "bitcoin/transactions"
-    }),
-    isBitcoinPage() {
-      return this.$router.currentRoute.path === "/bitcoin";
-    }
+    })
   },
   methods: {
     getTimeFromNow(timestamp) {
@@ -629,7 +575,7 @@ export default {
   },
   components: {
     CardWidget,
-    QrcodeVue,
+    QrCode,
     InputCopy
   }
 };
@@ -737,55 +683,6 @@ export default {
       transform: translate3d(-50%, -50%, 0) scale(0);
     }
   }
-}
-
-// For "Generating Invoice" loading text
-.blink {
-  animation: blink 1.5s infinite ease;
-}
-
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-// Transition for umbrel logo popping up on generated invoice
-.qr-logo-popup-enter-active,
-.qr-logo-popup-leave-active {
-  &.qr-logo {
-    transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-}
-
-.qr-logo-popup-enter {
-  &.qr-logo {
-    transform: translate3d(-50%, -50%, 0) scale(0);
-    opacity: 0;
-  }
-}
-
-.qr-logo-popup-enter-to,
-.qr-logo-popup-leave,
-.qr-logo-popup-leave-to {
-  &.qr-logo {
-    transform: translate3d(-50%, -50%, 0) scale(1);
-    opacity: 1;
-  }
-}
-
-.generated-qr {
-  position: relative;
-}
-.qr-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%, -50%, 0) scale(1);
 }
 
 //Transactions
