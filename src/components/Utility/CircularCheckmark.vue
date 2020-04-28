@@ -86,33 +86,9 @@ export default {
     left: 50%;
     transform: translate3d(-50%, -50%, 0) scale(1); //animated
     transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    // transition-delay: 0.3s;
   }
 }
 
-//reverse delay in check mark when leaving (first tick contracts, then the circle)
-// .checkmark-animation-leave-active {
-//   &.checkmark {
-//     &:before {
-//       transition-delay: 0.2s;
-//     }
-//     .checkmark-icon {
-//       transition-delay: 0s;
-//     }
-//   }
-// }
-// .checkmark-animation-enter-active,
-// .checkmark-animation-leave-active {
-//   transition: all 5s ease;
-//   &.checkmark {
-//     &:before {
-//       transition: all 5s ease;
-//     }
-//     .checkmark-icon {
-//       transition: all 5s ease;
-//     }
-//   }
-// }
 .checkmark-animation-enter-active {
   &.checkmark {
     .checkmark-icon {

@@ -39,7 +39,7 @@
 
         <!-- No transactions -->
         <div
-          class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-transactions-container"
+          class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
           v-if="transactions.length === 0"
         >
           <svg
@@ -67,8 +67,8 @@
           <small class="align-self-center mt-3 text-muted">No transactions</small>
         </div>
 
-        <div class="transactions-container" v-else>
-          <transition-group name="list" class="list-group pb-2 transactions" appear>
+        <div class="wallet-transactions-container" v-else>
+          <transition-group name="slide-up" class="list-group pb-2 transactions">
             <!-- Transaction -->
             <b-list-group-item
               v-for="(tx, index) in transactions"
@@ -570,73 +570,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//Transactions
-.transactions-container {
-  position: relative;
-
-  //bottom fade
-  &:before {
-    //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
-    position: absolute;
-    height: 2rem;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 1)
-    );
-  }
-
-  //top fade
-  &:after {
-    //nice faded white so the discarded blocks don't abruptly cut off
-    content: "";
-    position: absolute;
-    height: 2rem;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    background-image: linear-gradient(
-      to top,
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 1)
-    );
-  }
+// Transitions between mode/screen changes
+.lightning-mode-change-enter-active,
+.lightning-mode-change-leave-active {
+  transition: transform 0.3s, opacity 0.3s linear;
 }
-.transactions {
-  height: 20rem;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch; //momentum scroll on iOS
-}
-
-.zero-transactions-container {
-  height: 20rem;
-}
-
-//transactions list transitions
-
-.list-enter-active,
-.list-leave-active {
-  transition: transform 0.8s, opacity 0.8s ease;
-}
-.list-enter {
-  transform: translate3d(0, 10px, 0);
+.lightning-mode-change-enter {
+  transform: translate3d(20px, 0, 0);
   opacity: 0;
 }
-.list-enter-to {
+.lightning-mode-change-enter-to {
   transform: translate3d(0, 0, 0);
   opacity: 1;
 }
-.list-leave {
+.lightning-mode-change-leave {
   transform: translate3d(0, 0, 0);
   opacity: 1;
 }
-.list-leave-to {
+.lightning-mode-change-leave-to {
+  transform: translate3d(-20px, 0, 0);
+  opacity: 0;
+}
+
+//slide up transition with fade
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: transform 0.8s, opacity 0.8s ease;
+}
+.slide-up-enter,
+.slide-up-leave-to {
   transform: translate3d(0, 10px, 0);
   opacity: 0;
 }

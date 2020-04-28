@@ -339,3 +339,55 @@ svg.icon-clock {
         rotate(calc(var(--start-hours) * 30deg + 360deg));
     }
   }
+
+
+  //wallet transactions container
+  //Transactions
+.wallet-transactions-container {
+    position: relative;
+
+    .transactions {
+        height: 20rem;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch; //momentum scroll on iOS
+      }
+  
+    //bottom fade
+    &:before {
+      //nice faded white so the discarded blocks don't abruptly cut off
+      content: "";
+      position: absolute;
+      height: 2rem;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1)
+      );
+    }
+  
+    //top fade
+    &:after {
+      //nice faded white so the discarded blocks don't abruptly cut off
+      content: "";
+      position: absolute;
+      height: 2rem;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      background-image: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 1)
+      );
+    }
+  }
+  
+  
+  .zero-wallet-transactions-container {
+    height: 20rem;
+  }
