@@ -74,8 +74,8 @@
               </div>
 
               <div class="d-flex w-100 justify-content-between" v-else>
-                <div>
-                  <h6 class="mb-0 font-weight-normal">
+                <div class="transaction-description">
+                  <h6 class="mb-0 font-weight-normal transaction-description-text">
                     <!-- Incoming tx icon -->
                     <svg
                       width="18"
@@ -114,10 +114,7 @@
                     </svg>
 
                     <!-- tx description -->
-                    <span
-                      style="margin-left: 6px;"
-                      :title="tx.description"
-                    >{{ tx.description.length > 19 ? tx.description.substring(0,19) + '...' : tx.description }}</span>
+                    <span style="margin-left: 6px;" :title="tx.description">{{ tx.description }}</span>
                   </h6>
 
                   <!-- Timestamp of tx -->
@@ -615,6 +612,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.transaction-description {
+  flex: 1;
+  min-width: 0;
+  .transaction-description-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+  }
+}
+
 // Transitions between mode/screen changes
 .lightning-mode-change-enter-active,
 .lightning-mode-change-leave-active {
