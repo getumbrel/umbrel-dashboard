@@ -84,7 +84,7 @@
                 </h3>
               </div>
               <b-progress
-                :value="100"
+                :value="Math.round(syncPercent)"
                 class="mb-1"
                 variant="success"
                 :style="{ height: '4px' }"

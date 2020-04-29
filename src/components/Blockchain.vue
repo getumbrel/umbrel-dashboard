@@ -199,6 +199,7 @@ export default {
     margin: 0;
     // max-height: 18rem;
     height: 19rem;
+    overflow: hidden;
     // overflow-y: scroll;
     // -webkit-overflow-scrolling: touch; //momentum scroll on iOS
   }
