@@ -322,6 +322,7 @@ const actions = {
             amount: Number(tx.value),
             timestamp: new Date(Number(tx.creationDate) * 1000),
             paymentRequest: tx.paymentRequest,
+            paymentPreImage: tx.paymentPreimage,
             fee: Number(tx.feeSat),
             description: ""
           };
