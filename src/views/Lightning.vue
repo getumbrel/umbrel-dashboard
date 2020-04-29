@@ -83,10 +83,10 @@
                 </a>
               </div>
             </template>
-            <div class="px-2 d-flex">
+            <div class="px-2 px-sm-3 pb-2 pb-sm-3 d-flex">
               <!-- Pubkey QR Code -->
               <qr-code :value="this.pubkey" :size="150" class="qr-image" showLogo></qr-code>
-              <div class="w-100 align-self-center ml-2">
+              <div class="w-100 align-self-center ml-3">
                 <input-copy size="sm" :value="this.pubkey"></input-copy>
               </div>
             </div>
