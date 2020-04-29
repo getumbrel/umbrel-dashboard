@@ -30,7 +30,7 @@ const state = () => ({
   numPendingChannels: 0,
   numActiveChannels: 0,
   numPeers: 0,
-  channels: [],
+  channels: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
   connectionCode: "unknown",
   maxSend: 0,
   maxReceive: 0,
