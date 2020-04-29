@@ -312,7 +312,11 @@
       </div>
 
       <!-- SCREEN/MODE: Show Generated Invoice -->
-      <div class="px-3 px-lg-4 mode-invoice" v-else-if="this.mode === 'invoice'" key="mode-invoice">
+      <div
+        class="px-3 px-lg-4 pb-2 mode-invoice"
+        v-else-if="this.mode === 'invoice'"
+        key="mode-invoice"
+      >
         <!-- Back Button -->
         <div class="pb-3">
           <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
@@ -346,15 +350,11 @@
         </p>
 
         <!-- QR Code -->
-        <qr-code
-          class="mb-2 pb-3"
-          :showLogo="!receive.isGeneratingInvoice"
-          :value="receive.invoiceQR"
-        ></qr-code>
+        <qr-code class="mb-3" :showLogo="!receive.isGeneratingInvoice" :value="receive.invoiceQR"></qr-code>
 
         <!-- Copy Invoice Input Field -->
         <transition name="slide-up" appear>
-          <div class="pb-2" v-show="!receive.isGeneratingInvoice">
+          <div class v-show="!receive.isGeneratingInvoice">
             <input-copy size="sm" :value="receive.invoiceQR" class="mb-2"></input-copy>
             <small
               class="text-center d-block text-muted"
@@ -428,20 +428,26 @@
         <circular-checkmark class="mb-4" success></circular-checkmark>
 
         <!-- Payment amount + description -->
-        <p class="text-center mb-4">
+        <p class="text-center mb-2">
           Paid
           <b>{{ paymentInfo.amount.toLocaleString() }} sats</b>
           <span v-if="paymentInfo.description">
             for
             <b>{{paymentInfo.description}}</b>
           </span>
-          <br />
-          <small class="text-muted">{{ getReadableTime(paymentInfo.timestamp) }}</small>
-          <br />
-          <small
-            class="text-muted"
-          >Fee: {{ paymentInfo.fee > 1 ? `${paymentInfo.fee} Sats` : `${paymentInfo.fee} Sat`}}</small>
         </p>
+        <div class="pt-2 mb-3">
+          <div class="d-flex justify-content-between">
+            <small class="text-muted">{{ getReadableTime(paymentInfo.timestamp) }}</small>
+            <small
+              class="text-muted"
+            >Fee: {{ paymentInfo.fee > 1 ? `${paymentInfo.fee} Sats` : `${paymentInfo.fee} Sat`}}</small>
+          </div>
+          <div class="pt-3 d-block pb-2">
+            <input-copy size="sm" :value="paymentInfo.paymentPreImage"></input-copy>
+            <small class="text-center text-muted d-block mt-2">Payment proof (preimage)</small>
+          </div>
+        </div>
       </div>
 
       <!-- SCREEN/MODE: invoice expired -->
@@ -621,7 +627,8 @@ export default {
         description: "", //invoice description
         amount: null, //invoice amount
         isValidInvoice: false, //check if invoice entered by user is a valid Bolt 11 invoice
-        isSending: false //used for transition while tx is being broadcasted
+        isSending: false, //used for transition while tx is being broadcasted,
+        paymentPreImage: "" //proof of payment
       },
       paymentInfo: {
         //outgoing payment info
@@ -629,7 +636,8 @@ export default {
         description: "", //payment memo or description
         timestamp: null, //time of settlement
         fee: null, //routing fee of payment
-        paymentRequest: "" //original payment request
+        paymentRequest: "", //original payment request
+        paymentPreImage: "" //proof of payment
       },
       expiredInvoice: {
         //expired invoice info
@@ -841,7 +849,8 @@ export default {
           description: tx.description,
           timestamp: tx.timestamp,
           fee: tx.fee,
-          paymentRequest: tx.paymentRequest
+          paymentRequest: tx.paymentRequest,
+          paymentPreImage: tx.paymentPreImage
         };
         return this.changeMode("payment-success");
       }
