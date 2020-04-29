@@ -78,7 +78,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="d-flex justify-content-end text-muted pr-3">
+        <footer class="d-flex justify-content-end text-muted pr-sm-2 pr-xl-3">
           <p>
             <small>
               <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
