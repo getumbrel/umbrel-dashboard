@@ -6,10 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
-    "deploy-static": "vue-cli-service build && aws s3 sync ./dist s3://live.getumbrel.com",
-    "deploy-local": "vue-cli-service build --mode production && rsync -aP --delete dist/ umbrel@umbrel.local:/home/umbrel/nginx/www",
-    "deploy-stage": "vue-cli-service build --mode staging && rsync -rltgoDzvO --delete -e \"ssh -i $HOME/.ssh/umbrel-testnet-github.pem\" dist/ umbrel@34.199.196.182:/home/umbrel/nginx/www",
-    "deploy-stage-cached": "rsync -rltgoDzvO --delete -e \"ssh -i $HOME/.ssh/umbrel-testnet-github.pem\" dist/ umbrel@34.199.196.182:/home/umbrel/nginx/www"
+    "deploy-local": "vue-cli-service build --mode production && rsync -aP --delete dist/ umbrel@umbrel.local:/home/umbrel/nginx/www"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
