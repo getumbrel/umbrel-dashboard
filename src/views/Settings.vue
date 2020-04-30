@@ -8,7 +8,7 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget
           header="Tor"
-          :status="{text: 'Running', variant: 'success', blink: false}"
+          :status="{ text: 'Running', variant: 'success', blink: false }"
           title="100%"
           sub-title="Traffic relayed through Tor"
           icon="icon-app-tor.svg"
@@ -17,21 +17,27 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Bitcoin</span>
-                <small class="d-block" style="opacity: 0.4">Run Bitcoin Core on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Run Bitcoin Core on Tor</small
+                >
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Lightning Network</span>
-                <small class="d-block" style="opacity: 0.4">Run Lightning on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Run Lightning on Tor</small
+                >
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Remote Access</span>
-                <small class="d-block" style="opacity: 0.4">Remotely access your Umbrel on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Remotely access your Umbrel on Tor</small
+                >
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>

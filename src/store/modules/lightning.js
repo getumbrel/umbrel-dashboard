@@ -30,11 +30,21 @@ const state = () => ({
   numPendingChannels: 0,
   numActiveChannels: 0,
   numPeers: 0,
-  channels: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
+  channels: [
+    { type: "loading" },
+    { type: "loading" },
+    { type: "loading" },
+    { type: "loading" }
+  ],
   connectionCode: "unknown",
   maxSend: 0,
   maxReceive: 0,
-  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
+  transactions: [
+    { type: "loading" },
+    { type: "loading" },
+    { type: "loading" },
+    { type: "loading" }
+  ],
   confirmedTransactions: [],
   pendingTransactions: [],
   pendingChannelEdit: {},
@@ -70,7 +80,6 @@ const mutations = {
   setChannels(state, channels) {
     state.channels = channels;
     // state.channels = [{ "active": true, "remotePubkey": "0270685ca81a8e4d4d01beec5781f4cc924684072ae52c507f8ebe9daf0caaab7b", "channelPoint": "032ea4291bc9c675a01cc418cd4e916dcfe58cb5b57da5da1bacbf74a4da2214:1", "chanId": "1892181446084919297", "capacity": "16000000", "localBalance": "8949695", "remoteBalance": "7050305", "commitFee": "363", "commitWeight": "724", "feePerKw": "500", "unsettledBalance": "0", "totalSatoshisSent": "52004", "totalSatoshisReceived": "1700", "numUpdates": "12", "pendingHtlcs": [], "csvDelay": 1922, "private": false, "initiator": false, "chanStatusFlags": "ChanStatusDefault", "localChanReserveSat": "160000", "remoteChanReserveSat": "160000", "staticRemoteKey": true, "type": "OPEN", "managed": false, "name": "", "purpose": "" }, { "active": true, "remotePubkey": "03d5e17a3c213fe490e1b0c389f8cfcfcea08a29717d50a9f453735e0ab2a7c003", "channelPoint": "ff605dd7456f132304ad7c720a316320c4884fdeb70af26f4f977ed5079e0034:0", "chanId": "1892195739728281600", "capacity": "2500000", "localBalance": "2000000", "remoteBalance": "500000", "commitFee": "183", "commitWeight": "600", "feePerKw": "253", "unsettledBalance": "0", "totalSatoshisSent": "0", "totalSatoshisReceived": "0", "numUpdates": "0", "pendingHtlcs": [], "csvDelay": 300, "private": false, "initiator": true, "chanStatusFlags": "ChanStatusDefault", "localChanReserveSat": "25000", "remoteChanReserveSat": "25000", "staticRemoteKey": true, "type": "OPEN", "managed": false, "name": "", "purpose": "" }, { "active": true, "remotePubkey": "03d5e17a3c213fe490e1b0c389f8cfcfcea08a29717d50a9f453735e0ab2a7c003", "channelPoint": "bb271316280c0bf18b1bee875f1cbce7d481f20a2f8bc926140017bad26f77c2:1", "chanId": "1892192441198903297", "capacity": "1000000", "localBalance": "90000", "remoteBalance": "1000000", "commitFee": "183", "commitWeight": "552", "feePerKw": "253", "unsettledBalance": "0", "totalSatoshisSent": "0", "totalSatoshisReceived": "0", "numUpdates": "0", "pendingHtlcs": [], "csvDelay": 144, "private": false, "initiator": false, "chanStatusFlags": "ChanStatusDefault", "localChanReserveSat": "10000", "remoteChanReserveSat": "10000", "staticRemoteKey": true, "type": "OPEN", "managed": false, "name": "", "purpose": "" }]
-
   },
 
   setChannelFocus(state, channel) {
@@ -138,13 +147,11 @@ const actions = {
 
   //basically fetches everything
   async getLndPageData({ commit, dispatch }) {
-    const data = await API.get(
-      `${process.env.VUE_APP_API_URL}/v1/pages/lnd`
-    );
+    const data = await API.get(`${process.env.VUE_APP_API_URL}/v1/pages/lnd`);
 
     if (data) {
       const channels = data.channels;
-      dispatch('getChannels', channels);
+      dispatch("getChannels", channels);
 
       const lightningInfo = data.lightningInfo;
 
@@ -152,9 +159,7 @@ const actions = {
       commit("setVersion", lightningInfo.version);
       commit("setNumPeers", lightningInfo.numPeers);
       commit("setNumActiveChannels", lightningInfo.numActiveChannels);
-
     }
-
   },
 
   async getConnectionCode({ commit }) {
@@ -186,10 +191,10 @@ const actions = {
 
   async getChannels({ commit, state }, preFetchedChannels = []) {
     if (state.operational && state.unlocked) {
-
       let rawChannels;
 
-      if (preFetchedChannels.length) { //eg when used by lnd page 
+      if (preFetchedChannels.length) {
+        //eg when used by lnd page
         rawChannels = preFetchedChannels;
       } else {
         rawChannels = await API.get(
@@ -229,7 +234,6 @@ const actions = {
 
             maxReceive += remoteBalance;
             maxSend += localBalance;
-
 
             confirmedBalance += localBalance;
           } else if (channel.type === "PENDING_OPEN_CHANNEL") {
@@ -306,7 +310,9 @@ const actions = {
           return {
             type,
             amount: Number(tx.value),
-            timestamp: tx.settled ? new Date(Number(tx.settleDate) * 1000) : new Date(Number(tx.creationDate) * 1000),
+            timestamp: tx.settled
+              ? new Date(Number(tx.settleDate) * 1000)
+              : new Date(Number(tx.creationDate) * 1000),
             description: tx.memo || "",
             expiresOn: new Date(
               (Number(tx.creationDate) + Number(tx.expiry)) * 1000
@@ -319,9 +325,12 @@ const actions = {
 
       if (payments) {
         outgoingTransactions = payments.map(tx => {
-
           //load tx from state to copy description
-          const preFetchedTx = state.transactions.find((trx) => trx.type === 'outgoing' && trx.paymentPreImage === tx.paymentPreimage);
+          const preFetchedTx = state.transactions.find(
+            trx =>
+              trx.type === "outgoing" &&
+              trx.paymentPreImage === tx.paymentPreimage
+          );
 
           return {
             type: "outgoing",
@@ -341,14 +350,18 @@ const actions = {
       transactions.sort((tx1, tx2) => tx2.timestamp - tx1.timestamp);
 
       //filter out new outgoing payments
-      const newOutgoingTransactions = outgoingTransactions.filter(tx => !state.transactions.some(trx => trx.paymentPreImage === tx.paymentPreImage));
+      const newOutgoingTransactions = outgoingTransactions.filter(
+        tx =>
+          !state.transactions.some(
+            trx => trx.paymentPreImage === tx.paymentPreImage
+          )
+      );
 
       //update $store
       commit("setTransactions", transactions);
 
       // Fetch descriptions of all new outgoing transactions
       for (let tx of newOutgoingTransactions) {
-
         if (!tx.paymentRequest) {
           //example - in case of a keysend tx there is no payment request
           continue;
@@ -359,12 +372,13 @@ const actions = {
             `${process.env.VUE_APP_API_URL}/v1/lnd/lightning/invoice?paymentRequest=${tx.paymentRequest}`
           );
           if (invoiceDetails && invoiceDetails.description) {
-
             //load state's txs
             const updatedTransactions = state.transactions;
 
             //find tx to update
-            const txIndex = updatedTransactions.findIndex(trx => trx.paymentPreImage === tx.paymentPreImage);
+            const txIndex = updatedTransactions.findIndex(
+              trx => trx.paymentPreImage === tx.paymentPreImage
+            );
 
             if (txIndex !== -1) {
               const outgoingTx = updatedTransactions[txIndex];

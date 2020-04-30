@@ -9,9 +9,13 @@
             <CountUp :endVal="numberValue" :suffix="numberSuffix" />
           </span>
         </h3>
-        <span class="text-muted" style="margin-left: 0.5rem;">{{ suffix }}</span>
+        <span class="text-muted" style="margin-left: 0.5rem;">{{
+          suffix
+        }}</span>
       </div>
-      <div v-if="(showNumericChange || showPercentChange) && change.value !== 0">
+      <div
+        v-if="(showNumericChange || showPercentChange) && change.value !== 0"
+      >
         <svg
           width="12"
           height="13"

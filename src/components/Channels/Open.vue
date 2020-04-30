@@ -31,17 +31,18 @@
       <b-col col cols="12">
         <div class="mt-2 d-flex w-100 justify-content-between">
           <div>
-            <small class="text-danger align-self-center" v-if="error">{{ error }}</small>
+            <small class="text-danger align-self-center" v-if="error">{{
+              error
+            }}</small>
             <small
               class="text-muted align-self-center"
               v-else-if="fee.fast.total"
-            >Mining fee: {{ fee.fast.total }} Sats</small>
+              >Mining fee: {{ fee.fast.total }} Sats</small
+            >
           </div>
-          <b-button
-            type="submit"
-            variant="success"
-            :disabled="isOpening"
-          >{{ this.isOpening ? 'Opening...' : 'Open Channel' }}</b-button>
+          <b-button type="submit" variant="success" :disabled="isOpening">{{
+            this.isOpening ? "Opening..." : "Open Channel"
+          }}</b-button>
         </div>
       </b-col>
     </b-row>
@@ -203,5 +204,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

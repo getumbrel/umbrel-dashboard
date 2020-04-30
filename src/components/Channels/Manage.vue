@@ -2,12 +2,12 @@
   <div>
     <div class="mb-4">
       <div class="d-flex justify-content-between">
-        <h4
-          class="text-primary font-weight-bold"
-        >{{ Number(channel.localBalance).toLocaleString() }} Sats</h4>
-        <h4
-          class="text-success font-weight-bold text-right"
-        >{{ Number(channel.remoteBalance).toLocaleString() }} Sats</h4>
+        <h4 class="text-primary font-weight-bold">
+          {{ Number(channel.localBalance).toLocaleString() }} Sats
+        </h4>
+        <h4 class="text-success font-weight-bold text-right">
+          {{ Number(channel.remoteBalance).toLocaleString() }} Sats
+        </h4>
       </div>
       <bar
         :local="Number(channel.localBalance)"
@@ -23,22 +23,28 @@
 
     <transition name="mode-change" mode="out-in">
       <div v-if="!isReviewingChannelClose">
-        <div class="d-flex justify-content-between align-items-center mt-1 mb-3">
+        <div
+          class="d-flex justify-content-between align-items-center mt-1 mb-3"
+        >
           <span class="text-muted">Status</span>
-          <span class="text-capitalize font-weight-bold">{{ channel.status }}</span>
+          <span class="text-capitalize font-weight-bold">{{
+            channel.status
+          }}</span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Channel Type</span>
-          <span
-            class="text-capitalize font-weight-bold"
-          >{{ channel.private ? 'Private' : 'Public' }} Channel</span>
+          <span class="text-capitalize font-weight-bold"
+            >{{ channel.private ? "Private" : "Public" }} Channel</span
+          >
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Peer Alias</span>
           <div class="w-75 text-right">
-            <span class="font-weight-bold" style="overflow-wrap: break-word;">{{ alias }}</span>
+            <span class="font-weight-bold" style="overflow-wrap: break-word;">{{
+              alias
+            }}</span>
           </div>
         </div>
 
@@ -47,30 +53,30 @@
           v-if="channel.status !== 'Closing'"
         >
           <span class="text-muted">Opened By</span>
-          <span
-            class="text-capitalize font-weight-bold"
-          >{{ channel.initiator ? 'Your node' : 'Remote peer' }}</span>
+          <span class="text-capitalize font-weight-bold">{{
+            channel.initiator ? "Your node" : "Remote peer"
+          }}</span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Local Balance</span>
-          <span
-            class="text-capitalize font-weight-bold"
-          >{{ parseInt(channel.localBalance).toLocaleString() }} Sats</span>
+          <span class="text-capitalize font-weight-bold"
+            >{{ parseInt(channel.localBalance).toLocaleString() }} Sats</span
+          >
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Balance</span>
-          <span
-            class="text-capitalize font-weight-bold"
-          >{{ parseInt(channel.remoteBalance).toLocaleString() }} Sats</span>
+          <span class="text-capitalize font-weight-bold"
+            >{{ parseInt(channel.remoteBalance).toLocaleString() }} Sats</span
+          >
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Channel Capacity</span>
-          <span
-            class="text-capitalize font-weight-bold"
-          >{{ parseInt(channel.capacity).toLocaleString() }} Sats</span>
+          <span class="text-capitalize font-weight-bold"
+            >{{ parseInt(channel.capacity).toLocaleString() }} Sats</span
+          >
         </div>
 
         <div
@@ -78,9 +84,9 @@
           v-if="channel.status !== 'Closing' && channel.status !== 'Opening'"
         >
           <span class="text-muted">Withdrawal Timelock</span>
-          <span
-            class="text-capitalize font-weight-bold"
-          >{{ parseInt(channel.csvDelay).toLocaleString() }} Blocks</span>
+          <span class="text-capitalize font-weight-bold"
+            >{{ parseInt(channel.csvDelay).toLocaleString() }} Blocks</span
+          >
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -89,12 +95,15 @@
             <small
               class="font-weight-bold"
               style="overflow-wrap: break-word;"
-            >{{ channel.remotePubkey }}</small>
+              >{{ channel.remotePubkey }}</small
+            >
           </div>
         </div>
 
         <div class="d-flex justify-content-end" v-if="canCloseChannel">
-          <b-button class="mt-2" variant="danger" @click="reviewChannelClose">Close Channel</b-button>
+          <b-button class="mt-2" variant="danger" @click="reviewChannelClose"
+            >Close Channel</b-button
+          >
         </div>
       </div>
 
@@ -102,12 +111,15 @@
         <h3 class="mb-3">Are you sure you want to close this channel?</h3>
         <p>
           Your local channel balance of
-          <b>{{ parseInt(channel.localBalance).toLocaleString() }} Sats</b> (excluding mining fee) will be returned to your Bitcoin wallet.
+          <b>{{ parseInt(channel.localBalance).toLocaleString() }} Sats</b>
+          (excluding mining fee) will be returned to your Bitcoin wallet.
         </p>
-        <b-alert
-          variant="warning"
-          show
-        >It may take upto 24 hours to close this channel if the remote peer is not online. During this time, the peer can dispute the record sent to the blockchain and seize the channel funds if this claim is fraudulent.</b-alert>
+        <b-alert variant="warning" show
+          >It may take upto 24 hours to close this channel if the remote peer is
+          not online. During this time, the peer can dispute the record sent to
+          the blockchain and seize the channel funds if this claim is
+          fraudulent.</b-alert
+        >
 
         <div class="d-flex justify-content-end">
           <b-button
@@ -115,7 +127,8 @@
             variant="danger"
             @click="confirmChannelClose"
             :disabled="isClosing"
-          >{{ isClosing ? 'Closing Channel...' : 'Confirm Close' }}</b-button>
+            >{{ isClosing ? "Closing Channel..." : "Confirm Close" }}</b-button
+          >
         </div>
       </div>
     </transition>

@@ -12,10 +12,13 @@
           <span v-if="state.showBalance">
             <CountUp
               :endVal="walletBalance"
-              :options="{'startVal': walletBalance}"
+              :options="{ startVal: walletBalance }"
               v-if="balanceLoaded"
             />
-            <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>
+            <span
+              class="loading-placeholder loading-placeholder-lg w-75"
+              v-else
+            ></span>
           </span>
           <span v-else>***,***</span>
           <div>
@@ -23,7 +26,8 @@
               class="d-block text-muted mt-1"
               style="font-size: 1rem;"
               v-if="balanceLoaded"
-            >&nbsp;Sats</small>
+              >&nbsp;Sats</small
+            >
             <span class="d-block loading-placeholder w-50" v-else></span>
           </div>
         </h3>
@@ -82,7 +86,12 @@
           Lightning
         </b-nav-item>
 
-        <b-nav-item to="/settings" class="my-1" v-if="isMobileMenu" exact-active-class="active">
+        <b-nav-item
+          to="/settings"
+          class="my-1"
+          v-if="isMobileMenu"
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"
@@ -102,7 +111,12 @@
     </div>
     <div>
       <b-nav vertical class="px-1">
-        <b-nav-item @click="logout" class="my-1" v-if="isMobileMenu" exact-active-class="active">
+        <b-nav-item
+          @click="logout"
+          class="my-1"
+          v-if="isMobileMenu"
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"
@@ -122,7 +136,12 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item to="/settings" class="my-1" v-else exact-active-class="active">
+        <b-nav-item
+          to="/settings"
+          class="my-1"
+          v-else
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"

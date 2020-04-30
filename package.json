@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
+    "build-stage": "vue-cli-service build --mode staging",
     "lint": "vue-cli-service lint",
     "deploy-local": "vue-cli-service build --mode production && rsync -aP --delete dist/ umbrel@umbrel.local:/home/umbrel/nginx/www"
   },

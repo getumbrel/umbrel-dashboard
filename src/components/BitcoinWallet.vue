@@ -10,12 +10,19 @@
     }"
     sub-title="Sats"
     icon="icon-app-bitcoin.svg"
-    :loading="loading || (transactions.length > 0 && transactions[0]['type'] === 'loading')"
+    :loading="
+      loading ||
+        (transactions.length > 0 && transactions[0]['type'] === 'loading')
+    "
   >
     <!-- transition switching between different modes -->
     <transition name="lightning-mode-change" mode="out-in">
       <!-- Default Balance/tx screen -->
-      <div v-if="mode === 'transactions'" key="mode-balance" class="mode-balance">
+      <div
+        v-if="mode === 'transactions'"
+        key="mode-balance"
+        class="mode-balance"
+      >
         <!-- List of transactions -->
 
         <!-- No transactions -->
@@ -45,11 +52,16 @@
             />
           </svg>
 
-          <small class="align-self-center mt-3 text-muted">No transactions</small>
+          <small class="align-self-center mt-3 text-muted"
+            >No transactions</small
+          >
         </div>
 
         <div class="wallet-transactions-container" v-else>
-          <transition-group name="slide-up" class="list-group pb-2 transactions">
+          <transition-group
+            name="slide-up"
+            class="list-group pb-2 transactions"
+          >
             <!-- Transaction -->
             <b-list-group-item
               v-for="(tx, index) in transactions"
@@ -59,23 +71,34 @@
               target="_blank"
             >
               <!-- Loading Transactions Placeholder -->
-              <div class="d-flex w-100 justify-content-between" v-if="tx.type === 'loading'">
+              <div
+                class="d-flex w-100 justify-content-between"
+                v-if="tx.type === 'loading'"
+              >
                 <div class="w-50">
                   <span class="loading-placeholder"></span>
 
                   <!-- Timestamp of tx -->
-                  <span class="loading-placeholder loading-placeholder-sm" style="width: 40%"></span>
+                  <span
+                    class="loading-placeholder loading-placeholder-sm"
+                    style="width: 40%"
+                  ></span>
                 </div>
 
                 <div class="w-25 text-right">
                   <span class="loading-placeholder"></span>
-                  <span class="loading-placeholder loading-placeholder-sm" style="width: 30%"></span>
+                  <span
+                    class="loading-placeholder loading-placeholder-sm"
+                    style="width: 30%"
+                  ></span>
                 </div>
               </div>
 
               <div class="d-flex w-100 justify-content-between" v-else>
                 <div class="transaction-description">
-                  <h6 class="mb-0 font-weight-normal transaction-description-text">
+                  <h6
+                    class="mb-0 font-weight-normal transaction-description-text"
+                  >
                     <!-- Incoming tx icon -->
                     <svg
                       width="18"
@@ -114,16 +137,26 @@
                     </svg>
 
                     <!-- tx description -->
-                    <span style="margin-left: 6px;" :title="tx.description">{{ tx.description }}</span>
+                    <span style="margin-left: 6px;" :title="tx.description">{{
+                      tx.description
+                    }}</span>
                   </h6>
 
                   <!-- Timestamp of tx -->
                   <!-- TODO: Clean this -->
                   <small
                     class="text-muted mt-0 tx-timestamp"
-                    :style="tx.confirmations > 0 ? 'margin-left: 25px;' : 'margin-left: 21px;'"
+                    :style="
+                      tx.confirmations > 0
+                        ? 'margin-left: 25px;'
+                        : 'margin-left: 21px;'
+                    "
                     v-b-tooltip.hover.bottomright
-                    :title="`${getReadableTime(tx.timestamp)} | ${tx.confirmations} confirmations`"
+                    :title="
+                      `${getReadableTime(tx.timestamp)} | ${
+                        tx.confirmations
+                      } confirmations`
+                    "
                     v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                   >
                     {{ getTimeFromNow(tx.timestamp) }}
@@ -132,13 +165,15 @@
                         tx.description === 'Lightning Wallet' &&
                           tx.type === 'outgoing'
                       "
-                    >&bull; Channel open</span>
+                      >&bull; Channel open</span
+                    >
                     <span
                       v-else-if="
                         tx.description === 'Lightning Wallet' &&
                           tx.type === 'incoming'
                       "
-                    >&bull; Channel close</span>
+                      >&bull; Channel close</span
+                    >
                   </small>
                 </div>
 
@@ -158,10 +193,18 @@
       </div>
 
       <!-- SCREEN/MODE: Withdraw Screen -->
-      <div class="px-3 px-lg-4" v-else-if="mode === 'withdraw'" key="mode-withdraw">
+      <div
+        class="px-3 px-lg-4"
+        v-else-if="mode === 'withdraw'"
+        key="mode-withdraw"
+      >
         <!-- Back Button -->
         <div class="pt-2 pb-3">
-          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+          <a
+            href="#"
+            class="card-link text-muted"
+            v-on:click.stop.prevent="reset"
+          >
             <svg
               width="7"
               height="13"
@@ -202,10 +245,18 @@
       </div>
 
       <!-- SCREEN/MODE: Review Withdrawal -->
-      <div class="px-3 px-lg-4" v-else-if="mode === 'review-withdraw'" key="mode-review-withdraw">
+      <div
+        class="px-3 px-lg-4"
+        v-else-if="mode === 'review-withdraw'"
+        key="mode-review-withdraw"
+      >
         <!-- Back Button -->
         <div class="pt-2 pb-3">
-          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+          <a
+            href="#"
+            class="card-link text-muted"
+            v-on:click.stop.prevent="reset"
+          >
             <svg
               width="7"
               height="13"
@@ -249,7 +300,13 @@
             <small>Mining fee</small>
           </span>
           <span class="text-right text-muted">
-            <b>{{ (walletBalance - withdraw.amount - fees.fast.total).toLocaleString() }}</b>
+            <b>{{
+              (
+                walletBalance -
+                withdraw.amount -
+                fees.fast.total
+              ).toLocaleString()
+            }}</b>
             <small>&nbsp;Sats</small>
             <br />
             <small>Remaining balance</small>
@@ -265,7 +322,11 @@
       >
         <!-- Back Button -->
         <div class="pt-2 pb-3">
-          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+          <a
+            href="#"
+            class="card-link text-muted"
+            v-on:click.stop.prevent="reset"
+          >
             <svg
               width="7"
               height="13"
@@ -290,15 +351,25 @@
             Successfully withdrawn
             <b>{{ withdraw.amount }} sats</b>
           </span>
-          <a :href="getTxUrl(withdraw.txHash)" target="_blank">View transaction</a>
+          <a :href="getTxUrl(withdraw.txHash)" target="_blank"
+            >View transaction</a
+          >
         </div>
       </div>
 
       <!-- SCREEN/MODE: Show Deposit Address -->
-      <div class="px-3 px-lg-4 mode-deposit" v-else-if="this.mode === 'deposit'" key="mode-deposit">
+      <div
+        class="px-3 px-lg-4 mode-deposit"
+        v-else-if="this.mode === 'deposit'"
+        key="mode-deposit"
+      >
         <!-- Back Button -->
         <div class="pt-2 pb-3">
-          <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
+          <a
+            href="#"
+            class="card-link text-muted"
+            v-on:click.stop.prevent="reset"
+          >
             <svg
               width="7"
               height="13"
@@ -325,15 +396,17 @@
         <qr-code class="mb-3" :value="depositAddress" showLogo></qr-code>
 
         <!-- Copy Address Input Field -->
-        <input-copy size="sm" :value="depositAddress" class="mb-4 mt-2"></input-copy>
+        <input-copy
+          size="sm"
+          :value="depositAddress"
+          class="mb-4 mt-2"
+        ></input-copy>
       </div>
     </transition>
 
     <!-- Error message -->
     <small class="text-danger mb-2 d-block px-3 px-lg-4" v-if="error">
-      {{
-      error
-      }}
+      {{ error }}
     </small>
 
     <!-- Buttons for all screens/modes -->
@@ -357,8 +430,8 @@
             <path
               d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
               fill="#FFFFFF"
-            />
-          </svg>Withdraw
+            /></svg
+          >Withdraw
         </b-button>
         <b-button
           class="w-50"
@@ -377,8 +450,8 @@
             <path
               d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
               fill="#FFFFFF"
-            />
-          </svg>Deposit
+            /></svg
+          >Deposit
         </b-button>
       </b-button-group>
 
@@ -400,8 +473,8 @@
           <path
             d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
             fill="#FFFFFF"
-          />
-        </svg>Deposit
+          /></svg
+        >Deposit
       </b-button>
 
       <!-- Button: Review Withdrawal -->
@@ -412,12 +485,10 @@
         @click="changeMode('review-withdraw')"
         v-else-if="mode === 'withdraw'"
         :disabled="
-          !!error ||
-            !withdraw.amount ||
-            !withdraw.address ||
-            withdraw.isTyping
+          !!error || !withdraw.amount || !withdraw.address || withdraw.isTyping
         "
-      >Review Withdrawal</b-button>
+        >Review Withdrawal</b-button
+      >
 
       <!-- Button: Confirm Withdrawal -->
       <b-button
@@ -429,9 +500,7 @@
         :disabled="withdraw.isWithdrawing"
       >
         {{
-        this.withdraw.isWithdrawing
-        ? "Withdrawing..."
-        : "Confirm Withdrawal"
+          this.withdraw.isWithdrawing ? "Withdrawing..." : "Confirm Withdrawal"
         }}
       </b-button>
     </div>

@@ -20,13 +20,20 @@
             </svg>
             <small class="ml-1 text-success">{{ status }}</small>
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
-            <span
-              class="d-block text-muted"
-            >{{ this.lndVersion ? `v${this.lndVersion.split(" commit")[0]}` : '...' }}</span>
+            <span class="d-block text-muted">{{
+              this.lndVersion
+                ? `v${this.lndVersion.split(" commit")[0]}`
+                : "..."
+            }}</span>
           </div>
         </div>
         <div>
-          <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
+          <b-dropdown
+            variant="link"
+            toggle-class="text-decoration-none p-0"
+            no-caret
+            right
+          >
             <template v-slot:button-content>
               <svg
                 width="18"
@@ -55,17 +62,34 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" @click="showPubKey">View Public Key</b-dropdown-item>
-            <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
+            <b-dropdown-item href="#" @click="showPubKey"
+              >View Public Key</b-dropdown-item
+            >
+            <b-dropdown-item href="#" disabled
+              >Check for update</b-dropdown-item
+            >
             <b-dropdown-divider />
-            <b-dropdown-item variant="danger" href="#" disabled>Stop Lightning</b-dropdown-item>
+            <b-dropdown-item variant="danger" href="#" disabled
+              >Stop Lightning</b-dropdown-item
+            >
           </b-dropdown>
-          <b-modal id="public-key-modal" ref="public-key-modal" centered hide-footer>
+          <b-modal
+            id="public-key-modal"
+            ref="public-key-modal"
+            centered
+            hide-footer
+          >
             <template v-slot:modal-header="{ close }">
-              <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+              <div
+                class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+              >
                 <h3>node public key</h3>
                 <!-- Emulate built in modal header close button action -->
-                <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                <a
+                  href="#"
+                  class="align-self-center"
+                  v-on:click.stop.prevent="close"
+                >
                   <svg
                     width="18"
                     height="18"
@@ -85,7 +109,12 @@
             </template>
             <div class="px-2 px-sm-3 pb-2 pb-sm-3 d-flex">
               <!-- Pubkey QR Code -->
-              <qr-code :value="this.pubkey" :size="150" class="qr-image" showLogo></qr-code>
+              <qr-code
+                :value="this.pubkey"
+                :size="150"
+                class="qr-image"
+                showLogo
+              ></qr-code>
               <div class="w-100 align-self-center ml-3">
                 <input-copy size="sm" :value="this.pubkey"></input-copy>
               </div>
@@ -105,12 +134,19 @@
               variant="outline-primary"
               size="sm"
               v-b-modal.open-channel-modal
-            >+ Open Channel</b-button>
+              >+ Open Channel</b-button
+            >
           </template>
           <div class>
             <div class="px-3 px-lg-4">
               <b-row>
-                <b-col col cols="6" xl="3" v-for="stat in stats" :key="stat.title">
+                <b-col
+                  col
+                  cols="6"
+                  xl="3"
+                  v-for="stat in stats"
+                  :key="stat.title"
+                >
                   <bitcoin-network-stat
                     :title="stat.title"
                     :value="stat.value"
@@ -131,10 +167,16 @@
               hide-footer
             >
               <template v-slot:modal-header="{ close }">
-                <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                <div
+                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+                >
                   <h2>open channel</h2>
                   <!-- Emulate built in modal header close button action -->
-                  <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                  <a
+                    href="#"
+                    class="align-self-center"
+                    v-on:click.stop.prevent="close"
+                  >
                     <svg
                       width="18"
                       height="18"
@@ -166,10 +208,16 @@
               hide-footer
             >
               <template v-slot:modal-header="{ close }">
-                <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                <div
+                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+                >
                   <h2>channel details</h2>
                   <!-- Emulate built in modal header close button action -->
-                  <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                  <a
+                    href="#"
+                    class="align-self-center"
+                    v-on:click.stop.prevent="close"
+                  >
                     <svg
                       width="18"
                       height="18"
@@ -188,7 +236,10 @@
                 </div>
               </template>
               <div class="px-2 px-sm-3 py-2">
-                <channel-manage :channel="selectedChannel" v-on:channelclose="onChannelClose"></channel-manage>
+                <channel-manage
+                  :channel="selectedChannel"
+                  v-on:channelclose="onChannelClose"
+                ></channel-manage>
               </div>
             </b-modal>
 
