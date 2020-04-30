@@ -292,9 +292,11 @@ const actions = {
       }
 
       let transactions = [];
+      let incomingTransactions = [];
+      let outgoingTransactions = [];
 
       if (invoices) {
-        const incomingTransactions = invoices.map(tx => {
+        incomingTransactions = invoices.map(tx => {
           let type = "incoming";
           if (tx.state === "CANCELED") {
             type = "expired";
@@ -316,7 +318,11 @@ const actions = {
       }
 
       if (payments) {
-        const outgoingTransactions = payments.map(tx => {
+        outgoingTransactions = payments.map(tx => {
+
+          //load tx from state to copy description
+          const preFetchedTx = state.transactions.find((trx) => trx.type === 'outgoing' && trx.paymentPreImage === tx.paymentPreimage);
+
           return {
             type: "outgoing",
             amount: Number(tx.value),
@@ -324,20 +330,24 @@ const actions = {
             paymentRequest: tx.paymentRequest,
             paymentPreImage: tx.paymentPreimage,
             fee: Number(tx.feeSat),
-            description: ""
+            description: preFetchedTx ? preFetchedTx.description : ""
           };
         });
+
         transactions = [...transactions, ...outgoingTransactions];
       }
 
       //Sort by recent to oldest
-      transactions.sort(function (tx1, tx2) {
-        return tx2.timestamp - tx1.timestamp;
-      });
+      transactions.sort((tx1, tx2) => tx2.timestamp - tx1.timestamp);
 
-      // Fetch descriptions of all outgoing payments
-      for (let tx of transactions) {
-        if (tx.type !== "outgoing") continue;
+      //filter out new outgoing payments
+      const newOutgoingTransactions = outgoingTransactions.filter(tx => !state.transactions.some(trx => trx.paymentPreImage === tx.paymentPreImage));
+
+      //update $store
+      commit("setTransactions", transactions);
+
+      // Fetch descriptions of all new outgoing transactions
+      for (let tx of newOutgoingTransactions) {
 
         if (!tx.paymentRequest) {
           //example - in case of a keysend tx there is no payment request
@@ -349,13 +359,24 @@ const actions = {
             `${process.env.VUE_APP_API_URL}/v1/lnd/lightning/invoice?paymentRequest=${tx.paymentRequest}`
           );
           if (invoiceDetails && invoiceDetails.description) {
-            tx.description = invoiceDetails.description;
+
+            //load state's txs
+            const updatedTransactions = state.transactions;
+
+            //find tx to update
+            const txIndex = updatedTransactions.findIndex(trx => trx.paymentPreImage === tx.paymentPreImage);
+
+            if (txIndex !== -1) {
+              const outgoingTx = updatedTransactions[txIndex];
+              //update tx description and state
+              outgoingTx.description = invoiceDetails.description;
+              commit("setTransactions", transactions);
+            }
           }
         } catch (error) {
           console.log(error);
         }
       }
-      commit("setTransactions", transactions);
     }
   },
 
