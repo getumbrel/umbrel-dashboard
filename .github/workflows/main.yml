@@ -16,10 +16,10 @@ jobs:
     - name: Install npm dependencies
       run: npm install
       
-    - name: Build the project
-      run: npm run build
+    - name: Build in staging mode
+      run: npm run build-stage
 
-    - name: Deploy to the testnet server
+    - name: Deploy to testnet server
       uses: mayankchhabra/ssh-deploy@v2.1.2
       env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

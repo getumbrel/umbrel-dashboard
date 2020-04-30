@@ -31,7 +31,12 @@ const state = () => ({
     pendingIn: -1,
     pendingOut: -1
   },
-  transactions: [{ type: 'loading' }, { type: 'loading' }, { type: 'loading' }, { type: 'loading' }],
+  transactions: [
+    { type: "loading" },
+    { type: "loading" },
+    { type: "loading" },
+    { type: "loading" }
+  ],
   pending: [],
   price: 0,
   fees: {
@@ -230,7 +235,7 @@ const actions = {
       const currentBlock = state.currentBlock;
 
       //dont fetch blocks if no new block
-      if (state.blocks.length && currentBlock === state.blocks[0]['height']) {
+      if (state.blocks.length && currentBlock === state.blocks[0]["height"]) {
         return;
       }
 
@@ -260,7 +265,6 @@ const actions = {
       ];
       // commit("setBlocks", blocks);
 
-
       //fetch info per block;
 
       const blocksWithInfo = [];
@@ -289,12 +293,11 @@ const actions = {
           txs: blockInfo.transactions.length,
           timestamp: blockInfo.blocktime,
           size: blockInfo.size
-        })
+        });
       }
 
       // update blocks
       commit("setBlocks", blocksWithInfo);
-
     }
   },
 
@@ -422,7 +425,11 @@ const getters = {
     const txs = [];
 
     //return default "loading" transactions until txs aren't fetched
-    if (state.transactions && state.transactions.length && state.transactions[0]['type'] === 'loading') {
+    if (
+      state.transactions &&
+      state.transactions.length &&
+      state.transactions[0]["type"] === "loading"
+    ) {
       return state.transactions;
     }
 
@@ -433,7 +440,8 @@ const getters = {
         let type = "incoming";
         if (amount < 0) {
           type = "outgoing";
-        } else if (amount === 0) { //skip self incoming txs of change
+        } else if (amount === 0) {
+          //skip self incoming txs of change
           return;
         }
 
@@ -454,7 +462,6 @@ const getters = {
           description = "Deposit";
         }
 
-
         txs.push({
           type,
           amount: amount < 0 ? amount * -1 : amount, //for formatting +/- in view
@@ -466,7 +473,7 @@ const getters = {
       });
 
       //sort txs by date
-      txs.sort(function (tx1, tx2) {
+      txs.sort(function(tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
     }

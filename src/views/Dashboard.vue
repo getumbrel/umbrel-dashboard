@@ -42,31 +42,35 @@
           <b-col col cols="12" md="6" xl="12">
             <card-widget
               header="Bitcoin Wallet"
-              :status="{text: 'Active', variant: 'success', blink: false}"
+              :status="{ text: 'Active', variant: 'success', blink: false }"
               title
               :numericTitle="{
-            value: btcBalance,
-            suffix: '',
-            prefix: ''
-          }"
+                value: btcBalance,
+                suffix: '',
+                prefix: ''
+              }"
               sub-title="Sats"
               icon="icon-app-bitcoin.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link">Manage</router-link>
+                <router-link to="/bitcoin" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>
           <b-col col cols="12" md="6" xl="12">
             <card-widget
               header="Tor"
-              :status="{text: 'Running', variant: 'success', blink: false}"
+              :status="{ text: 'Running', variant: 'success', blink: false }"
               title="100%"
               sub-title="Traffic relayed through Tor"
               icon="icon-app-tor.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/settings" class="card-link">Manage</router-link>
+                <router-link to="/settings" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>

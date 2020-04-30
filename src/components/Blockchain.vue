@@ -38,7 +38,9 @@
                   <div class="blockchain-block-icon-bg"></div>
                 </div>
                 <div class="align-self-center">
-                  <h6 class="mb-1 font-weight-normal">Block {{ block.height.toLocaleString() }}</h6>
+                  <h6 class="mb-1 font-weight-normal">
+                    Block {{ block.height.toLocaleString() }}
+                  </h6>
                   <small class="text-muted" v-if="block.txs">
                     {{ block.txs.toLocaleString() }} transactions
                     <!-- <span>&bull; {{ Math.round(block.size / 1000) }} KB</span> -->
@@ -50,9 +52,7 @@
                 v-if="block.timestamp"
                 :title="blockReadableTime(block.timestamp)"
               >
-                {{
-                blockTime(block.timestamp)
-                }}
+                {{ blockTime(block.timestamp) }}
               </small>
             </div>
           </li>
@@ -63,12 +63,14 @@
           <li
             href="#"
             class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
-            v-for="(fake, index) in [1,2,3]"
+            v-for="(fake, index) in [1, 2, 3]"
             :key="index"
           >
             <div class="d-flex w-100 justify-content-between">
               <div class="d-flex">
-                <div class="blockchain-block-icon blockchain-block-icon-loading">
+                <div
+                  class="blockchain-block-icon blockchain-block-icon-loading"
+                >
                   <svg
                     width="28"
                     height="30"
@@ -94,7 +96,10 @@
                   <div class="blockchain-block-icon-bg"></div>
                 </div>
                 <div class="align-self-center">
-                  <span class="d-block loading-placeholder mb-1" style="width: 140px;"></span>
+                  <span
+                    class="d-block loading-placeholder mb-1"
+                    style="width: 140px;"
+                  ></span>
                   <span
                     class="d-block loading-placeholder loading-placeholder-sm"
                     style="width: 80px"

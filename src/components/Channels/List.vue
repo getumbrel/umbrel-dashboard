@@ -30,9 +30,13 @@
             </clipPath>
           </defs>
         </svg>
-        <p
-          class="text-muted w-75 text-center mt-2"
-        >Your Lightning node starts with zero channels, and you must fund channels with other nodes on the network in order to send Lightning payments. Connecting to nodes that are already well-connected helps ensure that you will be able to find routes and send payments anywhere on the network.</p>
+        <p class="text-muted w-75 text-center mt-2">
+          Your Lightning node starts with zero channels, and you must fund
+          channels with other nodes on the network in order to send Lightning
+          payments. Connecting to nodes that are already well-connected helps
+          ensure that you will be able to find routes and send payments anywhere
+          on the network.
+        </p>
       </div>
 
       <div
