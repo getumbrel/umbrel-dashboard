@@ -1,9 +1,9 @@
 import Vue from "vue";
+import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
+
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-
-import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 
 // import "@/global-styles/designsystem.scss";
 // import 'bootstrap/dist/css/bootstrap.css'
