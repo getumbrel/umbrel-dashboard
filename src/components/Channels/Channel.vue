@@ -4,9 +4,11 @@
       <b-col col cols="12" xl="3">
         <!-- on large screens -->
         <div class="d-none d-xl-block">
-          <status :variant="statusVariant" size="sm">{{
+          <status :variant="statusVariant" size="sm">
+            {{
             channel.status
-          }}</status>
+            }}
+          </status>
           <div>
             <span v-if="alias">{{ alias }}</span>
             <span
@@ -18,12 +20,12 @@
         </div>
 
         <!-- on small screens -->
-        <div
-          class="d-xl-none d-flex justify-content-between align-items-center mb-1"
-        >
-          <status :variant="statusVariant" size="sm">{{
+        <div class="d-xl-none d-flex justify-content-between align-items-center mb-1">
+          <status :variant="statusVariant" size="sm">
+            {{
             channel.status
-          }}</status>
+            }}
+          </status>
           <div>
             <small>{{ alias }}</small>
           </div>
@@ -32,12 +34,12 @@
       <b-col col cols="12" xl="9">
         <div class>
           <div class="d-flex justify-content-between">
-            <span class="text-primary font-weight-bold"
-              >{{ Number(channel.localBalance).toLocaleString() }} Sats</span
-            >
-            <span class="text-success text-right font-weight-bold"
-              >{{ Number(channel.remoteBalance).toLocaleString() }} Sats</span
-            >
+            <span
+              class="text-primary font-weight-bold"
+            >{{ Number(channel.localBalance).toLocaleString() }} Sats</span>
+            <span
+              class="text-success text-right font-weight-bold"
+            >{{ Number(channel.remoteBalance).toLocaleString() }} Sats</span>
           </div>
           <bar
             :local="Number(channel.localBalance)"
@@ -46,9 +48,7 @@
           ></bar>
           <div class="d-flex justify-content-between">
             <small class="text-muted font-weight-bold">Max Send</small>
-            <small class="text-muted font-weight-bold text-right"
-              >Max Receive</small
-            >
+            <small class="text-muted font-weight-bold text-right">Max Receive</small>
           </div>
         </div>
       </b-col>
@@ -59,7 +59,7 @@
 <script>
 import axios from "axios";
 
-import Status from "@/components/Status";
+import Status from "@/components/Utility/Status";
 import Bar from "@/components/Channels/Bar";
 
 export default {

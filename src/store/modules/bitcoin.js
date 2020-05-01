@@ -9,15 +9,16 @@ const state = () => ({
   ipAddress: "",
   onionAddress: "",
   currentBlock: 0,
+  chain: "",
   blockHeight: 0,
   blocks: [],
   percent: -1, //for loading state
   depositAddress: "",
   stats: {
-    peers: 0,
-    mempool: 0,
-    hashrate: 0,
-    blockchainSize: 0
+    peers: -1,
+    mempool: -1,
+    hashrate: -1,
+    blockchainSize: -1
   },
   peers: {
     total: 0,
@@ -93,6 +94,7 @@ const mutations = {
     state.percent = toPrecision(parseFloat(sync.percent) * 100, 2);
     state.currentBlock = sync.currentBlock;
     state.blockHeight = sync.headerCount;
+    state.chain = sync.chain;
 
     if (sync.status === "calibrating") {
       state.calibrating = true;
@@ -473,7 +475,7 @@ const getters = {
       });
 
       //sort txs by date
-      txs.sort(function(tx1, tx2) {
+      txs.sort(function (tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
     }
