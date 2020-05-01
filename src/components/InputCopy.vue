@@ -1,6 +1,15 @@
 <template>
-  <b-input-group class="copy-input-container d-flex align-items-center" :size="size">
-    <b-form-input ref="copy-input-field" type="text" class="copy-input" readonly v-model="value"></b-form-input>
+  <b-input-group
+    class="copy-input-container d-flex align-items-center"
+    :size="size"
+  >
+    <b-form-input
+      ref="copy-input-field"
+      type="text"
+      class="copy-input"
+      readonly
+      v-model="value"
+    ></b-form-input>
 
     <b-input-group-append class="copy-icon-btn" @click="copyText">
       <svg
