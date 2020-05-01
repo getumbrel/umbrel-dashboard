@@ -32,7 +32,7 @@
           v-if="chain !== 'mainnet'"
           class="align-self-center mr-2 text-capitalize"
           pill
-        >{{ chain }}</b-badge>
+        >{{ chain === 'test' ? 'testnet' : chain }}</b-badge>
 
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
