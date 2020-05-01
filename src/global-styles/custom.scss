@@ -341,13 +341,29 @@ svg.icon-clock {
   }
 
 
-  //wallet transactions container
+  //wallet 
+  .wallet-content {
+    height: 22rem;
+  }
+  .wallet-buttons {
+      height: 3.5rem;
+  }
+  .wallet-error {
+      position: relative;
+      height: 1rem;
+      .error {
+          position: absolute;
+          top: 0;
+          left: 0;
+      }
+  }
+  //transactions container
   //Transactions
 .wallet-transactions-container {
     position: relative;
 
     .transactions {
-        height: 20rem;
+        height: 22rem;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch; //momentum scroll on iOS
       }
