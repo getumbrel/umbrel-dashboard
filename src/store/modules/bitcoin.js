@@ -14,10 +14,10 @@ const state = () => ({
   percent: -1, //for loading state
   depositAddress: "",
   stats: {
-    peers: 0,
-    mempool: 0,
-    hashrate: 0,
-    blockchainSize: 0
+    peers: -1,
+    mempool: -1,
+    hashrate: -1,
+    blockchainSize: -1
   },
   peers: {
     total: 0,
@@ -473,7 +473,7 @@ const getters = {
       });
 
       //sort txs by date
-      txs.sort(function(tx1, tx2) {
+      txs.sort(function (tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
     }

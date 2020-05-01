@@ -20,18 +20,15 @@
             </svg>
             <small class="ml-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted">{{
+            <span class="d-block text-muted">
+              {{
               version ? `v${version}` : "..."
-            }}</span>
+              }}
+            </span>
           </div>
         </div>
         <div>
-          <b-dropdown
-            variant="link"
-            toggle-class="text-decoration-none p-0"
-            no-caret
-            right
-          >
+          <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
             <template v-slot:button-content>
               <svg
                 width="18"
@@ -60,16 +57,10 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" disabled
-              >Check for update</b-dropdown-item
-            >
-            <b-dropdown-item href="#" disabled
-              >View information</b-dropdown-item
-            >
+            <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>View information</b-dropdown-item>
             <b-dropdown-divider />
-            <b-dropdown-item variant="danger" href="#" disabled
-              >Stop Bitcoin Core</b-dropdown-item
-            >
+            <b-dropdown-item variant="danger" href="#" disabled>Stop Bitcoin Core</b-dropdown-item>
           </b-dropdown>
         </div>
       </div>
@@ -85,9 +76,7 @@
           :loading="syncPercent !== 100 || blocks.length === 0"
         >
           <template v-slot:menu>
-            <b-dropdown-item variant="danger" href="#" disabled
-              >Resync Blockchain</b-dropdown-item
-            >
+            <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
           <div class>
             <div class="px-3 px-lg-4 mb-3">
@@ -106,12 +95,10 @@
                 animated
                 striped
               ></b-progress>
-              <small
-                class="text-muted d-block text-right"
-                v-if="currentBlock < blockHeight - 1"
-                >{{ currentBlock.toLocaleString() }} of
-                {{ blockHeight.toLocaleString() }} blocks</small
-              >
+              <small class="text-muted d-block text-right" v-if="currentBlock < blockHeight - 1">
+                {{ currentBlock.toLocaleString() }} of
+                {{ blockHeight.toLocaleString() }} blocks
+              </small>
             </div>
             <!-- low storage mode  -->
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
@@ -133,7 +120,7 @@
             <div class="px-3 px-lg-4 pb-2">
               <b-row>
                 <!-- <b-col col cols="6" md="3" xl="6" v-for="stat in stats" :key="stat.title">
-                  <bitcoin-network-stat
+                  <stat
                     :title="stat.title"
                     :value="stat.value"
                     :suffix="stat.suffix"
@@ -141,39 +128,29 @@
                       value: stat.change.value,
                       suffix: stat.change.suffix
                     }"
-                  ></bitcoin-network-stat>
+                  ></stat>
                 </b-col>-->
                 <b-col col cols="6" md="3" xl="6">
-                  <bitcoin-network-stat
-                    title="Connections"
-                    :value="stats.peers"
-                    suffix="Peers"
-                    showNumericChange
-                  ></bitcoin-network-stat>
+                  <stat title="Connections" :value="stats.peers" suffix="Peers" showNumericChange></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
-                  <bitcoin-network-stat
-                    title="Mempool"
-                    :value="stats.mempool"
-                    suffix="MB"
-                    showPercentChange
-                  ></bitcoin-network-stat>
+                  <stat title="Mempool" :value="stats.mempool" suffix="MB" showPercentChange></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
-                  <bitcoin-network-stat
+                  <stat
                     title="Hashrate"
                     :value="abbreviateHashRate(stats.hashrate)[0]"
                     :suffix="abbreviateHashRate(stats.hashrate)[1]"
                     showPercentChange
-                  ></bitcoin-network-stat>
+                  ></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
-                  <bitcoin-network-stat
+                  <stat
                     title="Blockchain Size"
-                    :value="Math.round(stats.blockchainSize / 1e9)"
+                    :value="blockchainSize"
                     suffix="GB"
                     showPercentChange
-                  ></bitcoin-network-stat>
+                  ></stat>
                 </b-col>
               </b-row>
             </div>
@@ -191,7 +168,7 @@ import { mapState } from "vuex";
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
 // import ToggleSwitch from "@/components/ToggleSwitch";
-import BitcoinNetworkStat from "@/components/BitcoinNetworkStat";
+import Stat from "@/components/Utility/Stat";
 import BitcoinWallet from "@/components/BitcoinWallet";
 
 export default {
@@ -207,6 +184,11 @@ export default {
       blockHeight: state => state.bitcoin.blockHeight,
       stats: state => state.bitcoin.stats
     }),
+    blockchainSize() {
+      return this.stats.blockchainSize !== -1
+        ? Math.round(this.stats.blockchainSize / 1e9)
+        : -1;
+    },
     isDarkMode() {
       return this.$store.getters.isDarkMode;
     }
@@ -216,7 +198,8 @@ export default {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     abbreviateHashRate(n) {
-      if (n < 1e3) return [Number(n.toFixed(1)), ""];
+      if (n < 0) return [n, "H/s"];
+      if (n < 1e3) return [Number(n.toFixed(1)), "H/s"];
       if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "kH/s"];
       if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "MH/s"];
       if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "GH/s"];
@@ -241,7 +224,7 @@ export default {
     CardWidget,
     Blockchain,
     // ToggleSwitch,
-    BitcoinNetworkStat,
+    Stat,
     BitcoinWallet
   }
 };

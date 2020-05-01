@@ -2,20 +2,28 @@
   <div>
     <span>{{ title }}</span>
     <div class="pt-2 pb-3">
-      <div class="mb-1 d-flex align-items-baseline">
-        <h3 class="font-weight-normal mb-0">
-          <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
-          <span>
-            <CountUp :endVal="numberValue" :suffix="numberSuffix" />
+      <div class="mb-1">
+        <!-- Loading state -->
+        <span
+          class="loading-placeholder loading-placeholder-lg w-50 mt-2"
+          v-if="numberValue === -1"
+          style
+        ></span>
+        <div class="d-flex align-items-baseline" v-else>
+          <h3 class="font-weight-normal mb-0">
+            <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
+            <span>
+              <CountUp :endVal="numberValue" :suffix="numberSuffix" />
+            </span>
+          </h3>
+          <span class="text-muted" style="margin-left: 0.5rem;">
+            {{
+            suffix
+            }}
           </span>
-        </h3>
-        <span class="text-muted" style="margin-left: 0.5rem;">{{
-          suffix
-        }}</span>
+        </div>
       </div>
-      <div
-        v-if="(showNumericChange || showPercentChange) && change.value !== 0"
-      >
+      <div v-if="(showNumericChange || showPercentChange) && change.value !== 0">
         <svg
           width="12"
           height="13"
@@ -112,7 +120,7 @@ export default {
   watch: {
     value(newValue, oldValue) {
       if (this.showNumericChange) {
-        if (oldValue === 0) {
+        if (oldValue <= 0) {
           this.change = {
             value: 0,
             suffix: ""
@@ -139,7 +147,7 @@ export default {
           }
         }
       } else if (this.showPercentChange) {
-        if (oldValue === 0) {
+        if (oldValue <= 0) {
           this.change = {
             value: 0,
             suffix: "%"

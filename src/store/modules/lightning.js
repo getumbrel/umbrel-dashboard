@@ -28,8 +28,8 @@ const state = () => ({
     pending: -1
   },
   numPendingChannels: 0,
-  numActiveChannels: 0,
-  numPeers: 0,
+  numActiveChannels: -1,
+  numPeers: -1,
   channels: [
     { type: "loading" },
     { type: "loading" },
@@ -37,8 +37,8 @@ const state = () => ({
     { type: "loading" }
   ],
   connectionCode: "unknown",
-  maxSend: 0,
-  maxReceive: 0,
+  maxSend: -1,
+  maxReceive: -1,
   transactions: [
     { type: "loading" },
     { type: "loading" },
