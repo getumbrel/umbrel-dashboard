@@ -9,6 +9,7 @@ const state = () => ({
   ipAddress: "",
   onionAddress: "",
   currentBlock: 0,
+  chain: "",
   blockHeight: 0,
   blocks: [],
   percent: -1, //for loading state
@@ -93,6 +94,7 @@ const mutations = {
     state.percent = toPrecision(parseFloat(sync.percent) * 100, 2);
     state.currentBlock = sync.currentBlock;
     state.blockHeight = sync.headerCount;
+    state.chain = sync.chain;
 
     if (sync.status === "calibrating") {
       state.calibrating = true;

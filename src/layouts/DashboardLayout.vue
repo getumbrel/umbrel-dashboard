@@ -26,14 +26,13 @@
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <!-- Testnet badge -->
+        <!-- Chain badge -->
         <b-badge
           variant="success"
-          v-if="network !== 'mainnet'"
+          v-if="chain !== 'mainnet'"
           class="align-self-center mr-2 text-capitalize"
           pill
-          >{{ network }}</b-badge
-        >
+        >{{ chain }}</b-badge>
 
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
@@ -42,11 +41,7 @@
         >
           <div></div>
         </div>
-        <b-nav-item-dropdown
-          class="d-none d-lg-block d-xl-block"
-          right
-          no-caret
-        >
+        <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right no-caret>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>Satoshi</template>
           <b-dropdown-item @click="logout">Log out</b-dropdown-item>
@@ -56,10 +51,7 @@
 
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
-      <div
-        class="mobile-vertical-menu d-lg-none d-xl-none"
-        v-show="isMobileMenuOpen"
-      >
+      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-show="isMobileMenuOpen">
         <authenticated-vertical-navbar :isMobileMenu="true" />
       </div>
     </transition>
@@ -73,12 +65,7 @@
     </transition>
 
     <b-row class="mx-0">
-      <b-col
-        col
-        lg="3"
-        xl="2"
-        class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2"
-      >
+      <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2">
         <authenticated-vertical-navbar />
       </b-col>
 
@@ -108,12 +95,12 @@ import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavba
 
 export default {
   data() {
-    return {
-      environment: process.env.NODE_ENV,
-      network: process.env.VUE_APP_NETWORK
-    };
+    return {};
   },
   computed: {
+    chain() {
+      return this.$store.state.bitcoin.chain;
+    },
     isDarkMode() {
       return this.$store.getters.isDarkMode;
     },

@@ -17,7 +17,7 @@ jobs:
       run: npm install
       
     - name: Build in staging mode
-      run: npm run build-stage
+      run: npm run build
 
     - name: Deploy to testnet server
       uses: mayankchhabra/ssh-deploy@v2.1.2
