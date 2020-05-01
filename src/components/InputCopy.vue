@@ -11,12 +11,11 @@
       v-model="value"
     ></b-form-input>
 
-    <b-input-group-append>
+    <b-input-group-append class="copy-icon-btn" @click="copyText">
       <svg
         width="18"
         height="18"
         viewBox="0 0 18 18"
-        @click="copyText"
         class="copy-icon"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +86,7 @@ export default {
   padding-left: 0;
   padding-right: 10px;
 }
-.copy-icon {
+.copy-icon-btn {
   cursor: pointer;
 }
 </style>
