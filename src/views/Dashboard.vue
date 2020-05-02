@@ -58,7 +58,9 @@
               icon="icon-app-bitcoin.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link">Manage</router-link>
+                <router-link to="/bitcoin" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>
@@ -71,7 +73,9 @@
               icon="icon-app-tor.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/settings" class="card-link">Manage</router-link>
+                <router-link to="/settings" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>

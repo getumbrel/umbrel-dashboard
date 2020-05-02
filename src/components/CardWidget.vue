@@ -1,5 +1,10 @@
 <template>
-  <b-card header-tag="header" footer-tag="footer" no-body class="mb-4 card-custom">
+  <b-card
+    header-tag="header"
+    footer-tag="footer"
+    no-body
+    class="mb-4 card-custom"
+  >
     <div class="card-custom-loading-bar" v-if="loading"></div>
     <!-- <template v-slot:header></template> -->
     <div>
@@ -10,7 +15,8 @@
             v-if="!!status"
             :variant="status.variant"
             :blink="!!status.blink"
-          >{{ status.text }}</status>
+            >{{ status.text }}</status
+          >
           <b-dropdown
             variant="link"
             toggle-class="text-decoration-none p-0"
@@ -72,9 +78,11 @@
                       :suffix="numericTitle.suffix"
                       v-if="numericTitle.value >= 0 && numericTitle.countUp"
                     />
-                    <span
-                      v-else-if="numericTitle.value >= 0"
-                    >{{ `${numericTitle.value.toLocaleString()}${numericTitle.suffix}` }}</span>
+                    <span v-else-if="numericTitle.value >= 0">{{
+                      `${numericTitle.value.toLocaleString()}${
+                        numericTitle.suffix
+                      }`
+                    }}</span>
                     <span
                       class="loading-placeholder loading-placeholder-lg"
                       style="width: 140px;"
@@ -84,8 +92,14 @@
                 </div>
 
                 <div v-if="subTitle">
-                  <p class="text-muted mb-0" v-if="numericTitle.value >= 0">{{ subTitle }}</p>
-                  <span class="loading-placeholder loading-placeholder-sm w-50" style v-else></span>
+                  <p class="text-muted mb-0" v-if="numericTitle.value >= 0">
+                    {{ subTitle }}
+                  </p>
+                  <span
+                    class="loading-placeholder loading-placeholder-sm w-50"
+                    style
+                    v-else
+                  ></span>
                 </div>
               </div>
             </div>
