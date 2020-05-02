@@ -1,7 +1,7 @@
 <template>
   <div class="nav-vertical d-flex flex-column justify-content-between">
     <div>
-      <div class="balance-container w-100 px-3 py-4 mb-3">
+      <div class="balance-container w-100 px-3 pt-4 pb-3 mb-3">
         <p class="text-muted">
           Balance
           <span style="cursor: pointer;" @click="toggleBalance">
@@ -15,20 +15,18 @@
               :options="{ startVal: walletBalance }"
               v-if="balanceLoaded"
             />
-            <span
-              class="loading-placeholder loading-placeholder-lg w-75"
-              v-else
-            ></span>
+            <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>
           </span>
           <span v-else>***,***</span>
           <div>
-            <small
+            <!-- <small
               class="d-block text-muted mt-1"
               style="font-size: 1rem;"
               v-if="balanceLoaded"
               >&nbsp;Sats</small
             >
-            <span class="d-block loading-placeholder w-50" v-else></span>
+            <span class="d-block loading-placeholder w-50" v-else></span>-->
+            <sats-btc-switch class="mt-3"></sats-btc-switch>
           </div>
         </h3>
       </div>
@@ -86,12 +84,7 @@
           Lightning
         </b-nav-item>
 
-        <b-nav-item
-          to="/settings"
-          class="my-1"
-          v-if="isMobileMenu"
-          exact-active-class="active"
-        >
+        <b-nav-item to="/settings" class="my-1" v-if="isMobileMenu" exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -111,12 +104,7 @@
     </div>
     <div>
       <b-nav vertical class="px-1">
-        <b-nav-item
-          @click="logout"
-          class="my-1"
-          v-if="isMobileMenu"
-          exact-active-class="active"
-        >
+        <b-nav-item @click="logout" class="my-1" v-if="isMobileMenu" exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -136,12 +124,7 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item
-          to="/settings"
-          class="my-1"
-          v-else
-          exact-active-class="active"
-        >
+        <b-nav-item to="/settings" class="my-1" v-else exact-active-class="active">
           <svg
             width="24"
             height="24"
@@ -165,6 +148,7 @@
 <script>
 import { mapState } from "vuex";
 import CountUp from "@/components/Utility/CountUp";
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 
 export default {
   data() {
@@ -199,7 +183,8 @@ export default {
     isMobileMenu: Boolean
   },
   components: {
-    CountUp
+    CountUp,
+    SatsBtcSwitch
   }
 };
 </script>
