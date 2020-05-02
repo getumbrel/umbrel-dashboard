@@ -6,7 +6,8 @@
     :numericTitle="{
       value: walletBalance,
       suffix: '',
-      prefix: ''
+      prefix: '',
+      countUp: true
     }"
     sub-title="Sats"
     icon="icon-app-lightning.svg"
@@ -480,9 +481,9 @@
               <b>{{ receive.description }}</b>
             </span>
             <br />
-            <small class="text-muted">
-              {{ getReadableTime(receive.timestamp) }}
-            </small>
+            <small class="text-muted">{{
+              getReadableTime(receive.timestamp)
+            }}</small>
           </p>
         </div>
 
@@ -528,9 +529,9 @@
           </p>
           <div class="pt-2 mb-3">
             <div class="d-flex justify-content-between">
-              <small class="text-muted">
-                {{ getReadableTime(paymentInfo.timestamp) }}
-              </small>
+              <small class="text-muted">{{
+                getReadableTime(paymentInfo.timestamp)
+              }}</small>
               <small class="text-muted">
                 Fee:
                 {{

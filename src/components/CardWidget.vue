@@ -76,8 +76,13 @@
                         startVal: numericTitle.value
                       }"
                       :suffix="numericTitle.suffix"
-                      v-if="numericTitle.value >= 0"
+                      v-if="numericTitle.value >= 0 && numericTitle.countUp"
                     />
+                    <span v-else-if="numericTitle.value >= 0">{{
+                      `${numericTitle.value.toLocaleString()}${
+                        numericTitle.suffix
+                      }`
+                    }}</span>
                     <span
                       class="loading-placeholder loading-placeholder-lg"
                       style="width: 140px;"

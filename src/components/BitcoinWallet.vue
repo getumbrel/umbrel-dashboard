@@ -6,7 +6,8 @@
     :numericTitle="{
       value: walletBalance,
       suffix: '',
-      prefix: ''
+      prefix: '',
+      countUp: true
     }"
     sub-title="Sats"
     icon="icon-app-bitcoin.svg"
@@ -139,9 +140,9 @@
                       </svg>
 
                       <!-- tx description -->
-                      <span style="margin-left: 6px;" :title="tx.description">
-                        {{ tx.description }}
-                      </span>
+                      <span style="margin-left: 6px;" :title="tx.description">{{
+                        tx.description
+                      }}</span>
                     </h6>
 
                     <!-- Timestamp of tx -->
