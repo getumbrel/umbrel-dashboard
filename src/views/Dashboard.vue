@@ -19,7 +19,12 @@
             variant: 'success',
             blink: false
           }"
-          :title="`${syncPercent}%`"
+          :numericTitle="{
+            value: syncPercent,
+            suffix: '%',
+            prefix: '',
+            countUp: false
+          }"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
           :loading="syncPercent !== 100 || blocks.length === 0"
@@ -43,19 +48,17 @@
             <card-widget
               header="Bitcoin Wallet"
               :status="{ text: 'Active', variant: 'success', blink: false }"
-              title
               :numericTitle="{
                 value: btcBalance,
                 suffix: '',
-                prefix: ''
+                prefix: '',
+                countUp: true
               }"
               sub-title="Sats"
               icon="icon-app-bitcoin.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link"
-                  >Manage</router-link
-                >
+                <router-link to="/bitcoin" class="card-link">Manage</router-link>
               </div>
             </card-widget>
           </b-col>
@@ -68,9 +71,7 @@
               icon="icon-app-tor.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/settings" class="card-link"
-                  >Manage</router-link
-                >
+                <router-link to="/settings" class="card-link">Manage</router-link>
               </div>
             </card-widget>
           </b-col>

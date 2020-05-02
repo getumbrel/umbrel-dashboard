@@ -79,8 +79,16 @@
               <div class="w-100 d-flex justify-content-between mb-2">
                 <span class="align-self-end">Synchronized</span>
                 <h3 class="font-weight-normal mb-0">
-                  {{ syncPercent }}
-                  <small class>%</small>
+                  <span v-if="syncPercent !== -1">
+                    {{ syncPercent }}
+                    <small class>%</small>
+                  </span>
+
+                  <span
+                    class="loading-placeholder loading-placeholder-lg d-block"
+                    style="width: 6rem;"
+                    v-else
+                  ></span>
                 </h3>
               </div>
               <b-progress
