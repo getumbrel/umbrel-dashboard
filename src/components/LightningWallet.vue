@@ -189,9 +189,9 @@
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
-                      {{ Number(tx.amount).toLocaleString() }}
+                      {{ tx.amount | unit | localize }}
                     </span>
-                    <small class="text-muted">Sats</small>
+                    <small class="text-muted">{{ unit | formatUnit}}</small>
                   </div>
                 </div>
               </b-list-group-item>
@@ -237,7 +237,8 @@
           <p>
             <span v-if="send.isValidInvoice && send.amount">
               Paying
-              <b>{{ send.amount.toLocaleString() }}</b> sats
+              <b>{{ send.amount | unit | localize }}</b>
+              {{ unit | formatUnit }}
               <span v-if="send.description">
                 for
                 <b>{{ send.description }}</b>
@@ -273,7 +274,8 @@
           <!-- Invoice amount + description -->
           <p class="text-center mb-4 pb-1">
             Paid
-            <b>{{ send.amount.toLocaleString() }}</b> sats
+            <b>{{ send.amount | unit | localize }}</b>
+            {{ unit | formatUnit}}
             <span v-if="send.description">
               for
               <b>{{ send.description }}</b>
@@ -364,8 +366,8 @@
             <span v-else>
               Invoice of
               <b>
-                {{ receive.amount.toLocaleString() }}
-                {{ receive.amount > 1 ? "sats" : "sat" }}
+                {{ receive.amount | unit | localize }}
+                {{ unit | formatUnit }}
               </b>
               {{ receive.description ? "for" : null }}
               <b>{{ receive.description }}</b>
@@ -418,7 +420,7 @@
           <!-- Invoice amount + description -->
           <p class="text-center mb-4 pb-1">
             Received
-            <b>{{ receive.amount.toLocaleString() }} sats</b>
+            <b>{{ receive.amount | unit | localize }} {{ unit | formatUnit }}</b>
             <span v-if="receive.description">
               for
               <b>{{ receive.description }}</b>
@@ -462,7 +464,7 @@
           <!-- Payment amount + description -->
           <p class="text-center mb-2">
             Paid
-            <b>{{ paymentInfo.amount.toLocaleString() }} sats</b>
+            <b>{{ paymentInfo.amount | unit | localize }} {{ unit | formatUnit }}</b>
             <span v-if="paymentInfo.description">
               for
               <b>{{ paymentInfo.description }}</b>
@@ -477,11 +479,7 @@
               </small>
               <small class="text-muted">
                 Fee:
-                {{
-                paymentInfo.fee > 1
-                ? `${paymentInfo.fee} Sats`
-                : `${paymentInfo.fee} Sat`
-                }}
+                {{ paymentInfo.fee | unit | localize }} {{ unit | formatUnit }}
               </small>
             </div>
             <div class="pt-3 d-block pb-2">

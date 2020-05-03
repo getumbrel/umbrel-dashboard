@@ -166,9 +166,9 @@
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
-                      {{ Number(tx.amount).toLocaleString() }}
+                      {{ tx.amount | unit | localize }}
                     </span>
-                    <small class="text-muted">Sats</small>
+                    <small class="text-muted">{{ unit | formatUnit }}</small>
                   </div>
                 </div>
               </b-list-group-item>

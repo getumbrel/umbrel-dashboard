@@ -16,7 +16,7 @@ Vue.use(BootstrapVueIcons);
 Vue.filter('unit', value => {
   if (store.state.system.unit === 'sats') {
     return Number(value);
-  } else {
+  } else if (store.state.system.unit === 'btc') {
     return Number(value / 1e+8);
   }
 });
@@ -35,6 +35,9 @@ Vue.filter('formatUnit', unit => {
     return 'BTC';
   }
 });
+
+//Localized number (comma, seperator, spaces, etc)
+Vue.filter('localize', n => Number(n).toLocaleString(undefined, { maximumFractionDigits: 8 }));
 
 Vue.config.productionTip = false;
 
