@@ -512,7 +512,8 @@ export default {
       walletBalance: state => state.bitcoin.balance.total,
       depositAddress: state => state.bitcoin.depositAddress,
       fees: state => state.bitcoin.fees,
-      unit: state => state.system.unit
+      unit: state => state.system.unit,
+      chain: state => state.bitcoin.chain
     }),
     ...mapGetters({
       transactions: "bitcoin/transactions"
@@ -528,7 +529,7 @@ export default {
     getTxUrl(txHash) {
       let url = `https://blockstream.info`;
 
-      if (process.env.VUE_APP_NETWORK === "testnet") {
+      if (this.chain === "test") {
         url += "/testnet";
       }
       return `${url}/tx/${txHash}`;
