@@ -18,7 +18,7 @@
             <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>
           </span>
           <span v-else>***,***</span>
-          <sats-btc-switch class="mt-3"></sats-btc-switch>
+          <sats-btc-switch class="mt-3" size="md"></sats-btc-switch>
         </h3>
       </div>
       <!-- <div class="py-2"></div> -->

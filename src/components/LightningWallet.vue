@@ -308,17 +308,22 @@
             </a>
           </div>
 
-          <label class="sr-onlsy" for="input-sats">Sats</label>
-          <b-input
-            id="input-sats"
-            class="mb-3 neu-input"
-            type="number"
-            size="lg"
-            min="1"
-            autofocus
-            v-model.number="receive.amount"
-            :disabled="receive.isGeneratingInvoice"
-          ></b-input>
+          <label class="sr-onlsy" for="input-sats">Amount</label>
+          <b-input-group class="mb-3 neu-input-group">
+            <b-input
+              id="input-sats"
+              class="neu-input"
+              type="text"
+              size="lg"
+              autofocus
+              v-model.number="receive.amountInput"
+              :disabled="receive.isGeneratingInvoice"
+              style="padding-right: 82px"
+            ></b-input>
+            <b-input-group-append class="neu-input-group-append">
+              <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+            </b-input-group-append>
+          </b-input-group>
 
           <label class="sr-onlsy" for="input-description">
             Description
@@ -365,6 +370,7 @@
             <!-- Invoice amount + description -->
             <span v-else>
               Invoice of
+              <!-- {{ receive.amount | unit | localize}} -->
               <b>
                 {{ receive.amount | unit | localize }}
                 {{ unit | formatUnit }}
@@ -633,7 +639,7 @@
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="createInvoice"
         v-else-if="mode === 'receive'"
-        :disabled="!receive.amount || receive.amount < 1"
+        :disabled="!receive.amount || receive.amount <= 0"
       >Create Invoice</b-button>
 
       <!-- spacer if no button -->
@@ -658,6 +664,7 @@ import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/InputCopy";
 import QrCode from "@/components/Utility/QrCode.vue";
 import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 
 export default {
   data() {
@@ -737,6 +744,7 @@ export default {
       //reset state
       this.receive = {
         amount: null,
+        amountInput: "",
         description: "",
         paymentRequest: "",
         invoiceQR: "1",
@@ -966,6 +974,13 @@ export default {
           this.receive.invoiceStatusPollerInprogress = false;
         }, 1000);
       }
+    },
+    "receive.amountInput": function(val) {
+      if (this.unit === "sats") {
+        this.receive.amount = val;
+      } else if (this.unit === "btc") {
+        this.receive.amount = val * 1e8;
+      }
     }
   },
   async created() {
@@ -981,7 +996,8 @@ export default {
     CountUp,
     QrCode,
     InputCopy,
-    CircularCheckmark
+    CircularCheckmark,
+    SatsBtcSwitch
   }
 };
 </script>
