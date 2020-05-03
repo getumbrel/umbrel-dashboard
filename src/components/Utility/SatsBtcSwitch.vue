@@ -73,6 +73,11 @@ export default {
       transform: translateX(54px);
     }
   }
+  &:hover {
+    .toggle-switch {
+      box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    }
+  }
   .toggle-bg-text {
     position: absolute;
     top: 0;
@@ -109,6 +114,11 @@ export default {
       }
       &.toggle-right {
         transform: translateX(34px);
+      }
+    }
+    &:hover {
+      .toggle-switch {
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
       }
     }
   }

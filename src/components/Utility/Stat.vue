@@ -13,9 +13,8 @@
           <h3 class="font-weight-normal mb-0">
             <!-- suffix number like 100K, 120K, 2M, etc -->
             <CountUp
-              :endVal="numberValue"
+              :value="{endVal: numberValue, decimalPlaces: hasDecimals ? 5 : 0}"
               :suffix="numberSuffix"
-              :options="{decimalPlaces: hasDecimals ? 5 : 0}"
               countOnLoad
             />
           </h3>

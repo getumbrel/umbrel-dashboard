@@ -11,8 +11,7 @@
   >
     <template v-slot:title>
       <CountUp
-        :endVal="walletBalance | unit"
-        :options="{decimalPlaces: unit === 'sats' ? 0 : 5}"
+        :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
         v-if="walletBalance !== -1"
       />
       <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
@@ -478,6 +477,7 @@
 import moment from "moment";
 import { mapState, mapGetters } from "vuex";
 
+import { satsToBtc } from "@/helpers/units.js";
 import API from "@/helpers/api";
 
 import CountUp from "@/components/Utility/CountUp";
@@ -509,7 +509,16 @@ export default {
   props: {},
   computed: {
     ...mapState({
-      walletBalance: state => state.bitcoin.balance.total,
+      walletBalance: state => {
+        //skip if still loading
+        if (state.bitcoin.balance.total === -1) {
+          return -1;
+        }
+        if (state.system.unit === "btc") {
+          return satsToBtc(state.bitcoin.balance.total);
+        }
+        return state.bitcoin.balance.total;
+      },
       depositAddress: state => state.bitcoin.depositAddress,
       fees: state => state.bitcoin.fees,
       unit: state => state.system.unit,

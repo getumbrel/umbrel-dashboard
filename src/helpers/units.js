@@ -25,16 +25,6 @@ export function satsToBtc(input, decimals = 8) {
   return Number(btc.decimalPlaces(decimals));
 }
 
-export function formatSats(input) {
-  const sats = new BigNumber(input);
-
-  if (isNaN(sats)) {
-    return 0;
-  }
-
-  return Number(sats.toFormat(0));
-}
-
 export function toPrecision(input, decimals = 8) {
   const number = new BigNumber(input);
 
@@ -42,5 +32,5 @@ export function toPrecision(input, decimals = 8) {
     return 0;
   }
 
-  return Number(number.decimalPlaces(decimals));
+  return number.decimalPlaces(decimals).toString();
 }

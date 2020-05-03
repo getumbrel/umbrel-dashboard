@@ -2,6 +2,7 @@
   <span class="d-flex">
     <span ref="number"></span>
     {{ suffix }}
+    <!-- <small>{{ endVal }}</small> -->
   </span>
 </template>
 
@@ -17,8 +18,8 @@ export default {
       required: false,
       default: 0
     },
-    endVal: {
-      type: Number,
+    value: {
+      type: Object,
       required: true
     },
     options: {
@@ -37,6 +38,7 @@ export default {
   },
   data() {
     return {
+      startVal: 0,
       instance: null,
       firstLoad: true //used to decide if animate/count on the first mount
     };
@@ -48,7 +50,6 @@ export default {
   },
   beforeDestroy() {
     const that = this;
-    // console.log('beforeDestroy');
     that.destroy();
   },
   methods: {
@@ -59,15 +60,19 @@ export default {
       }
       const dom = that.$refs.number;
       const options = that.options || {};
+
       if (this.firstLoad) {
         if (this.countOnLoad) {
-          options.startVal = 0;
+          this.startVal = 0;
         } else {
-          options.startVal = that.endVal;
+          this.startVal = this.value.endVal;
         }
       }
-      // options.decimalPlaces = this.decimalPlaces;
-      const instance = new CountUp(dom, that.endVal, options);
+      options.decimalPlaces = this.value.decimalPlaces || 0;
+
+      options.startVal = this.startVal;
+
+      const instance = new CountUp(dom, that.value.endVal, options);
       if (instance.error) {
         // error
         return;
@@ -118,25 +123,19 @@ export default {
     }
   },
   watch: {
-    endVal: {
-      handler(newVal) {
-        // console.log("val");
-        const that = this;
-        if (that.instance && isFunction(that.instance.update)) {
-          that.instance.update(newVal);
+    value: {
+      handler(newVal, oldVal) {
+        if (newVal.decimalPlaces !== oldVal.decimalPlaces) {
+          this.destroy();
+          this.startVal = 0;
+          this.create();
+        } else {
+          if (newVal.endVal !== oldVal.endVal) {
+            this.instance.update(newVal);
+          }
         }
       },
-      deep: false
-    },
-    "options.decimalPlaces": {
-      //remount element on change of decimal places
-      handler() {
-        // console.log("dec");
-        const that = this;
-        that.destroy();
-        that.create();
-      },
-      deep: false
+      deep: true
     }
   },
   components: {}

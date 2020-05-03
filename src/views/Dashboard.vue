@@ -24,7 +24,11 @@
           :loading="syncPercent !== 100 || blocks.length === 0"
         >
           <template v-slot:title>
-            <CountUp :endVal="syncPercent" suffix="%" v-if="syncPercent !== -1" />
+            <CountUp
+              :value="{endVal: syncPercent, decimalPlaces: syncPercent === 100 ? 0 : 2}"
+              suffix="%"
+              v-if="syncPercent !== -1"
+            />
             <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
           </template>
           <div class>
@@ -51,8 +55,7 @@
             >
               <template v-slot:title>
                 <CountUp
-                  :endVal="btcBalance | unit"
-                  :options="{decimalPlaces: unit === 'sats' ? 0 : 5}"
+                  :value="{endVal: btcBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
                   v-if="btcBalance !== -1"
                 />
                 <span
@@ -96,6 +99,8 @@
 <script>
 import { mapState } from "vuex";
 
+import { satsToBtc } from "@/helpers/units.js";
+
 import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
@@ -109,7 +114,16 @@ export default {
     ...mapState({
       syncPercent: state => state.bitcoin.percent,
       blocks: state => state.bitcoin.blocks,
-      btcBalance: state => state.bitcoin.balance.total,
+      btcBalance: state => {
+        //skip if still loading
+        if (state.bitcoin.balance.total === -1) {
+          return -1;
+        }
+        if (state.system.unit === "btc") {
+          return satsToBtc(state.bitcoin.balance.total);
+        }
+        return state.bitcoin.balance.total;
+      },
       unit: state => state.system.unit
     }),
     isDarkMode() {

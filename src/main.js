@@ -5,6 +5,8 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+import { satsToBtc } from "@/helpers/units";
+
 // import "@/global-styles/designsystem.scss";
 // import 'bootstrap/dist/css/bootstrap.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -17,7 +19,7 @@ Vue.filter('unit', value => {
   if (store.state.system.unit === 'sats') {
     return Number(value);
   } else if (store.state.system.unit === 'btc') {
-    return Number(value / 1e+8);
+    return satsToBtc(value);
   }
 });
 
@@ -25,7 +27,7 @@ Vue.filter('unit', value => {
 Vue.filter('sats', value => Number(value));
 
 //transforms a number to btc
-Vue.filter('btc', value => Number(value / 1e+8));
+Vue.filter('btc', value => satsToBtc(value));
 
 //formats the unit
 Vue.filter('formatUnit', unit => {

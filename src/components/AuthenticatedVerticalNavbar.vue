@@ -11,9 +11,8 @@
         <h3>
           <span v-if="state.showBalance">
             <CountUp
-              :endVal="walletBalance | unit"
-              :options="{decimalPlaces: unit === 'sats' ? 0 : 5}"
-              v-if="balanceLoaded && walletBalance !== -1"
+              :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
+              v-if="balanceLoaded"
             />
             <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>
           </span>
@@ -138,6 +137,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { satsToBtc } from "@/helpers/units.js";
 import CountUp from "@/components/Utility/CountUp";
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 
@@ -156,7 +156,9 @@ export default {
       unit: state => state.system.unit
     }),
     walletBalance() {
-      return this.btcBalance + this.lightningBalance;
+      return this.unit === "sats"
+        ? this.btcBalance + this.lightningBalance
+        : satsToBtc(this.btcBalance + this.lightningBalance);
     },
     balanceLoaded() {
       return this.btcBalance >= 0 && this.lightningBalance >= 0;

@@ -11,8 +11,7 @@
   >
     <template v-slot:title>
       <CountUp
-        :endVal="walletBalance | unit"
-        :options="{decimalPlaces: unit === 'sats' ? 0 : 5}"
+        :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
         v-if="walletBalance !== -1"
       />
       <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
@@ -657,6 +656,7 @@ import moment from "moment";
 
 import { mapState } from "vuex";
 
+import { satsToBtc } from "@/helpers/units.js";
 import API from "@/helpers/api";
 
 import CountUp from "@/components/Utility/CountUp";
@@ -711,7 +711,16 @@ export default {
   computed: {
     ...mapState({
       transactions: state => state.lightning.transactions,
-      walletBalance: state => state.lightning.balance.total,
+      walletBalance: state => {
+        //skip if still loading
+        if (state.lightning.balance.total === -1) {
+          return -1;
+        }
+        if (state.system.unit === "btc") {
+          return satsToBtc(state.lightning.balance.total);
+        }
+        return state.lightning.balance.total;
+      },
       unit: state => state.system.unit
     }),
     isLightningPage() {
