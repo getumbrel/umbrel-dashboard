@@ -14,7 +14,7 @@ module.exports = {
   chainWebpack: config => {
     config.plugin("html").tap(args => {
       args[0].template =
-        process.env.VUE_APP_NETWORK === "testnet"
+        process.env.VUE_APP_SERVER === "testnet"
           ? "./public/index-testnet.html"
           : "./public/index.html";
       return args;
