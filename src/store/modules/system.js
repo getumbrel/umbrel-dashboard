@@ -21,8 +21,14 @@ const mutations = {
 
 // Functions to get data from the API
 const actions = {
+  async fetchUnit({ commit }) {
+    if (window.localStorage && window.localStorage.getItem("unit")) {
+      commit("setUnit", window.localStorage.getItem("unit"));
+    }
+  },
   changeUnit({ commit }, unit) {
     if (unit === 'sats' || unit === 'btc') {
+      window.localStorage.setItem("unit", unit);
       commit("setUnit", unit);
     }
   },

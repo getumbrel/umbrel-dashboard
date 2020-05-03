@@ -127,6 +127,8 @@ export default {
     }
   },
   created() {
+    //fetch user's peferences
+    this.$store.dispatch("system/fetchUnit");
     // start polling data every 20s
     this.fetchData();
     this.interval = window.setInterval(this.fetchData, 20000);
