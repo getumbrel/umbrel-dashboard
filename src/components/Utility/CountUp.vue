@@ -29,11 +29,16 @@ export default {
       type: String,
       required: false,
       default: ""
+    },
+    countOnLoad: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      instance: null
+      instance: null,
+      firstLoad: true //used to decide if animate/count on the first mount
     };
   },
   computed: {},
@@ -53,7 +58,16 @@ export default {
         return;
       }
       const dom = that.$refs.number;
-      const instance = new CountUp(dom, that.endVal, that.options);
+      const options = that.options || {};
+      if (this.firstLoad) {
+        if (this.countOnLoad) {
+          options.startVal = 0;
+        } else {
+          options.startVal = that.endVal;
+        }
+      }
+      // options.decimalPlaces = this.decimalPlaces;
+      const instance = new CountUp(dom, that.endVal, options);
       if (instance.error) {
         // error
         return;
@@ -63,10 +77,10 @@ export default {
         that.$emit("ready", instance, CountUp);
         return;
       }
-      setTimeout(
-        () => instance.start(() => that.$emit("ready", instance, CountUp)),
-        that.delay
-      );
+      setTimeout(() => {
+        instance.start(() => that.$emit("ready", instance, CountUp));
+        this.firstLoad = false;
+      }, that.delay);
     },
     destroy() {
       const that = this;
@@ -105,11 +119,20 @@ export default {
   },
   watch: {
     endVal: {
-      handler(value) {
+      handler(newVal) {
         const that = this;
         if (that.instance && isFunction(that.instance.update)) {
-          that.instance.update(value);
+          that.instance.update(newVal);
         }
+      },
+      deep: false
+    },
+    "options.decimalPlaces": {
+      //remount element on change of decimal places
+      handler() {
+        const that = this;
+        that.destroy();
+        that.create();
       },
       deep: false
     }

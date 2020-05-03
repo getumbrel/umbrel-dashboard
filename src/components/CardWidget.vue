@@ -1,10 +1,5 @@
 <template>
-  <b-card
-    header-tag="header"
-    footer-tag="footer"
-    no-body
-    class="mb-4 card-custom"
-  >
+  <b-card header-tag="header" footer-tag="footer" no-body class="mb-4 card-custom">
     <div class="card-custom-loading-bar" v-if="loading"></div>
     <!-- <template v-slot:header></template> -->
     <div>
@@ -15,8 +10,7 @@
             v-if="!!status"
             :variant="status.variant"
             :blink="!!status.blink"
-            >{{ status.text }}</status
-          >
+          >{{ status.text }}</status>
           <b-dropdown
             variant="link"
             toggle-class="text-decoration-none p-0"
@@ -58,49 +52,15 @@
         </div>
       </div>
       <div class="card-custom-body">
-        <div class="card-app-info px-3 px-lg-4" v-if="title || numericTitle">
+        <div class="card-app-info px-3 px-lg-4" v-if="title || subTitle">
           <div class="d-flex w-100 justify-content-between mb-4">
             <div>
-              <div v-if="title">
-                <h3 class="mb-1">{{ title }}</h3>
+              <div>
+                <h3 v-if="title" class="mb-1">{{ title }}</h3>
+                <h3 class="mb-1" v-else>
+                  <slot name="title"></slot>
+                </h3>
                 <p class="text-muted mb-0" v-if="subTitle">{{ subTitle }}</p>
-              </div>
-
-              <div v-else-if="numericTitle">
-                <div>
-                  <h3 class="mb-1">
-                    <CountUp
-                      :endVal="numericTitle.value"
-                      :options="{
-                        prefix: numericTitle.prefix,
-                        startVal: numericTitle.value
-                      }"
-                      :suffix="numericTitle.suffix"
-                      v-if="numericTitle.value >= 0 && numericTitle.countUp"
-                    />
-                    <span v-else-if="numericTitle.value >= 0">{{
-                      `${numericTitle.value.toLocaleString()}${
-                        numericTitle.suffix
-                      }`
-                    }}</span>
-                    <span
-                      class="loading-placeholder loading-placeholder-lg"
-                      style="width: 140px;"
-                      v-else
-                    ></span>
-                  </h3>
-                </div>
-
-                <div v-if="subTitle">
-                  <p class="text-muted mb-0" v-if="numericTitle.value >= 0">
-                    {{ subTitle }}
-                  </p>
-                  <span
-                    class="loading-placeholder loading-placeholder-sm w-50"
-                    style
-                    v-else
-                  ></span>
-                </div>
               </div>
             </div>
             <img :alt="header" :src="require(`@/assets/${icon}`)" v-if="icon" />
@@ -114,7 +74,6 @@
 </template>
 
 <script>
-import CountUp from "@/components/Utility/CountUp";
 import Status from "@/components/Utility/Status";
 
 export default {
@@ -126,7 +85,6 @@ export default {
     status: Object, // {text, variant, blink}
     hasMenu: Boolean,
     title: String,
-    numericTitle: Object,
     subTitle: String,
     icon: String,
     loading: Boolean
@@ -134,7 +92,6 @@ export default {
   computed: {},
   methods: {},
   components: {
-    CountUp,
     Status
   }
 };

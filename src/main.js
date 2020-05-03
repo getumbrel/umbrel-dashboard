@@ -12,6 +12,30 @@ import store from "./store";
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
+//transforms a number to sats or btc based on store
+Vue.filter('unit', value => {
+  if (store.state.system.unit === 'sats') {
+    return Number(value);
+  } else {
+    return Number(value / 1e+8);
+  }
+});
+
+//transforms a number to sats
+Vue.filter('sats', value => Number(value));
+
+//transforms a number to btc
+Vue.filter('btc', value => Number(value / 1e+8));
+
+//formats the unit
+Vue.filter('formatUnit', unit => {
+  if (unit === 'sats') {
+    return 'Sats';
+  } else if (unit === 'btc') {
+    return 'BTC';
+  }
+});
+
 Vue.config.productionTip = false;
 
 new Vue({

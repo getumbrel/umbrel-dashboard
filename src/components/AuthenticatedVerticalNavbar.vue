@@ -11,23 +11,14 @@
         <h3>
           <span v-if="state.showBalance">
             <CountUp
-              :endVal="walletBalance"
-              :options="{ startVal: walletBalance }"
-              v-if="balanceLoaded"
+              :endVal="walletBalance | unit"
+              :options="{decimalPlaces: unit === 'sats' ? 0 : 5}"
+              v-if="balanceLoaded && walletBalance !== -1"
             />
             <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>
           </span>
           <span v-else>***,***</span>
-          <div>
-            <!-- <small
-              class="d-block text-muted mt-1"
-              style="font-size: 1rem;"
-              v-if="balanceLoaded"
-              >&nbsp;Sats</small
-            >
-            <span class="d-block loading-placeholder w-50" v-else></span>-->
-            <sats-btc-switch class="mt-3"></sats-btc-switch>
-          </div>
+          <sats-btc-switch class="mt-3"></sats-btc-switch>
         </h3>
       </div>
       <!-- <div class="py-2"></div> -->
@@ -161,7 +152,8 @@ export default {
   computed: {
     ...mapState({
       btcBalance: state => state.bitcoin.balance.total,
-      lightningBalance: state => state.lightning.balance.total
+      lightningBalance: state => state.lightning.balance.total,
+      unit: state => state.system.unit
     }),
     walletBalance() {
       return this.btcBalance + this.lightningBalance;

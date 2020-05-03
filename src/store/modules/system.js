@@ -23,7 +23,7 @@ const mutations = {
 const actions = {
   changeUnit({ commit }, unit) {
     if (unit === 'sats' || unit === 'btc') {
-      commit("setUnit", unit)
+      commit("setUnit", unit);
     }
   },
   async getApi({ commit }) {
