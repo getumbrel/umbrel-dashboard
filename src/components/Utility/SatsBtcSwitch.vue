@@ -84,16 +84,18 @@ export default {
       border-radius: 30px;
       font-size: 1rem;
       font-weight: 600;
-      color: #cfd2d4;
+      color: #b4b7b9;
     }
   }
   &.toggle-sm {
     width: 80px;
     height: 26px;
     border-radius: 30px;
+    box-shadow: inset 0px 2px 6px rgba(0, 0, 0, 0.1);
     .toggle-bg-text {
       span {
         font-size: 0.75rem;
+        color: #9c9c9c;
       }
     }
     .toggle-switch {

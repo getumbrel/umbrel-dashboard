@@ -120,6 +120,7 @@ export default {
   watch: {
     endVal: {
       handler(newVal) {
+        // console.log("val");
         const that = this;
         if (that.instance && isFunction(that.instance.update)) {
           that.instance.update(newVal);
@@ -130,6 +131,7 @@ export default {
     "options.decimalPlaces": {
       //remount element on change of decimal places
       handler() {
+        // console.log("dec");
         const that = this;
         that.destroy();
         that.create();
