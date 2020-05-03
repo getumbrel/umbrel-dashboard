@@ -197,17 +197,22 @@
                 Back
               </a>
             </div>
-            <label class="sr-onlsy" for="input-withdrawal-amount">Sats</label>
-            <b-input
-              id="input-withdrawal-amount"
-              class="mb-3 neu-input"
-              type="number"
-              size="lg"
-              min="1"
-              v-model="withdraw.amount"
-              autofocus
-              @input="fetchWithdrawalFees"
-            ></b-input>
+            <label class="sr-onlsy" for="input-withdrawal-amount">Amount</label>
+            <b-input-group class="mb-3 neu-input-group">
+              <b-input
+                id="input-withdrawal-amount"
+                class="neu-input"
+                type="text"
+                size="lg"
+                v-model="withdraw.amountInput"
+                autofocus
+                @input="fetchWithdrawalFees"
+                style="padding-right: 82px"
+              ></b-input>
+              <b-input-group-append class="neu-input-group-append">
+                <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+              </b-input-group-append>
+            </b-input-group>
 
             <label class="sr-onlsy" for="input-withdrawal-address">Address</label>
             <b-input
@@ -244,8 +249,8 @@
               </a>
             </div>
             <div class="text-center pb-4">
-              <h3 class="mb-0">{{ Number(withdraw.amount).toLocaleString() }}</h3>
-              <span class="d-block mb-3 text-muted">Sats</span>
+              <h3 class="mb-0">{{ withdraw.amount | unit | localize }}</h3>
+              <span class="d-block mb-3 text-muted">{{ unit | formatUnit }}</span>
 
               <svg
                 width="30"
@@ -265,8 +270,8 @@
             </div>
             <div class="d-flex justify-content-between pb-3">
               <span class="text-muted">
-                <b>{{ fees.fast.total.toLocaleString() }}</b>
-                <small>&nbsp;Sats</small>
+                <b>{{ fees.fast.total | unit | localize }}</b>
+                <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
                 <small>Mining fee</small>
               </span>
@@ -277,10 +282,10 @@
                   walletBalance -
                   withdraw.amount -
                   fees.fast.total
-                  ).toLocaleString()
+                  ) | unit | localize
                   }}
                 </b>
-                <small>&nbsp;Sats</small>
+                <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
@@ -320,7 +325,7 @@
             <div class="text-center mb-2">
               <span class="d-block mb-2">
                 Successfully withdrawn
-                <b>{{ withdraw.amount.toLocaleString() }} sats</b>
+                <b>{{ withdraw.amount | unit | localize }} {{ unit | formatUnit }}</b>
               </span>
               <small class="text-muted d-block">Transaction ID</small>
             </div>
@@ -480,6 +485,7 @@ import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/InputCopy";
 import QrCode from "@/components/Utility/QrCode.vue";
 import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 
 export default {
   data() {
@@ -487,6 +493,7 @@ export default {
       //balance: 162500, //net user's balance in sats
       mode: "transactions", //transactions (default mode), deposit, withdraw, review-withdraw, withdrawn
       withdraw: {
+        amountInput: "",
         amount: "", //withdrawal amount
         address: "", //withdrawal address
         sendMax: false, //sweep = send all funds?
@@ -610,6 +617,8 @@ export default {
         satPerByte: parseInt(this.fees.fast.perByte)
       };
 
+      console.log(payload);
+
       try {
         const res = await API.post(
           `${process.env.VUE_APP_API_URL}/v1/lnd/transaction`,
@@ -631,7 +640,15 @@ export default {
       this.withdraw.isWithdrawing = false;
     }
   },
-  watch: {},
+  watch: {
+    "withdraw.amountInput": function(val) {
+      if (this.unit === "sats") {
+        this.withdraw.amount = val;
+      } else if (this.unit === "btc") {
+        this.withdraw.amount = val * 1e8;
+      }
+    }
+  },
   async created() {
     this.$store.dispatch("bitcoin/getStatus");
   },
@@ -640,7 +657,8 @@ export default {
     QrCode,
     CountUp,
     InputCopy,
-    CircularCheckmark
+    CircularCheckmark,
+    SatsBtcSwitch
   }
 };
 </script>
