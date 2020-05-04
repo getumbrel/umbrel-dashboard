@@ -131,7 +131,7 @@ export default {
           this.create();
         } else {
           if (newVal.endVal !== oldVal.endVal) {
-            this.instance.update(newVal);
+            this.update(newVal.endVal);
           }
         }
       },

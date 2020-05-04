@@ -115,10 +115,15 @@
             <div class="px-3 px-lg-4">
               <b-row>
                 <b-col col cols="6" xl="3">
-                  <stat title="Connections" :value="numPeers" suffix="Peers"></stat>
+                  <stat title="Connections" :value="numPeers" suffix="Peers" showNumericChange></stat>
                 </b-col>
                 <b-col col cols="6" xl="3">
-                  <stat title="Active Channels" :value="numActiveChannels" suffix="Channels"></stat>
+                  <stat
+                    title="Active Channels"
+                    :value="numActiveChannels"
+                    suffix="Channels"
+                    showNumericChange
+                  ></stat>
                 </b-col>
                 <b-col col cols="6" xl="3">
                   <stat
