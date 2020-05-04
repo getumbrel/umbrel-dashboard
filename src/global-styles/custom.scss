@@ -429,3 +429,9 @@ svg.icon-clock {
   .zero-wallet-transactions-container {
     height: 20rem;
   }
+
+  .tooltip {
+    .tooltip-inner {
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.18);
+    }
+  }

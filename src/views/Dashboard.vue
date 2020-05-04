@@ -54,10 +54,14 @@
               icon="icon-app-bitcoin.svg"
             >
               <template v-slot:title>
-                <CountUp
-                  :value="{endVal: btcBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
+                <div
+                  v-b-tooltip.hover.right
+                  :title="btcBalanceInSats | satsToUSD"
                   v-if="btcBalance !== -1"
-                />
+                >
+                  <CountUp :value="{endVal: btcBalance, decimalPlaces: unit === 'sats' ? 0 : 5}" />
+                </div>
+
                 <span
                   class="loading-placeholder loading-placeholder-lg"
                   style="width: 140px;"
@@ -124,6 +128,7 @@ export default {
         }
         return state.bitcoin.balance.total;
       },
+      btcBalanceInSats: state => state.bitcoin.balance.total,
       unit: state => state.system.unit
     }),
     isDarkMode() {

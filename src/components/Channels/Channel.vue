@@ -28,8 +28,12 @@
           <div class="d-flex justify-content-between">
             <span
               class="text-primary font-weight-bold"
+              v-b-tooltip.hover.right
+              :title="channel.localBalance | satsToUSD"
             >{{ channel.localBalance | unit | localize }} {{ unit | formatUnit }}</span>
             <span
+              v-b-tooltip.hover.left
+              :title="channel.remoteBalance | satsToUSD"
               class="text-success text-right font-weight-bold"
             >{{ channel.remoteBalance | unit | localize }} {{ unit | formatUnit }}</span>
           </div>

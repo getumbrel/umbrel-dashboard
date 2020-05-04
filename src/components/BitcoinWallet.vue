@@ -10,10 +10,13 @@
     "
   >
     <template v-slot:title>
-      <CountUp
-        :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
+      <div
+        v-b-tooltip.hover.right
+        :title="walletBalanceInSats | satsToUSD"
         v-if="walletBalance !== -1"
-      />
+      >
+        <CountUp :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}" />
+      </div>
       <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
     </template>
     <div class="wallet-content">
@@ -161,7 +164,11 @@
                   </div>
 
                   <div class="text-right">
-                    <span class="font-weight-bold d-block">
+                    <span
+                      class="font-weight-bold d-block"
+                      v-b-tooltip.hover.left
+                      :title="tx.amount | satsToUSD"
+                    >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
@@ -196,22 +203,28 @@
                 Back
               </a>
             </div>
-            <label class="sr-onlsy" for="input-withdrawal-amount">Amount</label>
-            <b-input-group class="mb-3 neu-input-group">
-              <b-input
-                id="input-withdrawal-amount"
-                class="neu-input"
-                type="text"
-                size="lg"
-                v-model="withdraw.amountInput"
-                autofocus
-                @input="fetchWithdrawalFees"
-                style="padding-right: 82px"
-              ></b-input>
-              <b-input-group-append class="neu-input-group-append">
-                <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
-              </b-input-group-append>
-            </b-input-group>
+            <div class="mb-2">
+              <label class="sr-onlsy" for="input-withdrawal-amount">Amount</label>
+              <b-input-group class="neu-input-group">
+                <b-input
+                  id="input-withdrawal-amount"
+                  class="neu-input"
+                  type="text"
+                  size="lg"
+                  v-model="withdraw.amountInput"
+                  autofocus
+                  @input="fetchWithdrawalFees"
+                  style="padding-right: 82px"
+                ></b-input>
+                <b-input-group-append class="neu-input-group-append">
+                  <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+                </b-input-group-append>
+              </b-input-group>
+              <small
+                class="text-muted mt-2 d-block text-right mb-0"
+                :style="{opacity: withdraw.amount > 0 ? 1 : 0}"
+              >~ {{ withdraw.amount | satsToUSD }}</small>
+            </div>
 
             <label class="sr-onlsy" for="input-withdrawal-address">Address</label>
             <b-input
@@ -249,7 +262,8 @@
             </div>
             <div class="text-center pb-4">
               <h3 class="mb-0">{{ withdraw.amount | unit | localize }}</h3>
-              <span class="d-block mb-3 text-muted">{{ unit | formatUnit }}</span>
+              <span class="d-block mb-1 text-muted">{{ unit | formatUnit }}</span>
+              <small class="text-muted d-block mb-3">~ {{ withdraw.amount | satsToUSD }}</small>
 
               <svg
                 width="30"
@@ -272,7 +286,7 @@
                 <b>{{ fees.fast.total | unit | localize }}</b>
                 <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
-                <small>Mining fee</small>
+                <small>~ {{ fees.fast.total | satsToUSD }} Mining fee</small>
               </span>
               <span class="text-right text-muted">
                 <b>{{ projectedBalanceInSats | unit | localize }}</b>
@@ -431,7 +445,7 @@
         variant="primary"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="withdrawBtc"
-        :disabled="withdraw.isWithdrawing"
+        :disabled="withdraw.isWithdrawing || !!error"
         v-else-if="mode === 'review-withdraw'"
       >
         {{
@@ -511,6 +525,7 @@ export default {
         }
         return state.bitcoin.balance.total;
       },
+      walletBalanceInSats: state => state.bitcoin.balance.total,
       depositAddress: state => state.bitcoin.depositAddress,
       fees: state => state.bitcoin.fees,
       unit: state => state.system.unit,

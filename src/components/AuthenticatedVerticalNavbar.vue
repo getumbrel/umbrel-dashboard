@@ -8,17 +8,18 @@
             <!-- <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon> -->
           </span>
         </p>
-        <h3>
-          <span v-if="state.showBalance">
-            <CountUp
-              :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
-              v-if="balanceLoaded"
-            />
-            <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>
-          </span>
-          <span v-else>***,***</span>
-          <sats-btc-switch class="mt-3" size="md"></sats-btc-switch>
-        </h3>
+
+        <span v-if="state.showBalance">
+          <div v-if="balanceLoaded">
+            <h3 class="mb-1">
+              <CountUp :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}" />
+            </h3>
+            <small class="text-muted">~ {{ this.btcBalance + this.lightningBalance | satsToUSD }}</small>
+          </div>
+          <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>
+        </span>
+        <h3 v-else>***,***</h3>
+        <sats-btc-switch class="mt-3" size="md"></sats-btc-switch>
       </div>
       <!-- <div class="py-2"></div> -->
       <b-nav vertical class="px-1">

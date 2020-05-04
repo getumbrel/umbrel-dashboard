@@ -38,6 +38,15 @@ Vue.filter('formatUnit', unit => {
   }
 });
 
+//transforms sats to usd
+Vue.filter('satsToUSD', (value) => {
+  if (isNaN(parseInt(value))) {
+    return value;
+  } else {
+    return "$" + Number((satsToBtc(value) * store.state.bitcoin.price).toFixed(2)).toLocaleString();
+  }
+});
+
 //Localized number (comma, seperator, spaces, etc)
 Vue.filter('localize', n => Number(n).toLocaleString(undefined, { maximumFractionDigits: 8 }));
 

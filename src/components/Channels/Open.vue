@@ -16,21 +16,27 @@
       </b-col>
       <b-col col cols="12" sm="6">
         <label class="sr-onlsy" for="funding-amount">Amount</label>
-        <b-input-group class="mb-3 neu-input-group">
-          <b-input
-            id="funding-amount"
-            class="neu-input"
-            type="text"
-            size="lg"
-            v-model="fundingAmountInput"
-            @input="fetchFees"
-            style="padding-right: 82px"
-            :disabled="isOpening"
-          ></b-input>
-          <b-input-group-append class="neu-input-group-append">
-            <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
-          </b-input-group-append>
-        </b-input-group>
+        <div class="mb-3">
+          <b-input-group class="neu-input-group">
+            <b-input
+              id="funding-amount"
+              class="neu-input"
+              type="text"
+              size="lg"
+              v-model="fundingAmountInput"
+              @input="fetchFees"
+              style="padding-right: 82px"
+              :disabled="isOpening"
+            ></b-input>
+            <b-input-group-append class="neu-input-group-append">
+              <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+            </b-input-group-append>
+          </b-input-group>
+          <small
+            class="text-muted mt-2 d-block text-right mb-0"
+            :style="{opacity: fundingAmount > 0 ? 1 : 0}"
+          >~ {{ fundingAmount | satsToUSD }}</small>
+        </div>
 
         <!-- <small>{{ btc.confirmed.toLocaleString() }} Sats available out of {{ btc.total.toLocaleString() }} and {{ btc.pending.toLocaleString() }} pending</small> -->
       </b-col>

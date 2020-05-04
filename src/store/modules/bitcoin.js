@@ -371,7 +371,6 @@ const actions = {
   },
 
   async getPrice({ commit }) {
-    // Todo: Cache this value on the node instead of making a 3rd party request
     const price = await API.get(
       "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD"
     );
