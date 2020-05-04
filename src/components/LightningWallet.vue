@@ -10,10 +10,13 @@
     "
   >
     <template v-slot:title>
-      <CountUp
-        :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
+      <div
+        v-b-tooltip.hover.right
+        :title="walletBalanceInSats | satsToUSD"
         v-if="walletBalance !== -1"
-      />
+      >
+        <CountUp :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}" />
+      </div>
       <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
     </template>
     <div class="wallet-content">
@@ -159,7 +162,7 @@
                     <small
                       class="text-muted mt-0 tx-timestamp"
                       style="margin-left: 25px;"
-                      v-b-tooltip.hover.bottomright
+                      v-b-tooltip.hover.right
                       :title="getReadableTime(tx.timestamp)"
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                     >{{ getTimeFromNow(tx.timestamp) }}</small>
@@ -184,7 +187,11 @@
                   </div>
 
                   <div class="text-right">
-                    <span class="font-weight-bold d-block">
+                    <span
+                      class="font-weight-bold d-block"
+                      v-b-tooltip.hover.left
+                      :title="tx.amount | satsToUSD"
+                    >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
@@ -233,17 +240,21 @@
           ></b-input>
 
           <!-- Invoice amount + description -->
-          <p>
-            <span v-if="send.isValidInvoice && send.amount">
-              Paying
-              <b>{{ send.amount | unit | localize }}</b>
-              {{ unit | formatUnit }}
-              <span v-if="send.description">
-                for
-                <b>{{ send.description }}</b>
-              </span>
-            </span>
-          </p>
+          <div v-if="send.isValidInvoice && send.amount">
+            <div class="d-flex justify-content-between mb-3 align-items-center">
+              <div>
+                <small class="d-block text-muted mb-1">Paying</small>
+                <h4 class="d-block mb-0">{{ send.amount | unit | localize }}</h4>
+                <small class="d-block text-muted">{{ unit | formatUnit }}</small>
+              </div>
+              <small class="d-block text-muted">~ {{ send.amount | satsToUSD }}</small>
+            </div>
+
+            <div v-if="send.description">
+              <small class="d-block text-muted mb-1">For</small>
+              <span>{{ send.description }}</span>
+            </div>
+          </div>
         </div>
 
         <!-- SCREEN/MODE: Successfully paid invoice -->
@@ -308,21 +319,27 @@
           </div>
 
           <label class="sr-onlsy" for="input-sats">Amount</label>
-          <b-input-group class="mb-3 neu-input-group">
-            <b-input
-              id="input-sats"
-              class="neu-input"
-              type="text"
-              size="lg"
-              autofocus
-              v-model.number="receive.amountInput"
-              :disabled="receive.isGeneratingInvoice"
-              style="padding-right: 82px"
-            ></b-input>
-            <b-input-group-append class="neu-input-group-append">
-              <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
-            </b-input-group-append>
-          </b-input-group>
+          <div class="mb-2">
+            <b-input-group class="neu-input-group">
+              <b-input
+                id="input-sats"
+                class="neu-input"
+                type="text"
+                size="lg"
+                autofocus
+                v-model.number="receive.amountInput"
+                :disabled="receive.isGeneratingInvoice"
+                style="padding-right: 82px"
+              ></b-input>
+              <b-input-group-append class="neu-input-group-append">
+                <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+              </b-input-group-append>
+            </b-input-group>
+            <small
+              class="text-muted mt-2 d-block text-right mb-0"
+              :style="{opacity: receive.amount > 0 ? 1 : 0}"
+            >~ {{ receive.amount | satsToUSD }}</small>
+          </div>
 
           <label class="sr-onlsy" for="input-description">
             Description
@@ -721,6 +738,7 @@ export default {
         }
         return state.lightning.balance.total;
       },
+      walletBalanceInSats: state => state.lightning.balance.total,
       unit: state => state.system.unit
     }),
     isLightningPage() {
@@ -989,6 +1007,13 @@ export default {
         this.receive.amount = Number(val);
       } else if (this.unit === "btc") {
         this.receive.amount = btcToSats(val);
+      }
+    },
+    unit: function(val) {
+      if (val === "sats") {
+        this.receive.amount = Number(this.receive.amountInput);
+      } else if (val === "btc") {
+        this.receive.amount = btcToSats(this.receive.amountInput);
       }
     }
   },

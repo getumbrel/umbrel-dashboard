@@ -4,9 +4,13 @@
       <div class="d-flex justify-content-between">
         <h4
           class="text-primary font-weight-bold"
+          v-b-tooltip.hover.right
+          :title="channel.localBalance | satsToUSD"
         >{{ channel.localBalance | unit | localize }} {{ unit | formatUnit }}</h4>
         <h4
           class="text-success font-weight-bold text-right"
+          v-b-tooltip.hover.left
+          :title="channel.remoteBalance | satsToUSD"
         >{{ channel.remoteBalance | unit | localize }} {{ unit | formatUnit }}</h4>
       </div>
       <bar
@@ -65,6 +69,8 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Local Balance</span>
           <span
+            v-b-tooltip.hover.left
+            :title="channel.localBalance | satsToUSD"
             class="text-capitalize font-weight-bold"
           >{{ channel.localBalance | unit | localize }} {{ unit | formatUnit }}</span>
         </div>
@@ -72,6 +78,8 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Balance</span>
           <span
+            v-b-tooltip.hover.left
+            :title="channel.remoteBalance | satsToUSD"
             class="text-capitalize font-weight-bold"
           >{{ channel.remoteBalance | unit | localize }} {{ unit | formatUnit }}</span>
         </div>
@@ -79,6 +87,8 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Channel Capacity</span>
           <span
+            v-b-tooltip.hover.left
+            :title="channel.capacity | satsToUSD"
             class="text-capitalize font-weight-bold"
           >{{ channel.capacity | unit | localize }} {{ unit | formatUnit }}</span>
         </div>

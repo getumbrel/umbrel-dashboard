@@ -124,6 +124,7 @@ export default {
       this.$store.dispatch("bitcoin/getTransactions");
       this.$store.dispatch("lightning/getTransactions");
       this.$store.dispatch("lightning/getChannels");
+      this.$store.dispatch("bitcoin/getPrice");
     }
   },
   created() {
