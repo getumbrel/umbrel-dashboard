@@ -656,7 +656,7 @@ import moment from "moment";
 
 import { mapState } from "vuex";
 
-import { satsToBtc } from "@/helpers/units.js";
+import { satsToBtc, btcToSats } from "@/helpers/units.js";
 import API from "@/helpers/api";
 
 import CountUp from "@/components/Utility/CountUp";
@@ -986,9 +986,9 @@ export default {
     },
     "receive.amountInput": function(val) {
       if (this.unit === "sats") {
-        this.receive.amount = val;
+        this.receive.amount = Number(val);
       } else if (this.unit === "btc") {
-        this.receive.amount = val * 1e8;
+        this.receive.amount = btcToSats(val);
       }
     }
   },

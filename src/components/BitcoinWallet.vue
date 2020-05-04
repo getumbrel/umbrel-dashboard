@@ -275,15 +275,7 @@
                 <small>Mining fee</small>
               </span>
               <span class="text-right text-muted">
-                <b>
-                  {{
-                  (
-                  walletBalance -
-                  withdraw.amount -
-                  fees.fast.total
-                  ) | unit | localize
-                  }}
-                </b>
+                <b>{{ projectedBalanceInSats | unit | localize }}</b>
                 <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
                 <small>Remaining balance</small>
@@ -477,7 +469,7 @@
 import moment from "moment";
 import { mapState, mapGetters } from "vuex";
 
-import { satsToBtc } from "@/helpers/units.js";
+import { satsToBtc, btcToSats } from "@/helpers/units.js";
 import API from "@/helpers/api";
 
 import CountUp from "@/components/Utility/CountUp";
@@ -526,7 +518,15 @@ export default {
     }),
     ...mapGetters({
       transactions: "bitcoin/transactions"
-    })
+    }),
+    projectedBalanceInSats() {
+      const remainingBalanceInSats =
+        this.$store.state.bitcoin.balance.total -
+        this.withdraw.amount -
+        this.fees.fast.total;
+
+      return remainingBalanceInSats;
+    }
   },
   methods: {
     getTimeFromNow(timestamp) {
@@ -627,8 +627,6 @@ export default {
         satPerByte: parseInt(this.fees.fast.perByte)
       };
 
-      console.log(payload);
-
       try {
         const res = await API.post(
           `${process.env.VUE_APP_API_URL}/v1/lnd/transaction`,
@@ -653,10 +651,19 @@ export default {
   watch: {
     "withdraw.amountInput": function(val) {
       if (this.unit === "sats") {
-        this.withdraw.amount = val;
+        this.withdraw.amount = Number(val);
       } else if (this.unit === "btc") {
-        this.withdraw.amount = val * 1e8;
+        this.withdraw.amount = btcToSats(val);
       }
+      this.fetchWithdrawalFees();
+    },
+    unit: function(val) {
+      if (val === "sats") {
+        this.withdraw.amount = Number(this.withdraw.amountInput);
+      } else if (val === "btc") {
+        this.withdraw.amount = btcToSats(this.withdraw.amountInput);
+      }
+      this.fetchWithdrawalFees();
     }
   },
   async created() {
