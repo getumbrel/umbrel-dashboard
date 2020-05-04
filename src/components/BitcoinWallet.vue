@@ -2,20 +2,20 @@
   <card-widget
     header="Bitcoin Wallet"
     :status="{ text: 'Active', variant: 'success', blink: false }"
-    title
-    :numericTitle="{
-      value: walletBalance,
-      suffix: '',
-      prefix: '',
-      countUp: true
-    }"
-    sub-title="Sats"
+    :sub-title="unit | formatUnit"
     icon="icon-app-bitcoin.svg"
     :loading="
       loading ||
         (transactions.length > 0 && transactions[0]['type'] === 'loading')
     "
   >
+    <template v-slot:title>
+      <CountUp
+        :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
+        v-if="walletBalance !== -1"
+      />
+      <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
+    </template>
     <div class="wallet-content">
       <!-- transition switching between different modes -->
       <transition name="lightning-mode-change" mode="out-in" tag="div">
@@ -165,9 +165,9 @@
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
                       <span v-else-if="tx.type === 'outgoing'">-</span>
-                      {{ Number(tx.amount).toLocaleString() }}
+                      {{ tx.amount | unit | localize }}
                     </span>
-                    <small class="text-muted">Sats</small>
+                    <small class="text-muted">{{ unit | formatUnit }}</small>
                   </div>
                 </div>
               </b-list-group-item>
@@ -196,17 +196,22 @@
                 Back
               </a>
             </div>
-            <label class="sr-onlsy" for="input-withdrawal-amount">Sats</label>
-            <b-input
-              id="input-withdrawal-amount"
-              class="mb-3 neu-input"
-              type="number"
-              size="lg"
-              min="1"
-              v-model="withdraw.amount"
-              autofocus
-              @input="fetchWithdrawalFees"
-            ></b-input>
+            <label class="sr-onlsy" for="input-withdrawal-amount">Amount</label>
+            <b-input-group class="mb-3 neu-input-group">
+              <b-input
+                id="input-withdrawal-amount"
+                class="neu-input"
+                type="text"
+                size="lg"
+                v-model="withdraw.amountInput"
+                autofocus
+                @input="fetchWithdrawalFees"
+                style="padding-right: 82px"
+              ></b-input>
+              <b-input-group-append class="neu-input-group-append">
+                <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+              </b-input-group-append>
+            </b-input-group>
 
             <label class="sr-onlsy" for="input-withdrawal-address">Address</label>
             <b-input
@@ -243,8 +248,8 @@
               </a>
             </div>
             <div class="text-center pb-4">
-              <h3 class="mb-0">{{ Number(withdraw.amount).toLocaleString() }}</h3>
-              <span class="d-block mb-3 text-muted">Sats</span>
+              <h3 class="mb-0">{{ withdraw.amount | unit | localize }}</h3>
+              <span class="d-block mb-3 text-muted">{{ unit | formatUnit }}</span>
 
               <svg
                 width="30"
@@ -264,22 +269,14 @@
             </div>
             <div class="d-flex justify-content-between pb-3">
               <span class="text-muted">
-                <b>{{ fees.fast.total.toLocaleString() }}</b>
-                <small>&nbsp;Sats</small>
+                <b>{{ fees.fast.total | unit | localize }}</b>
+                <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
                 <small>Mining fee</small>
               </span>
               <span class="text-right text-muted">
-                <b>
-                  {{
-                  (
-                  walletBalance -
-                  withdraw.amount -
-                  fees.fast.total
-                  ).toLocaleString()
-                  }}
-                </b>
-                <small>&nbsp;Sats</small>
+                <b>{{ projectedBalanceInSats | unit | localize }}</b>
+                <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
@@ -319,7 +316,7 @@
             <div class="text-center mb-2">
               <span class="d-block mb-2">
                 Successfully withdrawn
-                <b>{{ withdraw.amount.toLocaleString() }} sats</b>
+                <b>{{ withdraw.amount | unit | localize }} {{ unit | formatUnit }}</b>
               </span>
               <small class="text-muted d-block">Transaction ID</small>
             </div>
@@ -472,12 +469,15 @@
 import moment from "moment";
 import { mapState, mapGetters } from "vuex";
 
+import { satsToBtc, btcToSats } from "@/helpers/units.js";
 import API from "@/helpers/api";
 
+import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/InputCopy";
 import QrCode from "@/components/Utility/QrCode.vue";
 import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 
 export default {
   data() {
@@ -485,6 +485,7 @@ export default {
       //balance: 162500, //net user's balance in sats
       mode: "transactions", //transactions (default mode), deposit, withdraw, review-withdraw, withdrawn
       withdraw: {
+        amountInput: "",
         amount: "", //withdrawal amount
         address: "", //withdrawal address
         sendMax: false, //sweep = send all funds?
@@ -500,14 +501,32 @@ export default {
   props: {},
   computed: {
     ...mapState({
-      walletBalance: state => state.bitcoin.balance.total,
+      walletBalance: state => {
+        //skip if still loading
+        if (state.bitcoin.balance.total === -1) {
+          return -1;
+        }
+        if (state.system.unit === "btc") {
+          return satsToBtc(state.bitcoin.balance.total);
+        }
+        return state.bitcoin.balance.total;
+      },
       depositAddress: state => state.bitcoin.depositAddress,
       fees: state => state.bitcoin.fees,
+      unit: state => state.system.unit,
       chain: state => state.bitcoin.chain
     }),
     ...mapGetters({
       transactions: "bitcoin/transactions"
-    })
+    }),
+    projectedBalanceInSats() {
+      const remainingBalanceInSats =
+        this.$store.state.bitcoin.balance.total -
+        this.withdraw.amount -
+        this.fees.fast.total;
+
+      return remainingBalanceInSats;
+    }
   },
   methods: {
     getTimeFromNow(timestamp) {
@@ -629,15 +648,34 @@ export default {
       this.withdraw.isWithdrawing = false;
     }
   },
-  watch: {},
+  watch: {
+    "withdraw.amountInput": function(val) {
+      if (this.unit === "sats") {
+        this.withdraw.amount = Number(val);
+      } else if (this.unit === "btc") {
+        this.withdraw.amount = btcToSats(val);
+      }
+      this.fetchWithdrawalFees();
+    },
+    unit: function(val) {
+      if (val === "sats") {
+        this.withdraw.amount = Number(this.withdraw.amountInput);
+      } else if (val === "btc") {
+        this.withdraw.amount = btcToSats(this.withdraw.amountInput);
+      }
+      this.fetchWithdrawalFees();
+    }
+  },
   async created() {
     this.$store.dispatch("bitcoin/getStatus");
   },
   components: {
     CardWidget,
     QrCode,
+    CountUp,
     InputCopy,
-    CircularCheckmark
+    CircularCheckmark,
+    SatsBtcSwitch
   }
 };
 </script>

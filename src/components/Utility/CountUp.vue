@@ -2,6 +2,7 @@
   <span class="d-flex">
     <span ref="number"></span>
     {{ suffix }}
+    <!-- <small>{{ endVal }}</small> -->
   </span>
 </template>
 
@@ -17,8 +18,8 @@ export default {
       required: false,
       default: 0
     },
-    endVal: {
-      type: Number,
+    value: {
+      type: Object,
       required: true
     },
     options: {
@@ -29,11 +30,17 @@ export default {
       type: String,
       required: false,
       default: ""
+    },
+    countOnLoad: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      instance: null
+      startVal: 0,
+      instance: null,
+      firstLoad: true //used to decide if animate/count on the first mount
     };
   },
   computed: {},
@@ -43,7 +50,6 @@ export default {
   },
   beforeDestroy() {
     const that = this;
-    // console.log('beforeDestroy');
     that.destroy();
   },
   methods: {
@@ -53,7 +59,20 @@ export default {
         return;
       }
       const dom = that.$refs.number;
-      const instance = new CountUp(dom, that.endVal, that.options);
+      const options = that.options || {};
+
+      if (this.firstLoad) {
+        if (this.countOnLoad) {
+          this.startVal = 0;
+        } else {
+          this.startVal = this.value.endVal;
+        }
+      }
+      options.decimalPlaces = this.value.decimalPlaces || 0;
+
+      options.startVal = this.startVal;
+
+      const instance = new CountUp(dom, that.value.endVal, options);
       if (instance.error) {
         // error
         return;
@@ -63,10 +82,10 @@ export default {
         that.$emit("ready", instance, CountUp);
         return;
       }
-      setTimeout(
-        () => instance.start(() => that.$emit("ready", instance, CountUp)),
-        that.delay
-      );
+      setTimeout(() => {
+        instance.start(() => that.$emit("ready", instance, CountUp));
+        this.firstLoad = false;
+      }, that.delay);
     },
     destroy() {
       const that = this;
@@ -104,14 +123,19 @@ export default {
     }
   },
   watch: {
-    endVal: {
-      handler(value) {
-        const that = this;
-        if (that.instance && isFunction(that.instance.update)) {
-          that.instance.update(value);
+    value: {
+      handler(newVal, oldVal) {
+        if (newVal.decimalPlaces !== oldVal.decimalPlaces) {
+          this.destroy();
+          this.startVal = 0;
+          this.create();
+        } else {
+          if (newVal.endVal !== oldVal.endVal) {
+            this.update(newVal.endVal);
+          }
         }
       },
-      deep: false
+      deep: true
     }
   },
   components: {}

@@ -91,7 +91,7 @@ const mutations = {
   },
 
   syncStatus(state, sync) {
-    state.percent = toPrecision(parseFloat(sync.percent) * 100, 2);
+    state.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
     state.currentBlock = sync.currentBlock;
     state.blockHeight = sync.headerCount;
     state.chain = sync.chain;
@@ -475,7 +475,7 @@ const getters = {
       });
 
       //sort txs by date
-      txs.sort(function(tx1, tx2) {
+      txs.sort(function (tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
     }

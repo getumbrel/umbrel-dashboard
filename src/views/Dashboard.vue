@@ -19,16 +19,18 @@
             variant: 'success',
             blink: false
           }"
-          :numericTitle="{
-            value: syncPercent,
-            suffix: '%',
-            prefix: '',
-            countUp: false
-          }"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
           :loading="syncPercent !== 100 || blocks.length === 0"
         >
+          <template v-slot:title>
+            <CountUp
+              :value="{endVal: syncPercent, decimalPlaces: syncPercent === 100 ? 0 : 2}"
+              suffix="%"
+              v-if="syncPercent !== -1"
+            />
+            <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
+          </template>
           <div class>
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
                 <p class="mb-1">Connected Peers</p>
@@ -48,19 +50,22 @@
             <card-widget
               header="Bitcoin Wallet"
               :status="{ text: 'Active', variant: 'success', blink: false }"
-              :numericTitle="{
-                value: btcBalance,
-                suffix: '',
-                prefix: '',
-                countUp: true
-              }"
-              sub-title="Sats"
+              :sub-title="unit | formatUnit"
               icon="icon-app-bitcoin.svg"
             >
+              <template v-slot:title>
+                <CountUp
+                  :value="{endVal: btcBalance, decimalPlaces: unit === 'sats' ? 0 : 5}"
+                  v-if="btcBalance !== -1"
+                />
+                <span
+                  class="loading-placeholder loading-placeholder-lg"
+                  style="width: 140px;"
+                  v-else
+                ></span>
+              </template>
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link"
-                  >Manage</router-link
-                >
+                <router-link to="/bitcoin" class="card-link">Manage</router-link>
               </div>
             </card-widget>
           </b-col>
@@ -73,9 +78,7 @@
               icon="icon-app-tor.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/settings" class="card-link"
-                  >Manage</router-link
-                >
+                <router-link to="/settings" class="card-link">Manage</router-link>
               </div>
             </card-widget>
           </b-col>
@@ -96,6 +99,9 @@
 <script>
 import { mapState } from "vuex";
 
+import { satsToBtc } from "@/helpers/units.js";
+
+import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
 import LightningWallet from "@/components/LightningWallet";
@@ -108,7 +114,17 @@ export default {
     ...mapState({
       syncPercent: state => state.bitcoin.percent,
       blocks: state => state.bitcoin.blocks,
-      btcBalance: state => state.bitcoin.balance.total
+      btcBalance: state => {
+        //skip if still loading
+        if (state.bitcoin.balance.total === -1) {
+          return -1;
+        }
+        if (state.system.unit === "btc") {
+          return satsToBtc(state.bitcoin.balance.total);
+        }
+        return state.bitcoin.balance.total;
+      },
+      unit: state => state.system.unit
     }),
     isDarkMode() {
       return this.$store.getters.isDarkMode;
@@ -122,6 +138,7 @@ export default {
     }
   },
   components: {
+    CountUp,
     CardWidget,
     Blockchain,
     LightningWallet

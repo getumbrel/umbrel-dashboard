@@ -11,19 +11,26 @@
           size="lg"
           v-model="peerConnectionCode"
           :disabled="isOpening"
+          autofocus
         ></b-input>
       </b-col>
       <b-col col cols="12" sm="6">
-        <label class="sr-onlsy" for="funding-amount">Sats</label>
-        <b-input
-          id="funding-amount"
-          class="mb-3 neu-input"
-          type="number"
-          size="lg"
-          v-model="fundingAmount"
-          @input="fetchFees"
-          :disabled="isOpening"
-        ></b-input>
+        <label class="sr-onlsy" for="funding-amount">Amount</label>
+        <b-input-group class="mb-3 neu-input-group">
+          <b-input
+            id="funding-amount"
+            class="neu-input"
+            type="text"
+            size="lg"
+            v-model="fundingAmountInput"
+            @input="fetchFees"
+            style="padding-right: 82px"
+            :disabled="isOpening"
+          ></b-input>
+          <b-input-group-append class="neu-input-group-append">
+            <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+          </b-input-group-append>
+        </b-input-group>
 
         <!-- <small>{{ btc.confirmed.toLocaleString() }} Sats available out of {{ btc.total.toLocaleString() }} and {{ btc.pending.toLocaleString() }} pending</small> -->
       </b-col>
@@ -31,18 +38,21 @@
       <b-col col cols="12">
         <div class="mt-2 d-flex w-100 justify-content-between">
           <div>
-            <small class="text-danger align-self-center" v-if="error">{{
+            <small class="text-danger align-self-center" v-if="error">
+              {{
               error
-            }}</small>
+              }}
+            </small>
             <small
               class="text-muted align-self-center"
               v-else-if="fee.fast.total"
-              >Mining fee: {{ fee.fast.total }} Sats</small
-            >
+            >Mining fee: {{ fee.fast.total }} Sats</small>
           </div>
-          <b-button type="submit" variant="success" :disabled="isOpening">{{
+          <b-button type="submit" variant="success" :disabled="isOpening">
+            {{
             this.isOpening ? "Opening..." : "Open Channel"
-          }}</b-button>
+            }}
+          </b-button>
         </div>
       </b-col>
     </b-row>
@@ -50,13 +60,20 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import API from "@/helpers/api";
+import { btcToSats } from "@/helpers/units.js";
+
+import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
+
 export default {
   props: {},
   data() {
     return {
       peerConnectionCode: "",
-      fundingAmount: "",
+      fundingAmountInput: "",
+      fundingAmount: 0,
       isOpening: false,
       fee: {
         fast: {
@@ -85,15 +102,15 @@ export default {
     };
   },
   computed: {
-    // btc() {
-    //   return this.$store.state.bitcoin.balance;
-    // }
+    ...mapState({
+      unit: state => state.system.unit
+    })
   },
   methods: {
     async openChannel() {
       this.isOpening = true;
 
-      if (!this.peerConnectionCode || !this.fundingAmount) {
+      if (!this.peerConnectionCode || this.fundingAmount <= 0) {
         this.error = "Please fill all fields";
         this.isOpening = false;
         return;
@@ -175,10 +192,18 @@ export default {
             amt: this.fundingAmount
           };
 
-          const estimates = await API.get(
-            `${process.env.VUE_APP_API_URL}/v1/lnd/channel/estimateFee`,
-            { params: payload }
-          );
+          let estimates;
+
+          try {
+            estimates = await API.get(
+              `${process.env.VUE_APP_API_URL}/v1/lnd/channel/estimateFee`,
+              { params: payload }
+            );
+          } catch (error) {
+            if (error.response && error.response.data) {
+              this.error = error.response.data;
+            }
+          }
 
           if (estimates) {
             for (const [speed, estimate] of Object.entries(estimates)) {
@@ -200,7 +225,26 @@ export default {
       }, 500);
     }
   },
-  components: {}
+  watch: {
+    unit: function(val) {
+      if (val === "sats") {
+        this.fundingAmount = Number(this.fundingAmountInput);
+      } else if (val === "btc") {
+        this.fundingAmount = btcToSats(this.fundingAmountInput);
+      }
+      this.fetchFees();
+    },
+    fundingAmountInput: function(val) {
+      if (this.unit === "sats") {
+        this.fundingAmount = Number(val);
+      } else if (this.unit === "btc") {
+        this.fundingAmount = btcToSats(val);
+      }
+    }
+  },
+  components: {
+    SatsBtcSwitch
+  }
 };
 </script>
 

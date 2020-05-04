@@ -11,19 +11,17 @@
         ></span>
         <div class="d-flex align-items-baseline" v-else>
           <h3 class="font-weight-normal mb-0">
-            <!-- if number is like 100K, 120K, 2M, etc (i.e. with suffix) -->
-            <span>
-              <CountUp :endVal="numberValue" :suffix="numberSuffix" />
-            </span>
+            <!-- suffix number like 100K, 120K, 2M, etc -->
+            <CountUp
+              :value="{endVal: numberValue, decimalPlaces: hasDecimals ? 5 : 0}"
+              :suffix="numberSuffix"
+              countOnLoad
+            />
           </h3>
-          <span class="text-muted" style="margin-left: 0.5rem;">
-            {{ suffix }}
-          </span>
+          <span class="text-muted" style="margin-left: 0.5rem;">{{ suffix }}</span>
         </div>
       </div>
-      <div
-        v-if="(showNumericChange || showPercentChange) && change.value !== 0"
-      >
+      <div v-if="(showNumericChange || showPercentChange) && change.value !== 0">
         <svg
           width="12"
           height="13"
@@ -67,7 +65,8 @@
 import CountUp from "@/components/Utility/CountUp";
 
 const abbreviate = n => {
-  if (n < 1e3) return [Number(n.toFixed(1)), ""];
+  if (n < 1e2) return [Number(n), ""];
+  if (n >= 1e2 && n < 1e3) return [Number(n.toFixed(1)), ""];
   if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "K"];
   if (n >= 1e6 && n < 1e9) return [Number((n / 1e6).toFixed(1)), "M"];
   if (n >= 1e9 && n < 1e12) return [Number((n / 1e9).toFixed(1)), "B"];
@@ -80,6 +79,10 @@ export default {
     value: Number,
     suffix: String,
     abbreviateValue: {
+      type: Boolean,
+      default: false
+    },
+    hasDecimals: {
       type: Boolean,
       default: false
     },
