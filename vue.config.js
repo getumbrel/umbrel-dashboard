@@ -14,7 +14,7 @@ module.exports = {
   chainWebpack: config => {
     config.plugin("html").tap(args => {
       args[0].template =
-        process.env.VUE_APP_SERVER === "testnet"
+        process.env.STAGING_DEPLOYMENT === "true"
           ? "./public/index-testnet.html"
           : "./public/index.html";
       return args;
