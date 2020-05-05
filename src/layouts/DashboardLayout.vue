@@ -27,7 +27,7 @@
         <!-- Chain badge -->
         <b-badge
           variant="success"
-          v-if="chain !== 'mainnet'"
+          v-if="chain !== 'main'"
           class="align-self-center mr-2 text-capitalize"
           pill
         >{{ chain === "test" ? "testnet" : chain }}</b-badge>
