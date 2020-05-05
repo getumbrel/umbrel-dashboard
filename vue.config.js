@@ -15,7 +15,7 @@ module.exports = {
     config.plugin("html").tap(args => {
       args[0].template =
         process.env.STAGING_DEPLOYMENT === "true"
-          ? "./public/index-testnet.html"
+          ? "./public/index-staging.html"
           : "./public/index.html";
       return args;
     });
