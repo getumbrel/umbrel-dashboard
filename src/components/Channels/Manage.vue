@@ -104,6 +104,13 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Commit Fee</span>
+          <span
+            class="text-capitalize font-weight-bold"
+          >{{ channel.commitFee | unit | localize }} {{ unit | formatUnit }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Pub Key</span>
           <div class="w-75 text-right">
             <small
