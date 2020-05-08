@@ -40,21 +40,33 @@
 
         <!-- <small>{{ btc.confirmed.toLocaleString() }} Sats available out of {{ btc.total.toLocaleString() }} and {{ btc.pending.toLocaleString() }} pending</small> -->
       </b-col>
-
-      <b-col col cols="12">
-        <div class="mt-2 d-flex w-100 justify-content-between">
-          <div>
+    </b-row>
+    <b-row>
+      <b-col col cols="12" sm="6">
+        <small class="text-muted mb-4 d-block">Mining Fee</small>
+        <vue-slider
+          v-model="value2"
+          absorb
+          marks
+          :data="data"
+          :dotSize="[22, 22]"
+          :tooltip-formatter="formatter1"
+          contained
+          tooltip="always"
+          class="pl-3 pb-4"
+          :disabled="fee.fast.total <= 0"
+        ></vue-slider>
+      </b-col>
+      <b-col class="d-flex" col cols="12" sm="6">
+        <div class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end">
+          <span>
             <small class="text-danger align-self-center" v-if="error">
               {{
               error
               }}
             </small>
-            <small
-              class="text-muted align-self-center"
-              v-else-if="fee.fast.total"
-            >Mining fee: {{ fee.fast.total }} Sats</small>
-          </div>
-          <b-button type="submit" variant="success" :disabled="isOpening">
+          </span>
+          <b-button type="submit" variant="success" :disabled="isOpening || !!error">
             {{
             this.isOpening ? "Opening..." : "Open Channel"
             }}
@@ -62,11 +74,22 @@
         </div>
       </b-col>
     </b-row>
+    <!-- <div class="mt-2 d-flex w-100 justify-content-between">
+      <div>
+      </div>
+      <b-button type="submit" variant="success" :disabled="isOpening">
+        {{
+        this.isOpening ? "Opening..." : "Open Channel"
+        }}
+      </b-button>
+    </div>-->
   </form>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import VueSlider from "vue-slider-component";
+import "vue-slider-component/theme/default.css";
 
 import API from "@/helpers/api";
 import { btcToSats } from "@/helpers/units.js";
@@ -81,6 +104,9 @@ export default {
       fundingAmountInput: "",
       fundingAmount: 0,
       isOpening: false,
+      value2: "normal",
+      data: ["cheapest", "slow", "normal", "fast"],
+      formatter1: v => `${this.fee[v]["total"]} Sats`,
       fee: {
         fast: {
           total: 0,
@@ -249,9 +275,81 @@ export default {
     }
   },
   components: {
-    SatsBtcSwitch
+    SatsBtcSwitch,
+    VueSlider
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+/* Set the theme color of the component */
+$themeColor: #edeef1;
+
+$bgColor: #edeef1;
+$railBorderRadius: 15px !default;
+
+$dotShadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+$dotShadowFocus: 0px 4px 10px rgba(0, 0, 0, 0.4);
+$dotBgColor: #fff !default;
+$dotBgColorDisable: #ccc !default;
+$dotBorderRadius: 50% !default;
+
+$tooltipBgColor: #141821 !default;
+$tooltipColor: #fff !default;
+$tooltipBorderRadius: 5px !default;
+$tooltipPadding: 2px 5px !default;
+$tooltipMinWidth: 20px !default;
+$tooltipArrow: 10px !default;
+$tooltipFontSize: 0.8rem !default;
+
+$stepBorderRadius: 50% !default;
+$stepBgColor: rgba(0, 0, 0, 0.1) !default;
+
+$labelFontSize: 0.8rem;
+
+/* import theme style */
+@import "~vue-slider-component/lib/theme/default.scss";
+
+.vue-slider-ltr .vue-slider-mark-label,
+.vue-slider-rtl .vue-slider-mark-label {
+  margin-top: 1.2rem;
+}
+
+.vue-slider-dot-handle {
+  transition: box-shadow 0.2s, background-color 0.2s ease;
+}
+.vue-slider-dot-tooltip {
+  transition: opacity 0.2s ease;
+}
+
+.vue-slider-rail {
+  cursor: pointer;
+}
+.vue-slider-disabled {
+  .vue-slider-rail {
+    cursor: not-allowed;
+  }
+}
+.vue-slider-dot-handle-disabled {
+  box-shadow: none;
+}
+.vue-slider-mark-label {
+  text-transform: capitalize;
+}
+// .vue-slider-ltr {
+//   .vue-slider-mark:first-child {
+//     .vue-slider-mark-label,
+//     .vue-slider-mark-label {
+//       left: 0;
+//       transform: translateX(0);
+//     }
+//   }
+//   .vue-slider-mark:last-child {
+//     .vue-slider-mark-label,
+//     .vue-slider-mark-label {
+//       left: 0;
+//       transform: translateX(calc(-100% + 4px));
+//     }
+//   }
+// }
+</style>
