@@ -203,7 +203,7 @@
                 Back
               </a>
             </div>
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="sr-onlsy" for="input-withdrawal-amount">Amount</label>
               <b-input-group class="neu-input-group">
                 <b-input
@@ -221,7 +221,7 @@
                 </b-input-group-append>
               </b-input-group>
               <small
-                class="text-muted mt-2 d-block text-right mb-0"
+                class="text-muted mt-1 d-block text-right mb-0"
                 :style="{opacity: withdraw.amount > 0 ? 1 : 0}"
               >~ {{ withdraw.amount | satsToUSD }}</small>
             </div>
@@ -229,13 +229,21 @@
             <label class="sr-onlsy" for="input-withdrawal-address">Address</label>
             <b-input
               id="input-withdrawal-address"
-              class="mb-4 neu-input"
+              class="mb-2 neu-input"
               type="text"
               size="lg"
               min="1"
               v-model="withdraw.address"
               @input="fetchWithdrawalFees"
             ></b-input>
+          </div>
+          <div class="px-3 px-lg-4 mt-1" v-show="!error">
+            <small class="text-muted d-block mb-0">Mining Fee</small>
+            <fee-selector
+              :fee="this.fees"
+              :disabled="!withdraw.amount || !withdraw.address"
+              @change="selectWithdrawalFee"
+            ></fee-selector>
           </div>
         </div>
 
@@ -283,10 +291,10 @@
             </div>
             <div class="d-flex justify-content-between pb-3">
               <span class="text-muted">
-                <b>{{ fees.fast.total | unit | localize }}</b>
+                <b>{{ fees[withdraw.selectedFee]['total'] | unit | localize }}</b>
                 <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
-                <small>~ {{ fees.fast.total | satsToUSD }} Mining fee</small>
+                <small>~ {{ fees[withdraw.selectedFee]['total'] | satsToUSD }} Mining fee</small>
               </span>
               <span class="text-right text-muted">
                 <b>{{ projectedBalanceInSats | unit | localize }}</b>
@@ -492,6 +500,7 @@ import InputCopy from "@/components/InputCopy";
 import QrCode from "@/components/Utility/QrCode.vue";
 import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
+import FeeSelector from "@/components/Utility/FeeSelector";
 
 export default {
   data() {
@@ -506,7 +515,8 @@ export default {
         feesTimeout: null, //window.setTimeout for fee fetching
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false, //awaiting api response for withdrawal request?
-        txHash: "" //tx hash of withdrawal tx
+        txHash: "", //tx hash of withdrawal tx,
+        selectedFee: "normal" //selected withdrawal fee
       },
       loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
       error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
@@ -538,7 +548,7 @@ export default {
       const remainingBalanceInSats =
         this.$store.state.bitcoin.balance.total -
         this.withdraw.amount -
-        this.fees.fast.total;
+        this.fees[this.withdraw.selectedFee].total;
 
       return remainingBalanceInSats;
     }
@@ -586,7 +596,8 @@ export default {
         feesTimeout: null,
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false,
-        txHash: ""
+        txHash: "",
+        selectedFee: "normal"
       };
 
       this.loading = false;
@@ -617,8 +628,11 @@ export default {
 
           if (this.fees) {
             //show error if any
-            if (this.fees.fast && this.fees.fast.error.code) {
-              this.error = this.fees.fast.error.text;
+            if (
+              this.fees[this.withdraw.selectedFee] &&
+              this.fees[this.withdraw.selectedFee].error.code
+            ) {
+              this.error = this.fees[this.withdraw.selectedFee].error.text;
             } else {
               this.error = "";
             }
@@ -631,6 +645,9 @@ export default {
         this.withdraw.isTyping = false;
       }, 500);
     },
+    selectWithdrawalFee(fee) {
+      this.withdraw.selectedFee = fee;
+    },
     async withdrawBtc() {
       this.loading = true;
       this.withdraw.isWithdrawing = true;
@@ -639,7 +656,7 @@ export default {
         sweep: this.withdraw.sendMax,
         addr: this.withdraw.address,
         amt: this.withdraw.amount,
-        satPerByte: parseInt(this.fees.fast.perByte)
+        satPerByte: parseInt(this.fees[this.withdraw.selectedFee].perByte)
       };
 
       try {
@@ -690,7 +707,8 @@ export default {
     CountUp,
     InputCopy,
     CircularCheckmark,
-    SatsBtcSwitch
+    SatsBtcSwitch,
+    FeeSelector
   }
 };
 </script>

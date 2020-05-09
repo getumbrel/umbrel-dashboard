@@ -40,21 +40,22 @@
 
         <!-- <small>{{ btc.confirmed.toLocaleString() }} Sats available out of {{ btc.total.toLocaleString() }} and {{ btc.pending.toLocaleString() }} pending</small> -->
       </b-col>
-
-      <b-col col cols="12">
-        <div class="mt-2 d-flex w-100 justify-content-between">
-          <div>
+    </b-row>
+    <b-row>
+      <b-col col cols="12" sm="6">
+        <small class="text-muted d-block mb-1">Mining Fee</small>
+        <fee-selector :fee="fee" class @change="selectFee"></fee-selector>
+      </b-col>
+      <b-col class="d-flex" col cols="12" sm="6">
+        <div class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end">
+          <span>
             <small class="text-danger align-self-center" v-if="error">
               {{
               error
               }}
             </small>
-            <small
-              class="text-muted align-self-center"
-              v-else-if="fee.fast.total"
-            >Mining fee: {{ fee.fast.total }} Sats</small>
-          </div>
-          <b-button type="submit" variant="success" :disabled="isOpening">
+          </span>
+          <b-button type="submit" variant="success" :disabled="isOpening || !!error">
             {{
             this.isOpening ? "Opening..." : "Open Channel"
             }}
@@ -72,6 +73,7 @@ import API from "@/helpers/api";
 import { btcToSats } from "@/helpers/units.js";
 
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
+import FeeSelector from "@/components/Utility/FeeSelector";
 
 export default {
   props: {},
@@ -81,6 +83,7 @@ export default {
       fundingAmountInput: "",
       fundingAmount: 0,
       isOpening: false,
+      selectedFee: "normal",
       fee: {
         fast: {
           total: 0,
@@ -113,6 +116,9 @@ export default {
     })
   },
   methods: {
+    selectFee(fee) {
+      this.selectedFee = fee;
+    },
     async openChannel() {
       this.isOpening = true;
 
@@ -122,9 +128,9 @@ export default {
         return;
       }
 
-      if (this.fee.fast.error) {
+      if (this.fee[this.selectedFee].error) {
         this.isOpening = false;
-        this.error = this.fee.fast.error;
+        this.error = this.fee[this.selectedFee].error;
         return;
       }
 
@@ -134,7 +140,7 @@ export default {
         amt: parseInt(this.fundingAmount) || 0,
         name: "",
         purpose: "",
-        satPerByte: parseInt(this.fee.fast.perByte)
+        satPerByte: parseInt(this.fee[this.selectedFee].perByte)
       };
 
       const parsedConnectionCode = this.peerConnectionCode.match(
@@ -249,9 +255,11 @@ export default {
     }
   },
   components: {
-    SatsBtcSwitch
+    SatsBtcSwitch,
+    FeeSelector
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
