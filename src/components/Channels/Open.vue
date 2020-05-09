@@ -63,15 +63,6 @@
         </div>
       </b-col>
     </b-row>
-    <!-- <div class="mt-2 d-flex w-100 justify-content-between">
-      <div>
-      </div>
-      <b-button type="submit" variant="success" :disabled="isOpening">
-        {{
-        this.isOpening ? "Opening..." : "Open Channel"
-        }}
-      </b-button>
-    </div>-->
   </form>
 </template>
 

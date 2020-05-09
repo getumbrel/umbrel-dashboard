@@ -8,15 +8,14 @@
       :dotSize="[22, 22]"
       :tooltip-formatter="tooltipFormatter"
       contained
-      :tooltip="fee.fast.total > 0 ? 'always' : 'none'"
-      :disabled="fee.fast.total <= 0"
+      :tooltip="fee.fast.total <= 0 || fee.fast.total === '--' || fee.fast.total === 'N/A' || disabled ? 'none' : 'always'"
+      :disabled="fee.fast.total <= 0 || fee.fast.total === '--' || fee.fast.total === 'N/A' || disabled"
       @change="change"
     >
       <template v-slot:label="{ active, value }">
         <div :class="['vue-slider-mark-label', 'text-center', { active }]">
-          <span class="text-capitalize">{{ value }}</span>
-          <br />
-          <small class="text-muted">~ {{ timeToConfirm(value) }}</small>
+          <!-- <span class="text-capitalize">{{ value }}</span> -->
+          <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
         </div>
       </template>
     </vue-slider>
@@ -29,7 +28,11 @@ import "vue-slider-component/theme/default.css";
 
 export default {
   props: {
-    fee: Object
+    fee: Object,
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -78,8 +81,8 @@ $dotBgColor: #fff !default;
 $dotBgColorDisable: #ccc !default;
 $dotBorderRadius: 50% !default;
 
-$tooltipBgColor: #141821 !default;
-$tooltipColor: #fff !default;
+$tooltipBgColor: #fff !default;
+$tooltipColor: #141821 !default;
 $tooltipBorderRadius: 5px !default;
 $tooltipPadding: 2px 5px !default;
 $tooltipMinWidth: 20px !default;
@@ -101,7 +104,7 @@ $labelFontSize: 0.8rem;
 
 .vue-slider-ltr .vue-slider-mark-label,
 .vue-slider-rtl .vue-slider-mark-label {
-  margin-top: 1.2rem;
+  margin-top: 1rem;
 }
 
 .vue-slider-dot {
@@ -151,5 +154,9 @@ $labelFontSize: 0.8rem;
       text-align: right !important;
     }
   }
+}
+
+.vue-slider-dot-tooltip-inner {
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.18);
 }
 </style>
