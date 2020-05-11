@@ -13,7 +13,7 @@
             <div class="d-flex w-100 justify-content-between">
               <div class="d-flex">
                 <div class="blockchain-block-icon">
-                  <svg
+                  <!-- <svg
                     width="28"
                     height="30"
                     viewBox="0 0 28 30"
@@ -32,28 +32,50 @@
                       d="M3.8164 10.3897C2.48306 9.61995 0.816406 10.5822 0.816406 12.1218V21.7324C0.816406 22.4469 1.1976 23.1072 1.81639 23.4644L10.1362 28.268C11.4695 29.0378 13.1362 28.0755 13.1362 26.5359V16.9252C13.1362 16.2106 12.755 15.5504 12.1362 15.1931L3.8164 10.3897Z"
                       fill="#5351FB"
                     />
-                  </svg>
+                  </svg>-->
+                  <div class="cube spin">
+                    <div class="edge top">
+                      <div class="inside"></div>
+                    </div>
+                    <div class="edge right">
+                      <div class="inside"></div>
+                    </div>
+                    <div class="edge bottom">
+                      <div class="inside"></div>
+                    </div>
+                    <div class="edge left">
+                      <div class="inside"></div>
+                    </div>
+                    <div class="edge front">
+                      <div class="inside"></div>
+                    </div>
+                    <div class="edge back">
+                      <div class="inside"></div>
+                    </div>
+                  </div>
 
                   <div class="blockchain-block-icon-chainlink"></div>
                   <div class="blockchain-block-icon-bg"></div>
                 </div>
                 <div class="align-self-center">
-                  <h6 class="mb-1 font-weight-normal">
-                    Block {{ block.height.toLocaleString() }}
-                  </h6>
-                  <small class="text-muted" v-if="block.txs">
-                    {{ block.txs.toLocaleString() }} transactions
-                    <!-- <span>&bull; {{ Math.round(block.size / 1000) }} KB</span> -->
-                  </small>
+                  <h6 class="mb-1 font-weight-normal">Block {{ block.height.toLocaleString() }}</h6>
+                  <small
+                    class="text-muted"
+                    v-if="block.txs"
+                  >{{ block.txs.toLocaleString() }} transactions</small>
+                  <!-- <small class="text-muted" v-if="block.txs"> -->
+                  <!-- <status variant="muted" blink>Validating</status> -->
+                  <!-- <status variant="success">Valid</status> -->
+                  <!-- <span>&bull; {{ Math.round(block.size / 1000) }} KB</span> -->
+                  <!-- </small> -->
                 </div>
               </div>
+              <status variant="success" v-if="false">Valid</status>
               <small
-                class="text-muted align-self-center text-right"
+                class="text-muted align-self-center text-right blockchain-block-timestamp"
                 v-if="block.timestamp"
                 :title="blockReadableTime(block.timestamp)"
-              >
-                {{ blockTime(block.timestamp) }}
-              </small>
+              >{{ blockTime(block.timestamp) }}</small>
             </div>
           </li>
         </transition-group>
@@ -68,9 +90,7 @@
           >
             <div class="d-flex w-100 justify-content-between">
               <div class="d-flex">
-                <div
-                  class="blockchain-block-icon blockchain-block-icon-loading"
-                >
+                <div class="blockchain-block-icon blockchain-block-icon-loading">
                   <svg
                     width="28"
                     height="30"
@@ -96,10 +116,7 @@
                   <div class="blockchain-block-icon-bg"></div>
                 </div>
                 <div class="align-self-center">
-                  <span
-                    class="d-block loading-placeholder mb-1"
-                    style="width: 140px;"
-                  ></span>
+                  <span class="d-block loading-placeholder mb-1" style="width: 140px;"></span>
                   <span
                     class="d-block loading-placeholder loading-placeholder-sm"
                     style="width: 80px"
@@ -121,6 +138,8 @@
 <script>
 import moment from "moment";
 import { mapState } from "vuex";
+
+import Status from "@/components/Utility/Status";
 
 export default {
   data() {
@@ -152,7 +171,7 @@ export default {
         this.polling = window.setInterval(this.fetchBlocks, 1000);
       } else {
         //else, slow down and fetch blocks every minute
-        this.polling = window.setInterval(this.fetchBlocks, 60 * 1000);
+        this.polling = window.setInterval(this.fetchBlocks, 1000);
       }
     },
     blockTime(timestamp) {
@@ -191,7 +210,9 @@ export default {
     }
   },
 
-  components: {}
+  components: {
+    Status
+  }
 };
 </script>
 
@@ -337,5 +358,131 @@ export default {
 
 .blockchain-leave-active {
   // position: absolute;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.cube {
+  $cube-size: 22px;
+
+  transform-style: preserve-3d;
+  position: absolute;
+  width: $cube-size;
+  height: $cube-size;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  margin-left: -($cube-size * 0.5);
+  margin-top: -($cube-size * 0.5);
+
+  transform: rotateX(-40deg) rotateY(45deg) rotateZ(0deg);
+
+  &.spin {
+    animation: spin 5s forwards ease;
+  }
+
+  .edge {
+    width: $cube-size;
+    height: $cube-size;
+    line-height: $cube-size;
+    text-align: center;
+    box-shadow: inset 0px 0px 0px 1px #eeeeff;
+    // box-shadow: inset 0px 0px 0px 1px #fff;
+    background: #eeeeff;
+    // background: #fff;
+    display: block;
+    position: absolute;
+    .inside {
+      position: absolute;
+      top: $cube-size * 0.1;
+      left: $cube-size * 0.1;
+      width: $cube-size * 0.8;
+      height: $cube-size * 0.8;
+      background: #5351fb;
+      // background: #d3d5dc;
+      border-radius: $cube-size * 0.2;
+    }
+    &.top {
+      transform: rotate3d(1, 0, 0, 90deg);
+      margin-top: -($cube-size * 0.5);
+    }
+    &.right {
+      transform: rotate3d(0, 1, 0, 90deg);
+      margin-left: $cube-size * 0.5;
+    }
+    &.bottom {
+      transform: rotate3d(1, 0, 0, -90deg);
+      margin-top: $cube-size * 0.5;
+    }
+    &.left {
+      transform: rotate3d(0, 1, 0, -90deg);
+      margin-left: -($cube-size * 0.5);
+    }
+    &.front {
+      transform: translateZ($cube-size * 0.5);
+    }
+    &.back {
+      transform: translateZ(-($cube-size * 0.5)) rotate3d(1, 0, 0, 180deg);
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotateX(-40deg) rotateY(45deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(-40deg) rotateY(945deg) rotateZ(540deg);
+  }
+}
+
+.blockchain-block-timestamp {
+  position: relative;
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    content: "Validating...";
+    color: #b1b5b9;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    transform: translateY(0);
+    animation: slide-up 0.4s forwards ease;
+    animation-delay: 3s;
+  }
+  &:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    content: "● Validated";
+    color: #00cd98;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    transform: translateY(0);
+    animation: slide-up 0.4s forwards ease;
+    animation-delay: 4.6s;
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10px) rotateX(30deg);
+    opacity: 0;
+  }
 }
 </style>

@@ -25,7 +25,7 @@
         >
           <template v-slot:title>
             <CountUp
-              :value="{endVal: syncPercent, decimalPlaces: syncPercent === 100 ? 0 : 2}"
+              :value="{endVal: syncPercent >= 99.99 ? 100 : syncPercent, decimalPlaces: syncPercent >= 99.99 ? 0 : 2}"
               suffix="%"
               v-if="syncPercent !== -1"
             />
