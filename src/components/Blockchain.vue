@@ -61,8 +61,8 @@
                   <h6 class="mb-1 font-weight-normal">Block {{ block.height.toLocaleString() }}</h6>
                   <small
                     class="text-muted"
-                    v-if="block.txs"
-                  >{{ block.txs.toLocaleString() }} transactions</small>
+                    v-if="block.numTransactions"
+                  >{{ block.numTransactions.toLocaleString() }} transactions</small>
                   <!-- <small class="text-muted" v-if="block.txs"> -->
                   <!-- <status variant="muted" blink>Validating</status> -->
                   <!-- <status variant="success">Valid</status> -->
@@ -73,9 +73,9 @@
               <status variant="success" v-if="false">Valid</status>
               <small
                 class="text-muted align-self-center text-right blockchain-block-timestamp"
-                v-if="block.timestamp"
-                :title="blockReadableTime(block.timestamp)"
-              >{{ blockTime(block.timestamp) }}</small>
+                v-if="block.time"
+                :title="blockReadableTime(block.time)"
+              >{{ blockTime(block.time) }}</small>
             </div>
           </li>
         </transition-group>
