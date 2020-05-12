@@ -7,7 +7,7 @@ import TransitionWrapperLayout from "../layouts/TransitionWrapperLayout.vue";
 import SimpleLayout from "../layouts/SimpleLayout.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 
-import Home from "../views/Home.vue";
+import Start from "../views/Start.vue";
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Bitcoin from "../views/Bitcoin.vue";
@@ -42,7 +42,7 @@ const routes = [
           {
             path: "",
             name: "start",
-            component: Home
+            component: Start
           }
         ]
       },
