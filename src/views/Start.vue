@@ -31,6 +31,10 @@
           inputClass="card-input w-100"
         />
 
+        <div v-show="currentStep === 5">
+          <seed :words="seed" @finish="finishedSeed"></seed>
+        </div>
+
         <!-- <p class="text-danger text-left align-self-start mt-1">
           <small>{{ errorMessage }}</small>
         </p>-->
@@ -39,7 +43,7 @@
           variant="success"
           size="lg"
           @click="nextStep"
-          v-show="currentStep !== 4"
+          v-show="currentStep !== 6"
           :disabled="!isStepValid"
           class="mt-3 px-4"
         >{{ currentStep === 0 ? "Start" : "Next" }}</b-button>
@@ -48,7 +52,7 @@
           variant="success"
           size="lg"
           @click="finish"
-          v-show="currentStep === 4"
+          v-show="currentStep === 6"
           class="mt-3 px-4"
         >Continue to Dashboard</b-button>
 
@@ -56,7 +60,7 @@
           variant="link"
           size="sm"
           @click="prevStep"
-          v-show="currentStep > 1 && currentStep !== 4"
+          v-show="currentStep > 1 && currentStep !== 6"
           class="mt-2"
         >Back</b-button>
       </div>
@@ -71,6 +75,7 @@ import Vue from "vue";
 import VueConfetti from "vue-confetti";
 
 import InputPassword from "@/components/InputPassword";
+import Seed from "@/components/Utility/Seed";
 
 Vue.use(VueConfetti);
 
@@ -80,6 +85,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
+      currentStep: 5,
       steps: [
         {
           heading: "welcome to umbrel",
@@ -101,12 +107,21 @@ export default {
             "You'll need this password to securely access your Umbrel from anywhere."
         },
         {
+          heading: "note down your secret words",
+          text:
+            "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it a safe place."
+        },
+        {
+          heading: "note down your secret words",
+          text:
+            'Remember, there is no "forget password" button. You will need these 24 words to recover your Umbrel node.'
+        },
+        {
           heading: "that's it!",
           text:
             "Congratulations! Your Umbrel is now running and synchronizing the Bitcoin blockchain."
         }
       ],
-      currentStep: 0,
       seed: [
         "above",
         "still",
@@ -132,7 +147,8 @@ export default {
         "govern",
         "actress",
         "sister"
-      ]
+      ],
+      notedSeed: false
     };
   },
   computed: {
@@ -160,6 +176,10 @@ export default {
         }
       }
 
+      if (this.currentStep === 5) {
+        return this.notedSeed;
+      }
+
       return true;
     },
     progress() {
@@ -170,7 +190,9 @@ export default {
   },
   methods: {
     nextStep() {
-      if (this.currentStep === 3) {
+      //Register user and initialize wallet at the end
+      if (this.currentStep === 5) {
+        console.log("Registering user", this.name, this.password, this.seed[0]);
         this.$confetti.start({
           particles: [
             {
@@ -189,10 +211,15 @@ export default {
     },
     finish() {
       return this.$router.push("/dashboard");
+    },
+    finishedSeed() {
+      console.log("finis");
+      this.notedSeed = true;
     }
   },
   components: {
-    InputPassword
+    InputPassword,
+    Seed
   }
 };
 </script>
