@@ -56,6 +56,16 @@ const API = {
     // }
   },
 
+
+  // Wrap a delete call
+  async delete(url, data) {
+    return axios({
+      method: "delete",
+      url,
+      data
+    });
+  },
+
   // Return the response time if this URL has already been fetched
   responseTime(url) {
     let duration = -1;

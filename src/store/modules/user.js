@@ -1,24 +1,24 @@
 // Initial state
 const state = () => ({
   name: "Satoshi",
-  isAuthenticated: window.sessionStorage.getItem("isAuthenticated") === "true"
+  jwt: window.localStorage.getItem("jwt") ? window.localStorage.getItem("jwt") : ""
 });
 
 // Functions to update the state directly
 const mutations = {
-  setAuthenticated(state, isAuthenticated) {
-    window.sessionStorage.setItem("isAuthenticated", isAuthenticated);
-    state.isAuthenticated = isAuthenticated;
+  setJWT(state, jwt) {
+    window.localStorage.setItem("jwt", jwt);
+    state.jwt = jwt;
   }
 };
 
 // Functions to get data from the API
 const actions = {
   login({ commit }) {
-    commit("setAuthenticated", true);
+    commit("setJWT", "true");
   },
   logout({ commit }) {
-    commit("setAuthenticated", false);
+    commit("setJWT", "");
   }
 };
 
