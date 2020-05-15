@@ -236,70 +236,22 @@ const actions = {
       //cache block height array of latest 3 blocks for loading view
       const currentBlock = state.currentBlock;
 
-      //dont fetch blocks if no new block
+      //dont fetch blocks if no new block has been found
       if (state.blocks.length && currentBlock === state.blocks[0]["height"]) {
         return;
       }
 
-      if (currentBlock < 4) {
+      //TODO: Fetch only new blocks
+      const latestThreeBlocks = await API.get(
+        `${process.env.VUE_APP_API_URL}/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
+      );
+
+      if (!latestThreeBlocks.blocks) {
         return;
       }
 
-      const blocks = [
-        {
-          height: currentBlock, //block height
-          txs: null,
-          timestamp: null,
-          size: null
-        },
-        {
-          height: currentBlock - 1, //block height
-          txs: null,
-          timestamp: null,
-          size: null
-        },
-        {
-          height: currentBlock - 2, //block number
-          txs: null,
-          timestamp: null,
-          size: null
-        }
-      ];
-      // commit("setBlocks", blocks);
-
-      //fetch info per block;
-
-      const blocksWithInfo = [];
-
-      for (let block of blocks) {
-        //get hash
-        const blockHash = await API.get(
-          `${process.env.VUE_APP_API_URL}/v1/bitcoind/info/block?height=${block.height}`
-        );
-
-        if (!blockHash || !blockHash.hash) {
-          return;
-        }
-
-        //gete block info
-        const blockInfo = await API.get(
-          `${process.env.VUE_APP_API_URL}/v1/bitcoind/info/block?hash=${blockHash.hash}`
-        );
-
-        if (!blockInfo || !blockInfo.block) {
-          return;
-        }
-
-        blocksWithInfo.push({
-          height: blockInfo.height,
-          txs: blockInfo.transactions.length,
-          timestamp: blockInfo.blocktime,
-          size: blockInfo.size
-        });
-      }
-
       // update blocks
-      commit("setBlocks", blocksWithInfo);
+      commit("setBlocks", latestThreeBlocks.blocks);
     }
   },
 
