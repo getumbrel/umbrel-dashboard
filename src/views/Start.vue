@@ -32,7 +32,8 @@
         />
 
         <div v-show="currentStep === 5">
-          <seed :words="seed" @finish="finishedSeed"></seed>
+          <seed :words="seed" @finish="finishedSeed" v-if="seed.length"></seed>
+          <b-spinner v-else></b-spinner>
         </div>
 
         <!-- <p class="text-danger text-left align-self-start mt-1">
@@ -85,7 +86,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
-      currentStep: 5,
+      currentStep: 0,
       steps: [
         {
           heading: "welcome to umbrel",
@@ -122,36 +123,16 @@ export default {
             "Congratulations! Your Umbrel is now running and synchronizing the Bitcoin blockchain."
         }
       ],
-      seed: [
-        "above",
-        "still",
-        "edit",
-        "label",
-        "close",
-        "element",
-        "kitten",
-        "vote",
-        "pact",
-        "year",
-        "evil",
-        "boil",
-        "various",
-        "width",
-        "expose",
-        "floor",
-        "glide",
-        "sustain",
-        "perfect",
-        "remember",
-        "wet",
-        "govern",
-        "actress",
-        "sister"
-      ],
       notedSeed: false
     };
   },
   computed: {
+    registered() {
+      return this.$store.state.user.registered;
+    },
+    seed() {
+      return this.$store.state.user.seed;
+    },
     isStepValid() {
       if (this.currentStep === 1) {
         // if (!/^[A-Za-z ]+$/.test(this.name)) {
@@ -177,7 +158,8 @@ export default {
       }
 
       if (this.currentStep === 5) {
-        return this.notedSeed;
+        // return this.notedSeed;
+        return true;
       }
 
       return true;
@@ -189,10 +171,26 @@ export default {
     }
   },
   methods: {
-    nextStep() {
+    async nextStep() {
       //Register user and initialize wallet at the end
       if (this.currentStep === 5) {
-        console.log("Registering user", this.name, this.password, this.seed[0]);
+        // TODO: add validation
+
+        try {
+          await this.$store.dispatch("user/register", {
+            name: this.name,
+            password: this.password,
+            seed: this.seed
+          });
+        } catch (error) {
+          if (error.reponse) {
+            alert(error.response);
+          }
+          console.log(error);
+          return;
+        }
+
+        //Wohoo! Time to celebrate!
         this.$confetti.start({
           particles: [
             {
@@ -200,6 +198,8 @@ export default {
             }
           ]
         });
+
+        //Ok. 2.5s is more than enough to celebrate.
         window.setTimeout(() => {
           this.$confetti.stop();
         }, 2500);
@@ -213,9 +213,17 @@ export default {
       return this.$router.push("/dashboard");
     },
     finishedSeed() {
-      console.log("finis");
       this.notedSeed = true;
     }
+  },
+  created() {
+    //redirect to home if the user is already registered
+    if (this.registered) {
+      this.$router.push("/dashboard");
+    }
+
+    //generate a new seed on load
+    this.$store.dispatch("user/getSeed");
   },
   components: {
     InputPassword,

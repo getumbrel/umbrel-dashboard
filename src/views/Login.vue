@@ -58,10 +58,17 @@ export default {
     }
   },
   computed: {},
-  created() {
-    //redirect if already logged in
+  async created() {
+    //redirect to dashboard if already logged in
     if (this.$store.state.user.jwt) {
       this.$router.push("/dashboard");
+    }
+
+    //redirect to onboarding if the user is not registered
+    await this.$store.dispatch("user/registered");
+
+    if (!this.$store.state.user.registered) {
+      this.$router.push("/start");
     }
   },
   methods: {
