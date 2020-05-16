@@ -20,18 +20,15 @@
             </svg>
             <small class="ml-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted">{{
+            <span class="d-block text-muted">
+              {{
               version ? `v${version}` : "..."
-            }}</span>
+              }}
+            </span>
           </div>
         </div>
         <div>
-          <b-dropdown
-            variant="link"
-            toggle-class="text-decoration-none p-0"
-            no-caret
-            right
-          >
+          <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
             <template v-slot:button-content>
               <svg
                 width="18"
@@ -60,16 +57,10 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" disabled
-              >Check for update</b-dropdown-item
-            >
-            <b-dropdown-item href="#" disabled
-              >View information</b-dropdown-item
-            >
+            <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>View information</b-dropdown-item>
             <b-dropdown-divider />
-            <b-dropdown-item variant="danger" href="#" disabled
-              >Stop Bitcoin Core</b-dropdown-item
-            >
+            <b-dropdown-item variant="danger" href="#" disabled>Stop Bitcoin Core</b-dropdown-item>
           </b-dropdown>
         </div>
       </div>
@@ -85,9 +76,7 @@
           :loading="syncPercent !== 100 || blocks.length === 0"
         >
           <template v-slot:menu>
-            <b-dropdown-item variant="danger" href="#" disabled
-              >Resync Blockchain</b-dropdown-item
-            >
+            <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>
           <div class>
             <div class="px-3 px-lg-4 mb-3">
@@ -95,7 +84,7 @@
                 <span class="align-self-end">Synchronized</span>
                 <h3 class="font-weight-normal mb-0">
                   <span v-if="syncPercent !== -1">
-                    {{ syncPercent }}
+                    {{ syncPercent >= 99.99 ? 100 : syncPercent }}
                     <small class>%</small>
                   </span>
 
@@ -114,10 +103,7 @@
                 animated
                 striped
               ></b-progress>
-              <small
-                class="text-muted d-block text-right"
-                v-if="currentBlock < blockHeight - 1"
-              >
+              <small class="text-muted d-block text-right" v-if="currentBlock < blockHeight - 1">
                 {{ currentBlock.toLocaleString() }} of
                 {{ blockHeight.toLocaleString() }} blocks
               </small>
@@ -153,12 +139,7 @@
                   ></stat>
                 </b-col>-->
                 <b-col col cols="6" md="3" xl="6">
-                  <stat
-                    title="Connections"
-                    :value="stats.peers"
-                    suffix="Peers"
-                    showNumericChange
-                  ></stat>
+                  <stat title="Connections" :value="stats.peers" suffix="Peers" showNumericChange></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
                   <stat
