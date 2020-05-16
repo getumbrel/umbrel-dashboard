@@ -72,41 +72,37 @@ export default {
     }
   },
   methods: {
-    authenticateUser() {
+    async authenticateUser() {
       this.isLoggingIn = true;
-      window.setTimeout(async () => {
-        //if testnet, password is "printergobrrr"
-        if (window.location.host === "testnet.getumbrel.com") {
-          if (this.password === "printergobrrr") {
-            this.$store.dispatch("user/login", this.password);
-            return this.$router.push(
-              this.$router.history.current.query.redirect || "/dashboard"
-            );
-          } else {
-            this.isIncorrectPassword = true;
-            return (this.isLoggingIn = false);
-          }
-        }
 
-        //if locally, then any password will work, except "incorrect"
-        if (this.password !== "incorrect") {
-          try {
-            await this.$store.dispatch("user/login", this.password);
-          } catch (error) {
-            if (
-              error.response &&
-              error.response.data === "Incorrect password"
-            ) {
-              this.isIncorrectPassword = true;
-              this.isLoggingIn = false;
-              return;
-            }
-          }
-          return this.$router.push(
-            this.$router.history.current.query.redirect || "/dashboard"
-          );
+      try {
+        await this.$store.dispatch("user/login", this.password);
+      } catch (error) {
+        if (error.response && error.response.data === "Incorrect password") {
+          this.isIncorrectPassword = true;
+          this.isLoggingIn = false;
+          return;
         }
-      }, 1000);
+      }
+
+      //unlock lnd wallet if it's locked
+      await this.$store.dispatch("lightning/getStatus");
+
+      if (!this.$store.state.lightning.unlocked) {
+        console.log("wallet locked, trying to unlock");
+        try {
+          await this.$store.dispatch("lightning/unlockWallet", this.password);
+        } catch (error) {
+          alert(error.response.data);
+          console.log(error, error.response.data);
+          return;
+        }
+      }
+
+      //redirect to dashboard
+      return this.$router.push(
+        this.$router.history.current.query.redirect || "/dashboard"
+      );
     }
   },
   components: {

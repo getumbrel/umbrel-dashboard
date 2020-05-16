@@ -396,6 +396,20 @@ const actions = {
 
   selectChannel({ commit }, channel) {
     commit("setChannelFocus", channel);
+  },
+
+  async unlockWallet({ commit, state }, plainTextPassword) {
+
+    if (state.operational && !state.unlocked) {
+      const result = await API.post(
+        `${process.env.VUE_APP_API_URL}/v1/lnd/wallet/unlock`,
+        { password: plainTextPassword }
+      );
+      if (result.status === 200) {
+        commit("isUnlocked", true);
+      }
+    }
+
   }
 };
 
