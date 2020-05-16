@@ -65,7 +65,10 @@ const actions = {
     if (state.registered && plainTextPassword) {
       rawSeed = await API.post(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/seed`, {
         password: plainTextPassword
-      });
+      }, false);
+      if (rawSeed.data) {
+        rawSeed = rawSeed.data;
+      }
     } else {
       //get a new seed if new user 
       rawSeed = await API.get(`${process.env.VUE_APP_API_URL}/v1/lnd/wallet/seed`);
@@ -82,7 +85,7 @@ const actions = {
         name,
         password,
         seed
-      });
+      }, false);
 
       if (result && result.jwt) {
         commit("setJWT", result.jwt);

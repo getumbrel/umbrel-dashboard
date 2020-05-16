@@ -57,7 +57,7 @@ axios.interceptors.response.use(function (response) {
 
 // Helper methods for making API requests
 const API = {
-  async get(url, data = {}) {
+  async get(url, data = {}, auth = true) {
     let response;
 
     if (responsePending[url] === undefined || responsePending[url] === false) {
@@ -72,7 +72,7 @@ const API = {
           url
         };
 
-        if (store.state.user.jwt) {
+        if (auth && store.state.user.jwt) {
           requestOptions.headers = { 'Authorization': `JWT ${store.state.user.jwt}` };
         }
 
@@ -100,7 +100,7 @@ const API = {
   },
 
   // Wrap a post call
-  async post(url, data) {
+  async post(url, data, auth = true) {
 
     const requestOptions = {
       method: "post",
@@ -108,7 +108,7 @@ const API = {
       data
     };
 
-    if (store.state.user.jwt) {
+    if (auth && store.state.user.jwt) {
       requestOptions.headers = { 'Authorization': `JWT ${store.state.user.jwt}` };
     }
 
@@ -117,7 +117,7 @@ const API = {
 
 
   // Wrap a delete call
-  async delete(url, data) {
+  async delete(url, data, auth = true) {
 
     const requestOptions = {
       method: "delete",
@@ -125,7 +125,7 @@ const API = {
       data
     };
 
-    if (store.state.user.jwt) {
+    if (auth && store.state.user.jwt) {
       requestOptions.headers = { 'Authorization': `JWT ${store.state.user.jwt}` };
     }
 
