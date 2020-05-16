@@ -17,27 +17,21 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Bitcoin</span>
-                <small class="d-block" style="opacity: 0.4"
-                  >Run Bitcoin Core on Tor</small
-                >
+                <small class="d-block" style="opacity: 0.4">Run Bitcoin Core on Tor</small>
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Lightning Network</span>
-                <small class="d-block" style="opacity: 0.4"
-                  >Run Lightning on Tor</small
-                >
+                <small class="d-block" style="opacity: 0.4">Run Lightning on Tor</small>
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Remote Access</span>
-                <small class="d-block" style="opacity: 0.4"
-                  >Remotely access your Umbrel on Tor</small
-                >
+                <small class="d-block" style="opacity: 0.4">Remotely access your Umbrel on Tor</small>
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
@@ -50,6 +44,7 @@
 </template>
 
 <script>
+import API from "@/helpers/api";
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
 
@@ -58,6 +53,17 @@ export default {
     return {};
   },
   computed: {},
+  async created() {
+    // const seed = await API.post(
+    //   `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/seed`
+    // );
+
+    const seed = await API.post(
+      `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/seed`,
+      { password: "abcdef123456" }
+    );
+    console.log(seed);
+  },
   methods: {},
   components: {
     CardWidget,

@@ -67,11 +67,11 @@ export default {
   methods: {
     authenticateUser() {
       this.isLoggingIn = true;
-      window.setTimeout(() => {
+      window.setTimeout(async () => {
         //if testnet, password is "printergobrrr"
         if (window.location.host === "testnet.getumbrel.com") {
           if (this.password === "printergobrrr") {
-            this.$store.dispatch("user/login");
+            this.$store.dispatch("user/login", this.password);
             return this.$router.push(
               this.$router.history.current.query.redirect || "/dashboard"
             );
@@ -83,13 +83,21 @@ export default {
 
         //if locally, then any password will work, except "incorrect"
         if (this.password !== "incorrect") {
-          this.$store.dispatch("user/login");
+          try {
+            await this.$store.dispatch("user/login", this.password);
+          } catch (error) {
+            if (
+              error.response &&
+              error.response.data === "Incorrect password"
+            ) {
+              this.isIncorrectPassword = true;
+              this.isLoggingIn = false;
+              return;
+            }
+          }
           return this.$router.push(
             this.$router.history.current.query.redirect || "/dashboard"
           );
-        } else {
-          this.isIncorrectPassword = true;
-          return (this.isLoggingIn = false);
         }
       }, 1000);
     }

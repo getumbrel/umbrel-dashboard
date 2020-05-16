@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import store from "../store";
+import store from "@/store";
 
 import TransitionWrapperLayout from "../layouts/TransitionWrapperLayout.vue";
 import SimpleLayout from "../layouts/SimpleLayout.vue";
