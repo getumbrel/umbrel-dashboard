@@ -89,12 +89,23 @@ export default {
       await this.$store.dispatch("lightning/getStatus");
 
       if (!this.$store.state.lightning.unlocked) {
-        console.log("wallet locked, trying to unlock");
         try {
           await this.$store.dispatch("lightning/unlockWallet", this.password);
+
+          //add a few seconds of delay allowing lnd to start after unlocking
+          //TODO: replace with a better logic
+          await new Promise(resolve => setTimeout(resolve, 2000));
         } catch (error) {
-          alert(error.response.data);
-          console.log(error, error.response.data);
+          this.$bvToast.toast(`${error.response.data}`, {
+            title: "Unable to login",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-top-center"
+          });
+          this.isLoggingIn = false;
+          //logout user for safety
+          this.$store.dispatch("user/logout");
           return;
         }
       }
