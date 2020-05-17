@@ -1,6 +1,5 @@
 import axios from "axios";
 import store from "@/store";
-import router from "@/router";
 
 // An object to store the response time of completed API requests
 const responseTime = {};
@@ -9,6 +8,7 @@ const responseTime = {};
 const responsePending = {};
 
 // Interceptor to refresh JWT or logout user based on 401 requests
+// and to logout user if lnd is locked
 axios.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Do something with response data
@@ -16,10 +16,17 @@ axios.interceptors.response.use(function (response) {
 }, async function (error) {
   // Any status codes that falls outside the range of 2xx cause this function to trigger
 
-  // Return any error which is not due to authentication back to the calling service
+  //logout user if lnd is locked
+  if (error.response.status === 403 && error.config.url.startsWith(`${process.env.VUE_APP_API_URL}/v1/lnd`) && error.response.data === "Must unlock wallet") {
+    store.dispatch('user/logout')
+    return Promise.reject(error);
+  }
+
+  // Return any error which is not related to auth
   if (!error.response || error.response.status !== 401) {
     return Promise.reject(error);
   }
+
 
   // Return the same 401 back if user is trying to login with incorrect password
   if (error.config.url === `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/login`) {
@@ -27,31 +34,32 @@ axios.interceptors.response.use(function (response) {
   }
 
   // Logout user if token refresh didn't work
-  if (error.config.url === `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/refresh` || error.config.message === "Invalid JWT") {
-    store.dispatch('user/logout')
-    router.push('/');
-
+  if (error.config.url === `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/refresh`) {
+    store.dispatch('user/logout');
     return Promise.reject(error);
   }
 
-  // Try request again with new token
-  try {
-    await store.dispatch('user/refreshJWT');
-  } catch (error) {
-    return Promise.reject(error);
+  // Try request again with new token if error is due to invalid JWT
+
+  if (error.response.data === 'Invalid JWT') {
+    try {
+      await store.dispatch('user/refreshJWT');
+    } catch (error) {
+      return Promise.reject(error);
+    }
+
+    // New request with new token
+    const config = error.config;
+    config.headers['Authorization'] = `JWT ${store.state.user.jwt}`;
+
+    return new Promise((resolve, reject) => {
+      axios.request(config).then(response => {
+        resolve(response);
+      }).catch((error) => {
+        reject(error);
+      })
+    });
   }
-
-  // New request with new token
-  const config = error.config;
-  config.headers['Authorization'] = `JWT ${store.state.user.jwt}`;
-
-  return new Promise((resolve, reject) => {
-    axios.request(config).then(response => {
-      resolve(response);
-    }).catch((error) => {
-      reject(error);
-    })
-  });
 
 });
 

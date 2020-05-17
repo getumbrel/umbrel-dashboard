@@ -1,8 +1,9 @@
 import API from "@/helpers/api";
+import router from "@/router";
 
 // Initial state
 const state = () => ({
-  name: "Satoshi",
+  name: "",
   jwt: window.localStorage.getItem("jwt") || "",
   registered: true,
   seed: []
@@ -35,12 +36,15 @@ const actions = {
     );
 
     if (data && data.jwt) {
-      commit("setJWT", data.jwt);
+      commit("setJWT", data.jwt)
     }
   },
 
-  logout({ commit }) {
-    commit("setJWT", "");
+  logout({ commit, state }) {
+    if (state.jwt) {
+      commit("setJWT", "");
+      router.push("/");
+    }
   },
 
   async refreshJWT({ commit }) {
@@ -53,6 +57,11 @@ const actions = {
   async registered({ commit }) {
     const { registered } = await API.get(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/registered`);
     commit("setRegistered", !!registered);
+  },
+
+  async getInfo({ commit }) {
+    const { name } = await API.get(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/info`);
+    commit("setName", name);
   },
 
   async getSeed({ commit, state, dispatch }, plainTextPassword) {

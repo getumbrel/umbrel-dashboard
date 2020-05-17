@@ -1,5 +1,13 @@
 <template>
   <div>
+    <!-- <div
+      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
+      v-if="loading"
+    >
+      <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
+      <b-spinner class="my-5"></b-spinner>
+    </div>-->
+
     <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">welcome back</h1>
@@ -46,6 +54,7 @@ import InputPassword from "@/components/InputPassword";
 export default {
   data() {
     return {
+      loading: true,
       password: "",
       isIncorrectPassword: false,
       isLoggingIn: false
@@ -66,10 +75,13 @@ export default {
 
     //redirect to onboarding if the user is not registered
     await this.$store.dispatch("user/registered");
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     if (!this.$store.state.user.registered) {
-      this.$router.push("/start");
+      return this.$router.push("/start");
     }
+
+    this.loading = false;
   },
   methods: {
     async authenticateUser() {

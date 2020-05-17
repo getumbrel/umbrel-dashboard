@@ -158,8 +158,7 @@ export default {
       }
 
       if (this.currentStep === 5) {
-        // return this.notedSeed;
-        return true;
+        return this.notedSeed;
       }
 
       return true;
@@ -216,10 +215,10 @@ export default {
       this.notedSeed = true;
     }
   },
-  created() {
+  async created() {
     //redirect to home if the user is already registered
     if (this.registered) {
-      this.$router.push("/dashboard");
+      return this.$router.push("/");
     }
 
     //generate a new seed on load

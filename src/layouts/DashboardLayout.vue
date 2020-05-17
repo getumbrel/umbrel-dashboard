@@ -44,7 +44,7 @@
             </div>
             <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right no-caret>
               <!-- Using 'button-content' slot -->
-              <template v-slot:button-content>Satoshi</template>
+              <template v-slot:button-content>{{ name.split(' ')[0] }}</template>
               <b-dropdown-item @click="logout">Log out</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
@@ -109,6 +109,7 @@ export default {
   },
   computed: {
     ...mapState({
+      name: state => state.user.name,
       isApiOperational: state => state.system.api.operational,
       isBitcoinOperational: state => state.bitcoin.operational,
       isBitcoinCalibrating: state => state.bitcoin.calibrating,
@@ -127,7 +128,6 @@ export default {
         this.toggleMobileMenu();
       }
       this.$store.dispatch("user/logout");
-      this.$router.push("/");
     },
     toggleMobileMenu() {
       this.$store.commit("toggleMobileMenu");
@@ -210,6 +210,8 @@ export default {
   created() {
     //trigger loading watcher
     // this.loading = true;
+
+    this.$store.dispatch("user/getInfo");
 
     // start polling data every 20s
     this.fetchData();
