@@ -352,7 +352,7 @@ svg.icon-clock {
       animation: rotateHourHand 60s linear infinite;
       stroke-width: 3;
     }
-  }
+}
   @keyframes rotateMinuteHand {
     from {
       transform: translate(20px, 20px) rotate(calc(var(--start-minutes) * 6deg));
@@ -454,3 +454,21 @@ svg.icon-clock {
         margin: 1.75rem auto;
     }
   }
+
+
+// blur background content on modal open
+.modal-backdrop {
+    opacity: 0.3;
+}
+body {
+    #app {
+        transition: filter 0.2s ease;
+    }
+    &.modal-open {
+        overflow: hidden !important;
+        #app {
+            filter: blur(2px);
+        }
+    }
+    
+}
