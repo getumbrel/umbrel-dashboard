@@ -99,18 +99,26 @@ export default {
   background: #ffffff;
   box-shadow: 0px 5px 15px rgba(143, 149, 163, 0.25) !important;
   transition: box-shadow 0.5s, opacity 0.5s, transform 0.5s ease;
-  &:not([disabled]):hover {
-    box-shadow: 0px 5px 30px rgba(143, 149, 163, 0.35) !important;
-    &.btn-neu-circle-next:not([disabled]) {
-      transform: translateX(3px);
-      svg {
-        transform: translateX(5px);
+  &:not([disabled]) {
+    &:hover {
+      box-shadow: 0px 5px 30px rgba(143, 149, 163, 0.35) !important;
+      &.btn-neu-circle-next:not([disabled]) {
+        transform: translateX(3px);
+      }
+      &.btn-neu-circle-previous:not([disabled]) {
+        transform: translateX(-3px);
       }
     }
-    &.btn-neu-circle-previous:not([disabled]) {
-      transform: translateX(-3px);
-      svg {
-        transform: translateX(-5px);
+    &:active {
+      &.btn-neu-circle-next:not([disabled]) {
+        svg {
+          transform: translateX(5px);
+        }
+      }
+      &.btn-neu-circle-previous:not([disabled]) {
+        svg {
+          transform: translateX(-5px);
+        }
       }
     }
   }
