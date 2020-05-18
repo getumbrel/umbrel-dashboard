@@ -75,7 +75,7 @@ export default {
 
     //redirect to onboarding if the user is not registered
     await this.$store.dispatch("user/registered");
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // await new Promise(resolve => setTimeout(resolve, 2000));
 
     if (!this.$store.state.user.registered) {
       return this.$router.push("/start");

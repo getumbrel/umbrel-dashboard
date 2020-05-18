@@ -181,7 +181,7 @@ const mutations = {
 
 // Functions to get data from the API
 const actions = {
-  async getStatus({ commit, dispatch }) {
+  async getStatus({ commit }) {
     const status = await API.get(
       `${process.env.VUE_APP_API_URL}/v1/bitcoind/info/status`
     );
@@ -189,9 +189,9 @@ const actions = {
     if (status) {
       commit("isOperational", status.operational);
 
-      if (status.operational) {
-        dispatch("getSync");
-      }
+      // if (status.operational) {
+      //   dispatch("getSync");
+      // }
     }
   },
 

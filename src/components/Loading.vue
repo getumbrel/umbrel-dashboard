@@ -1,12 +1,20 @@
 <template>
-  <div
-    class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
-  >
-    <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
+  <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+    <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
 
-    <b-spinner class="my-4" variant="primary"></b-spinner>
+    <!-- <b-spinner class="my-4" variant="primary"></b-spinner> -->
+    <b-progress
+      :value="progress"
+      class="mb-2 w-25"
+      variant="primary"
+      :style="{ height: '4px' }"
+      animated
+      striped
+    ></b-progress>
 
-    <p class="text-muted w-75 text-center">{{ text }}</p>
+    <span class="text-muted w-75 text-center" :style="{opacity: text ? 1 : 0}">
+      <small>{{ text || 'Loading...' }}</small>
+    </span>
   </div>
 </template>
 

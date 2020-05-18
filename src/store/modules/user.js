@@ -96,10 +96,9 @@ const actions = {
         seed
       }, false);
 
-      if (result && result.jwt) {
-        commit("setJWT", result.jwt);
+      if (result.data && result.data.jwt) {
+        commit("setJWT", result.data.jwt);
         commit("setRegistered", true)
-        commit("setName", name);
         commit("setSeed", []); //remove seed from store
       }
 
