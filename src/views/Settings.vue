@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import API from "@/helpers/api";
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
 
@@ -53,17 +52,7 @@ export default {
     return {};
   },
   computed: {},
-  async created() {
-    // const seed = await API.post(
-    //   `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/seed`
-    // );
-
-    const seed = await API.post(
-      `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/seed`,
-      { password: "abcdef123456" }
-    );
-    console.log(seed);
-  },
+  created() {},
   methods: {},
   components: {
     CardWidget,

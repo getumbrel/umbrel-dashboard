@@ -89,7 +89,7 @@ const actions = {
   },
 
   async register({ commit, state }, { name, password, seed }) {
-    if (name && password && seed && !state.registered) {
+    if (!state.registered) {
       const result = await API.post(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/register`, {
         name,
         password,

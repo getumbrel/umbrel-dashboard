@@ -32,7 +32,7 @@
         />
 
         <div v-show="currentStep === 5">
-          <seed :words="seed" @finish="finishedSeed" v-if="seed.length"></seed>
+          <seed :words="seed" @finish="finishedSeed" v-if="seed.length && !isRegistering"></seed>
           <b-spinner v-else></b-spinner>
         </div>
 
@@ -40,32 +40,31 @@
           <small>{{ errorMessage }}</small>
         </p>-->
 
-        <b-button
-          variant="success"
-          size="lg"
-          @click="nextStep"
-          v-show="currentStep !== 6"
-          :disabled="!isStepValid"
-          class="mt-3 px-4"
-        >{{ currentStep === 0 ? "Start" : "Next" }}</b-button>
-
-        <b-button
-          variant="success"
-          size="lg"
-          @click="finish"
-          v-show="currentStep === 6"
-          class="mt-3 px-4"
-        >Continue to Dashboard</b-button>
-
+        <div class="mt-3 d-flex justify-content-center">
+          <b-button
+            variant="outline-success"
+            size="lg"
+            class="px-4 mr-2"
+            v-if="currentStep === 4 || currentStep === 5"
+            @click="skipSeed"
+            :disabled="notedSeed || isRegistering"
+          >Do Later</b-button>
+          <b-button
+            variant="success"
+            size="lg"
+            @click="nextStep"
+            :disabled="!isStepValid || isRegistering"
+            class="px-4"
+          >{{ nextButtonText }}</b-button>
+        </div>
         <b-button
           variant="link"
           size="sm"
           @click="prevStep"
-          v-show="currentStep > 1 && currentStep !== 6"
-          class="mt-2"
+          v-if="currentStep > 0 && currentStep !== 6"
+          class="mt-2 mx-auto d-block"
         >Back</b-button>
       </div>
-
       <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
     </div>
   </div>
@@ -74,6 +73,7 @@
 <script>
 import Vue from "vue";
 import VueConfetti from "vue-confetti";
+import { mapState } from "vuex";
 
 import InputPassword from "@/components/InputPassword";
 import Seed from "@/components/Utility/Seed";
@@ -123,10 +123,25 @@ export default {
             "Congratulations! Your Umbrel is now running and synchronizing the Bitcoin blockchain."
         }
       ],
-      notedSeed: false
+      notedSeed: false,
+      isRegistering: false
     };
   },
   computed: {
+    ...mapState({
+      registered: state => state.user.registered,
+      seed: state => state.user.seed,
+      unlocked: state => state.lightning.unlocked
+    }),
+    nextButtonText() {
+      if (this.currentStep === 0) {
+        return "Start";
+      }
+      if (this.currentStep === 6) {
+        return "Go to dashboard";
+      }
+      return "Next";
+    },
     registered() {
       return this.$store.state.user.registered;
     },
@@ -148,7 +163,7 @@ export default {
         // if (this.password.length < 6) {
         //   return false;
         // }
-        return this.password.length;
+        return this.password.length > 11;
       }
 
       if (this.currentStep === 3) {
@@ -161,6 +176,10 @@ export default {
         return this.notedSeed;
       }
 
+      if (this.currentStep === 6) {
+        return this.unlocked;
+      }
+
       return true;
     },
     progress() {
@@ -170,11 +189,16 @@ export default {
     }
   },
   methods: {
+    async skipSeed() {
+      if (this.currentStep === 4) {
+        this.currentStep = 5;
+      }
+      return this.nextStep();
+    },
     async nextStep() {
       //Register user and initialize wallet at the end
       if (this.currentStep === 5) {
-        // TODO: add validation
-
+        this.isRegistering = true;
         try {
           await this.$store.dispatch("user/register", {
             name: this.name,
@@ -182,10 +206,18 @@ export default {
             seed: this.seed
           });
         } catch (error) {
-          if (error.reponse) {
-            alert(error.response);
+          this.isRegistering = false;
+          window.eerr = error;
+          if (error.response && error.response.data) {
+            this.$bvToast.toast(`${error.response.data}`, {
+              title: "Error",
+              autoHideDelay: 3000,
+              variant: "danger",
+              solid: true,
+              toaster: "b-toaster-top-center"
+            });
           }
-          console.log(error);
+          console.error("Error registering user", error);
           return;
         }
 
@@ -198,18 +230,29 @@ export default {
           ]
         });
 
-        //Ok. 2.5s is more than enough to celebrate.
+        this.lndUnlockInterval = window.setInterval(async () => {
+          await this.$store.dispatch("lightning/getStatus");
+          if (this.unlocked) {
+            return window.clearInterval(this.lndUnlockInterval);
+          }
+        }, 1000);
+
+        //Ok. 3s is more than enough to celebrate.
         window.setTimeout(() => {
           this.$confetti.stop();
-        }, 2500);
+        }, 3000);
+
+        this.isRegistering = false;
       }
-      this.currentStep = this.currentStep + 1;
+
+      if (this.currentStep === 6) {
+        return this.$router.push("/dashboard");
+      }
+
+      return (this.currentStep = this.currentStep + 1);
     },
     prevStep() {
       this.currentStep = this.currentStep - 1;
-    },
-    finish() {
-      return this.$router.push("/dashboard");
     },
     finishedSeed() {
       this.notedSeed = true;
@@ -223,6 +266,9 @@ export default {
 
     //generate a new seed on load
     this.$store.dispatch("user/getSeed");
+  },
+  beforeDestroy() {
+    window.clearInterval(this.lndUnlockInterval);
   },
   components: {
     InputPassword,

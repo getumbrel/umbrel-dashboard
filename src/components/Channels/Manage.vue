@@ -201,7 +201,6 @@ export default {
           channelPoint: this.channel.channelPoint,
           force: !this.channel.active // Avoids force closing if channel is active
         };
-        console.log(payload);
         await API.delete(
           `${process.env.VUE_APP_API_URL}/v1/lnd/channel/close`,
           payload
@@ -227,7 +226,6 @@ export default {
             toaster: "b-toaster-bottom-right"
           }
         );
-        console.log("Error closing channel", err);
       }
       this.isClosing = false;
     }

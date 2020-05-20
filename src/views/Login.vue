@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import InputPassword from "@/components/InputPassword";
 
 export default {
@@ -66,18 +68,23 @@ export default {
       this.isIncorrectPassword = false;
     }
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      jwt: state => state.user.jwt,
+      registered: state => state.user.registered,
+      unlocked: state => state.lightning.unlocked
+    })
+  },
   async created() {
     //redirect to dashboard if already logged in
-    if (this.$store.state.user.jwt) {
+    if (this.jwt) {
       this.$router.push("/dashboard");
     }
 
     //redirect to onboarding if the user is not registered
     await this.$store.dispatch("user/registered");
-    // await new Promise(resolve => setTimeout(resolve, 2000));
 
-    if (!this.$store.state.user.registered) {
+    if (!this.registered) {
       return this.$router.push("/start");
     }
 
@@ -100,33 +107,47 @@ export default {
       //unlock lnd wallet if it's locked
       await this.$store.dispatch("lightning/getStatus");
 
-      if (!this.$store.state.lightning.unlocked) {
+      if (!this.unlocked) {
         try {
           await this.$store.dispatch("lightning/unlockWallet", this.password);
-
-          //add a few seconds of delay allowing lnd to start after unlocking
-          //TODO: replace with a better logic
-          await new Promise(resolve => setTimeout(resolve, 2000));
         } catch (error) {
-          this.$bvToast.toast(`${error.response.data}`, {
-            title: "Unable to login",
-            autoHideDelay: 3000,
-            variant: "danger",
-            solid: true,
-            toaster: "b-toaster-top-center"
-          });
+          if (error.response && error.response.data) {
+            this.$bvToast.toast(`${error.response.data}`, {
+              title: "Error",
+              autoHideDelay: 3000,
+              variant: "danger",
+              solid: true,
+              toaster: "b-toaster-top-center"
+            });
+          }
           this.isLoggingIn = false;
           //logout user for safety
           this.$store.dispatch("user/logout");
           return;
         }
-      }
 
-      //redirect to dashboard
-      return this.$router.push(
-        this.$router.history.current.query.redirect || "/dashboard"
-      );
+        //redirect to dashboard once lnd is unlocked
+        this.lndUnlockInterval = window.setInterval(async () => {
+          await this.$store.dispatch("lightning/getStatus");
+          if (this.unlocked) {
+            window.clearInterval(this.lndUnlockInterval);
+
+            //redirect to dashboard
+            return this.$router.push(
+              this.$router.history.current.query.redirect || "/dashboard"
+            );
+          }
+        }, 1000);
+      } else {
+        //redirect to dashboard
+        return this.$router.push(
+          this.$router.history.current.query.redirect || "/dashboard"
+        );
+      }
     }
+  },
+  beforeDestroy() {
+    window.clearInterval(this.lndUnlockInterval);
   },
   components: {
     InputPassword
