@@ -42,14 +42,14 @@ jobs:
                           run: |
                                   docker buildx build \
                                   --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 \
-                                  -t getumbrel/manager:$TAG \
+                                  -t getumbrel/dashboard:$TAG \
                                   --output "type=registry" \
                                   .
                         - name: Run Docker build X (against latest)
                           run: |
                                   docker buildx build \
                                   --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 \
-                                  -t getumbrel/manager:latest \
+                                  -t getumbrel/dashboard:latest \
                                   --output "type=registry" \
                                   .
                         - name: Run Docker buildx (against stage)
@@ -57,6 +57,6 @@ jobs:
                                 docker buildx build \
                                 --platform linux/amd64 \
                                 -f ./Dockerfile.stage \
-                                -t getumbrel/manager:stage \
+                                -t getumbrel/dashboard:stage \
                                 --output "type=registry" \
                                 .
