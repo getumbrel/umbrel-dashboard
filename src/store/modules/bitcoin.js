@@ -241,6 +241,11 @@ const actions = {
         return;
       }
 
+      //dont fetch blocks if < 3 blocks
+      if (currentBlock < 3) {
+        return;
+      }
+
       //TODO: Fetch only new blocks
       const latestThreeBlocks = await API.get(
         `${process.env.VUE_APP_API_URL}/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
