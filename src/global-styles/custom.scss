@@ -449,9 +449,11 @@ svg.icon-clock {
 
   //increase max-width from 500px to 600px primarily to fit the seed in view seed modal on smaller screens
   @media (min-width: 456px) {
-    .modal-dialog {
-        max-width: 600px;
-        margin: 1.75rem auto;
+    #seed-modal {
+        .modal-dialog {
+            max-width: 600px;
+            margin: 1.75rem auto;
+        }
     }
   }
 
