@@ -352,10 +352,7 @@ const actions = {
   async getFees({ commit, state }, { address, confTarget, amt, sweep }) {
     if (state.operational) {
       const fees = await API.get(
-        `${process.env.VUE_APP_API_URL}/v1/lnd/transaction/estimateFee`,
-        {
-          params: { address, confTarget, amt, sweep }
-        }
+        `${process.env.VUE_APP_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
       );
 
       if (fees) {

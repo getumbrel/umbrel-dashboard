@@ -199,17 +199,11 @@ export default {
       this.feeTimeout = setTimeout(async () => {
         this.error = "";
         if (this.fundingAmount) {
-          const payload = {
-            confTarget: 0,
-            amt: this.fundingAmount
-          };
-
           let estimates;
 
           try {
             estimates = await API.get(
-              `${process.env.VUE_APP_API_URL}/v1/lnd/channel/estimateFee`,
-              { params: payload }
+              `${process.env.VUE_APP_API_URL}/v1/lnd/channel/estimateFee?confTarget=0&amt=${this.fundingAmount}`
             );
           } catch (error) {
             if (error.response && error.response.data) {
