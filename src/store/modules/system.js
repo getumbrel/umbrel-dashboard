@@ -2,8 +2,13 @@ import API from "@/helpers/api";
 
 // Initial state
 const state = () => ({
+  loading: true,
   unit: 'sats', //sats or btc
   api: {
+    operational: false,
+    version: ""
+  },
+  managerApi: {
     operational: false,
     version: ""
   }
@@ -16,6 +21,12 @@ const mutations = {
   },
   setApi(state, api) {
     state.api = api;
+  },
+  setManagerApi(state, api) {
+    state.managerApi = api;
+  },
+  setLoading(state, loading) {
+    state.loading = loading;
   }
 };
 
@@ -35,6 +46,13 @@ const actions = {
   async getApi({ commit }) {
     const api = await API.get(`${process.env.VUE_APP_API_URL}/ping`);
     commit("setApi", {
+      operational: !!(api && api.version),
+      version: api && api.version ? api.version : ""
+    });
+  },
+  async getManagerApi({ commit }) {
+    const api = await API.get(`${process.env.VUE_APP_SYSTEM_API_URL}/ping`);
+    commit("setManagerApi", {
       operational: !!(api && api.version),
       version: api && api.version ? api.version : ""
     });

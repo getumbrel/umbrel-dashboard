@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import API from "@/helpers/api";
 
 import Status from "@/components/Utility/Status";
 import Bar from "@/components/Channels/Bar";
@@ -119,11 +119,11 @@ export default {
     },
     async updateNodeAlias() {
       if (this.channel.remotePubkey) {
-        const nodeAlias = await axios.get(
+        const nodeAlias = await API.get(
           `${process.env.VUE_APP_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
         );
-        if (nodeAlias && nodeAlias.data) {
-          this.alias = nodeAlias.data.alias;
+        if (nodeAlias) {
+          this.alias = nodeAlias.alias;
         }
       }
     }

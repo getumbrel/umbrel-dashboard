@@ -1,5 +1,5 @@
 <template>
-  <b-input-group class="card-input-group">
+  <b-input-group :class="inputGroupClass">
     <!-- Todo: make it work with b-form-input + v-model -->
     <input
       :class="inputClass"
@@ -22,6 +22,10 @@ export default {
   props: {
     value: String,
     inputClass: [String, Array],
+    inputGroupClass: {
+      type: String,
+      default: "card-input-group"
+    },
     placeholder: String,
     disabled: {
       type: Boolean,

@@ -103,7 +103,7 @@ a {
         padding-right: 2rem;
         border-radius: 0.3rem !important;
     }
-    .neu-input-group-append {
+    .input-group-append {
         position: absolute;
         right: 0;
         top: 50%;
@@ -117,6 +117,17 @@ a {
         height: 100%;
         padding-left: 0.5rem;
         padding-right:0.5rem;
+    }
+    .input-group-append > .btn {
+        background: none !important;
+        color: #616877;
+        border: none !important;    
+        outline: none !important;
+        box-shadow: none !important;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0.5rem;
     }
 }
   
@@ -341,7 +352,7 @@ svg.icon-clock {
       animation: rotateHourHand 60s linear infinite;
       stroke-width: 3;
     }
-  }
+}
   @keyframes rotateMinuteHand {
     from {
       transform: translate(20px, 20px) rotate(calc(var(--start-minutes) * 6deg));
@@ -435,3 +446,29 @@ svg.icon-clock {
         box-shadow: 0 3px 15px rgba(0, 0, 0, 0.18);
     }
   }
+
+  //increase max-width from 500px to 600px primarily to fit the seed in view seed modal on smaller screens
+  @media (min-width: 456px) {
+    .modal-dialog {
+        max-width: 600px;
+        margin: 1.75rem auto;
+    }
+  }
+
+
+// blur background content on modal open
+.modal-backdrop {
+    opacity: 0.3;
+}
+body {
+    #app {
+        transition: filter 0.2s ease;
+    }
+    &.modal-open {
+        overflow: hidden !important;
+        #app {
+            filter: blur(2px);
+        }
+    }
+    
+}

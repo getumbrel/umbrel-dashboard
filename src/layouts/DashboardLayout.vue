@@ -41,7 +41,7 @@
         </div>
         <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right no-caret>
           <!-- Using 'button-content' slot -->
-          <template v-slot:button-content>Satoshi</template>
+          <template v-slot:button-content>{{ name.split(' ')[0] }}</template>
           <b-dropdown-item @click="logout">Log out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar";
 
 export default {
@@ -96,12 +97,10 @@ export default {
     return {};
   },
   computed: {
-    chain() {
-      return this.$store.state.bitcoin.chain;
-    },
-    isDarkMode() {
-      return this.$store.getters.isDarkMode;
-    },
+    ...mapState({
+      name: state => state.user.name,
+      chain: state => state.bitcoin.chain
+    }),
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
     }
@@ -113,30 +112,32 @@ export default {
         this.toggleMobileMenu();
       }
       this.$store.dispatch("user/logout");
-      this.$router.push("/");
-    },
-    toggleMobileMenu() {
-      this.$store.commit("toggleMobileMenu");
     },
     fetchData() {
+      this.$store.dispatch("system/fetchUnit");
       this.$store.dispatch("bitcoin/getSync");
       this.$store.dispatch("bitcoin/getBalance");
       this.$store.dispatch("bitcoin/getTransactions");
       this.$store.dispatch("lightning/getTransactions");
       this.$store.dispatch("lightning/getChannels");
       this.$store.dispatch("bitcoin/getPrice");
+    },
+    toggleMobileMenu() {
+      this.$store.commit("toggleMobileMenu");
     }
   },
   created() {
-    //fetch user's peferences
-    this.$store.dispatch("system/fetchUnit");
-    // start polling data every 20s
+    //load this data once:
+    this.$store.dispatch("user/getInfo");
+
+    //refresh this data every 20s:
     this.fetchData();
     this.interval = window.setInterval(this.fetchData, 20000);
   },
   beforeDestroy() {
     window.clearInterval(this.interval);
   },
+  watch: {},
   components: {
     AuthenticatedVerticalNavbar
   }

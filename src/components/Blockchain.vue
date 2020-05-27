@@ -139,8 +139,11 @@ export default {
         return;
       }
       this.pollInProgress = true;
-      await this.$store.dispatch("bitcoin/getBlocks");
-      this.pollInProgress = false;
+      //TODO: remove this timeout added so bitcoin can get fetch status first
+      setTimeout(async () => {
+        await this.$store.dispatch("bitcoin/getBlocks");
+        this.pollInProgress = false;
+      }, 1000);
     },
     poller(syncPercent) {
       window.clearInterval(this.polling);
@@ -249,6 +252,14 @@ export default {
   position: relative;
   height: 4rem;
   width: 4rem;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
 
   .blockchain-block-icon-chainlink {
     position: absolute;

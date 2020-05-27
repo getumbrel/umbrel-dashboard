@@ -1,35 +1,35 @@
 <template>
   <div>
-    <div
+    <!-- <div
       class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
+      v-if="loading"
     >
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
+      <b-spinner class="my-5"></b-spinner>
+    </div>-->
+
+    <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+      <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">welcome back</h1>
-      <p class="text-muted w-75 text-center">
-        Enter the password to login to your Umbrel
-      </p>
+      <p class="text-muted w-75 text-center">Enter the password to login to your Umbrel</p>
 
       <form
         v-on:submit.prevent="authenticateUser"
         class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
       >
         <input-password
-          v-model="state.password"
+          v-model="password"
           ref="password"
           placeholder="Password"
           :inputClass="[
-            state.isIncorrectPassword ? 'incorrect-password' : '',
+            isIncorrectPassword ? 'incorrect-password' : '',
             'card-input w-100'
           ]"
-          :disabled="state.isLoggingIn"
+          :disabled="isLoggingIn"
         />
         <div class="login-button-container">
           <transition name="fade">
-            <small
-              class="mt-2 text-danger error"
-              v-show="state.isIncorrectPassword"
-              >Incorrect password</small
-            >
+            <small class="mt-2 text-danger error" v-show="isIncorrectPassword">Incorrect password</small>
           </transition>
           <transition name="slide-up">
             <b-button
@@ -37,11 +37,10 @@
               type="submit"
               size="lg"
               class="px-4 login-button"
-              :class="{ 'loading-fade-blink': state.isLoggingIn }"
-              v-show="!!state.password && !state.isIncorrectPassword"
-              :disabled="state.isLoggingIn"
-              >Log in</b-button
-            >
+              :class="{ 'loading-fade-blink': isLoggingIn }"
+              v-show="!!password && !isIncorrectPassword"
+              :disabled="isLoggingIn"
+            >Log in</b-button>
           </transition>
         </div>
       </form>
@@ -50,60 +49,105 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import InputPassword from "@/components/InputPassword";
 
 export default {
   data() {
     return {
-      state: {
-        password: "",
-        isIncorrectPassword: false,
-        isLoggingIn: false
-      }
+      loading: true,
+      password: "",
+      isIncorrectPassword: false,
+      isLoggingIn: false
     };
   },
   watch: {
-    "state.password": function() {
+    password: function() {
       //bring up log in button after user retries new password after failed attempt
-      this.state.isIncorrectPassword = false;
+      this.isIncorrectPassword = false;
     }
   },
-  computed: {},
-  created() {
-    //redirect if already logged in
-    if (this.$store.state.user.isAuthenticated) {
+  computed: {
+    ...mapState({
+      jwt: state => state.user.jwt,
+      registered: state => state.user.registered,
+      unlocked: state => state.lightning.unlocked
+    })
+  },
+  async created() {
+    //redirect to dashboard if already logged in
+    if (this.jwt) {
       this.$router.push("/dashboard");
     }
+
+    //redirect to onboarding if the user is not registered
+    await this.$store.dispatch("user/registered");
+
+    if (!this.registered) {
+      return this.$router.push("/start");
+    }
+
+    this.loading = false;
   },
   methods: {
-    authenticateUser() {
-      this.state.isLoggingIn = true;
-      window.setTimeout(() => {
-        //if testnet, password is "printergobrrr"
-        if (window.location.host === "testnet.getumbrel.com") {
-          if (this.state.password === "printergobrrr") {
-            this.$store.dispatch("user/login");
+    async authenticateUser() {
+      this.isLoggingIn = true;
+
+      try {
+        await this.$store.dispatch("user/login", this.password);
+      } catch (error) {
+        if (error.response && error.response.data === "Incorrect password") {
+          this.isIncorrectPassword = true;
+          this.isLoggingIn = false;
+          return;
+        }
+      }
+
+      //unlock lnd wallet if it's locked
+      await this.$store.dispatch("lightning/getStatus");
+
+      if (!this.unlocked) {
+        try {
+          await this.$store.dispatch("lightning/unlockWallet", this.password);
+        } catch (error) {
+          if (error.response && error.response.data) {
+            this.$bvToast.toast(`${error.response.data}`, {
+              title: "Error",
+              autoHideDelay: 3000,
+              variant: "danger",
+              solid: true,
+              toaster: "b-toaster-top-center"
+            });
+          }
+          this.isLoggingIn = false;
+          //logout user for safety
+          this.$store.dispatch("user/logout");
+          return;
+        }
+
+        //redirect to dashboard once lnd is unlocked
+        this.lndUnlockInterval = window.setInterval(async () => {
+          await this.$store.dispatch("lightning/getStatus");
+          if (this.unlocked) {
+            window.clearInterval(this.lndUnlockInterval);
+
+            //redirect to dashboard
             return this.$router.push(
               this.$router.history.current.query.redirect || "/dashboard"
             );
-          } else {
-            this.state.isIncorrectPassword = true;
-            return (this.state.isLoggingIn = false);
           }
-        }
-
-        //if locally, then any password will work, except "incorrect"
-        if (this.state.password !== "incorrect") {
-          this.$store.dispatch("user/login");
-          return this.$router.push(
-            this.$router.history.current.query.redirect || "/dashboard"
-          );
-        } else {
-          this.state.isIncorrectPassword = true;
-          return (this.state.isLoggingIn = false);
-        }
-      }, 1000);
+        }, 1000);
+      } else {
+        //redirect to dashboard
+        return this.$router.push(
+          this.$router.history.current.query.redirect || "/dashboard"
+        );
+      }
     }
+  },
+  beforeDestroy() {
+    window.clearInterval(this.lndUnlockInterval);
   },
   components: {
     InputPassword

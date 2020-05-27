@@ -1,7 +1,7 @@
 <template>
   <div class="p-sm-2">
     <div class="my-3 pb-2">
-      <h1>welcome back, satoshi</h1>
+      <h1 class="text-lowercase">welcome back{{ name ? `, ${ name.split(' ')[0] }` : '' }}</h1>
       <p class="text-muted">This is your Umbrel's dashboard</p>
     </div>
     <b-row>
@@ -116,6 +116,7 @@ export default {
   },
   computed: {
     ...mapState({
+      name: state => state.user.name,
       syncPercent: state => state.bitcoin.percent,
       blocks: state => state.bitcoin.blocks,
       btcBalance: state => {

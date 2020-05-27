@@ -672,7 +672,6 @@ export default {
         this.$store.dispatch("bitcoin/getBalance");
         this.$store.dispatch("bitcoin/getTransactions");
       } catch (error) {
-        console.log(error);
         this.error = error.reponse ? error.response.data : "Error sending BTC";
         console.error("Error sending", error);
       }

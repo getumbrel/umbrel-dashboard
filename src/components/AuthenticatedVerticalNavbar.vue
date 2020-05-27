@@ -168,7 +168,6 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("user/logout");
-      this.$router.push("/");
     },
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);

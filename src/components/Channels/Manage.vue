@@ -154,7 +154,7 @@
 
 <script>
 import Bar from "@/components/Channels/Bar";
-import axios from "axios";
+import API from "@/helpers/api";
 
 export default {
   props: {
@@ -168,11 +168,11 @@ export default {
     };
   },
   async mounted() {
-    const nodeAlias = await axios.get(
+    const nodeAlias = await API.get(
       `${process.env.VUE_APP_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
     );
-    if (nodeAlias && nodeAlias.data) {
-      this.alias = nodeAlias.data.alias;
+    if (nodeAlias) {
+      this.alias = nodeAlias.alias;
     }
   },
   computed: {
@@ -198,12 +198,10 @@ export default {
 
       try {
         const payload = {
-          data: {
-            channelPoint: this.channel.channelPoint,
-            force: !this.channel.active // Avoids force closing if channel is active
-          }
+          channelPoint: this.channel.channelPoint,
+          force: !this.channel.active // Avoids force closing if channel is active
         };
-        await axios.delete(
+        await API.delete(
           `${process.env.VUE_APP_API_URL}/v1/lnd/channel/close`,
           payload
         );
@@ -228,7 +226,6 @@ export default {
             toaster: "b-toaster-bottom-right"
           }
         );
-        console.log("Error closing channel", err);
       }
       this.isClosing = false;
     }

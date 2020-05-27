@@ -181,7 +181,7 @@ const mutations = {
 
 // Functions to get data from the API
 const actions = {
-  async getStatus({ commit, dispatch }) {
+  async getStatus({ commit }) {
     const status = await API.get(
       `${process.env.VUE_APP_API_URL}/v1/bitcoind/info/status`
     );
@@ -189,9 +189,9 @@ const actions = {
     if (status) {
       commit("isOperational", status.operational);
 
-      if (status.operational) {
-        dispatch("getSync");
-      }
+      // if (status.operational) {
+      //   dispatch("getSync");
+      // }
     }
   },
 
@@ -238,6 +238,11 @@ const actions = {
 
       //dont fetch blocks if no new block has been found
       if (state.blocks.length && currentBlock === state.blocks[0]["height"]) {
+        return;
+      }
+
+      //dont fetch blocks if < 3 blocks
+      if (currentBlock < 3) {
         return;
       }
 
@@ -347,10 +352,7 @@ const actions = {
   async getFees({ commit, state }, { address, confTarget, amt, sweep }) {
     if (state.operational) {
       const fees = await API.get(
-        `${process.env.VUE_APP_API_URL}/v1/lnd/transaction/estimateFee`,
-        {
-          params: { address, confTarget, amt, sweep }
-        }
+        `${process.env.VUE_APP_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
       );
 
       if (fees) {
