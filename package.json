@@ -5,8 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
-    "lint": "vue-cli-service lint",
-    "deploy-local": "vue-cli-service build --mode production && rsync -aP --delete dist/ umbrel@umbrel.local:/home/umbrel/nginx/www"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
