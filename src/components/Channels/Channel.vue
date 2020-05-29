@@ -6,7 +6,7 @@
         <div class="d-none d-xl-block">
           <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
           <div>
-            <span v-if="alias">{{ alias }}</span>
+            <span v-if="channel.remoteAlias">{{ channel.remoteAlias }}</span>
             <span
               class="loading-placeholder loading-placeholder-sm d-block"
               style="width:80%; margin-top: 8px;"
@@ -19,7 +19,7 @@
         <div class="d-xl-none d-flex justify-content-between align-items-center mb-1">
           <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
           <div>
-            <small>{{ alias }}</small>
+            <small>{{ channel.remoteAlias }}</small>
           </div>
         </div>
       </b-col>
@@ -53,8 +53,6 @@
 </template>
 
 <script>
-import API from "@/helpers/api";
-
 import Status from "@/components/Utility/Status";
 import Bar from "@/components/Channels/Bar";
 
@@ -83,9 +81,7 @@ export default {
     }
   },
   data() {
-    return {
-      alias: ""
-    };
+    return {};
   },
   methods: {
     getStatusVariant() {
@@ -116,28 +112,10 @@ export default {
           variant: "danger"
         };
       }
-    },
-    async updateNodeAlias() {
-      if (this.channel.remotePubkey) {
-        const nodeAlias = await API.get(
-          `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
-        );
-        if (nodeAlias) {
-          this.alias = nodeAlias.alias;
-        }
-      }
     }
-  },
-  created() {
-    this.updateNodeAlias();
   },
   props: {
     channel: Object
-  },
-  watch: {
-    "this.channel.remotePubkey": () => {
-      this.updateNodeAlias();
-    }
   },
   components: {
     Status,

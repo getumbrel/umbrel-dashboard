@@ -48,7 +48,7 @@
           <div class="w-75 text-right">
             <span class="font-weight-bold" style="overflow-wrap: break-word;">
               {{
-              alias
+              channel.remoteAlias
               }}
             </span>
           </div>
@@ -163,17 +163,8 @@ export default {
   data() {
     return {
       isReviewingChannelClose: false,
-      isClosing: false,
-      alias: ""
+      isClosing: false
     };
-  },
-  async mounted() {
-    const nodeAlias = await API.get(
-      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
-    );
-    if (nodeAlias) {
-      this.alias = nodeAlias.alias;
-    }
   },
   computed: {
     unit() {
