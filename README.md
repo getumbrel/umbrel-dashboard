@@ -19,7 +19,7 @@ If you are looking to run Umbrel on your hardware, you do not need to run this s
 
 ## 🛠 Running dashboard
 
-Make sure both [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) and [`umbrel-middleware`](https://github.com/lightningnetwork/lnd) are running and available.
+Make sure both [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) and [`umbrel-middleware`](https://github.com/getumbrel/umbrel-middleware) are running and available.
 
 ### Step 1. Install dependencies
 ```sh
