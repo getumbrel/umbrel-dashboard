@@ -166,7 +166,7 @@ export default {
 
       try {
         await API.post(
-          `${process.env.VUE_APP_API_URL}/v1/lnd/channel/open`,
+          `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/open`,
           payload
         );
         this.isOpening = false;
@@ -203,7 +203,7 @@ export default {
 
           try {
             estimates = await API.get(
-              `${process.env.VUE_APP_API_URL}/v1/lnd/channel/estimateFee?confTarget=0&amt=${this.fundingAmount}`
+              `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/estimateFee?confTarget=0&amt=${this.fundingAmount}`
             );
           } catch (error) {
             if (error.response && error.response.data) {

@@ -169,7 +169,7 @@ export default {
   },
   async mounted() {
     const nodeAlias = await API.get(
-      `${process.env.VUE_APP_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
     );
     if (nodeAlias) {
       this.alias = nodeAlias.alias;
@@ -202,7 +202,7 @@ export default {
           force: !this.channel.active // Avoids force closing if channel is active
         };
         await API.delete(
-          `${process.env.VUE_APP_API_URL}/v1/lnd/channel/close`,
+          `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/close`,
           payload
         );
         this.$emit("channelclose");
