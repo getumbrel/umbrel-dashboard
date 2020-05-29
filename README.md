@@ -1,4 +1,4 @@
-[![Umbrel Dashboard](https://i.imgur.com/346Wkdd.png)](https://github.com/getumbrel/umbrel-dashboard)
+[![Umbrel Dashboard](https://static.getumbrel.com/github/github-banner-umbrel-dashboard.svg)](https://github.com/getumbrel/umbrel-dashboard)
 
 [![Version](https://img.shields.io/github/v/release/getumbrel/umbrel-dashboard?color=%235351FB&label=version)](https://github.com/getumbrel/umbrel-dashboard/releases)
 [![Docker Build](https://img.shields.io/github/workflow/status/getumbrel/umbrel-dashboard/Automatically%20Build%20image%20on%20tag?color=%235351FB)](https://github.com/getumbrel/umbrel-dashboard/actions?query=workflow%3A"Automatically+Build+image+on+tag")
