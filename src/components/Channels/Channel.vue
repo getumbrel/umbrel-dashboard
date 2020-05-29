@@ -120,7 +120,7 @@ export default {
     async updateNodeAlias() {
       if (this.channel.remotePubkey) {
         const nodeAlias = await API.get(
-          `${process.env.VUE_APP_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
+          `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/alias?pubkey=${this.channel.remotePubkey}`
         );
         if (nodeAlias) {
           this.alias = nodeAlias.alias;

@@ -17,7 +17,7 @@ axios.interceptors.response.use(function (response) {
   // Any status codes that falls outside the range of 2xx cause this function to trigger
 
   //logout user if lnd is locked
-  if (error.response.status === 403 && error.config.url.startsWith(`${process.env.VUE_APP_API_URL}/v1/lnd`) && error.response.data === "Must unlock wallet") {
+  if (error.response.status === 403 && error.config.url.startsWith(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd`) && error.response.data === "Must unlock wallet") {
     store.dispatch('user/logout')
     return Promise.reject(error);
   }
@@ -29,12 +29,12 @@ axios.interceptors.response.use(function (response) {
 
 
   // Return the same 401 back if user is trying to login with incorrect password
-  if (error.config.url === `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/login`) {
+  if (error.config.url === `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`) {
     return Promise.reject(error);
   }
 
   // Logout user if token refresh didn't work
-  if (error.config.url === `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/refresh`) {
+  if (error.config.url === `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`) {
     store.dispatch('user/logout');
     return Promise.reject(error);
   }

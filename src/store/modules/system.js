@@ -44,14 +44,14 @@ const actions = {
     }
   },
   async getApi({ commit }) {
-    const api = await API.get(`${process.env.VUE_APP_API_URL}/ping`);
+    const api = await API.get(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/ping`);
     commit("setApi", {
       operational: !!(api && api.version),
       version: api && api.version ? api.version : ""
     });
   },
   async getManagerApi({ commit }) {
-    const api = await API.get(`${process.env.VUE_APP_SYSTEM_API_URL}/ping`);
+    const api = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
     commit("setManagerApi", {
       operational: !!(api && api.version),
       version: api && api.version ? api.version : ""

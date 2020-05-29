@@ -31,7 +31,7 @@ const actions = {
   async login({ commit }, password) {
 
     const { data } = await API.post(
-      `${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/login`,
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`,
       { password }
     );
 
@@ -48,19 +48,19 @@ const actions = {
   },
 
   async refreshJWT({ commit }) {
-    const { data } = await API.post(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/refresh`);
+    const { data } = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`);
     if (data && data.jwt) {
       commit("setJWT", data.jwt);
     }
   },
 
   async registered({ commit }) {
-    const { registered } = await API.get(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/registered`);
+    const { registered } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/registered`);
     commit("setRegistered", !!registered);
   },
 
   async getInfo({ commit }) {
-    const { name } = await API.get(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/info`);
+    const { name } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`);
     commit("setName", name);
   },
 
@@ -72,7 +72,7 @@ const actions = {
 
     //get user's stored seed if already registered
     if (state.registered && plainTextPassword) {
-      rawSeed = await API.post(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/seed`, {
+      rawSeed = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/seed`, {
         password: plainTextPassword
       }, false);
       if (rawSeed.data) {
@@ -80,7 +80,7 @@ const actions = {
       }
     } else {
       //get a new seed if new user 
-      rawSeed = await API.get(`${process.env.VUE_APP_API_URL}/v1/lnd/wallet/seed`);
+      rawSeed = await API.get(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/seed`);
     }
 
     if (rawSeed && rawSeed.seed) {
@@ -90,7 +90,7 @@ const actions = {
 
   async register({ commit, state }, { name, password, seed }) {
     if (!state.registered) {
-      const result = await API.post(`${process.env.VUE_APP_SYSTEM_API_URL}/v1/account/register`, {
+      const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/register`, {
         name,
         password,
         seed
