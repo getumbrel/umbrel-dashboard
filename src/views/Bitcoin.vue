@@ -196,10 +196,7 @@ export default {
       currentBlock: state => state.bitcoin.currentBlock,
       blockHeight: state => state.bitcoin.blockHeight,
       stats: state => state.bitcoin.stats
-    }),
-    isDarkMode() {
-      return this.$store.getters.isDarkMode;
-    }
+    })
   },
   methods: {
     random(min, max) {
