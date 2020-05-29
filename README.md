@@ -31,8 +31,8 @@ Set the following environment variables in `.env` file of the project's root.
 
 | Variable | Description | Default |
 | ------------- | ------------- | ------------- |
-| `VUE_APP_MANAGER_API_URL` | Root host+port of [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) API | `http://localhost:3006` |
-| `VUE_APP_MIDDLEWARE_API_URL` | Root host+port [`umbrel-middleware`](https://github.com/getumbrel/umbrel-middleware) API | `http://localhost:3005` |
+| `VUE_APP_MANAGER_API_URL` | URL of [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) API | `http://localhost:3006` |
+| `VUE_APP_MIDDLEWARE_API_URL` | URL of [`umbrel-middleware`](https://github.com/getumbrel/umbrel-middleware) API | `http://localhost:3005` |
 
 ### Step 3. Run dashboard
 ```sh
