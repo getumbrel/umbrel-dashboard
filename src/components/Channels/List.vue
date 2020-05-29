@@ -49,8 +49,8 @@
 
       <transition-group name="list" appear v-else>
         <div
-          v-for="(channel, index) in channels"
-          :key="index"
+          v-for="(channel) in channels"
+          :key="channel.channelPoint"
           @click="$emit('selectchannel', channel)"
         >
           <channel :channel="channel"></channel>
@@ -61,13 +61,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Channel from "@/components/Channels/Channel";
+
 export default {
   props: {},
   computed: {
-    channels() {
-      return this.$store.state.lightning.channels;
-    }
+    ...mapState({
+      channels: state => state.lightning.channels
+    })
   },
   data() {
     return {
