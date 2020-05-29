@@ -1,13 +1,5 @@
 $font-size-base: 1rem;
 
-* {
-    // transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-body {
-    transition: background 0.8s, color 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); //for light/dark mode switching
-}
-
 @import './variables';
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/bootstrap-vue/src/index.scss';

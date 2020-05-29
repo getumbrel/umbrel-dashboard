@@ -102,14 +102,6 @@ export default {
     //for 100vh consistency
     window.addEventListener("resize", this.updateViewPortHeightCSS);
   },
-  mounted() {
-    const isDarkMode = this.$store.getters.isDarkMode;
-    //onboarding
-    // document.body.style.background = isDarkMode ? "#1C1C26" : "#ffffff";
-    //dashboard
-    // document.body.style.background = isDarkMode ? "#1C1C26" : "#F7F9FB";
-    document.body.style.background = isDarkMode ? "#F7F9FB" : "#F7F9FB";
-  },
   watch: {
     loading: {
       handler: function(isLoading) {

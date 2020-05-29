@@ -131,18 +131,9 @@ export default {
       },
       btcBalanceInSats: state => state.bitcoin.balance.total,
       unit: state => state.system.unit
-    }),
-    isDarkMode() {
-      return this.$store.getters.isDarkMode;
-    }
+    })
   },
   methods: {},
-  mounted() {
-    // disable dark mode on dashboard
-    if (this.$store.getters.isDarkMode) {
-      this.$store.commit("toggleDarkMode");
-    }
-  },
   components: {
     CountUp,
     CardWidget,
