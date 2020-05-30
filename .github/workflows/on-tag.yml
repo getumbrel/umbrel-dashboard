@@ -1,11 +1,12 @@
 name: Automatically Build image on tag
 env:
         DOCKER_CLI_EXPERIMENTAL: enabled
-        TAG_FMT: '^refs/tags/(((.?[0-9]+){3,4}))$'
 
 on:
         push:
-                tags: [ '*' ]
+                tags:
+                  - v[0-9]+.[0-9]+.[0-9]+
+                  - v[0-9]+.[0-9]+.[0-9]+-*
 
 jobs:
         build:
@@ -13,16 +14,7 @@ jobs:
                 name: Build / Push Umbrel Dashboard on version tag
                 steps:
                         - name: Setup Environment
-                          run: |
-                                  if ! echo "$GITHUB_REF" | grep -qE "$TAG_FMT"; then
-                                        echo "ERR: TAG must be in format: vX.Y.Z or X.Y.Z or vW.X.Y.Z or W.X.Y.Z"
-                                        exit 1
-                                  fi
-                                  VERSION="$(echo "$GITHUB_REF" | sed -E "s|$TAG_FMT|\2|")"
-                                  
-                                  TAG="$(echo "$GITHUB_REF" | sed -E "s|$TAG_FMT|\1|")"
-                                  echo ::set-env name=TAG::"$TAG"
-                                  
+                          run: echo ::set-env name=TAG::${GITHUB_REF/refs\/tags\//}
                         - name: Show set environment variables
                           run: |
                                   printf "    TAG: %s\n"  "$TAG"                                  
@@ -41,14 +33,14 @@ jobs:
                         - name: Run Docker build X (against tag)
                           run: |
                                   docker buildx build \
-                                  --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 \
+                                  --platform linux/amd64,linux/arm/v7,linux/arm64 \
                                   -t getumbrel/dashboard:$TAG \
                                   --output "type=registry" \
                                   .
                         - name: Run Docker build X (against latest)
                           run: |
                                   docker buildx build \
-                                  --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 \
+                                  --platform linux/amd64,linux/arm/v7,linux/arm64 \
                                   -t getumbrel/dashboard:latest \
                                   --output "type=registry" \
                                   .
