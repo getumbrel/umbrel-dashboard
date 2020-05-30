@@ -1,6 +1,7 @@
 name: Automatically Build image on tag
 env:
         DOCKER_CLI_EXPERIMENTAL: enabled
+        TAG_FMT: '^refs/tags/(((.?[0-9]+){3,4}))$'
 
 on:
         push:
@@ -13,6 +14,12 @@ jobs:
                 runs-on: ubuntu-18.04
                 name: Build / Push Umbrel Dashboard on version tag
                 steps:
+                        - name: Setup Environment
+                          run: |
+                                  VERSION="$(echo "$GITHUB_REF" | sed -E "s|$TAG_FMT|\2|")"
+                                  
+                                  TAG="$(echo "$GITHUB_REF" | sed -E "s|$TAG_FMT|\1|")"
+                                  echo ::set-env name=TAG::"$TAG"
                                   
                         - name: Show set environment variables
                           run: |
