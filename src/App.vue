@@ -21,8 +21,8 @@ export default {
   data() {
     return {
       loading: true,
-      loadingText: "Loading...",
-      loadingProgress: 10,
+      loadingText: "",
+      loadingProgress: 0,
       loadingPollInProgress: false
     };
   },
@@ -43,53 +43,67 @@ export default {
       );
     },
     async getLoadingStatus() {
-      //first check if manager api is up
-      await this.$store.dispatch("system/getManagerApi");
-      if (!this.isManagerApiOperational) {
-        this.loading = true;
-        this.loadingText = "Starting Manager...";
+      // Skip if previous poll in progress
+      if (this.loadingPollInProgress) {
+        return;
+      }
+
+      this.loadingPollInProgress = true;
+
+      // First check if manager api is up
+      if (this.loadingProgress <= 20) {
+        // this.loadingText = "Starting Manager...";
         this.loadingProgress = 20;
-        this.loadingPollInProgress = false;
-        return;
+        await this.$store.dispatch("system/getManagerApi");
+        if (!this.isManagerApiOperational) {
+          this.loading = true;
+          this.loadingPollInProgress = false;
+          return;
+        }
       }
 
-      //then check if middleware api is up
-      await this.$store.dispatch("system/getApi");
-      if (!this.isApiOperational) {
-        this.loading = true;
-        this.loadingText = "Starting Middleware...";
+      // Then check if middleware api is up
+      if (this.loadingProgress <= 40) {
+        // this.loadingText = "Starting Middleware...";
         this.loadingProgress = 40;
-        this.loadingPollInProgress = false;
-        return;
+        await this.$store.dispatch("system/getApi");
+        if (!this.isApiOperational) {
+          this.loading = true;
+          this.loadingPollInProgress = false;
+          return;
+        }
       }
 
-      //then check if btc is operational
-      await this.$store.dispatch("bitcoin/getStatus");
-      if (!this.isBitcoinOperational) {
-        this.loading = true;
-        this.loadingText = "Starting Bitcoin Core...";
+      // Then check if btc is operational
+      if (this.loadingProgress <= 60) {
+        // this.loadingText = "Starting Bitcoin Core...";
         this.loadingProgress = 60;
-        this.loadingPollInProgress = false;
-        return;
+        await this.$store.dispatch("bitcoin/getStatus");
+        if (!this.isBitcoinOperational) {
+          this.loading = true;
+          this.loadingPollInProgress = false;
+          return;
+        }
       }
 
-      //then check if lnd is operational
-      await this.$store.dispatch("lightning/getStatus");
-      if (!this.isLndOperational) {
-        this.loading = true;
-        this.loadingText = "Starting LND...";
+      // Then check if lnd is operational
+      if (this.loadingProgress <= 80) {
+        // this.loadingText = "Starting LND...";
         this.loadingProgress = 80;
-        this.loadingPollInProgress = false;
-        return;
+        await this.$store.dispatch("lightning/getStatus");
+        if (!this.isLndOperational) {
+          this.loading = true;
+          this.loadingPollInProgress = false;
+          return;
+        }
       }
 
-      //all good
-      // this.loadingText = "";
       this.loadingProgress = 100;
+
       this.loadingPollInProgress = false;
 
-      //slight delay so the laoding progress bar makes
-      //it to 100% before disappearing
+      // Add slight delay so the progress bar makes
+      // it to 100% before disappearing
       setTimeout(() => (this.loading = false), 300);
     }
   },
