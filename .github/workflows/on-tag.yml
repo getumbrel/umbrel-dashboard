@@ -4,7 +4,7 @@ env:
 
 on:
         push:
-                tags: 
+                tags:
                   - v[0-9]+.[0-9]+.[0-9]+
                   - v[0-9]+.[0-9]+.[0-9]+-*
 
@@ -14,9 +14,41 @@ jobs:
                 name: Build / Push Umbrel Dashboard on version tag
                 steps:
                         - name: Setup Environment
-                          run: |
-                                  echo ::set-env name=TAG::${GITHUB_REF/refs\/tags\//}
-                                  
+                          run: echo ::set-env name=TAG::${GITHUB_REF/refs\/tags\//}
                         - name: Show set environment variables
                           run: |
-                                  printf "    TAG: %s\n"  "$TAG"
+                                  printf "    TAG: %s\n"  "$TAG"                                  
+                        - name: Login to Docker for building
+                          run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+                        - name: Checkout project
+                          uses: actions/checkout@v2
+                        - name: Setup Docker buildx Action
+                          uses: crazy-max/ghaction-docker-buildx@v1
+                          id: buildx
+                          with:
+                                  buildx-version: latest
+                                  qemu-version: latest
+                        - name: Available platforms
+                          run: echo ${{ steps.buildx.outputs.platforms }}
+                        - name: Run Docker build X (against tag)
+                          run: |
+                                  docker buildx build \
+                                  --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 \
+                                  -t getumbrel/dashboard:$TAG \
+                                  --output "type=registry" \
+                                  .
+                        - name: Run Docker build X (against latest)
+                          run: |
+                                  docker buildx build \
+                                  --platform linux/amd64,linux/386,linux/arm/v7,linux/arm64 \
+                                  -t getumbrel/dashboard:latest \
+                                  --output "type=registry" \
+                                  .
+                        - name: Run Docker buildx (against stage)
+                          run: |
+                                docker buildx build \
+                                --platform linux/amd64 \
+                                -f ./Dockerfile.stage \
+                                -t getumbrel/dashboard:stage \
+                                --output "type=registry" \
+                                .
