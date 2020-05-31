@@ -39,6 +39,14 @@
           </div>
         </card-widget>
       </b-col>
+      <b-col col cols="12" md="6" xl="4">
+        <card-widget header="Account">
+          <div class="px-4">
+            <label class="sr-onlsy" for="input-name">Your name</label>
+            <b-input id="input-name" class="neu-input" type="text" size="lg" v-model="name"></b-input>
+          </div>
+        </card-widget>
+      </b-col>
     </b-row>
   </div>
 </template>
