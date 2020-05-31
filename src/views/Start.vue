@@ -47,23 +47,6 @@
           <small>{{ errorMessage }}</small>
         </p>-->
 
-        <!-- <div class="mt-3 d-flex justify-content-center">
-          <b-button
-            variant="outline-success"
-            size="lg"
-            class="px-4 mr-2"
-            v-if="currentStep === 4 || currentStep === 5"
-            @click="skipSeed"
-            :disabled="notedSeed || isRegistering"
-          >Do Later</b-button>
-          <b-button
-            variant="success"
-            size="lg"
-            @click="nextStep"
-            :disabled="!isStepValid || isRegistering"
-            class="px-4"
-          >{{ nextButtonText }}</b-button>
-        </div>-->
         <b-button
           variant="success"
           size="lg"
