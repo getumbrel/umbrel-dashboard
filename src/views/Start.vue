@@ -2,8 +2,8 @@
   <div>
     <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
-      <h1 class="text-center mb-2">{{ steps[currentStep]["heading"] }}</h1>
-      <p class="text-muted w-75 text-center">{{ steps[currentStep]["text"] }}</p>
+      <h1 class="text-center mb-2">{{ heading }}</h1>
+      <p class="text-muted w-75 text-center">{{ text }}</p>
 
       <div class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center">
         <b-form-input
@@ -32,37 +32,49 @@
         />
 
         <div v-show="currentStep === 5">
-          <seed :words="seed" @finish="finishedSeed" v-if="seed.length && !isRegistering"></seed>
-          <b-spinner v-else></b-spinner>
+          <seed
+            :words="seed"
+            @complete="finishedSeed"
+            @incomplete="incompleteRecoverySeed"
+            @input="inputRecoverySeed"
+            v-show="seed.length && !isRegistering"
+            :recover="recover"
+          ></seed>
+          <b-spinner v-show="!seed.length || isRegistering"></b-spinner>
         </div>
 
         <!-- <p class="text-danger text-left align-self-start mt-1">
           <small>{{ errorMessage }}</small>
         </p>-->
 
-        <div class="mt-3 d-flex justify-content-center">
-          <b-button
-            variant="outline-success"
-            size="lg"
-            class="px-4 mr-2"
-            v-if="currentStep === 4 || currentStep === 5"
-            @click="skipSeed"
-            :disabled="notedSeed || isRegistering"
-          >Do Later</b-button>
-          <b-button
-            variant="success"
-            size="lg"
-            @click="nextStep"
-            :disabled="!isStepValid || isRegistering"
-            class="px-4"
-          >{{ nextButtonText }}</b-button>
-        </div>
+        <b-button
+          variant="success"
+          size="lg"
+          @click="nextStep"
+          :disabled="!isStepValid || isRegistering"
+          class="mt-3 mx-auto d-block px-4"
+        >{{ nextButtonText }}</b-button>
+        <b-button
+          variant="link"
+          size="sm"
+          class="mt-3 mx-auto d-block"
+          v-if="currentStep === 4 || (currentStep === 5 && !recover)"
+          @click="skipSeed"
+          :disabled="isRegistering"
+        >Note Down Later</b-button>
+        <b-button
+          variant="link"
+          size="sm"
+          @click="recoverFromSeed"
+          v-if="currentStep === 4"
+          class="mt-2 mx-auto d-block"
+        >Recover</b-button>
         <b-button
           variant="link"
           size="sm"
           @click="prevStep"
           v-if="currentStep > 0 && currentStep !== 6"
-          class="mt-2 mx-auto d-block"
+          class="mt-2 mx-auto d-block text-dark"
         >Back</b-button>
       </div>
       <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
@@ -124,7 +136,9 @@ export default {
         }
       ],
       notedSeed: false,
-      isRegistering: false
+      isRegistering: false,
+      recover: false,
+      recoverySeed: []
     };
   },
   computed: {
@@ -133,6 +147,18 @@ export default {
       seed: state => state.user.seed,
       unlocked: state => state.lightning.unlocked
     }),
+    heading() {
+      if (this.currentStep === 5 && this.recover) {
+        return "recover your node";
+      }
+      return this.steps[this.currentStep]["heading"];
+    },
+    text() {
+      if (this.currentStep === 5 && this.recover) {
+        return "Enter your 24 secret words in the exact order to recover your Umbrel node.";
+      }
+      return this.steps[this.currentStep]["text"];
+    },
     nextButtonText() {
       if (this.currentStep === 0) {
         return "Start";
@@ -141,12 +167,6 @@ export default {
         return "Go to dashboard";
       }
       return "Next";
-    },
-    registered() {
-      return this.$store.state.user.registered;
-    },
-    seed() {
-      return this.$store.state.user.seed;
     },
     isStepValid() {
       if (this.currentStep === 1) {
@@ -189,21 +209,33 @@ export default {
     }
   },
   methods: {
-    async skipSeed() {
+    skipSeed() {
       if (this.currentStep === 4) {
         this.currentStep = 5;
       }
       return this.nextStep();
     },
+    recoverFromSeed() {
+      this.recover = true;
+      this.currentStep++;
+    },
+    inputRecoverySeed(seed) {
+      this.recoverySeed = seed;
+    },
     async nextStep() {
+      if (this.currentStep === 4) {
+        this.recover = false;
+      }
+
       //Register user and initialize wallet at the end
       if (this.currentStep === 5) {
         this.isRegistering = true;
+        const seed = this.recover ? this.recoverySeed : this.seed;
         try {
           await this.$store.dispatch("user/register", {
             name: this.name,
             password: this.password,
-            seed: this.seed
+            seed
           });
         } catch (error) {
           this.isRegistering = false;
@@ -256,6 +288,9 @@ export default {
     },
     finishedSeed() {
       this.notedSeed = true;
+    },
+    incompleteRecoverySeed() {
+      this.notedSeed = false;
     }
   },
   async created() {

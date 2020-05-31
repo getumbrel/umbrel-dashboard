@@ -21,7 +21,17 @@
         </svg>
       </button>
       <div class="d-block word-container">
-        <h2 class="text-center mb-0">
+        <div class="px-3" v-if="recover">
+          <b-form-input
+            v-model="inputWords[index]"
+            ref="input-words-input"
+            :placeholder="`Enter word #${index + 1}`"
+            class="neu-input"
+            autofocus
+            size="lg"
+          ></b-form-input>
+        </div>
+        <h2 class="text-center mb-0" v-else>
           <scrambled-text :text="words[index]"></scrambled-text>
         </h2>
       </div>
@@ -53,28 +63,86 @@ import ScrambledText from "@/components/Utility/ScrambledText";
 
 export default {
   props: {
-    words: Array
+    words: Array,
+    recover: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
-      index: 0
+      index: 0,
+      inputWord: "",
+      inputWords: [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
     };
   },
   computed: {},
   methods: {
     previous() {
-      this.index !== 0 ? (this.index -= 1) : null;
+      if (this.index !== 0) {
+        this.index -= 1;
+        // Autofocus input field if user is recovering
+        if (this.recover) {
+          this.$refs["input-words-input"].focus();
+        }
+      }
     },
     next() {
-      if (this.index === this.words.length - 2) {
-        this.$emit("finish");
-      }
       if (this.index < this.words.length) {
         this.index += 1;
+        // Autofocus input field if user is recovering
+        if (this.recover) {
+          this.$refs["input-words-input"].focus();
+        }
+        // Emit "complete" on reaching the last word
+        else if (this.index === this.words.length - 1) {
+          this.$emit("complete");
+        }
       }
     }
   },
   mounted() {},
+  watch: {
+    inputWords: function() {
+      // Emit "complete" if user has entered all recovery words
+      if (
+        this.inputWords.length === 24 &&
+        !this.inputWords.includes(undefined) &&
+        !this.inputWords.includes("")
+      ) {
+        this.$emit("complete");
+      } else {
+        this.$emit("incomplete");
+      }
+      // Emit entered words
+      this.$emit("input", this.inputWords);
+    }
+  },
   components: {
     ScrambledText
   }
