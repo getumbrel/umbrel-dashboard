@@ -1,12 +1,12 @@
-name: Docker build on tag
+name: Docker build on PR
 env:
         DOCKER_CLI_EXPERIMENTAL: enabled
 
 on:
-        push:
-                tags:
-                  - v[0-9]+.[0-9]+.[0-9]+
-                  - v[0-9]+.[0-9]+.[0-9]+-*
+        pull_request:
+                branches:
+                  - master
+                types: [assigned, opened, synchronize, reopened, edited]
 
 jobs:
         build:
@@ -14,10 +14,10 @@ jobs:
                 name: Build and push dashboard image
                 steps:
                         - name: Set env variables
-                          run: echo ::set-env name=TAG::${GITHUB_REF/refs\/tags\//}
+                          run: echo ::set-env name=PR_NUMBER::$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
                         - name: Show set env variables
                           run: |
-                                  printf "    TAG: %s\n"  "$TAG"                                  
+                                  printf "    PR_NUMBER: %s\n"  "$PR_NUMBER"                                  
                         - name: Login to Docker Hub
                           run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
                         - name: Checkout project
@@ -34,14 +34,7 @@ jobs:
                           run: |
                                   docker buildx build \
                                   --platform linux/amd64,linux/arm/v7 \
-                                  -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:$TAG \
-                                  --output "type=registry" \
-                                  .
-                        - name: Run Docker buildx against latest
-                          run: |
-                                  docker buildx build \
-                                  --platform linux/amd64,linux/arm/v7 \
-                                  -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:latest \
+                                  -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:pr-$PR_NUMBER \
                                   --output "type=registry" \
                                   .
                         - name: Run Docker buildx against stage
@@ -49,6 +42,6 @@ jobs:
                                 docker buildx build \
                                 --platform linux/amd64 \
                                 -f ./Dockerfile.stage \
-                                -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:stage \
+                                -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:pr-$PR_NUMBER \
                                 --output "type=registry" \
                                 .
