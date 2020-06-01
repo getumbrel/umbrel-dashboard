@@ -130,7 +130,6 @@ export default {
           payload,
           false
         );
-        console.log(res);
       } catch (error) {
         if (error.response && error.response.data) {
           this.$bvToast.toast(error.response.data, {
