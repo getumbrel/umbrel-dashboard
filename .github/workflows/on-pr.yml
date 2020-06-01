@@ -6,7 +6,7 @@ on:
         pull_request:
                 branches:
                   - master
-                types: [assigned, opened, synchronize, reopened, edited]
+                types: [opened, edited]
 
 jobs:
         build:
