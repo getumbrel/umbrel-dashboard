@@ -1,17 +1,19 @@
-name: Docker build on master
+name: Docker build on push
 env:
         DOCKER_CLI_EXPERIMENTAL: enabled
 
-on:
-        push:
-                branches:
-                  - master
+on: push
 
 jobs:
         build:
                 runs-on: ubuntu-18.04
                 name: Build and push dashboard image
-                steps:                                
+                steps:
+                        - name: Set env variables
+                          run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')"
+                        - name: Show set env variables
+                          run: |
+                                  printf "    BRANCH: %s\n"  "$BRANCH"                                
                         - name: Login to Docker Hub
                           run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
                         - name: Checkout project
@@ -28,7 +30,7 @@ jobs:
                           run: |
                                   docker buildx build \
                                   --platform linux/amd64,linux/arm/v7 \
-                                  -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:master \
+                                  -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:$BRANCH \
                                   --output "type=registry" \
                                   .
                         - name: Run Docker buildx against stage
@@ -36,6 +38,6 @@ jobs:
                                 docker buildx build \
                                 --platform linux/amd64 \
                                 -f ./Dockerfile.stage \
-                                -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:stage-master \
+                                -t ${{ secrets.DOCKER_HUB_USER }}/dashboard:stage-$BRANCH \
                                 --output "type=registry" \
                                 .
