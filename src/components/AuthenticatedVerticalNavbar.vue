@@ -12,11 +12,22 @@
         <span v-if="state.showBalance">
           <div v-if="balanceLoaded">
             <h3 class="mb-1">
-              <CountUp :value="{endVal: walletBalance, decimalPlaces: unit === 'sats' ? 0 : 5}" />
+              <CountUp
+                :value="{
+                  endVal: walletBalance,
+                  decimalPlaces: unit === 'sats' ? 0 : 5
+                }"
+              />
             </h3>
-            <small class="text-muted">~ {{ this.btcBalance + this.lightningBalance | satsToUSD }}</small>
+            <small class="text-muted"
+              >~
+              {{ (this.btcBalance + this.lightningBalance) | satsToUSD }}</small
+            >
           </div>
-          <span class="loading-placeholder loading-placeholder-lg w-75" v-else></span>
+          <span
+            class="loading-placeholder loading-placeholder-lg w-75"
+            v-else
+          ></span>
         </span>
         <h3 v-else>***,***</h3>
         <sats-btc-switch class="mt-3" size="md"></sats-btc-switch>
@@ -75,7 +86,12 @@
           Lightning
         </b-nav-item>
 
-        <b-nav-item to="/settings" class="my-1" v-if="isMobileMenu" exact-active-class="active">
+        <b-nav-item
+          to="/settings"
+          class="my-1"
+          v-if="isMobileMenu"
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"
@@ -95,7 +111,12 @@
     </div>
     <div>
       <b-nav vertical class="px-1">
-        <b-nav-item @click="logout" class="my-1" v-if="isMobileMenu" exact-active-class="active">
+        <b-nav-item
+          @click="logout"
+          class="my-1"
+          v-if="isMobileMenu"
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"
@@ -115,7 +136,12 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item to="/settings" class="my-1" v-else exact-active-class="active">
+        <b-nav-item
+          to="/settings"
+          class="my-1"
+          v-else
+          exact-active-class="active"
+        >
           <svg
             width="24"
             height="24"

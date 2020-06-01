@@ -1,11 +1,15 @@
 <template>
   <div>
-    <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+    <div
+      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
+    >
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">{{ heading }}</h1>
       <p class="text-muted w-75 text-center">{{ text }}</p>
 
-      <div class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center">
+      <div
+        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+      >
         <b-form-input
           v-model="name"
           ref="name"
@@ -53,7 +57,8 @@
           @click="nextStep"
           :disabled="!isStepValid || isRegistering"
           class="mt-3 mx-auto d-block px-4"
-        >{{ nextButtonText }}</b-button>
+          >{{ nextButtonText }}</b-button
+        >
         <b-button
           variant="link"
           size="sm"
@@ -61,23 +66,30 @@
           v-if="currentStep === 4 || (currentStep === 5 && !recover)"
           @click="skipSeed"
           :disabled="isRegistering"
-        >Note Down Later</b-button>
+          >Note Down Later</b-button
+        >
         <b-button
           variant="link"
           size="sm"
           @click="recoverFromSeed"
           v-if="currentStep === 4"
           class="mt-2 mx-auto d-block"
-        >Recover</b-button>
+          >Recover</b-button
+        >
         <b-button
           variant="link"
           size="sm"
           @click="prevStep"
           v-if="currentStep > 0 && currentStep !== 6"
           class="mt-2 mx-auto d-block text-dark"
-        >Back</b-button>
+          >Back</b-button
+        >
       </div>
-      <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
+      <b-progress
+        :value="progress"
+        height="1rem"
+        class="onboarding-progress"
+      ></b-progress>
     </div>
   </div>
 </template>

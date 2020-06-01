@@ -4,7 +4,9 @@
       <b-col col cols="12" xl="3">
         <!-- on large screens -->
         <div class="d-none d-xl-block">
-          <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
+          <status :variant="statusVariant" size="sm">{{
+            channel.status
+          }}</status>
           <div>
             <span v-if="channel.remoteAlias">{{ channel.remoteAlias }}</span>
             <span
@@ -16,8 +18,12 @@
         </div>
 
         <!-- on small screens -->
-        <div class="d-xl-none d-flex justify-content-between align-items-center mb-1">
-          <status :variant="statusVariant" size="sm">{{ channel.status }}</status>
+        <div
+          class="d-xl-none d-flex justify-content-between align-items-center mb-1"
+        >
+          <status :variant="statusVariant" size="sm">{{
+            channel.status
+          }}</status>
           <div>
             <small>{{ channel.remoteAlias }}</small>
           </div>
@@ -30,12 +36,16 @@
               class="text-primary font-weight-bold"
               v-b-tooltip.hover.right
               :title="channel.localBalance | satsToUSD"
-            >{{ channel.localBalance | unit | localize }} {{ unit | formatUnit }}</span>
+              >{{ channel.localBalance | unit | localize }}
+              {{ unit | formatUnit }}</span
+            >
             <span
               v-b-tooltip.hover.left
               :title="channel.remoteBalance | satsToUSD"
               class="text-success text-right font-weight-bold"
-            >{{ channel.remoteBalance | unit | localize }} {{ unit | formatUnit }}</span>
+              >{{ channel.remoteBalance | unit | localize }}
+              {{ unit | formatUnit }}</span
+            >
           </div>
           <bar
             :local="Number(channel.localBalance)"
@@ -44,7 +54,9 @@
           ></bar>
           <div class="d-flex justify-content-between">
             <small class="text-muted font-weight-bold">Max Send</small>
-            <small class="text-muted font-weight-bold text-right">Max Receive</small>
+            <small class="text-muted font-weight-bold text-right"
+              >Max Receive</small
+            >
           </div>
         </div>
       </b-col>

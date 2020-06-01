@@ -1,7 +1,9 @@
 <template>
   <div class="p-sm-2">
     <div class="my-3 pb-2">
-      <h1 class="text-lowercase">welcome back{{ name ? `, ${ name.split(' ')[0] }` : '' }}</h1>
+      <h1 class="text-lowercase">
+        welcome back{{ name ? `, ${name.split(" ")[0]}` : "" }}
+      </h1>
       <p class="text-muted">This is your Umbrel's dashboard</p>
     </div>
     <b-row>
@@ -25,11 +27,18 @@
         >
           <template v-slot:title>
             <CountUp
-              :value="{endVal: syncPercent >= 99.99 ? 100 : syncPercent, decimalPlaces: syncPercent >= 99.99 ? 0 : 2}"
+              :value="{
+                endVal: syncPercent >= 99.99 ? 100 : syncPercent,
+                decimalPlaces: syncPercent >= 99.99 ? 0 : 2
+              }"
               suffix="%"
               v-if="syncPercent !== -1"
             />
-            <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
+            <span
+              class="loading-placeholder loading-placeholder-lg"
+              style="width: 140px;"
+              v-else
+            ></span>
           </template>
           <div class>
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
@@ -59,7 +68,12 @@
                   :title="btcBalanceInSats | satsToUSD"
                   v-if="btcBalance !== -1"
                 >
-                  <CountUp :value="{endVal: btcBalance, decimalPlaces: unit === 'sats' ? 0 : 5}" />
+                  <CountUp
+                    :value="{
+                      endVal: btcBalance,
+                      decimalPlaces: unit === 'sats' ? 0 : 5
+                    }"
+                  />
                 </div>
 
                 <span
@@ -69,7 +83,9 @@
                 ></span>
               </template>
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link">Manage</router-link>
+                <router-link to="/bitcoin" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>
@@ -82,7 +98,9 @@
               icon="icon-app-tor.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/settings" class="card-link">Manage</router-link>
+                <router-link to="/settings" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>

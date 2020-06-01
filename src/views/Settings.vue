@@ -17,21 +17,27 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Bitcoin</span>
-                <small class="d-block" style="opacity: 0.4">Run Bitcoin Core on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Run Bitcoin Core on Tor</small
+                >
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Lightning Network</span>
-                <small class="d-block" style="opacity: 0.4">Run Lightning on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Run Lightning on Tor</small
+                >
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Remote Access</span>
-                <small class="d-block" style="opacity: 0.4">Remotely access your Umbrel on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Remotely access your Umbrel on Tor</small
+                >
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
@@ -42,32 +48,51 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="Change password">
           <div class="px-4 pb-2">
-            <label class="sr-onlsy" for="input-withdrawal-amount">Current password</label>
+            <label class="sr-onlsy" for="input-withdrawal-amount"
+              >Current password</label
+            >
             <input-password
               v-model="currentPassword"
               ref="password"
               inputGroupClass="neu-input-group"
-              :inputClass="[isIncorrectPassword ? 'incorrect-password' : '', 'form-control form-control-lg neu-input w-100']"
+              :inputClass="[
+                isIncorrectPassword ? 'incorrect-password' : '',
+                'form-control form-control-lg neu-input w-100'
+              ]"
             />
             <div class="py-2"></div>
-            <label class="sr-onlsy" for="input-withdrawal-amount">New password</label>
+            <label class="sr-onlsy" for="input-withdrawal-amount"
+              >New password</label
+            >
             <input-password
               v-model="newPassword"
               ref="password"
               inputGroupClass="neu-input-group"
-              :inputClass="[isIncorrectPassword ? 'incorrect-password' : '', 'form-control form-control-lg neu-input w-100']"
+              :inputClass="[
+                isIncorrectPassword ? 'incorrect-password' : '',
+                'form-control form-control-lg neu-input w-100'
+              ]"
             />
             <div class="py-2"></div>
-            <label class="sr-onlsy" for="input-withdrawal-amount">Confirm new password</label>
+            <label class="sr-onlsy" for="input-withdrawal-amount"
+              >Confirm new password</label
+            >
             <input-password
               v-model="confirmNewPassword"
               ref="password"
               inputGroupClass="neu-input-group"
-              :inputClass="[isIncorrectPassword ? 'incorrect-password' : '', 'form-control form-control-lg neu-input w-100']"
+              :inputClass="[
+                isIncorrectPassword ? 'incorrect-password' : '',
+                'form-control form-control-lg neu-input w-100'
+              ]"
             />
             <div class="py-2"></div>
             <b-alert variant="warning" show>
-              <small>⚠️ Remember, there is no "Forgot Password" button. If you lose your password, you will have to recover your node using your 24 secret words.</small>
+              <small>
+                ⚠️ Remember, there is no "Forgot Password" button. If you lose
+                your password, you will have to recover your node using your 24
+                secret words.
+              </small>
             </b-alert>
           </div>
           <b-button
@@ -76,7 +101,8 @@
             style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
             :disabled="!isAllowedToChangePassword"
             @click="changePassword"
-          >Change password</b-button>
+            >Change password</b-button
+          >
         </card-widget>
       </b-col>
     </b-row>
@@ -125,7 +151,7 @@ export default {
       };
 
       try {
-        const res = await API.post(
+        await API.post(
           `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/change-password`,
           payload,
           false

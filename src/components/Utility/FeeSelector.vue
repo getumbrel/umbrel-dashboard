@@ -8,8 +8,20 @@
       :dotSize="[22, 22]"
       :tooltip-formatter="tooltipFormatter"
       contained
-      :tooltip="fee.fast.total <= 0 || fee.fast.total === '--' || fee.fast.total === 'N/A' || disabled ? 'none' : 'always'"
-      :disabled="fee.fast.total <= 0 || fee.fast.total === '--' || fee.fast.total === 'N/A' || disabled"
+      :tooltip="
+        fee.fast.total <= 0 ||
+        fee.fast.total === '--' ||
+        fee.fast.total === 'N/A' ||
+        disabled
+          ? 'none'
+          : 'always'
+      "
+      :disabled="
+        fee.fast.total <= 0 ||
+          fee.fast.total === '--' ||
+          fee.fast.total === 'N/A' ||
+          disabled
+      "
       @change="change"
     >
       <template v-slot:label="{ active, value }">

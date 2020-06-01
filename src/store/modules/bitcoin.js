@@ -248,7 +248,9 @@ const actions = {
 
       //TODO: Fetch only new blocks
       const latestThreeBlocks = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
+        `${
+          process.env.VUE_APP_MIDDLEWARE_API_URL
+        }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
       );
 
       if (!latestThreeBlocks.blocks) {
@@ -428,7 +430,7 @@ const getters = {
       });
 
       //sort txs by date
-      txs.sort(function (tx1, tx2) {
+      txs.sort(function(tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
     }

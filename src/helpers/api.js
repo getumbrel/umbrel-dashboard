@@ -9,59 +9,75 @@ const responsePending = {};
 
 // Interceptor to refresh JWT or logout user based on 401 requests
 // and to logout user if lnd is locked
-axios.interceptors.response.use(function (response) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
-  return response;
-}, async function (error) {
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
+axios.interceptors.response.use(
+  function(response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  },
+  async function(error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
 
-  //logout user if lnd is locked
-  if (error.response.status === 403 && error.config.url.startsWith(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd`) && error.response.data === "Must unlock wallet") {
-    store.dispatch('user/logout')
-    return Promise.reject(error);
-  }
-
-  // Return any error which is not related to auth
-  if (!error.response || error.response.status !== 401) {
-    return Promise.reject(error);
-  }
-
-
-  // Return the same 401 back if user is trying to login with incorrect password
-  if (error.config.url === `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`) {
-    return Promise.reject(error);
-  }
-
-  // Logout user if token refresh didn't work
-  if (error.config.url === `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`) {
-    store.dispatch('user/logout');
-    return Promise.reject(error);
-  }
-
-  // Try request again with new token if error is due to invalid JWT
-
-  if (error.response.data === 'Invalid JWT') {
-    try {
-      await store.dispatch('user/refreshJWT');
-    } catch (error) {
+    //logout user if lnd is locked
+    if (
+      error.response.status === 403 &&
+      error.config.url.startsWith(
+        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd`
+      ) &&
+      error.response.data === "Must unlock wallet"
+    ) {
+      store.dispatch("user/logout");
       return Promise.reject(error);
     }
 
-    // New request with new token
-    const config = error.config;
-    config.headers['Authorization'] = `JWT ${store.state.user.jwt}`;
+    // Return any error which is not related to auth
+    if (!error.response || error.response.status !== 401) {
+      return Promise.reject(error);
+    }
 
-    return new Promise((resolve, reject) => {
-      axios.request(config).then(response => {
-        resolve(response);
-      }).catch((error) => {
-        reject(error);
-      })
-    });
+    // Return the same 401 back if user is trying to login with incorrect password
+    if (
+      error.config.url ===
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`
+    ) {
+      return Promise.reject(error);
+    }
+
+    // Logout user if token refresh didn't work
+    if (
+      error.config.url ===
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`
+    ) {
+      store.dispatch("user/logout");
+      return Promise.reject(error);
+    }
+
+    // Try request again with new token if error is due to invalid JWT
+
+    if (error.response.data === "Invalid JWT") {
+      try {
+        await store.dispatch("user/refreshJWT");
+      } catch (error) {
+        return Promise.reject(error);
+      }
+
+      // New request with new token
+      const config = error.config;
+      config.headers["Authorization"] = `JWT ${store.state.user.jwt}`;
+
+      return new Promise((resolve, reject) => {
+        axios
+          .request(config)
+          .then(response => {
+            resolve(response);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    }
   }
-
-});
+);
 
 // Helper methods for making API requests
 const API = {
@@ -81,7 +97,9 @@ const API = {
         };
 
         if (auth && store.state.user.jwt) {
-          requestOptions.headers = { 'Authorization': `JWT ${store.state.user.jwt}` };
+          requestOptions.headers = {
+            Authorization: `JWT ${store.state.user.jwt}`
+          };
         }
 
         response = (await axios(requestOptions, data)).data;
@@ -109,7 +127,6 @@ const API = {
 
   // Wrap a post call
   async post(url, data, auth = true) {
-
     const requestOptions = {
       method: "post",
       url,
@@ -117,16 +134,14 @@ const API = {
     };
 
     if (auth && store.state.user.jwt) {
-      requestOptions.headers = { 'Authorization': `JWT ${store.state.user.jwt}` };
+      requestOptions.headers = { Authorization: `JWT ${store.state.user.jwt}` };
     }
 
     return axios(requestOptions);
   },
 
-
   // Wrap a delete call
   async delete(url, data, auth = true) {
-
     const requestOptions = {
       method: "delete",
       url,
@@ -134,7 +149,7 @@ const API = {
     };
 
     if (auth && store.state.user.jwt) {
-      requestOptions.headers = { 'Authorization': `JWT ${store.state.user.jwt}` };
+      requestOptions.headers = { Authorization: `JWT ${store.state.user.jwt}` };
     }
 
     return axios(requestOptions);

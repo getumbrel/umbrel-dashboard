@@ -1,6 +1,9 @@
 <template>
   <div>
-    <span class="word-count d-block mx-auto bg-primary text-white text-center mb-2">{{ index + 1 }}</span>
+    <span
+      class="word-count d-block mx-auto bg-primary text-white text-center mb-2"
+      >{{ index + 1 }}</span
+    >
     <div class="d-flex align-items-center">
       <button
         class="btn-neu-circle btn-neu-circle-previous btn-neu"
@@ -37,7 +40,7 @@
       </div>
       <button
         class="btn-neu-circle btn-neu-circle-next btn-neu"
-        :class="{'btn-allowed' : index > 0}"
+        :class="{ 'btn-allowed': index > 0 }"
         @click="next"
         :disabled="index === words.length - 1"
       >
