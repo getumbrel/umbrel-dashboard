@@ -1,7 +1,7 @@
 [![Umbrel Dashboard](https://static.getumbrel.com/github/github-banner-umbrel-dashboard.svg)](https://github.com/getumbrel/umbrel-dashboard)
 
 [![Version](https://img.shields.io/github/v/release/getumbrel/umbrel-dashboard?color=%235351FB&label=version)](https://github.com/getumbrel/umbrel-dashboard/releases)
-[![Docker Build](https://img.shields.io/github/workflow/status/getumbrel/umbrel-dashboard/Automatically%20Build%20image%20on%20tag?color=%235351FB)](https://github.com/getumbrel/umbrel-dashboard/actions?query=workflow%3A"Automatically+Build+image+on+tag")
+[![Docker Build](https://img.shields.io/github/workflow/status/getumbrel/umbrel-dashboard/Docker%20build%20on%20tag?color=%235351FB)](https://github.com/getumbrel/umbrel-dashboard/actions?query=workflow%3A"Docker+build+on+tag")
 [![Docker Pulls](https://img.shields.io/docker/pulls/getumbrel/dashboard?color=%235351FB)](https://hub.docker.com/repository/registry-1.docker.io/getumbrel/dashboard/tags?page=1)
 [![Chat](https://img.shields.io/badge/chat%20on-telegram-%235351FB)](https://t.me/getumbrel)
 
