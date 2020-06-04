@@ -130,6 +130,17 @@ export default {
   created() {},
   methods: {
     async changePassword() {
+      // disable on testnet
+      if (window.location.hostname === "testnet.getumbrel.com") {
+        this.$bvToast.toast('y u try to do dis on testnet :"(', {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
+
       const payload = {
         password: this.currentPassword,
         newPassword: this.newPassword
