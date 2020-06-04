@@ -3,7 +3,7 @@ import API from "@/helpers/api";
 // Initial state
 const state = () => ({
   loading: true,
-  unit: 'sats', //sats or btc
+  unit: "sats", //sats or btc
   api: {
     operational: false,
     version: ""
@@ -38,7 +38,7 @@ const actions = {
     }
   },
   changeUnit({ commit }, unit) {
-    if (unit === 'sats' || unit === 'btc') {
+    if (unit === "sats" || unit === "btc") {
       window.localStorage.setItem("unit", unit);
       commit("setUnit", unit);
     }

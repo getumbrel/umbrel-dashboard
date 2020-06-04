@@ -29,13 +29,17 @@
               :disabled="isOpening"
             ></b-input>
             <b-input-group-append class="neu-input-group-append">
-              <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+              <sats-btc-switch
+                class="align-self-center"
+                size="sm"
+              ></sats-btc-switch>
             </b-input-group-append>
           </b-input-group>
           <small
             class="text-muted mt-2 d-block text-right mb-0"
-            :style="{opacity: fundingAmount > 0 ? 1 : 0}"
-          >~ {{ fundingAmount | satsToUSD }}</small>
+            :style="{ opacity: fundingAmount > 0 ? 1 : 0 }"
+            >~ {{ fundingAmount | satsToUSD }}</small
+          >
         </div>
 
         <!-- <small>{{ btc.confirmed.toLocaleString() }} Sats available out of {{ btc.total.toLocaleString() }} and {{ btc.pending.toLocaleString() }} pending</small> -->
@@ -47,18 +51,20 @@
         <fee-selector :fee="fee" class @change="selectFee"></fee-selector>
       </b-col>
       <b-col class="d-flex" col cols="12" sm="6">
-        <div class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end">
+        <div
+          class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end"
+        >
           <span>
             <small class="text-danger align-self-center" v-if="error">
-              {{
-              error
-              }}
+              {{ error }}
             </small>
           </span>
-          <b-button type="submit" variant="success" :disabled="isOpening || !!error">
-            {{
-            this.isOpening ? "Opening..." : "Open Channel"
-            }}
+          <b-button
+            type="submit"
+            variant="success"
+            :disabled="isOpening || !!error"
+          >
+            {{ this.isOpening ? "Opening..." : "Open Channel" }}
           </b-button>
         </div>
       </b-col>
@@ -255,5 +261,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

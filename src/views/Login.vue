@@ -8,10 +8,14 @@
       <b-spinner class="my-5"></b-spinner>
     </div>-->
 
-    <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+    <div
+      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
+    >
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">welcome back</h1>
-      <p class="text-muted w-75 text-center">Enter the password to login to your Umbrel</p>
+      <p class="text-muted w-75 text-center">
+        Enter the password to login to your Umbrel
+      </p>
 
       <form
         v-on:submit.prevent="authenticateUser"
@@ -29,7 +33,9 @@
         />
         <div class="login-button-container">
           <transition name="fade">
-            <small class="mt-2 text-danger error" v-show="isIncorrectPassword">Incorrect password</small>
+            <small class="mt-2 text-danger error" v-show="isIncorrectPassword"
+              >Incorrect password</small
+            >
           </transition>
           <transition name="slide-up">
             <b-button
@@ -40,7 +46,8 @@
               :class="{ 'loading-fade-blink': isLoggingIn }"
               v-show="!!password && !isIncorrectPassword"
               :disabled="isLoggingIn"
-            >Log in</b-button>
+              >Log in</b-button
+            >
           </transition>
         </div>
       </form>

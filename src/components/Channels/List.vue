@@ -49,7 +49,7 @@
 
       <transition-group name="list" appear v-else>
         <div
-          v-for="(channel) in channels"
+          v-for="channel in channels"
           :key="channel.channelPoint"
           @click="$emit('selectchannel', channel)"
         >

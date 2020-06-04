@@ -146,7 +146,9 @@ const actions = {
 
   //basically fetches everything
   async getLndPageData({ commit, dispatch }) {
-    const data = await API.get(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/pages/lnd`);
+    const data = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/pages/lnd`
+    );
 
     if (data) {
       const channels = data.channels;
@@ -397,7 +399,6 @@ const actions = {
   },
 
   async unlockWallet({ commit, state }, plainTextPassword) {
-
     if (state.operational && !state.unlocked) {
       const result = await API.post(
         `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/unlock`,
@@ -407,7 +408,6 @@ const actions = {
         commit("isUnlocked", true);
       }
     }
-
   }
 };
 

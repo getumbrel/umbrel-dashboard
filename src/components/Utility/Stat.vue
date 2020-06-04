@@ -13,15 +13,22 @@
           <h3 class="font-weight-normal mb-0">
             <!-- suffix number like 100K, 120K, 2M, etc -->
             <CountUp
-              :value="{endVal: numberValue, decimalPlaces: hasDecimals ? 5 : 0}"
+              :value="{
+                endVal: numberValue,
+                decimalPlaces: hasDecimals ? 5 : 0
+              }"
               :suffix="numberSuffix"
               countOnLoad
             />
           </h3>
-          <span class="text-muted" style="margin-left: 0.5rem;">{{ suffix }}</span>
+          <span class="text-muted" style="margin-left: 0.5rem;">{{
+            suffix
+          }}</span>
         </div>
       </div>
-      <div v-if="(showNumericChange || showPercentChange) && change.value !== 0">
+      <div
+        v-if="(showNumericChange || showPercentChange) && change.value !== 0"
+      >
         <svg
           width="12"
           height="13"
