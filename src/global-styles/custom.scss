@@ -82,6 +82,10 @@ a {
         border: 1px solid rgba(0, 0, 0, 0.02);
         box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.2);
     }
+    &:disabled {
+        color: rgba(0, 0, 0, 0.5);
+        cursor: not-allowed;
+    }
 }
 
 .neu-input-group {

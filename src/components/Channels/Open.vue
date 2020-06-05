@@ -17,29 +17,33 @@
       <b-col col cols="12" sm="6">
         <label class="sr-onlsy" for="funding-amount">Amount</label>
         <div class="mb-3">
-          <b-input-group class="neu-input-group">
-            <b-input
-              id="funding-amount"
-              class="neu-input"
-              type="text"
-              size="lg"
-              v-model="fundingAmountInput"
-              @input="fetchFees"
-              style="padding-right: 82px"
-              :disabled="isOpening"
-            ></b-input>
-            <b-input-group-append class="neu-input-group-append">
-              <sats-btc-switch
-                class="align-self-center"
-                size="sm"
-              ></sats-btc-switch>
-            </b-input-group-append>
-          </b-input-group>
-          <small
-            class="text-muted mt-2 d-block text-right mb-0"
-            :style="{ opacity: fundingAmount > 0 ? 1 : 0 }"
-            >~ {{ fundingAmount | satsToUSD }}</small
-          >
+          <div>
+            <b-input-group class="neu-input-group">
+              <b-input
+                id="funding-amount"
+                class="neu-input"
+                type="text"
+                size="lg"
+                v-model="fundingAmountInput"
+                style="padding-right: 82px"
+                :disabled="isOpening || sweep"
+              ></b-input>
+              <b-input-group-append class="neu-input-group-append">
+                <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+              </b-input-group-append>
+            </b-input-group>
+          </div>
+          <div class="mt-1 w-100 d-flex justify-content-between">
+            <!-- TODO: Enable Sweep -->
+            <!-- <b-form-checkbox v-model="sweep" size="sm" switch>
+              <small class="text-muted">Use all funds</small>
+            </b-form-checkbox>-->
+            <div></div>
+            <small
+              class="text-muted d-block mb-0"
+              :style="{ opacity: fundingAmount > 0 ? 1 : 0 }"
+            >~ {{ fundingAmount | satsToUSD }}</small>
+          </div>
         </div>
 
         <!-- <small>{{ btc.confirmed.toLocaleString() }} Sats available out of {{ btc.total.toLocaleString() }} and {{ btc.pending.toLocaleString() }} pending</small> -->
@@ -51,21 +55,15 @@
         <fee-selector :fee="fee" class @change="selectFee"></fee-selector>
       </b-col>
       <b-col class="d-flex" col cols="12" sm="6">
-        <div
-          class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end"
-        >
+        <div class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end">
           <span>
-            <small class="text-danger align-self-center" v-if="error">
-              {{ error }}
-            </small>
+            <small class="text-danger align-self-center" v-if="error">{{ error }}</small>
           </span>
           <b-button
             type="submit"
             variant="success"
             :disabled="isOpening || !!error"
-          >
-            {{ this.isOpening ? "Opening..." : "Open Channel" }}
-          </b-button>
+          >{{ this.isOpening ? "Opening..." : "Open Channel" }}</b-button>
         </div>
       </b-col>
     </b-row>
@@ -76,7 +74,7 @@
 import { mapState } from "vuex";
 
 import API from "@/helpers/api";
-import { btcToSats } from "@/helpers/units.js";
+import { satsToBtc, btcToSats } from "@/helpers/units.js";
 
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
 import FeeSelector from "@/components/Utility/FeeSelector";
@@ -94,31 +92,37 @@ export default {
         fast: {
           total: 0,
           perByte: "--",
-          error: ""
+          error: "",
+          sweepAmount: 0
         },
         normal: {
           total: 0,
           perByte: "--",
-          error: ""
+          error: "",
+          sweepAmount: 0
         },
         slow: {
           total: 0,
           perByte: "--",
-          error: ""
+          error: "",
+          sweepAmount: 0
         },
         cheapest: {
           total: 0,
           perByte: "--",
-          error: ""
+          error: "",
+          sweepAmount: 0
         }
       },
       error: "",
-      feeTimeout: null
+      feeTimeout: null,
+      sweep: false
     };
   },
   computed: {
     ...mapState({
-      unit: state => state.system.unit
+      unit: state => state.system.unit,
+      confirmedBtcBalance: state => state.bitcoin.balance.confirmed
     })
   },
   methods: {
@@ -143,7 +147,9 @@ export default {
       this.error = "";
 
       const payload = {
-        amt: parseInt(this.fundingAmount) || 0,
+        amt: this.sweep
+          ? parseInt(this.fee[this.selectedFee].sweepAmount)
+          : parseInt(this.fundingAmount),
         name: "",
         purpose: "",
         satPerByte: parseInt(this.fee[this.selectedFee].perByte)
@@ -209,7 +215,7 @@ export default {
 
           try {
             estimates = await API.get(
-              `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/estimateFee?confTarget=0&amt=${this.fundingAmount}`
+              `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/estimateFee?confTarget=0&amt=${this.fundingAmount}&sweep=${this.sweep}`
             );
           } catch (error) {
             if (error.response && error.response.data) {
@@ -224,6 +230,7 @@ export default {
                 this.fee[speed].total = 0;
                 this.fee[speed].perByte = "N/A";
                 this.fee[speed].error = estimate.text;
+                this.fee[speed].sweepAmount = 0;
                 this.error = estimate.text;
               } else {
                 this.fee[speed].total = estimate.feeSat;
@@ -246,12 +253,23 @@ export default {
       }
       this.fetchFees();
     },
+    sweep: function(val) {
+      if (val) {
+        if (this.unit === "btc") {
+          this.fundingAmountInput = String(satsToBtc(this.confirmedBtcBalance));
+        } else if (this.unit === "sats") {
+          this.fundingAmountInput = String(this.confirmedBtcBalance);
+        }
+      }
+      this.fetchFees();
+    },
     fundingAmountInput: function(val) {
       if (this.unit === "sats") {
         this.fundingAmount = Number(val);
       } else if (this.unit === "btc") {
         this.fundingAmount = btcToSats(val);
       }
+      this.fetchFees();
     }
   },
   components: {
