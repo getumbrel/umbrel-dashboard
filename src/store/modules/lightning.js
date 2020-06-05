@@ -63,7 +63,6 @@ const mutations = {
     state.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
     state.blockHeight = sync.knownBlockCount;
     state.currentBlock = sync.processedBlocks;
-    console.log(sync.percent);
   },
 
   isUnlocked(state, unlocked) {
@@ -158,7 +157,6 @@ const actions = {
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/sync`
     );
     if (sync && sync.percent) {
-      console.log(sync);
       commit("setSync", sync)
     }
   },

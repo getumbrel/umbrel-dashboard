@@ -1,11 +1,7 @@
 <template>
   <div id="app">
     <transition name="loading" mode>
-      <loading
-        v-if="loading"
-        :text="loadingText"
-        :progress="loadingProgress"
-      ></loading>
+      <loading v-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
     </transition>
@@ -35,7 +31,8 @@ export default {
       isManagerApiOperational: state => state.system.managerApi.operational,
       isApiOperational: state => state.system.api.operational,
       isBitcoinOperational: state => state.bitcoin.operational,
-      isLndOperational: state => state.lightning.operational
+      isLndOperational: state => state.lightning.operational,
+      jwt: state => state.user.jwt
     })
   },
   methods: {
@@ -102,8 +99,18 @@ export default {
         }
       }
 
-      this.loadingProgress = 100;
+      // Then trigger auth check
+      if (this.loadingProgress <= 95 && this.jwt) {
+        this.loadingProgress = 95;
+        try {
+          await this.$store.dispatch("user/refreshJWT");
+        } catch (error) {
+          // it will error if jwt has expired and automatically redirect the user to login page
+          null;
+        }
+      }
 
+      this.loadingProgress = 100;
       this.loadingPollInProgress = false;
 
       // Add slight delay so the progress bar makes
