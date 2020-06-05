@@ -22,11 +22,7 @@
           }"
         />
       </div>
-      <span
-        class="loading-placeholder loading-placeholder-lg"
-        style="width: 140px;"
-        v-else
-      ></span>
+      <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
     </template>
     <div class="wallet-content">
       <!-- transition switching between different modes -->
@@ -66,54 +62,38 @@
                 fill="#EDEEF1"
               />
             </svg>
-            <small class="align-self-center mt-3 text-muted"
-              >No transactions</small
-            >
+            <small class="align-self-center mt-3 text-muted">No transactions</small>
           </div>
 
           <!-- Actual Transactions -->
           <div class="wallet-transactions-container" v-else>
-            <transition-group
-              name="slide-up"
-              class="list-group pb-2 transactions"
-            >
+            <transition-group name="slide-up" class="list-group pb-2 transactions">
               <b-list-group-item
-                v-for="(tx, index) in transactions"
-                :key="index"
+                v-for="tx in transactions"
+                :key="tx.paymentRequest || tx.paymentPreImage"
                 class="flex-column align-items-start px-3 px-lg-4"
                 href="#"
                 @click.prevent="showTransactionInfo(tx)"
               >
                 <!-- Loading Transactions Placeholder -->
-                <div
-                  class="d-flex w-100 justify-content-between"
-                  v-if="tx.type === 'loading'"
-                >
+                <div class="d-flex w-100 justify-content-between" v-if="tx.type === 'loading'">
                   <div class="w-50">
                     <span class="loading-placeholder"></span>
 
                     <!-- Timestamp of tx -->
-                    <span
-                      class="loading-placeholder loading-placeholder-sm"
-                      style="width: 40%"
-                    ></span>
+                    <span class="loading-placeholder loading-placeholder-sm" style="width: 40%"></span>
                   </div>
 
                   <div class="w-25 text-right">
                     <span class="loading-placeholder"></span>
-                    <span
-                      class="loading-placeholder loading-placeholder-sm"
-                      style="width: 30%"
-                    ></span>
+                    <span class="loading-placeholder loading-placeholder-sm" style="width: 30%"></span>
                   </div>
                 </div>
 
                 <!-- Transaction -->
                 <div class="d-flex w-100 justify-content-between" v-else>
                   <div class="transaction-description">
-                    <h6
-                      class="mb-0 font-weight-normal transaction-description-text"
-                    >
+                    <h6 class="mb-0 font-weight-normal transaction-description-text">
                       <!-- Incoming tx icon -->
                       <svg
                         width="18"
@@ -177,8 +157,7 @@
                         style="margin-left: 6px;"
                         :title="tx.description"
                         v-if="tx.description"
-                        >{{ tx.description }}</span
-                      >
+                      >{{ tx.description }}</span>
 
                       <!-- If no description -->
                       <span style="margin-left: 6px;" v-else>Payment</span>
@@ -191,8 +170,7 @@
                       v-b-tooltip.hover.right
                       :title="getReadableTime(tx.timestamp)"
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
-                      >{{ getTimeFromNow(tx.timestamp) }}</small
-                    >
+                    >{{ getTimeFromNow(tx.timestamp) }}</small>
 
                     <!-- if invoice isn't settled -->
                     <small
@@ -202,8 +180,7 @@
                         `Invoice expires on ${getReadableTime(tx.expiresOn)}`
                       "
                       v-else-if="tx.type === 'pending'"
-                      >Unpaid invoice</small
-                    >
+                    >Unpaid invoice</small>
 
                     <!-- If invoice expired -->
                     <small
@@ -211,8 +188,7 @@
                       style="margin-left: 25px;"
                       :title="getReadableTime(tx.expiresOn)"
                       v-else-if="tx.type === 'expired'"
-                      >Invoice expired {{ getTimeFromNow(tx.expiresOn) }}</small
-                    >
+                    >Invoice expired {{ getTimeFromNow(tx.expiresOn) }}</small>
                   </div>
 
                   <div class="text-right">
@@ -235,18 +211,10 @@
         </div>
 
         <!-- SCREEN/MODE: Paste Invoice Screen -->
-        <div
-          class="px-3 px-lg-4 mode-send wallet-mode"
-          v-else-if="mode === 'send'"
-          key="mode-send"
-        >
+        <div class="px-3 px-lg-4 mode-send wallet-mode" v-else-if="mode === 'send'" key="mode-send">
           <!-- Back Button -->
           <div class="pb-3">
-            <a
-              href="#"
-              class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
-            >
+            <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
               <svg
                 width="7"
                 height="13"
@@ -281,16 +249,14 @@
             <div class="d-flex justify-content-between mb-3 align-items-center">
               <div>
                 <small class="d-block text-muted mb-1">Paying</small>
-                <h4 class="d-block mb-0">
-                  {{ send.amount | unit | localize }}
-                </h4>
-                <small class="d-block text-muted">{{
+                <h4 class="d-block mb-0">{{ send.amount | unit | localize }}</h4>
+                <small class="d-block text-muted">
+                  {{
                   unit | formatUnit
-                }}</small>
+                  }}
+                </small>
               </div>
-              <small class="d-block text-muted"
-                >~ {{ send.amount | satsToUSD }}</small
-              >
+              <small class="d-block text-muted">~ {{ send.amount | satsToUSD }}</small>
             </div>
 
             <div v-if="send.description">
@@ -301,18 +267,10 @@
         </div>
 
         <!-- SCREEN/MODE: Successfully paid invoice -->
-        <div
-          class="px-3 px-lg-4 mode-sent wallet-mode"
-          v-else-if="mode === 'sent'"
-          key="mode-sent"
-        >
+        <div class="px-3 px-lg-4 mode-sent wallet-mode" v-else-if="mode === 'sent'" key="mode-sent">
           <!-- Back Button -->
           <div class="pb-3">
-            <a
-              href="#"
-              class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
-            >
+            <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
               <svg
                 width="7"
                 height="13"
@@ -352,11 +310,7 @@
         >
           <!-- Back Button -->
           <div class="pb-3">
-            <a
-              href="#"
-              class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
-            >
+            <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
               <svg
                 width="7"
                 height="13"
@@ -387,17 +341,13 @@
                 style="padding-right: 82px"
               ></b-input>
               <b-input-group-append class="neu-input-group-append">
-                <sats-btc-switch
-                  class="align-self-center"
-                  size="sm"
-                ></sats-btc-switch>
+                <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
               </b-input-group-append>
             </b-input-group>
             <small
               class="text-muted mt-2 d-block text-right mb-0"
               :style="{ opacity: receive.amount > 0 ? 1 : 0 }"
-              >~ {{ receive.amount | satsToUSD }}</small
-            >
+            >~ {{ receive.amount | satsToUSD }}</small>
           </div>
 
           <label class="sr-onlsy" for="input-description">
@@ -421,11 +371,7 @@
         >
           <!-- Back Button -->
           <div class="pb-3">
-            <a
-              href="#"
-              class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
-            >
+            <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
               <svg
                 width="7"
                 height="13"
@@ -444,9 +390,7 @@
 
           <p class="text-center text-muted mb-2">
             <!-- If still generating invoice, show blinking loading text -->
-            <span class="blink" v-if="receive.isGeneratingInvoice"
-              >Generating Invoice</span
-            >
+            <span class="blink" v-if="receive.isGeneratingInvoice">Generating Invoice</span>
 
             <!-- Invoice amount + description -->
             <span v-else>
@@ -462,20 +406,12 @@
           </p>
 
           <!-- QR Code -->
-          <qr-code
-            class="mb-3"
-            :showLogo="!receive.isGeneratingInvoice"
-            :value="receive.invoiceQR"
-          ></qr-code>
+          <qr-code class="mb-3" :showLogo="!receive.isGeneratingInvoice" :value="receive.invoiceQR"></qr-code>
 
           <!-- Copy Invoice Input Field -->
           <transition name="slide-up" appear>
             <div class v-show="!receive.isGeneratingInvoice">
-              <input-copy
-                size="sm"
-                :value="receive.invoiceQR"
-                class="mb-2"
-              ></input-copy>
+              <input-copy size="sm" :value="receive.invoiceQR" class="mb-2"></input-copy>
               <small class="text-center d-block text-muted">
                 This invoice will expire
                 {{ getTimeFromNow(receive.expiresOn) }}
@@ -492,11 +428,7 @@
         >
           <!-- Back Button -->
           <div class="pb-3">
-            <a
-              href="#"
-              class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
-            >
+            <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
               <svg
                 width="7"
                 height="13"
@@ -519,17 +451,13 @@
           <!-- Invoice amount + description -->
           <p class="text-center mb-4 pb-1">
             Received
-            <b
-              >{{ receive.amount | unit | localize }} {{ unit | formatUnit }}</b
-            >
+            <b>{{ receive.amount | unit | localize }} {{ unit | formatUnit }}</b>
             <span v-if="receive.description">
               for
               <b>{{ receive.description }}</b>
             </span>
             <br />
-            <small class="text-muted">
-              {{ getReadableTime(receive.timestamp) }}
-            </small>
+            <small class="text-muted">{{ getReadableTime(receive.timestamp) }}</small>
           </p>
         </div>
 
@@ -541,11 +469,7 @@
         >
           <!-- Back Button -->
           <div class="pb-3">
-            <a
-              href="#"
-              class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
-            >
+            <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
               <svg
                 width="7"
                 height="13"
@@ -567,10 +491,10 @@
           <!-- Payment amount + description -->
           <p class="text-center mb-2">
             Paid
-            <b
-              >{{ paymentInfo.amount | unit | localize }}
-              {{ unit | formatUnit }}</b
-            >
+            <b>
+              {{ paymentInfo.amount | unit | localize }}
+              {{ unit | formatUnit }}
+            </b>
             <span v-if="paymentInfo.description">
               for
               <b>{{ paymentInfo.description }}</b>
@@ -578,22 +502,15 @@
           </p>
           <div class="pt-2 mb-3">
             <div class="d-flex justify-content-between">
-              <small class="text-muted">
-                {{ getReadableTime(paymentInfo.timestamp) }}
-              </small>
+              <small class="text-muted">{{ getReadableTime(paymentInfo.timestamp) }}</small>
               <small class="text-muted">
                 Fee:
                 {{ paymentInfo.fee | unit | localize }} {{ unit | formatUnit }}
               </small>
             </div>
             <div class="pt-3 d-block pb-2">
-              <input-copy
-                size="sm"
-                :value="paymentInfo.paymentPreImage"
-              ></input-copy>
-              <small class="text-center text-muted d-block mt-2"
-                >Payment proof (preimage)</small
-              >
+              <input-copy size="sm" :value="paymentInfo.paymentPreImage"></input-copy>
+              <small class="text-center text-muted d-block mt-2">Payment proof (preimage)</small>
             </div>
           </div>
         </div>
@@ -606,11 +523,7 @@
         >
           <!-- Back Button -->
           <div class="pb-3">
-            <a
-              href="#"
-              class="card-link text-muted"
-              v-on:click.stop.prevent="reset"
-            >
+            <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
               <svg
                 width="7"
                 height="13"
@@ -633,9 +546,7 @@
           <p class="text-center mb-4 pb-1">
             This invoice was not paid
             <br />
-            <small class="text-muted"
-              >Expired on {{ getReadableTime(expiredInvoice.expiresOn) }}</small
-            >
+            <small class="text-muted">Expired on {{ getReadableTime(expiredInvoice.expiresOn) }}</small>
           </p>
         </div>
       </transition>
@@ -667,8 +578,8 @@
             <path
               d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
               fill="#FFFFFF"
-            /></svg
-          >Send
+            />
+          </svg>Send
         </b-button>
         <b-button
           class="w-50"
@@ -687,8 +598,8 @@
             <path
               d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
               fill="#FFFFFF"
-            /></svg
-          >Receive
+            />
+          </svg>Receive
         </b-button>
       </b-button-group>
 
@@ -710,8 +621,8 @@
           <path
             d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
             fill="#FFFFFF"
-          /></svg
-        >Receive
+          />
+        </svg>Receive
       </b-button>
 
       <!-- Button: Send (paste invoice send) -->
@@ -749,8 +660,7 @@
         @click="createInvoice"
         v-else-if="mode === 'receive'"
         :disabled="!receive.amount || receive.amount <= 0"
-        >Create Invoice</b-button
-      >
+      >Create Invoice</b-button>
 
       <!-- spacer if no button -->
       <span

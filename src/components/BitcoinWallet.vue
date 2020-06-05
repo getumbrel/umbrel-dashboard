@@ -22,21 +22,13 @@
           }"
         />
       </div>
-      <span
-        class="loading-placeholder loading-placeholder-lg"
-        style="width: 140px;"
-        v-else
-      ></span>
+      <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
     </template>
     <div class="wallet-content">
       <!-- transition switching between different modes -->
       <transition name="lightning-mode-change" mode="out-in" tag="div">
         <!-- Default Balance/tx screen -->
-        <div
-          v-if="mode === 'transactions'"
-          key="mode-balance"
-          class="wallet-mode mode-balance"
-        >
+        <div v-if="mode === 'transactions'" key="mode-balance" class="wallet-mode mode-balance">
           <!-- List of transactions -->
           <!-- No transactions -->
           <div
@@ -65,53 +57,37 @@
               />
             </svg>
 
-            <small class="align-self-center mt-3 text-muted"
-              >No transactions</small
-            >
+            <small class="align-self-center mt-3 text-muted">No transactions</small>
           </div>
 
           <div class="wallet-transactions-container" v-else>
-            <transition-group
-              name="slide-up"
-              class="list-group pb-2 transactions"
-            >
+            <transition-group name="slide-up" class="list-group pb-2 transactions">
               <!-- Transaction -->
               <b-list-group-item
-                v-for="(tx, index) in transactions"
-                :key="index"
+                v-for="tx in transactions"
+                :key="tx.hash"
                 class="flex-column align-items-start px-3 px-lg-4"
                 :href="getTxUrl(tx.hash)"
                 target="_blank"
               >
                 <!-- Loading Transactions Placeholder -->
-                <div
-                  class="d-flex w-100 justify-content-between"
-                  v-if="tx.type === 'loading'"
-                >
+                <div class="d-flex w-100 justify-content-between" v-if="tx.type === 'loading'">
                   <div class="w-50">
                     <span class="loading-placeholder"></span>
 
                     <!-- Timestamp of tx -->
-                    <span
-                      class="loading-placeholder loading-placeholder-sm"
-                      style="width: 40%"
-                    ></span>
+                    <span class="loading-placeholder loading-placeholder-sm" style="width: 40%"></span>
                   </div>
 
                   <div class="w-25 text-right">
                     <span class="loading-placeholder"></span>
-                    <span
-                      class="loading-placeholder loading-placeholder-sm"
-                      style="width: 30%"
-                    ></span>
+                    <span class="loading-placeholder loading-placeholder-sm" style="width: 30%"></span>
                   </div>
                 </div>
 
                 <div class="d-flex w-100 justify-content-between" v-else>
                   <div class="transaction-description">
-                    <h6
-                      class="mb-0 font-weight-normal transaction-description-text"
-                    >
+                    <h6 class="mb-0 font-weight-normal transaction-description-text">
                       <!-- Incoming tx icon -->
                       <svg
                         width="18"
@@ -152,9 +128,7 @@
                       </svg>
 
                       <!-- tx description -->
-                      <span style="margin-left: 6px;" :title="tx.description">
-                        {{ tx.description }}
-                      </span>
+                      <span style="margin-left: 6px;" :title="tx.description">{{ tx.description }}</span>
                     </h6>
 
                     <!-- Timestamp of tx -->
@@ -180,15 +154,13 @@
                           tx.description === 'Lightning Wallet' &&
                             tx.type === 'outgoing'
                         "
-                        >&bull; Channel open</span
-                      >
+                      >&bull; Channel open</span>
                       <span
                         v-else-if="
                           tx.description === 'Lightning Wallet' &&
                             tx.type === 'incoming'
                         "
-                        >&bull; Channel close</span
-                      >
+                      >&bull; Channel close</span>
                     </small>
                   </div>
 
@@ -212,19 +184,11 @@
         </div>
 
         <!-- SCREEN/MODE: Withdraw Screen -->
-        <div
-          class="wallet-mode"
-          v-else-if="mode === 'withdraw'"
-          key="mode-withdraw"
-        >
+        <div class="wallet-mode" v-else-if="mode === 'withdraw'" key="mode-withdraw">
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
-            <div class="pt-2 pb-3">
-              <a
-                href="#"
-                class="card-link text-muted"
-                v-on:click.stop.prevent="reset"
-              >
+            <div class="pt-1 pb-3">
+              <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
                 <svg
                   width="7"
                   height="13"
@@ -241,9 +205,7 @@
               </a>
             </div>
             <div class="mb-0">
-              <label class="sr-onlsy" for="input-withdrawal-amount"
-                >Amount</label
-              >
+              <label class="sr-onlsy" for="input-withdrawal-amount">Amount</label>
               <b-input-group class="neu-input-group">
                 <b-input
                   id="input-withdrawal-amount"
@@ -254,24 +216,25 @@
                   autofocus
                   @input="fetchWithdrawalFees"
                   style="padding-right: 82px"
+                  :disabled="withdraw.sweep"
                 ></b-input>
                 <b-input-group-append class="neu-input-group-append">
-                  <sats-btc-switch
-                    class="align-self-center"
-                    size="sm"
-                  ></sats-btc-switch>
+                  <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
                 </b-input-group-append>
               </b-input-group>
-              <small
-                class="text-muted mt-1 d-block text-right mb-0"
-                :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
-                >~ {{ withdraw.amount | satsToUSD }}</small
-              >
+              <div class="my-1 w-100 d-flex justify-content-between">
+                <b-form-checkbox v-model="withdraw.sweep" size="sm" switch>
+                  <small class="text-muted">Withdraw all funds</small>
+                </b-form-checkbox>
+                <div></div>
+                <small
+                  class="text-muted mt-1 d-block text-right mb-0"
+                  :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
+                >~ {{ withdraw.amount | satsToUSD }}</small>
+              </div>
             </div>
 
-            <label class="sr-onlsy" for="input-withdrawal-address"
-              >Address</label
-            >
+            <label class="sr-onlsy" for="input-withdrawal-address">Address</label>
             <b-input
               id="input-withdrawal-address"
               class="mb-2 neu-input"
@@ -293,19 +256,11 @@
         </div>
 
         <!-- SCREEN/MODE: Review Withdrawal -->
-        <div
-          class="wallet-mode"
-          v-else-if="mode === 'review-withdraw'"
-          key=" ode-review-withdraw"
-        >
+        <div class="wallet-mode" v-else-if="mode === 'review-withdraw'" key=" ode-review-withdraw">
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
             <div class="pt-2 pb-3">
-              <a
-                href="#"
-                class="card-link text-muted"
-                v-on:click.stop.prevent="reset"
-              >
+              <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
                 <svg
                   width="7"
                   height="13"
@@ -323,12 +278,12 @@
             </div>
             <div class="text-center pb-4">
               <h3 class="mb-0">{{ withdraw.amount | unit | localize }}</h3>
-              <span class="d-block mb-1 text-muted">{{
+              <span class="d-block mb-1 text-muted">
+                {{
                 unit | formatUnit
-              }}</span>
-              <small class="text-muted d-block mb-3"
-                >~ {{ withdraw.amount | satsToUSD }}</small
-              >
+                }}
+              </span>
+              <small class="text-muted d-block mb-3">~ {{ withdraw.amount | satsToUSD }}</small>
 
               <svg
                 width="30"
@@ -348,16 +303,18 @@
             </div>
             <div class="d-flex justify-content-between pb-3">
               <span class="text-muted">
-                <b>{{
+                <b>
+                  {{
                   fees[withdraw.selectedFee]["total"] | unit | localize
-                }}</b>
+                  }}
+                </b>
                 <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
-                <small
-                  >~
+                <small>
+                  ~
                   {{ fees[withdraw.selectedFee]["total"] | satsToUSD }} Mining
-                  fee</small
-                >
+                  fee
+                </small>
               </span>
               <span class="text-right text-muted">
                 <b>{{ projectedBalanceInSats | unit | localize }}</b>
@@ -378,11 +335,7 @@
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
             <div class="pt-2 pb-3">
-              <a
-                href="#"
-                class="card-link text-muted"
-                v-on:click.stop.prevent="reset"
-              >
+              <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
                 <svg
                   width="7"
                   height="13"
@@ -405,10 +358,10 @@
             <div class="text-center mb-2">
               <span class="d-block mb-2">
                 Successfully withdrawn
-                <b
-                  >{{ withdraw.amount | unit | localize }}
-                  {{ unit | formatUnit }}</b
-                >
+                <b>
+                  {{ withdraw.amount | unit | localize }}
+                  {{ unit | formatUnit }}
+                </b>
               </span>
               <small class="text-muted d-block">Transaction ID</small>
             </div>
@@ -426,11 +379,7 @@
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
             <div class="pt-2 pb-3">
-              <a
-                href="#"
-                class="card-link text-muted"
-                v-on:click.stop.prevent="reset"
-              >
+              <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
                 <svg
                   width="7"
                   height="13"
@@ -454,19 +403,10 @@
             </p>
 
             <!-- Deposit Address QR Code -->
-            <qr-code
-              class="mb-3"
-              :value="depositAddress"
-              :size="200"
-              showLogo
-            ></qr-code>
+            <qr-code class="mb-3" :value="depositAddress" :size="200" showLogo></qr-code>
 
             <!-- Copy Address Input Field -->
-            <input-copy
-              size="sm"
-              :value="depositAddress"
-              class="mb-4 mt-1"
-            ></input-copy>
+            <input-copy size="sm" :value="depositAddress" class="mb-4 mt-1"></input-copy>
           </div>
         </div>
       </transition>
@@ -497,8 +437,8 @@
             <path
               d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
               fill="#FFFFFF"
-            /></svg
-          >Withdraw
+            />
+          </svg>Withdraw
         </b-button>
         <b-button
           class="w-50"
@@ -517,8 +457,8 @@
             <path
               d="M13.5944 6.04611C13.6001 5.73904 13.3493 5.48755 13.0369 5.48712C12.7351 5.4867 12.4836 5.7375 12.4836 6.03895L12.4758 11.6999L4.94598 3.83615C4.72819 3.61848 4.16402 3.62477 3.94599 3.8422C3.72796 4.05963 3.73466 4.62433 3.95209 4.84236L11.6871 12.4864L6.03143 12.4733C5.72435 12.4782 5.47251 12.7293 5.47244 13.0308C5.47201 13.3431 5.72317 13.595 6.0299 13.5898L13.031 13.5994C13.3381 13.6051 13.5896 13.3543 13.5844 13.0476L13.5944 6.04611Z"
               fill="#FFFFFF"
-            /></svg
-          >Deposit
+            />
+          </svg>Deposit
         </b-button>
       </b-button-group>
       <b-button
@@ -530,8 +470,7 @@
         :disabled="
           !!error || !withdraw.amount || !withdraw.address || withdraw.isTyping
         "
-        >Review Withdrawal</b-button
-      >
+      >Review Withdrawal</b-button>
       <b-button
         class="w-100"
         variant="primary"
@@ -541,7 +480,7 @@
         v-else-if="mode === 'review-withdraw'"
       >
         {{
-          this.withdraw.isWithdrawing ? "Withdrawing..." : "Confirm Withdrawal"
+        this.withdraw.isWithdrawing ? "Withdrawing..." : "Confirm Withdrawal"
         }}
       </b-button>
       <b-button
@@ -564,8 +503,8 @@
           <path
             d="M7.06802 4.71946C6.76099 4.71224 6.50825 4.96178 6.50627 5.27413C6.50435 5.57592 6.7539 5.82865 7.05534 5.83022L12.7162 5.86616L4.81508 13.3568C4.59632 13.5735 4.59981 14.1376 4.81615 14.3568C5.03249 14.5759 5.59723 14.572 5.81634 14.3556L13.4988 6.6587L13.4576 12.3143C13.4609 12.6214 13.7108 12.8745 14.0122 12.876C14.3246 12.878 14.5777 12.6281 14.574 12.3214L14.6184 5.32036C14.6257 5.01333 14.3761 4.76059 14.0694 4.76427L7.06802 4.71946Z"
             fill="#FFFFFF"
-          /></svg
-        >View Transaction
+          />
+        </svg>View Transaction
       </b-button>
     </div>
   </card-widget>
@@ -595,7 +534,7 @@ export default {
         amountInput: "",
         amount: "", //withdrawal amount
         address: "", //withdrawal address
-        sendMax: false, //sweep = send all funds?
+        sweep: false, //sweep = send all funds?
         feesTimeout: null, //window.setTimeout for fee fetching
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false, //awaiting api response for withdrawal request?
@@ -620,6 +559,7 @@ export default {
         return state.bitcoin.balance.total;
       },
       walletBalanceInSats: state => state.bitcoin.balance.total,
+      confirmedBtcBalance: state => state.bitcoin.balance.confirmed,
       depositAddress: state => state.bitcoin.depositAddress,
       fees: state => state.bitcoin.fees,
       unit: state => state.system.unit,
@@ -629,6 +569,10 @@ export default {
       transactions: "bitcoin/transactions"
     }),
     projectedBalanceInSats() {
+      if (this.withdraw.sweep) {
+        return 0;
+      }
+
       const remainingBalanceInSats =
         this.$store.state.bitcoin.balance.total -
         this.withdraw.amount -
@@ -676,7 +620,7 @@ export default {
       this.withdraw = {
         amount: "",
         address: "",
-        sendMax: false,
+        sweep: false,
         feesTimeout: null,
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false,
@@ -699,12 +643,11 @@ export default {
         if (this.withdraw.amount && this.withdraw.address) {
           const params = {
             address: this.withdraw.address,
-            confTarget: 0
+            confTarget: 0,
+            sweep: this.withdraw.sweep
           };
 
-          if (this.withdraw.sendMax) {
-            params.sweep = true;
-          } else {
+          if (!this.withdraw.sweep) {
             params.amt = this.withdraw.amount;
           }
 
@@ -720,7 +663,7 @@ export default {
             } else {
               this.error = "";
             }
-            // if (this.withdraw.sendMax) {
+            // if (this.withdraw.sweep) {
             // this.estimateSweep();
             // }
           }
@@ -737,10 +680,10 @@ export default {
       this.withdraw.isWithdrawing = true;
 
       const payload = {
-        sweep: this.withdraw.sendMax,
         addr: this.withdraw.address,
         amt: this.withdraw.amount,
-        satPerByte: parseInt(this.fees[this.withdraw.selectedFee].perByte)
+        satPerByte: parseInt(this.fees[this.withdraw.selectedFee].perByte),
+        sendAll: this.withdraw.sweep
       };
 
       try {
@@ -771,6 +714,19 @@ export default {
         this.withdraw.amount = btcToSats(val);
       }
       this.fetchWithdrawalFees();
+    },
+    "withdraw.sweep": async function(val) {
+      if (val) {
+        if (this.unit === "sats") {
+          this.withdraw.amountInput = String(this.confirmedBtcBalance);
+        } else if (this.unit === "btc") {
+          this.withdraw.amountInput = String(
+            satsToBtc(this.confirmedBtcBalance)
+          );
+        }
+      } else {
+        this.fetchWithdrawalFees();
+      }
     },
     unit: function(val) {
       if (val === "sats") {
