@@ -403,7 +403,7 @@
             </p>
 
             <!-- Deposit Address QR Code -->
-            <qr-code class="mb-3" :value="depositAddress" :size="200" showLogo></qr-code>
+            <qr-code class="mb-3" :value="depositAddress" :size="190" showLogo></qr-code>
 
             <!-- Copy Address Input Field -->
             <input-copy size="sm" :value="depositAddress" class="mb-4 mt-1"></input-copy>
@@ -519,7 +519,7 @@ import API from "@/helpers/api";
 
 import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
-import InputCopy from "@/components/InputCopy";
+import InputCopy from "@/components/Utility/InputCopy";
 import QrCode from "@/components/Utility/QrCode.vue";
 import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";

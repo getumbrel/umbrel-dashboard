@@ -682,7 +682,7 @@ import API from "@/helpers/api";
 
 import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
-import InputCopy from "@/components/InputCopy";
+import InputCopy from "@/components/Utility/InputCopy";
 import QrCode from "@/components/Utility/QrCode.vue";
 import CircularCheckmark from "@/components/Utility/CircularCheckmark.vue";
 import SatsBtcSwitch from "@/components/Utility/SatsBtcSwitch";
