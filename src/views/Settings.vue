@@ -2,7 +2,7 @@
   <div class="p-sm-2">
     <div class="my-3 pb-2">
       <h1>settings</h1>
-      <p class="text-muted">Your umbrel, your rules.</p>
+      <!-- <p class="text-muted">Your umbrel, your rules.</p> -->
     </div>
     <b-row>
       <b-col col cols="12" md="6" xl="4">

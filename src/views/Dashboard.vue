@@ -1,10 +1,8 @@
 <template>
   <div class="p-sm-2">
     <div class="my-3 pb-2">
-      <h1 class="text-lowercase">
-        welcome back{{ name ? `, ${name.split(" ")[0]}` : "" }}
-      </h1>
-      <p class="text-muted">This is your Umbrel's dashboard</p>
+      <h1 class="text-lowercase">{{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}</h1>
+      <!-- <p class="text-muted">Here's an overview of your Umbrel</p> -->
     </div>
     <b-row>
       <b-col col cols="12" md="6" xl="4">
@@ -34,11 +32,7 @@
               suffix="%"
               v-if="syncPercent !== -1"
             />
-            <span
-              class="loading-placeholder loading-placeholder-lg"
-              style="width: 140px;"
-              v-else
-            ></span>
+            <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
           </template>
           <div class>
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
@@ -83,9 +77,7 @@
                 ></span>
               </template>
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link"
-                  >Manage</router-link
-                >
+                <router-link to="/bitcoin" class="card-link">Manage</router-link>
               </div>
             </card-widget>
           </b-col>
@@ -98,9 +90,7 @@
               icon="icon-app-tor.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/settings" class="card-link"
-                  >Manage</router-link
-                >
+                <router-link to="/settings" class="card-link">Manage</router-link>
               </div>
             </card-widget>
           </b-col>
@@ -149,7 +139,21 @@ export default {
       },
       btcBalanceInSats: state => state.bitcoin.balance.total,
       unit: state => state.system.unit
-    })
+    }),
+    greeting: () => {
+      const currentHour = new Date().getHours();
+
+      const greetingMessage =
+        currentHour >= 4 && currentHour < 12 // after 4:00AM and before 12:00PM
+          ? "Good morning"
+          : currentHour >= 12 && currentHour <= 16 // after 12:00PM and before 5:00PM
+          ? "Good afternoon"
+          : currentHour > 16 || currentHour < 4 // after 5:00PM or before 4:00AM (to accommodate our fellow hackers)
+          ? "Good evening"
+          : "Welcome back"; // if for some reason the calculation didn't work
+
+      return greetingMessage;
+    }
   },
   methods: {},
   components: {
