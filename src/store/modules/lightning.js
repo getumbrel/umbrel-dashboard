@@ -1,4 +1,5 @@
 import API from "@/helpers/api";
+import { toPrecision } from "@/helpers/units";
 // import Events from '~/helpers/events';
 // import { sleep } from '@/helpers/utils';
 
@@ -22,6 +23,7 @@ const state = () => ({
   version: "",
   currentBlock: 0,
   blockHeight: 0,
+  percent: -1, //for loading state
   balance: {
     total: -1,
     confirmed: -1,
@@ -55,6 +57,13 @@ const state = () => ({
 const mutations = {
   isOperational(state, operational) {
     state.operational = operational;
+  },
+
+  setSync(state, sync) {
+    state.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
+    state.blockHeight = sync.knownBlockCount;
+    state.currentBlock = sync.processedBlocks;
+    console.log(sync.percent);
   },
 
   isUnlocked(state, unlocked) {
@@ -142,6 +151,16 @@ const actions = {
     //     Events.$emit('unlock-modal-open');
     //   }
     // }
+  },
+
+  async getSync({ commit }) {
+    const sync = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/sync`
+    );
+    if (sync && sync.percent) {
+      console.log(sync);
+      commit("setSync", sync)
+    }
   },
 
   //basically fetches everything
