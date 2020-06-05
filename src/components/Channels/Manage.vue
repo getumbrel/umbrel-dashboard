@@ -6,16 +6,12 @@
           class="text-primary font-weight-bold"
           v-b-tooltip.hover.right
           :title="channel.localBalance | satsToUSD"
-        >
-          {{ channel.localBalance | unit | localize }} {{ unit | formatUnit }}
-        </h4>
+        >{{ channel.localBalance | unit | localize }} {{ unit | formatUnit }}</h4>
         <h4
           class="text-success font-weight-bold text-right"
           v-b-tooltip.hover.left
           :title="channel.remoteBalance | satsToUSD"
-        >
-          {{ channel.remoteBalance | unit | localize }} {{ unit | formatUnit }}
-        </h4>
+        >{{ channel.remoteBalance | unit | localize }} {{ unit | formatUnit }}</h4>
       </div>
       <bar
         :local="Number(channel.localBalance)"
@@ -31,28 +27,25 @@
 
     <transition name="mode-change" mode="out-in">
       <div v-if="!isReviewingChannelClose">
-        <div
-          class="d-flex justify-content-between align-items-center mt-1 mb-3"
-        >
+        <div class="d-flex justify-content-between align-items-center mt-1 mb-3">
           <span class="text-muted">Status</span>
-          <span class="text-capitalize font-weight-bold">
-            {{ channel.status }}
-          </span>
+          <span class="text-capitalize font-weight-bold">{{ channel.status }}</span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Channel Type</span>
-          <span class="text-capitalize font-weight-bold"
-            >{{ channel.private ? "Private" : "Public" }} Channel</span
-          >
+          <span
+            class="text-capitalize font-weight-bold"
+          >{{ channel.private ? "Private" : "Public" }} Channel</span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Peer Alias</span>
           <div class="w-75 text-right">
-            <span class="font-weight-bold" style="overflow-wrap: break-word;">
-              {{ channel.remoteAlias }}
-            </span>
+            <span
+              class="font-weight-bold"
+              style="overflow-wrap: break-word;"
+            >{{ channel.remoteAlias }}</span>
           </div>
         </div>
 
@@ -61,9 +54,9 @@
           v-if="channel.status !== 'Closing'"
         >
           <span class="text-muted">Opened By</span>
-          <span class="text-capitalize font-weight-bold">
-            {{ channel.initiator ? "Your node" : "Remote peer" }}
-          </span>
+          <span
+            class="text-capitalize font-weight-bold"
+          >{{ channel.initiator ? "Your node" : "Remote peer" }}</span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -72,9 +65,10 @@
             v-b-tooltip.hover.left
             :title="channel.localBalance | satsToUSD"
             class="text-capitalize font-weight-bold"
-            >{{ channel.localBalance | unit | localize }}
-            {{ unit | formatUnit }}</span
           >
+            {{ channel.localBalance | unit | localize }}
+            {{ unit | formatUnit }}
+          </span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -83,9 +77,10 @@
             v-b-tooltip.hover.left
             :title="channel.remoteBalance | satsToUSD"
             class="text-capitalize font-weight-bold"
-            >{{ channel.remoteBalance | unit | localize }}
-            {{ unit | formatUnit }}</span
           >
+            {{ channel.remoteBalance | unit | localize }}
+            {{ unit | formatUnit }}
+          </span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -94,27 +89,31 @@
             v-b-tooltip.hover.left
             :title="channel.capacity | satsToUSD"
             class="text-capitalize font-weight-bold"
-            >{{ channel.capacity | unit | localize }}
-            {{ unit | formatUnit }}</span
           >
+            {{ channel.capacity | unit | localize }}
+            {{ unit | formatUnit }}
+          </span>
         </div>
 
         <div
           class="d-flex justify-content-between align-items-center mb-3"
-          v-if="channel.status !== 'Closing' && channel.status !== 'Opening'"
+          v-if="channel.status === 'Online'"
         >
           <span class="text-muted">Withdrawal Timelock</span>
-          <span class="text-capitalize font-weight-bold"
-            >{{ parseInt(channel.csvDelay).toLocaleString() }} Blocks</span
-          >
+          <span
+            class="text-capitalize font-weight-bold"
+          >{{ parseInt(channel.csvDelay).toLocaleString() }} Blocks</span>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div
+          class="d-flex justify-content-between align-items-center mb-3"
+          v-if="channel.status === 'Online'"
+        >
           <span class="text-muted">Commit Fee</span>
-          <span class="text-capitalize font-weight-bold"
-            >{{ channel.commitFee | unit | localize }}
-            {{ unit | formatUnit }}</span
-          >
+          <span class="text-capitalize font-weight-bold">
+            {{ channel.commitFee | unit | localize }}
+            {{ unit | formatUnit }}
+          </span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -123,15 +122,12 @@
             <small
               class="font-weight-bold"
               style="overflow-wrap: break-word;"
-              >{{ channel.remotePubkey }}</small
-            >
+            >{{ channel.remotePubkey }}</small>
           </div>
         </div>
 
         <div class="d-flex justify-content-end" v-if="canCloseChannel">
-          <b-button class="mt-2" variant="danger" @click="reviewChannelClose"
-            >Close Channel</b-button
-          >
+          <b-button class="mt-2" variant="danger" @click="reviewChannelClose">Close Channel</b-button>
         </div>
       </div>
 
@@ -155,8 +151,7 @@
             variant="danger"
             @click="confirmChannelClose"
             :disabled="isClosing"
-            >{{ isClosing ? "Closing Channel..." : "Confirm Close" }}</b-button
-          >
+          >{{ isClosing ? "Closing Channel..." : "Confirm Close" }}</b-button>
         </div>
       </div>
     </transition>
