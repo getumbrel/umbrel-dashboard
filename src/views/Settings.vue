@@ -132,7 +132,7 @@ export default {
     async changePassword() {
       // disable on testnet
       if (window.location.hostname === "testnet.getumbrel.com") {
-        this.$bvToast.toast('y u try to do dis on testnet :"(', {
+        return this.$bvToast.toast('y u try to do dis on testnet :"(', {
           title: "Error",
           autoHideDelay: 3000,
           variant: "danger",
