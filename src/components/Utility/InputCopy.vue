@@ -1,15 +1,6 @@
 <template>
-  <b-input-group
-    class="copy-input-container d-flex align-items-center"
-    :size="size"
-  >
-    <b-form-input
-      ref="copy-input-field"
-      type="text"
-      class="copy-input"
-      readonly
-      v-model="value"
-    ></b-form-input>
+  <b-input-group class="copy-input-container d-flex align-items-center" :size="size">
+    <b-form-input ref="copy-input-field" type="text" class="copy-input" readonly v-model="value"></b-form-input>
 
     <b-input-group-append class="copy-icon-btn" @click="copyText">
       <svg
@@ -33,10 +24,6 @@
           d="M4.21875 18H10.9336C12.4845 18 13.7461 16.7384 13.7461 15.1875V5.66016C13.7461 4.1093 12.4845 2.84766 10.9336 2.84766H4.21875C2.66789 2.84766 1.40625 4.1093 1.40625 5.66016V15.1875C1.40625 16.7384 2.66789 18 4.21875 18ZM16.5586 2.8125V13.4297C16.5586 13.8181 16.2438 14.1328 15.8555 14.1328C15.4671 14.1328 15.1523 13.8181 15.1523 13.4297V2.8125C15.1523 2.03714 14.5215 1.40625 13.7461 1.40625H5.94141C5.55304 1.40625 5.23828 1.09149 5.23828 0.703125C5.23828 0.314758 5.55304 0 5.94141 0H13.7461C15.297 0 16.5586 1.26164 16.5586 2.8125Z"
         />
       </svg>
-
-      <!-- <b-button
-        :variant="state.isCopied ? 'success' : 'primary'"
-      >{{ state.isCopied ? "Copied" : "Copy" }}</b-button>-->
     </b-input-group-append>
   </b-input-group>
 </template>
