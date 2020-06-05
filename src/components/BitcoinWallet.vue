@@ -1,12 +1,12 @@
 <template>
   <card-widget
     header="Bitcoin Wallet"
-    :status="{ text: 'Active', variant: 'success', blink: false }"
+    :status="{ text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active', variant: 'success', blink: false }"
     :sub-title="unit | formatUnit"
     icon="icon-app-bitcoin.svg"
     :loading="
       loading ||
-        (transactions.length > 0 && transactions[0]['type'] === 'loading')
+        (transactions.length > 0 && transactions[0]['type'] === 'loading') || lightningSyncPercent < 100
     "
   >
     <template v-slot:title>
@@ -548,6 +548,7 @@ export default {
   props: {},
   computed: {
     ...mapState({
+      lightningSyncPercent: state => state.lightning.percent,
       walletBalance: state => {
         //skip if still loading
         if (state.bitcoin.balance.total === -1) {

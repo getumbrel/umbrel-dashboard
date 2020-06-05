@@ -30,8 +30,7 @@
           v-if="chain !== 'main'"
           class="align-self-center mr-2 text-capitalize"
           pill
-          >{{ chain === "test" ? "testnet" : chain }}</b-badge
-        >
+        >{{ chain === "test" ? "testnet" : chain }}</b-badge>
 
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
@@ -40,11 +39,7 @@
         >
           <div></div>
         </div>
-        <b-nav-item-dropdown
-          class="d-none d-lg-block d-xl-block"
-          right
-          no-caret
-        >
+        <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right no-caret>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>{{ name.split(" ")[0] }}</template>
           <b-dropdown-item @click="logout">Log out</b-dropdown-item>
@@ -54,10 +49,7 @@
 
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
-      <div
-        class="mobile-vertical-menu d-lg-none d-xl-none"
-        v-if="isMobileMenuOpen"
-      >
+      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-if="isMobileMenuOpen">
         <authenticated-vertical-navbar :isMobileMenu="true" />
       </div>
     </transition>
@@ -71,12 +63,7 @@
     </transition>
 
     <b-row class="mx-0">
-      <b-col
-        col
-        lg="3"
-        xl="2"
-        class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2"
-      >
+      <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2">
         <authenticated-vertical-navbar />
       </b-col>
 
@@ -131,6 +118,7 @@ export default {
       this.$store.dispatch("bitcoin/getSync");
       this.$store.dispatch("bitcoin/getBalance");
       this.$store.dispatch("bitcoin/getTransactions");
+      this.$store.dispatch("lightning/getSync");
       this.$store.dispatch("lightning/getTransactions");
       this.$store.dispatch("lightning/getChannels");
       this.$store.dispatch("bitcoin/getPrice");

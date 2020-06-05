@@ -15,13 +15,13 @@
         <card-widget
           header="Bitcoin Core"
           :status="{
-            text: syncPercent !== 100 ? 'Synchronizing' : 'Running',
+            text: syncPercent < 100 ? 'Synchronizing' : 'Running',
             variant: 'success',
             blink: false
           }"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
-          :loading="syncPercent !== 100 || blocks.length === 0"
+          :loading="syncPercent < 100 || blocks.length === 0"
         >
           <template v-slot:title>
             <CountUp
@@ -52,9 +52,10 @@
           <b-col col cols="12" md="6" xl="12">
             <card-widget
               header="Bitcoin Wallet"
-              :status="{ text: 'Active', variant: 'success', blink: false }"
+              :status="{ text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active', variant: 'success', blink: false }"
               :sub-title="unit | formatUnit"
               icon="icon-app-bitcoin.svg"
+              :loading="lightningSyncPercent < 100"
             >
               <template v-slot:title>
                 <div
@@ -125,6 +126,7 @@ export default {
   computed: {
     ...mapState({
       name: state => state.user.name,
+      lightningSyncPercent: state => state.lightning.percent,
       syncPercent: state => state.bitcoin.percent,
       blocks: state => state.bitcoin.blocks,
       btcBalance: state => {
