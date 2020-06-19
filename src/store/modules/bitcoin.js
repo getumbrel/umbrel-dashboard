@@ -40,6 +40,8 @@ const state = () => ({
   ],
   pending: [],
   price: 0,
+  fiatUnits: "USD",
+  fiatUnitSymbol: "$",
   fees: {
     fast: {
       total: "--",
