@@ -71,12 +71,37 @@ const actions = {
   },
 
   async getPrice({ commit, state }) {
-    // TODO: Get user preferences from backend
-    commit("fiatUnitSymbol", "฿");
-    commit("fiatUnits", "THB");
+    const info = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`);
+    const currency = info['stateCurrencyPreference'] || 'USD';
+    var currencySymbol = currency; // default to the currency symbol
+    switch (currency) {
+      case "THB":
+        currencySymbol = "฿";
+        break;
+      case "EUR":
+        currencySymbol = "€";
+        break;
+      case "GBP":
+        currencySymbol = "£";
+        break;
+      case "INR":
+        currencySymbol = "₹";
+        break;
+      case "KRW":
+        currencySymbol = "₩";
+        break;
+      case "CNY":
+        currencySymbol = "元";
+        break;
+      default:
+        currencySymbol = currency;
+        break;
+    }
+    commit("fiatUnitSymbol", currencySymbol);
+    commit("fiatUnits", currency);
 
     const price = await API.get(
-      "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=" + (state.fiatUnits).toString()
+      "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=" + (currency).toString()
     );
 
     if (price) {
