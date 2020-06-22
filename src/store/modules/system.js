@@ -71,11 +71,10 @@ const actions = {
   },
 
   async getPrice({ commit, state }) {
-
     // TODO: Get user preferences from backend
     commit("fiatUnitSymbol", "฿");
     commit("fiatUnits", "THB");
-    console.log(state);
+
     const price = await API.get(
       "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=" + (state.fiatUnits).toString()
     );
