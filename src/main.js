@@ -39,7 +39,7 @@ Vue.filter("formatUnit", unit => {
 });
 
 //transforms sats to usd
-Vue.filter("satsToUSD", value => {
+Vue.filter("satsToFiat", value => {
   if (isNaN(parseInt(value))) {
     return value;
   } else {
