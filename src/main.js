@@ -43,12 +43,16 @@ Vue.filter("satsToFiat", value => {
   if (isNaN(parseInt(value))) {
     return value;
   } else {
-    return (
-      (store.state.system.fiatUnitSymbol).toString() +
-      Number(
-        (satsToBtc(value) * store.state.system.btcprice).toFixed(2)
-      ).toLocaleString()
-    );
+    if (store.state.system.btcprice === 0) {
+      return "Rates unavailable";
+    } else {
+      return (
+        (store.state.system.fiatUnitSymbol).toString() +
+        Number(
+          (satsToBtc(value) * store.state.system.btcprice).toFixed(2)
+        ).toLocaleString()
+      );
+    }
   }
 });
 
