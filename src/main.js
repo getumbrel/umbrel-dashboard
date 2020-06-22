@@ -44,7 +44,7 @@ Vue.filter("satsToFiat", value => {
     return value;
   } else {
     if (store.state.system.btcprice === 0) {
-      return "Rates unavailable";
+      return "Rates currently unavailable";
     } else {
       return (
         (store.state.system.fiatUnitSymbol).toString() +
