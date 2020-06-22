@@ -11,7 +11,10 @@ const state = () => ({
   managerApi: {
     operational: false,
     version: ""
-  }
+  },
+  price: 0,
+  fiatUnitSymbol: "",
+  fiatUnits: ""
 });
 
 // Functions to update the state directly
@@ -27,6 +30,15 @@ const mutations = {
   },
   setLoading(state, loading) {
     state.loading = loading;
+  },
+  price(state, usd) {
+    state.price = usd;
+  },
+  fiatUnitSymbol(state, symbol) {
+    state.fiatUnitSymbol = symbol;
+  },
+  fiatUnits(state, fiatunit) {
+    state.fiatUnits = fiatunit;
   }
 };
 
@@ -56,7 +68,20 @@ const actions = {
       operational: !!(api && api.version),
       version: api && api.version ? api.version : ""
     });
-  }
+  },
+  async getPrice({ commit, state }) {
+    // TODO: Get user preferences from backend
+    commit("fiatUnitSymbol", "฿");
+    commit("fiatUnits", "THB");
+
+    const price = await API.get(
+      "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=" + (state.fiatUnits).toString()
+    );
+
+    if (price) {
+      commit("price", price[state.fiatUnits]);
+    }
+  }  
 };
 
 const getters = {};
