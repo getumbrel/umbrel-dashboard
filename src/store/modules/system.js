@@ -93,10 +93,14 @@ const actions = {
       case "CNY":
         currencySymbol = "元";
         break;
+      case "USD":
+        currencySymbol = "$";
+        break;
       default:
         currencySymbol = currency;
         break;
     }
+    console.log("My currency preference is " + currency.toString() + " and the symbol is " + currencySymbol.toString());
     commit("fiatUnitSymbol", currencySymbol);
     commit("fiatUnits", currency);
 
