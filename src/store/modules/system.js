@@ -69,8 +69,8 @@ const actions = {
       version: api && api.version ? api.version : ""
     });
   },
-
-  async getPrice({ commit, state }) {
+  async getStateCurrencyPref({ commit }) {
+    // This API needs to change, as it causes problems with duplicate requests
     const info = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`);
     const currency = info['stateCurrencyPreference'] || 'USD';
     var currencySymbol = currency; // default to the currency symbol
@@ -103,13 +103,20 @@ const actions = {
     console.log("My currency preference is " + currency.toString() + " and the symbol is " + currencySymbol.toString());
     commit("fiatUnitSymbol", currencySymbol);
     commit("fiatUnits", currency);
+  },
 
+  async getPrice({ commit, state }) {
+    // USD is default
+    const currency = state.fiatUnits || 'USD';
+    if (state.fiatUnitSymbol !== undefined) {
+      commit("fiatUnitSymbol", "$"); // $
+    }
     const price = await API.get(
       "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=" + (currency).toString()
     );
 
     if (price) {
-      commit("btcprice", price[state.fiatUnits]);
+      commit("btcprice", price[currency]);
     }
   }
 };

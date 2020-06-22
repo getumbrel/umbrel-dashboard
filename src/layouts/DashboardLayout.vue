@@ -121,6 +121,7 @@ export default {
       this.$store.dispatch("lightning/getSync");
       this.$store.dispatch("lightning/getTransactions");
       this.$store.dispatch("lightning/getChannels");
+      this.$store.dispatch("system/getStateCurrencyPref");      
       this.$store.dispatch("system/getPrice");
     },
     toggleMobileMenu() {
