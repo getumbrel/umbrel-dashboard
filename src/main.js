@@ -44,7 +44,7 @@ Vue.filter("satsToUSD", value => {
     return value;
   } else {
     return (
-      "$" +
+      (store.state.bitcoin.fiatUnitSymbol).toString() +
       Number(
         (satsToBtc(value) * store.state.bitcoin.price).toFixed(2)
       ).toLocaleString()

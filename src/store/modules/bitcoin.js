@@ -40,8 +40,8 @@ const state = () => ({
   ],
   pending: [],
   price: 0,
-  fiatUnits: "USD",
-  fiatUnitSymbol: "$",
+  fiatUnits: "EUR",
+  fiatUnitSymbol: "€",
   fees: {
     fast: {
       total: "--",
@@ -331,13 +331,14 @@ const actions = {
     }
   },
 
-  async getPrice({ commit }) {
+  async getPrice({ commit, state }) {
     const price = await API.get(
-      "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD"
+      "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=" + (state.fiatUnits).toString()
     );
+    //console.log(state.fiatUnitSymbol);
 
     if (price) {
-      commit("price", price.USD);
+      commit("price", price[state.fiatUnits]);
     }
   },
 
