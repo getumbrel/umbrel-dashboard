@@ -12,7 +12,7 @@ const state = () => ({
     operational: false,
     version: ""
   },
-  price: 0,
+  btcprice: 0,
   fiatUnitSymbol: "",
   fiatUnits: ""
 });
@@ -79,9 +79,9 @@ const actions = {
     );
 
     if (price) {
-      commit("price", price[state.fiatUnits]);
+      commit("btcprice", price[state.fiatUnits]);
     }
-  }  
+  }
 };
 
 const getters = {};
