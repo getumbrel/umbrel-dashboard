@@ -44,9 +44,9 @@ Vue.filter("satsToFiat", value => {
     return value;
   } else {
     return (
-      (store.state.bitcoin.fiatUnitSymbol).toString() +
+      (store.state.system.fiatUnitSymbol).toString() +
       Number(
-        (satsToBtc(value) * store.state.bitcoin.price).toFixed(2)
+        (satsToBtc(value) * store.state.system.btcprice).toFixed(2)
       ).toLocaleString()
     );
   }

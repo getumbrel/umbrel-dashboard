@@ -31,8 +31,8 @@ const mutations = {
   setLoading(state, loading) {
     state.loading = loading;
   },
-  price(state, usd) {
-    state.price = usd;
+  btcprice(state, usd) {
+    state.btcprice = usd;
   },
   fiatUnitSymbol(state, symbol) {
     state.fiatUnitSymbol = symbol;
@@ -69,13 +69,13 @@ const actions = {
       version: api && api.version ? api.version : ""
     });
   },
-  
+
   async getPrice({ commit, state }) {
 
     // TODO: Get user preferences from backend
     commit("fiatUnitSymbol", "฿");
     commit("fiatUnits", "THB");
-
+    console.log(state);
     const price = await API.get(
       "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=" + (state.fiatUnits).toString()
     );

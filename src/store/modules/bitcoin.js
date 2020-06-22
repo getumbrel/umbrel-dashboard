@@ -39,9 +39,6 @@ const state = () => ({
     { type: "loading" }
   ],
   pending: [],
-  price: 0,
-  fiatUnits: "",
-  fiatUnitSymbol: "",
   fees: {
     fast: {
       total: "--",
@@ -175,18 +172,6 @@ const mutations = {
       }
     }
   },
-
-  price(state, usd) {
-    state.price = usd;
-  },
-
-  fiatUnitSymbol(state, symbol) {
-    state.fiatUnitSymbol = symbol;
-  },
-
-  fiatUnits(state, fiatunit) {
-    state.fiatUnits = fiatunit;
-  }
 };
 
 // Functions to get data from the API
@@ -337,20 +322,6 @@ const actions = {
         `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`
       );
       commit("transactions", transactions);
-    }
-  },
-
-  async getPrice({ commit, state }) {
-    // TODO: Get user preferences from backend
-    commit("fiatUnitSymbol", "฿");
-    commit("fiatUnits", "THB");
-
-    const price = await API.get(
-      "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=" + (state.fiatUnits).toString()
-    );
-
-    if (price) {
-      commit("price", price[state.fiatUnits]);
     }
   },
 
