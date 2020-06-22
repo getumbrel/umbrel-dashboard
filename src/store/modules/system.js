@@ -69,7 +69,9 @@ const actions = {
       version: api && api.version ? api.version : ""
     });
   },
+  
   async getPrice({ commit, state }) {
+
     // TODO: Get user preferences from backend
     commit("fiatUnitSymbol", "฿");
     commit("fiatUnits", "THB");
