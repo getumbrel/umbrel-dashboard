@@ -167,13 +167,16 @@
         <lightning-wallet></lightning-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="8">
-        <card-widget header="Payment Channels">
+        <card-widget header="Payment Channels" hasMenu>
           <template v-slot:header-right>
             <b-button
               variant="outline-primary"
               size="sm"
               v-b-modal.open-channel-modal
             >+ Open Channel</b-button>
+          </template>
+          <template v-slot:menu>
+            <b-dropdown-item :href="channelBackupDownloadUrl" download>Download Channel Backup</b-dropdown-item>
           </template>
           <div class>
             <div class="px-3 px-lg-4">
@@ -322,7 +325,10 @@ export default {
       channels: state => state.lightning.channels,
       unit: state => state.system.unit,
       seed: state => state.user.seed
-    })
+    }),
+    channelBackupDownloadUrl() {
+      return `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/channel-backup`;
+    }
   },
   methods: {
     showPubKey() {
