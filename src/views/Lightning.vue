@@ -167,7 +167,7 @@
         <lightning-wallet></lightning-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="8">
-        <card-widget header="Payment Channels" hasMenu>
+        <card-widget header="Payment Channels">
           <template v-slot:header-right>
             <b-button
               variant="outline-primary"
@@ -356,7 +356,7 @@ export default {
     },
     async downloadChannelBackup() {
       await API.download(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/channel-backup`,
+        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/download-channel-backup`,
         {},
         true,
         "my-umbrel-channels.backup"
