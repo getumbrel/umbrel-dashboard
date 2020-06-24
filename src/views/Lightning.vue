@@ -176,7 +176,10 @@
             >+ Open Channel</b-button>
           </template>
           <template v-slot:menu>
-            <b-dropdown-item :href="channelBackupDownloadUrl" download>Download Channel Backup</b-dropdown-item>
+            <b-dropdown-item
+              href="#"
+              @click.stop.prevent="downloadChannelBackup"
+            >Download Channel Backup</b-dropdown-item>
           </template>
           <div class>
             <div class="px-3 px-lg-4">
@@ -293,10 +296,12 @@
 <script>
 import { mapState } from "vuex";
 
+import API from "@/helpers/api";
+
 import CardWidget from "@/components/CardWidget";
 import Stat from "@/components/Utility/Stat";
 import LightningWallet from "@/components/LightningWallet";
-import QrCode from "@/components/Utility/QrCode.vue";
+import QrCode from "@/components/Utility/QrCode";
 import InputCopy from "@/components/Utility/InputCopy";
 import InputPassword from "@/components/InputPassword";
 import Seed from "@/components/Utility/Seed";
@@ -325,10 +330,7 @@ export default {
       channels: state => state.lightning.channels,
       unit: state => state.system.unit,
       seed: state => state.user.seed
-    }),
-    channelBackupDownloadUrl() {
-      return `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/channel-backup`;
-    }
+    })
   },
   methods: {
     showPubKey() {
@@ -351,6 +353,14 @@ export default {
     },
     showSeed() {
       this.$refs["seed-modal"].show();
+    },
+    async downloadChannelBackup() {
+      await API.download(
+        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/channel-backup`,
+        {},
+        true,
+        "my-umbrel-channels.backup"
+      );
     },
     manageChannel(channel) {
       if (channel) {
