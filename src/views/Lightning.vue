@@ -103,7 +103,7 @@
                   <h5>public key</h5>
                   <input-copy size="sm" :value="pubkey" v-if="pubkey"></input-copy>
                   <span
-                    class="loading-placeholder loading-placeholder-lg"
+                    class="loading-placeholder loading-placeholder-lg mt-1"
                     style="width: 100%;"
                     v-else
                   ></span>
@@ -113,7 +113,7 @@
                     <input-copy size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
                   </div>
                   <span
-                    class="loading-placeholder loading-placeholder-lg"
+                    class="loading-placeholder loading-placeholder-lg mt-1"
                     style="width: 100%;"
                     v-else
                   ></span>
