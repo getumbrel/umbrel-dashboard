@@ -59,16 +59,16 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" @click="showPubKey">View Public Key</b-dropdown-item>
-            <b-dropdown-item href="#" @click="showSeed">View Seed Phrase</b-dropdown-item>
-            <b-dropdown-item href="#" disabled>Check for update</b-dropdown-item>
+            <b-dropdown-item href="#" @click="showNodeInfo">Node information</b-dropdown-item>
+            <b-dropdown-item href="#" @click="showSeed">Secret words</b-dropdown-item>
+            <!-- <b-dropdown-item href="#" disabled>Check for updates</b-dropdown-item> -->
             <b-dropdown-divider />
             <b-dropdown-item variant="danger" href="#" disabled>Stop Lightning</b-dropdown-item>
           </b-dropdown>
-          <b-modal id="public-key-modal" ref="public-key-modal" centered hide-footer>
+          <b-modal id="node-info-modal" ref="node-info-modal" size="lg" centered hide-footer>
             <template v-slot:modal-header="{ close }">
               <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-                <h3>node public key</h3>
+                <h3 class="text-lowercase">{{ alias }}</h3>
                 <!-- Emulate built in modal header close button action -->
                 <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
                   <svg
@@ -88,11 +88,16 @@
                 </a>
               </div>
             </template>
-            <div class="px-2 px-sm-3 pb-2 pb-sm-3 d-flex">
-              <!-- Pubkey QR Code -->
-              <qr-code :value="this.pubkey" :size="150" class="qr-image" showLogo></qr-code>
-              <div class="w-100 align-self-center ml-3">
-                <input-copy size="sm" :value="this.pubkey"></input-copy>
+            <div class="px-2 px-sm-3 pb-2 pb-sm-3">
+              <div class="d-flex">
+                <!-- Pubkey QR Code -->
+                <qr-code :value="this.pubkey" :size="180" class="qr-image" showLogo></qr-code>
+                <div class="w-100 align-self-center ml-3 ml-sm-4">
+                  <h5>public key</h5>
+                  <input-copy size="sm" :value="this.pubkey"></input-copy>
+                  <h5 class="mt-2">connection uri</h5>
+                  <input-copy size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
+                </div>
               </div>
             </div>
           </b-modal>
@@ -326,15 +331,17 @@ export default {
       maxReceive: state => state.lightning.maxReceive,
       maxSend: state => state.lightning.maxSend,
       numPeers: state => state.lightning.numPeers,
+      alias: state => state.lightning.alias,
       pubkey: state => state.lightning.pubkey,
+      uris: state => state.lightning.uris,
       channels: state => state.lightning.channels,
       unit: state => state.system.unit,
       seed: state => state.user.seed
     })
   },
   methods: {
-    showPubKey() {
-      this.$refs["public-key-modal"].show();
+    showNodeInfo() {
+      this.$refs["node-info-modal"].show();
     },
     async fetchSeed() {
       this.isLoadingSeed = true;
