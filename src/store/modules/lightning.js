@@ -29,6 +29,9 @@ const state = () => ({
     confirmed: -1,
     pending: -1
   },
+  alias: "",
+  pubkey: "",
+  uris: [],
   numPendingChannels: 0,
   numActiveChannels: -1,
   numPeers: -1,
@@ -49,8 +52,7 @@ const state = () => ({
   ],
   confirmedTransactions: [],
   pendingTransactions: [],
-  pendingChannelEdit: {},
-  pubkey: ""
+  pendingChannelEdit: {}
 });
 
 // Functions to update the state directly
@@ -127,6 +129,14 @@ const mutations = {
 
   setPubKey(state, pubkey) {
     state.pubkey = pubkey;
+  },
+
+  setAlias(state, alias) {
+    state.alias = alias;
+  },
+
+  setUris(state, uris) {
+    state.uris = uris;
   }
 };
 
@@ -173,6 +183,8 @@ const actions = {
 
       const lightningInfo = data.lightningInfo;
 
+      commit("setAlias", lightningInfo.alias);
+      commit("setUris", lightningInfo.uris);
       commit("setPubKey", lightningInfo.identityPubkey);
       commit("setVersion", lightningInfo.version);
       commit("setNumPeers", lightningInfo.numPeers);
