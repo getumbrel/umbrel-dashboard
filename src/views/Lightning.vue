@@ -311,6 +311,7 @@
             </b-modal>
 
             <channel-list v-on:selectchannel="manageChannel"></channel-list>
+            <a class="twitter-share-button" :href="tweetLink" target="_blank">Tweet</a>
           </div>
         </card-widget>
       </b-col>
@@ -357,7 +358,17 @@ export default {
       channels: state => state.lightning.channels,
       unit: state => state.system.unit,
       seed: state => state.user.seed
-    })
+    }),
+    tweetLink() {
+      const uri = this.uris[0];
+      // const uri =
+      // "03e8fc0e8435fbae69764cdd83f412b6bb9b8451f6f2fa1c5a9d1084f372c5f1a6@5xysszsgcth7ytej45e33zqrganqkn5j6uk4zr6pxclpwjsr74bndcad.onion:9735";
+      const tweet = `Requesting my free inbound lightning payment channel from @getumbrel on my ☂️ Umbrel Node.
+
+      ${uri}`;
+      const encodedTweet = encodeURIComponent(tweet);
+      return `https://twitter.com/intent/tweet?text=${encodedTweet}`;
+    }
   },
   methods: {
     showNodeInfo() {
