@@ -68,7 +68,14 @@
           <b-modal id="node-info-modal" ref="node-info-modal" size="lg" centered hide-footer>
             <template v-slot:modal-header="{ close }">
               <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-                <h3 class="text-lowercase">{{ alias }}</h3>
+                <h3 class="text-lowercase">
+                  <span v-if="alias">{{ alias }}</span>
+                  <span
+                    class="loading-placeholder loading-placeholder-lg"
+                    style="width: 240px;"
+                    v-else
+                  ></span>
+                </h3>
                 <!-- Emulate built in modal header close button action -->
                 <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
                   <svg
@@ -91,12 +98,26 @@
             <div class="px-2 px-sm-3 pb-2 pb-sm-3">
               <div class="d-flex">
                 <!-- Pubkey QR Code -->
-                <qr-code :value="this.pubkey" :size="180" class="qr-image" showLogo></qr-code>
+                <qr-code :value="pubkey" :size="180" class="qr-image" showLogo></qr-code>
                 <div class="w-100 align-self-center ml-3 ml-sm-4">
                   <h5>public key</h5>
-                  <input-copy size="sm" :value="this.pubkey"></input-copy>
-                  <h5 class="mt-2">connection uri</h5>
-                  <input-copy size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
+                  <input-copy size="sm" :value="pubkey" v-if="pubkey"></input-copy>
+                  <span
+                    class="loading-placeholder loading-placeholder-lg"
+                    style="width: 100%;"
+                    v-else
+                  ></span>
+
+                  <div v-if="uris.length">
+                    <h5 class="mt-2">connection uri</h5>
+                    <input-copy size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
+                  </div>
+                  <!-- Hide loading placeholder on regtest because there is no url -->
+                  <span
+                    class="loading-placeholder loading-placeholder-lg"
+                    style="width: 100%;"
+                    v-else-if="chain !== 'regtest'"
+                  ></span>
                 </div>
               </div>
             </div>
@@ -326,6 +347,7 @@ export default {
   },
   computed: {
     ...mapState({
+      chain: state => state.bitcoin.chain,
       lndVersion: state => state.lightning.version,
       numActiveChannels: state => state.lightning.numActiveChannels,
       maxReceive: state => state.lightning.maxReceive,
