@@ -108,15 +108,14 @@
                     v-else
                   ></span>
 
+                  <h5 class="mt-2">connection uri</h5>
                   <div v-if="uris.length">
-                    <h5 class="mt-2">connection uri</h5>
                     <input-copy size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
                   </div>
-                  <!-- Hide loading placeholder on regtest because there is no url -->
                   <span
                     class="loading-placeholder loading-placeholder-lg"
                     style="width: 100%;"
-                    v-else-if="chain !== 'regtest'"
+                    v-else
                   ></span>
                 </div>
               </div>
@@ -347,7 +346,6 @@ export default {
   },
   computed: {
     ...mapState({
-      chain: state => state.bitcoin.chain,
       lndVersion: state => state.lightning.version,
       numActiveChannels: state => state.lightning.numActiveChannels,
       maxReceive: state => state.lightning.maxReceive,
