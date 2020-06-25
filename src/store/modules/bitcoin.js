@@ -104,7 +104,10 @@ const mutations = {
   },
 
   setBlocks(state, blocks) {
-    state.blocks = blocks;
+    const mergedBlocks = [...blocks, ...state.blocks];
+    // remove duplicate blocks
+    const uniqueBlocks = mergedBlocks.filter((v, i, a) => a.findIndex(t => (t.height === v.height)) === i);
+    state.blocks = uniqueBlocks;
   },
 
   setVersion(state, version) {
@@ -233,15 +236,16 @@ const actions = {
     if (state.operational) {
       await dispatch("getSync");
 
-      //cache block height array of latest 3 blocks for loading view
+      // Cache block height array of latest 3 blocks for loading view
       const currentBlock = state.currentBlock;
 
-      //dont fetch blocks if no new block has been found
+      // Don't fetch blocks if no new block has been found
       if (state.blocks.length && currentBlock === state.blocks[0]["height"]) {
         return;
       }
 
-      //dont fetch blocks if < 3 blocks
+      // Don't fetch blocks if < 3 blocks primarily because we don't have a UI
+      // ready for a blockchain with < 3 blocks 
       if (currentBlock < 3) {
         return;
       }
@@ -249,7 +253,7 @@ const actions = {
       //TODO: Fetch only new blocks
       const latestThreeBlocks = await API.get(
         `${
-          process.env.VUE_APP_MIDDLEWARE_API_URL
+        process.env.VUE_APP_MIDDLEWARE_API_URL
         }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
       );
 
@@ -257,7 +261,7 @@ const actions = {
         return;
       }
 
-      // update blocks
+      // Update blocks
       commit("setBlocks", latestThreeBlocks.blocks);
     }
   },
@@ -429,8 +433,8 @@ const getters = {
         });
       });
 
-      //sort txs by date
-      txs.sort(function(tx1, tx2) {
+      // Sort txs by date
+      txs.sort(function (tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
     }
