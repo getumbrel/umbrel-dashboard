@@ -46,19 +46,14 @@
         <input-copy v-if="currentStep === 6" class="w-100" size="sm" :value="onionAddress"></input-copy>
 
         <div v-show="currentStep === 7">
-          <b-form-checkbox
-            id="terms"
-            v-model="terms"
-            name="terms"
-            value="accepted"
-            unchecked-value="not_accepted"
-          >
-            <span class="text-muted">
-              I agree to the
-              <a href="https://getumbrel.com/tos">terms of service</a> and
-              <a href="https://getumbrel.com/privacy">privacy policy</a>
-            </span>
-          </b-form-checkbox>
+          <b-alert class="text-center" variant="light" show>
+            <small>
+              By clicking next, you agree that we're not responsible for any lost funds while using your Umbrel.
+              Lightning Network and Umbrel are both experimental technology. We have taken strong measures to protect
+              your funds by securing your Umbrel, but we cannot mitigate all risks since Lightning wallets are hot wallets
+              which are meant to be online.
+            </small>
+          </b-alert>
         </div>
 
         <!-- <p class="text-danger text-left align-self-start mt-1">
@@ -153,8 +148,7 @@ export default {
         },
         {
           heading: "one last thing",
-          text:
-            "Since the Lightning Network and Umbrel are under heavy development, it's recommended that you only store funds here that you're willing to lose. In other words, don't be too #reckless."
+          text: "Don't be too #reckless."
         },
         {
           heading: "🎉 that's it!",
@@ -165,8 +159,7 @@ export default {
       notedSeed: false,
       isRegistering: false,
       recover: false,
-      recoverySeed: [],
-      terms: "not_accepted"
+      recoverySeed: []
     };
   },
   computed: {
@@ -220,10 +213,6 @@ export default {
 
       if (this.currentStep === 5) {
         return this.notedSeed;
-      }
-
-      if (this.currentStep === 7) {
-        return this.terms === "accepted";
       }
 
       if (this.currentStep === 8) {
