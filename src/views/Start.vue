@@ -1,15 +1,11 @@
 <template>
   <div>
-    <div
-      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
-    >
+    <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">{{ heading }}</h1>
       <p class="text-muted w-75 text-center">{{ text }}</p>
 
-      <div
-        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
-      >
+      <div class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center">
         <b-form-input
           v-model="name"
           ref="name"
@@ -47,6 +43,20 @@
           <b-spinner v-show="!seed.length || isRegistering"></b-spinner>
         </div>
 
+        <div v-show="currentStep === 6">
+          <b-form-checkbox
+            id="terms"
+            v-model="terms"
+            name="terms"
+            value="accepted"
+            unchecked-value="not_accepted"
+          >
+            I agree to the
+            <a href="https://getumbrel.com/tos">terms of service</a> and
+            <a href="https://getumbrel.com/privacy">privacy policy</a>
+          </b-form-checkbox>
+        </div>
+
         <!-- <p class="text-danger text-left align-self-start mt-1">
           <small>{{ errorMessage }}</small>
         </p>-->
@@ -57,8 +67,7 @@
           @click="nextStep"
           :disabled="!isStepValid || isRegistering"
           class="mt-3 mx-auto d-block px-4"
-          >{{ nextButtonText }}</b-button
-        >
+        >{{ nextButtonText }}</b-button>
         <b-button
           variant="link"
           size="sm"
@@ -66,30 +75,23 @@
           v-if="currentStep === 4 || (currentStep === 5 && !recover)"
           @click="skipSeed"
           :disabled="isRegistering"
-          >Note Down Later</b-button
-        >
+        >Note Down Later</b-button>
         <b-button
           variant="link"
           size="sm"
           @click="recoverFromSeed"
           v-if="currentStep === 4"
           class="mt-2 mx-auto d-block"
-          >Recover</b-button
-        >
+        >Recover</b-button>
         <b-button
           variant="link"
           size="sm"
           @click="prevStep"
-          v-if="currentStep > 0 && currentStep !== 6"
+          v-if="currentStep > 0 && currentStep !== 7"
           class="mt-2 mx-auto d-block text-dark"
-          >Back</b-button
-        >
+        >Back</b-button>
       </div>
-      <b-progress
-        :value="progress"
-        height="1rem"
-        class="onboarding-progress"
-      ></b-progress>
+      <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
     </div>
   </div>
 </template>
@@ -142,7 +144,12 @@ export default {
             'Remember, there is no "forget password" button. You will need these 24 words to recover your Umbrel node.'
         },
         {
-          heading: "that's it!",
+          heading: "one last thing",
+          text:
+            "Since the Lightning Network and Umbrel are under heavy development, we recommend that you only store funds here that you're willing to lose. In other words, don't be too #reckless."
+        },
+        {
+          heading: "🎉 that's it!",
           text:
             "Congratulations! Your Umbrel is now running and synchronizing the Bitcoin blockchain."
         }
@@ -150,7 +157,8 @@ export default {
       notedSeed: false,
       isRegistering: false,
       recover: false,
-      recoverySeed: []
+      recoverySeed: [],
+      terms: "not_accepted"
     };
   },
   computed: {
@@ -175,7 +183,7 @@ export default {
       if (this.currentStep === 0) {
         return "Start";
       }
-      if (this.currentStep === 6) {
+      if (this.currentStep === 7) {
         return "Go to dashboard";
       }
       return "Next";
@@ -209,6 +217,10 @@ export default {
       }
 
       if (this.currentStep === 6) {
+        return this.terms === "accepted";
+      }
+
+      if (this.currentStep === 7) {
         return this.unlocked;
       }
 
@@ -265,6 +277,10 @@ export default {
           return;
         }
 
+        this.isRegistering = false;
+      }
+
+      if (this.currentStep === 6) {
         //Wohoo! Time to celebrate!
         this.$confetti.start({
           particles: [
@@ -285,11 +301,9 @@ export default {
         window.setTimeout(() => {
           this.$confetti.stop();
         }, 3000);
-
-        this.isRegistering = false;
       }
 
-      if (this.currentStep === 6) {
+      if (this.currentStep === 7) {
         return this.$router.push("/dashboard");
       }
 
