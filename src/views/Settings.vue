@@ -28,12 +28,15 @@
               </div>
               <toggle-switch class="align-self-center"></toggle-switch>
             </div>
-            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
-              <div>
-                <span class="d-block">Remote Access</span>
-                <small class="d-block" style="opacity: 0.4">Remotely access your Umbrel on Tor</small>
+            <div class="px-3 px-lg-4 mb-4">
+              <div class="d-flex justify-content-between w-100 mb-3">
+                <div>
+                  <span class="d-block">Remote Access</span>
+                  <small class="d-block" style="opacity: 0.4">Remotely access your Umbrel on Tor</small>
+                </div>
+                <toggle-switch class="align-self-center"></toggle-switch>
               </div>
-              <toggle-switch class="align-self-center"></toggle-switch>
+              <input-copy class="w-100" size="sm" :value="onionAddress"></input-copy>
             </div>
             <div class="px-3 px-lg-4 py-2"></div>
           </div>
@@ -94,11 +97,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
-import InputPassword from "@/components/InputPassword";
+import InputPassword from "@/components/Utility/InputPassword";
+import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   data() {
@@ -111,6 +116,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      onionAddress: state => state.system.onionAddress
+    }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
         return false;
@@ -127,7 +135,9 @@ export default {
       return true;
     }
   },
-  created() {},
+  created() {
+    this.$store.dispatch("system/getOnionAddress");
+  },
   methods: {
     async changePassword() {
       // disable on testnet
@@ -198,7 +208,8 @@ export default {
   components: {
     CardWidget,
     ToggleSwitch,
-    InputPassword
+    InputPassword,
+    InputCopy
   }
 };
 </script>
