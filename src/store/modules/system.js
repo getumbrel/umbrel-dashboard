@@ -12,7 +12,7 @@ const state = () => ({
     operational: false,
     version: ""
   },
-  onionAddress: "dj28fc0e8435fbae69764cdd83f412b6bb9b8451f6f2fa1c5a9d1084f372c5f1a6.onion"
+  onionAddress: ""
 });
 
 // Functions to update the state directly
@@ -28,12 +28,15 @@ const mutations = {
   },
   setLoading(state, loading) {
     state.loading = loading;
+  },
+  setOnionAddress(state, address) {
+    state.onionAddress = address;
   }
 };
 
 // Functions to get data from the API
 const actions = {
-  async fetchUnit({ commit }) {
+  async getUnit({ commit }) {
     if (window.localStorage && window.localStorage.getItem("unit")) {
       commit("setUnit", window.localStorage.getItem("unit"));
     }
@@ -57,6 +60,10 @@ const actions = {
       operational: !!(api && api.version),
       version: api && api.version ? api.version : ""
     });
+  },
+  async getOnionAddress({ commit }) {
+    const address = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/dashboard-hidden-service`);
+    commit("setOnionAddress", address);
   }
 };
 

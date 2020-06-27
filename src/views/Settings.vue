@@ -135,7 +135,9 @@ export default {
       return true;
     }
   },
-  created() {},
+  created() {
+    this.$store.dispatch("system/getOnionAddress");
+  },
   methods: {
     async changePassword() {
       // disable on testnet

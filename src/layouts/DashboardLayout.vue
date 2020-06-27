@@ -114,7 +114,7 @@ export default {
       this.$store.dispatch("user/logout");
     },
     fetchData() {
-      this.$store.dispatch("system/fetchUnit");
+      this.$store.dispatch("system/getUnit");
       this.$store.dispatch("bitcoin/getSync");
       this.$store.dispatch("bitcoin/getBalance");
       this.$store.dispatch("bitcoin/getTransactions");

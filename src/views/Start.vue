@@ -284,6 +284,9 @@ export default {
         }
 
         this.isRegistering = false;
+
+        // fetch onion address for the next step
+        this.$store.dispatch("system/getOnionAddress");
       }
 
       if (this.currentStep === 7) {
