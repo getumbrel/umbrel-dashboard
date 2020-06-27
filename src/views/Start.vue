@@ -43,7 +43,7 @@
           <b-spinner v-show="!seed.length || isRegistering"></b-spinner>
         </div>
 
-        <input-copy v-if="currentStep === 6" class="w-100" size="sm" :value="onion"></input-copy>
+        <input-copy v-if="currentStep === 6" class="w-100" size="sm" :value="onionAddress"></input-copy>
 
         <div v-show="currentStep === 7">
           <b-form-checkbox
@@ -53,9 +53,11 @@
             value="accepted"
             unchecked-value="not_accepted"
           >
-            I agree to the
-            <a href="https://getumbrel.com/tos">terms of service</a> and
-            <a href="https://getumbrel.com/privacy">privacy policy</a>
+            <span class="text-muted">
+              I agree to the
+              <a href="https://getumbrel.com/tos">terms of service</a> and
+              <a href="https://getumbrel.com/privacy">privacy policy</a>
+            </span>
           </b-form-checkbox>
         </div>
 
@@ -89,7 +91,7 @@
           variant="link"
           size="sm"
           @click="prevStep"
-          v-if="currentStep > 0 && currentStep !== 8"
+          v-if="currentStep > 0 && currentStep !== 6 && currentStep !== 8"
           class="mt-2 mx-auto d-block text-dark"
         >Back</b-button>
       </div>
@@ -147,7 +149,7 @@ export default {
         {
           heading: "access from anywhere",
           text:
-            "Even when you're not on your home network, you can access your Umbrel using Tor browser on the following URL."
+            "Even when you're not on your home network, you can access your Umbrel using Tor browser on the following URL"
         },
         {
           heading: "one last thing",
@@ -164,8 +166,6 @@ export default {
       isRegistering: false,
       recover: false,
       recoverySeed: [],
-      onion:
-        "dj28fc0e8435fbae69764cdd83f412b6bb9b8451f6f2fa1c5a9d1084f372c5f1a6.onion",
       terms: "not_accepted"
     };
   },
@@ -173,7 +173,8 @@ export default {
     ...mapState({
       registered: state => state.user.registered,
       seed: state => state.user.seed,
-      unlocked: state => state.lightning.unlocked
+      unlocked: state => state.lightning.unlocked,
+      onionAddress: state => state.system.onionAddress
     }),
     heading() {
       if (this.currentStep === 5 && this.recover) {

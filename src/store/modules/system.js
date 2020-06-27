@@ -11,7 +11,8 @@ const state = () => ({
   managerApi: {
     operational: false,
     version: ""
-  }
+  },
+  onionAddress: "dj28fc0e8435fbae69764cdd83f412b6bb9b8451f6f2fa1c5a9d1084f372c5f1a6.onion"
 });
 
 // Functions to update the state directly
