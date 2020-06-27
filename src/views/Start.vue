@@ -43,7 +43,9 @@
           <b-spinner v-show="!seed.length || isRegistering"></b-spinner>
         </div>
 
-        <div v-show="currentStep === 6">
+        <input-copy v-if="currentStep === 6" class="w-100" size="sm" :value="onion"></input-copy>
+
+        <div v-show="currentStep === 7">
           <b-form-checkbox
             id="terms"
             v-model="terms"
@@ -87,7 +89,7 @@
           variant="link"
           size="sm"
           @click="prevStep"
-          v-if="currentStep > 0 && currentStep !== 7"
+          v-if="currentStep > 0 && currentStep !== 8"
           class="mt-2 mx-auto d-block text-dark"
         >Back</b-button>
       </div>
@@ -101,8 +103,9 @@ import Vue from "vue";
 import VueConfetti from "vue-confetti";
 import { mapState } from "vuex";
 
-import InputPassword from "@/components/InputPassword";
+import InputPassword from "@/components/Utility/InputPassword";
 import Seed from "@/components/Utility/Seed";
+import InputCopy from "@/components/Utility/InputCopy";
 
 Vue.use(VueConfetti);
 
@@ -125,18 +128,16 @@ export default {
         },
         {
           heading: "set your password",
-          text:
-            "You'll need this password to securely access your Umbrel from anywhere."
+          text: "You'll need this password to login to your Umbrel."
         },
         {
           heading: "confirm your password",
-          text:
-            "You'll need this password to securely access your Umbrel from anywhere."
+          text: "You'll need this password to login to your Umbrel."
         },
         {
           heading: "note down your secret words",
           text:
-            "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it a safe place."
+            "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place."
         },
         {
           heading: "note down your secret words",
@@ -144,20 +145,27 @@ export default {
             'Remember, there is no "forget password" button. You will need these 24 words to recover your Umbrel node.'
         },
         {
+          heading: "access from anywhere",
+          text:
+            "Even when you're not on your home network, you can access your Umbrel using Tor browser on the following URL."
+        },
+        {
           heading: "one last thing",
           text:
-            "Since the Lightning Network and Umbrel are under heavy development, we recommend that you only store funds here that you're willing to lose. In other words, don't be too #reckless."
+            "Since the Lightning Network and Umbrel are under heavy development, it's recommended that you only store funds here that you're willing to lose. In other words, don't be too #reckless."
         },
         {
           heading: "🎉 that's it!",
           text:
-            "Congratulations! Your Umbrel is now running and synchronizing the Bitcoin blockchain."
+            "Congratulations! Your Umbrel is now set up and synchronizing the Bitcoin blockchain."
         }
       ],
       notedSeed: false,
       isRegistering: false,
       recover: false,
       recoverySeed: [],
+      onion:
+        "dj28fc0e8435fbae69764cdd83f412b6bb9b8451f6f2fa1c5a9d1084f372c5f1a6.onion",
       terms: "not_accepted"
     };
   },
@@ -169,13 +177,13 @@ export default {
     }),
     heading() {
       if (this.currentStep === 5 && this.recover) {
-        return "recover your node";
+        return "recover your umbrel";
       }
       return this.steps[this.currentStep]["heading"];
     },
     text() {
       if (this.currentStep === 5 && this.recover) {
-        return "Enter your 24 secret words in the exact order to recover your Umbrel node.";
+        return "Enter your 24 secret words in the exact order to recover your Umbrel.";
       }
       return this.steps[this.currentStep]["text"];
     },
@@ -183,7 +191,7 @@ export default {
       if (this.currentStep === 0) {
         return "Start";
       }
-      if (this.currentStep === 7) {
+      if (this.currentStep === 8) {
         return "Go to dashboard";
       }
       return "Next";
@@ -200,9 +208,6 @@ export default {
       }
 
       if (this.currentStep === 2) {
-        // if (this.password.length < 6) {
-        //   return false;
-        // }
         return this.password.length > 11;
       }
 
@@ -216,11 +221,11 @@ export default {
         return this.notedSeed;
       }
 
-      if (this.currentStep === 6) {
+      if (this.currentStep === 7) {
         return this.terms === "accepted";
       }
 
-      if (this.currentStep === 7) {
+      if (this.currentStep === 8) {
         return this.unlocked;
       }
 
@@ -280,7 +285,7 @@ export default {
         this.isRegistering = false;
       }
 
-      if (this.currentStep === 6) {
+      if (this.currentStep === 7) {
         //Wohoo! Time to celebrate!
         this.$confetti.start({
           particles: [
@@ -303,7 +308,7 @@ export default {
         }, 3000);
       }
 
-      if (this.currentStep === 7) {
+      if (this.currentStep === 8) {
         return this.$router.push("/dashboard");
       }
 
@@ -333,7 +338,8 @@ export default {
   },
   components: {
     InputPassword,
-    Seed
+    Seed,
+    InputCopy
   }
 };
 </script>

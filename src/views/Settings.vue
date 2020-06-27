@@ -98,7 +98,7 @@ import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
-import InputPassword from "@/components/InputPassword";
+import InputPassword from "@/components/Utility/InputPassword";
 
 export default {
   data() {

@@ -328,7 +328,7 @@ import Stat from "@/components/Utility/Stat";
 import LightningWallet from "@/components/LightningWallet";
 import QrCode from "@/components/Utility/QrCode";
 import InputCopy from "@/components/Utility/InputCopy";
-import InputPassword from "@/components/InputPassword";
+import InputPassword from "@/components/Utility/InputPassword";
 import Seed from "@/components/Utility/Seed";
 import ChannelList from "@/components/Channels/List";
 import ChannelOpen from "@/components/Channels/Open";
