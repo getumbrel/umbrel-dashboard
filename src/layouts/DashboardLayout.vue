@@ -69,6 +69,24 @@
 
       <b-col col lg="9" xl="10">
         <div class="pr-xl-2">
+          <b-alert
+            class="mt-4 mb-0"
+            variant="primary"
+            :show="!!availableUpdate.version"
+            dismissible
+          >
+            Umbrel v{{ availableUpdate.version }} is now available to install
+            <a
+              href="#"
+              class="alert-link"
+              @click.prevent="startUpdate"
+            >Install now</a>
+            <a
+              :href="`https://github.com/getumbrel/umbrel-compose/releases/tag/v${availableUpdate.version}`"
+              target="_blank"
+              class="alert-link"
+            >Read more</a>
+          </b-alert>
           <transition name="change-page" mode="out-in">
             <!-- Content -->
             <router-view></router-view>
@@ -90,6 +108,7 @@
 
 <script>
 import { mapState } from "vuex";
+import API from "@/helpers/api";
 import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar";
 
 export default {
@@ -99,7 +118,8 @@ export default {
   computed: {
     ...mapState({
       name: state => state.user.name,
-      chain: state => state.bitcoin.chain
+      chain: state => state.bitcoin.chain,
+      availableUpdate: state => state.system.availableUpdate
     }),
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
@@ -122,9 +142,22 @@ export default {
       this.$store.dispatch("lightning/getTransactions");
       this.$store.dispatch("lightning/getChannels");
       this.$store.dispatch("bitcoin/getPrice");
+      this.$store.dispatch("system/getAvailableUpdate");
     },
     toggleMobileMenu() {
       this.$store.commit("toggleMobileMenu");
+    },
+    async startUpdate() {
+      try {
+        const res = await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
+          {}
+        );
+        console.log(res);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
   created() {
