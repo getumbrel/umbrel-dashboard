@@ -154,7 +154,7 @@ export default {
     },
     async startUpdate() {
       try {
-        const res = await API.post(
+        await API.post(
           `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
           {}
         );
