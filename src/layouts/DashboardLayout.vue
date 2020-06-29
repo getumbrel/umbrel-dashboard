@@ -71,21 +71,23 @@
         <div class="pr-xl-2">
           <b-alert
             class="mt-4 mb-0"
-            variant="primary"
+            variant="success"
             :show="!!availableUpdate.version"
             dismissible
           >
-            Umbrel v{{ availableUpdate.version }} is now available to install
-            <a
-              href="#"
-              class="alert-link"
-              @click.prevent="startUpdate"
-            >Install now</a>
             <a
               :href="`https://github.com/getumbrel/umbrel-compose/releases/tag/v${availableUpdate.version}`"
               target="_blank"
               class="alert-link"
-            >Read more</a>
+            >🎉 Umbrel v{{ availableUpdate.version }}</a>
+            &nbsp;is now available to install
+            <a
+              href="#"
+              class="alert-link float-right"
+              @click.prevent="startUpdate"
+              v-show="!isUpdating"
+            >Install now</a>
+            <b-spinner v-show="isUpdating" variant="success" small class="float-right mt-1"></b-spinner>
           </b-alert>
           <transition name="change-page" mode="out-in">
             <!-- Content -->
@@ -113,13 +115,16 @@ import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavba
 
 export default {
   data() {
-    return {};
+    return {
+      isUpdating: false
+    };
   },
   computed: {
     ...mapState({
       name: state => state.user.name,
       chain: state => state.bitcoin.chain,
-      availableUpdate: state => state.system.availableUpdate
+      availableUpdate: state => state.system.availableUpdate,
+      updateStatus: state => state.system.updateStatus
     }),
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
@@ -153,10 +158,23 @@ export default {
           `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
           {}
         );
-        console.log(res);
-        console.log(res.data);
+        this.isUpdating = true;
+        // poll update status every 2s until the update process begins
+        // because after it's updated, the loading view will take over
+        this.pollUpdateStatus = window.setInterval(async () => {
+          await this.$store.dispatch("system/getUpdateStatus");
+          if (this.updateStatus.state === "installing") {
+            window.clearInterval(this.pollUpdateStatus);
+          }
+        }, 2 * 1000);
       } catch (error) {
-        console.log(error);
+        this.$bvToast.toast(`Unable to start the update process`, {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
       }
     }
   },
@@ -170,6 +188,9 @@ export default {
   },
   beforeDestroy() {
     window.clearInterval(this.interval);
+    if (this.pollUpdateStatus) {
+      window.clearInterval(this.pollUpdateStatus);
+    }
   },
   watch: {},
   components: {

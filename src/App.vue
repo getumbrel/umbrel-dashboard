@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <transition name="loading" mode>
-      <loading v-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
+      <loading
+        v-if="updating"
+        :text="`${updateStatus.description}...`"
+        :progress="updateStatus.progress"
+      ></loading>
+      <loading v-else-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
     </transition>
@@ -32,8 +37,12 @@ export default {
       isApiOperational: state => state.system.api.operational,
       isBitcoinOperational: state => state.bitcoin.operational,
       isLndOperational: state => state.lightning.operational,
-      jwt: state => state.user.jwt
-    })
+      jwt: state => state.user.jwt,
+      updateStatus: state => state.system.updateStatus
+    }),
+    updating() {
+      return this.updateStatus.state === "installing";
+    }
   },
   methods: {
     //TODO: move this to the specific layout that needs this 100vh fix
@@ -44,8 +53,8 @@ export default {
       );
     },
     async getLoadingStatus() {
-      // Skip if previous poll in progress
-      if (this.loadingPollInProgress) {
+      // Skip if previous poll in progress or if system is updating
+      if (this.loadingPollInProgress || this.updating) {
         return;
       }
 
@@ -119,12 +128,11 @@ export default {
     }
   },
   created() {
-    //first check if loading...
+    //check if system is updating
+    this.$store.dispatch("system/getUpdateStatus");
 
-    //if not, check auth
-
-    this.updateViewPortHeightCSS();
     //for 100vh consistency
+    this.updateViewPortHeightCSS();
     window.addEventListener("resize", this.updateViewPortHeightCSS);
   },
   watch: {
@@ -146,11 +154,29 @@ export default {
         }
       },
       immediate: true
+    },
+    updating: {
+      handler: function(isUpdating) {
+        window.clearInterval(this.updateStatusInterval);
+        // if updating, check loading status every two seconds
+        if (isUpdating) {
+          this.updateStatusInterval = window.setInterval(() => {
+            this.$store.dispatch("system/getUpdateStatus");
+          }, 2 * 1000);
+        } else {
+          //else check every minute
+          this.updateStatusInterval = window.setInterval(() => {
+            this.$store.dispatch("system/getUpdateStatus");
+          }, 60 * 1000);
+        }
+      },
+      immediate: true
     }
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.updateViewPortHeightCSS);
     window.clearInterval(this.loadingInterval);
+    window.clearInterval(this.updateStatusInterval);
   },
   components: {
     Loading

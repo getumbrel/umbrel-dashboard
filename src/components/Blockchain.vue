@@ -151,7 +151,7 @@ export default {
         this.polling = window.setInterval(this.fetchBlocks, 1000);
       } else {
         //else, slow down and fetch blocks every minute
-        this.polling = window.setInterval(this.fetchBlocks, 1000);
+        this.polling = window.setInterval(this.fetchBlocks, 60 * 1000);
       }
     },
     blockTime(timestamp) {

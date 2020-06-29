@@ -13,7 +13,6 @@ const state = () => ({
     progress: 0, //progress of update installation
     description: ""
   },
-  loading: true,
   unit: "sats", //sats or btc
   api: {
     operational: false,
@@ -39,9 +38,6 @@ const mutations = {
   },
   setManagerApi(state, api) {
     state.managerApi = api;
-  },
-  setLoading(state, loading) {
-    state.loading = loading;
   },
   setOnionAddress(state, address) {
     state.onionAddress = address;
@@ -100,7 +96,7 @@ const actions = {
   async getUpdateStatus({ commit }) {
     const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`);
     commit("setUpdateStatus", status);
-  }
+  },
 };
 
 const getters = {};
