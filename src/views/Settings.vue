@@ -148,6 +148,7 @@ export default {
   },
   created() {
     this.$store.dispatch("system/getOnionAddress");
+    this.$store.dispatch("system/getVersion");
   },
   methods: {
     async changePassword() {
