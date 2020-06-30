@@ -52,6 +52,12 @@ const mutations = {
 
 // Functions to get data from the API
 const actions = {
+  async getVersion({ commit }) {
+    const data = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/info`);
+    if (data && data.version) {
+      commit("setVersion", data.version);
+    }
+  },
   async getUnit({ commit }) {
     if (window.localStorage && window.localStorage.getItem("unit")) {
       commit("setUnit", window.localStorage.getItem("unit"));

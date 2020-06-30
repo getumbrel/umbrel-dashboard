@@ -92,6 +92,16 @@
           >{{ isChangingPassword ? 'Changing password...' : 'Change password'}}</b-button>
         </card-widget>
       </b-col>
+      <b-col col cols="12" md="6" xl="4">
+        <card-widget header="System" :loading="isChangingPassword">
+          <div class="px-4 pb-4">
+            <div class="w-100 d-flex justify-content-between mb-2">
+              <span class="align-self-end">Umbrel Version</span>
+              <span class="font-weight-normal mb-0">{{ version }}</span>
+            </div>
+          </div>
+        </card-widget>
+      </b-col>
     </b-row>
   </div>
 </template>
@@ -117,6 +127,7 @@ export default {
   },
   computed: {
     ...mapState({
+      version: state => state.system.version,
       onionAddress: state => state.system.onionAddress
     }),
     isAllowedToChangePassword() {
