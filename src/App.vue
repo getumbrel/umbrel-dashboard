@@ -174,7 +174,7 @@ export default {
             if (this.updateStatus.state === "success") {
               this.$bvToast.toast(this.updateStatus.description, {
                 title: "Update successful",
-                autoHideDelay: 3000,
+                autoHideDelay: 2000,
                 variant: "success",
                 solid: true,
                 toaster: "b-toaster-bottom-right"
@@ -182,12 +182,17 @@ export default {
             } else if (this.updateStatus.state === "failed") {
               this.$bvToast.toast(this.updateStatus.description, {
                 title: "Update failed",
-                autoHideDelay: 3000,
+                autoHideDelay: 2000,
                 variant: "danger",
                 solid: true,
                 toaster: "b-toaster-bottom-right"
               });
             }
+
+            //refresh window to fetch latest code of dashboard
+            window.setTimeout(() => {
+              window.location.reload(true);
+            }, 2000);
           }
         }
       },
