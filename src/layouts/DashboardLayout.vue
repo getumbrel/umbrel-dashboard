@@ -75,11 +75,12 @@
             :show="!!availableUpdate.version"
             dismissible
           >
+            <b-icon icon="bell-fill" class="mr-2"></b-icon>
             <a
               :href="`https://github.com/getumbrel/umbrel-compose/releases/tag/v${availableUpdate.version}`"
               target="_blank"
               class="alert-link"
-            >🎉 Umbrel v{{ availableUpdate.version }}</a>
+            >Umbrel v{{ availableUpdate.version }}</a>
             &nbsp;is now available to install
             <a
               href="#"
