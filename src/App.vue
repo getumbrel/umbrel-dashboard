@@ -156,7 +156,7 @@ export default {
       immediate: true
     },
     updating: {
-      handler: function(isUpdating) {
+      handler: function(isUpdating, wasUpdating) {
         window.clearInterval(this.updateStatusInterval);
         // if updating, check loading status every two seconds
         if (isUpdating) {
@@ -168,6 +168,27 @@ export default {
           this.updateStatusInterval = window.setInterval(() => {
             this.$store.dispatch("system/getUpdateStatus");
           }, 60 * 1000);
+
+          // if it just finished updating, then show success/failure toast
+          if (wasUpdating) {
+            if (this.updateStatus.state === "success") {
+              this.$bvToast.toast(this.updateStatus.description, {
+                title: "Update successful",
+                autoHideDelay: 3000,
+                variant: "success",
+                solid: true,
+                toaster: "b-toaster-bottom-right"
+              });
+            } else if (this.updateStatus.state === "failed") {
+              this.$bvToast.toast(this.updateStatus.description, {
+                title: "Update failed",
+                autoHideDelay: 3000,
+                variant: "danger",
+                solid: true,
+                toaster: "b-toaster-bottom-right"
+              });
+            }
+          }
         }
       },
       immediate: true
