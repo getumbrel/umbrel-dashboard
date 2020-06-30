@@ -95,7 +95,9 @@ const actions = {
   },
   async getUpdateStatus({ commit }) {
     const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`);
-    commit("setUpdateStatus", status);
+    if (status && status.progress) {
+      commit("setUpdateStatus", status);
+    }
   },
 };
 
