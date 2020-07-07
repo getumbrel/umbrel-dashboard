@@ -1,5 +1,7 @@
 FROM node:12.16.3-buster-slim AS umbrel-dashboard-builder
 
+ARG STAGING_DEPLOYMENT=false
+
 # make the 'app' folder the current working directory
 WORKDIR /app
 
@@ -14,9 +16,6 @@ RUN yarn
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
-
-# Set staging env variable if building for testnet.getumbrel.com
-# ENV STAGING_DEPLOYMENT=true
 
 # build app for production
 RUN yarn build
