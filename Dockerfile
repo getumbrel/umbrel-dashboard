@@ -1,7 +1,6 @@
-FROM node:12.16.3-alpine
+FROM node:12.16.3-buster-slim AS umbrel-dashboard-builder
 
-# install simple http server for serving static content
-RUN yarn global add http-server
+ARG STAGING_DEPLOYMENT=false
 
 # make the 'app' folder the current working directory
 WORKDIR /app
@@ -18,14 +17,17 @@ RUN yarn
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
-# Set staging env variable if building for testnet.getumbrel.com
-# ENV STAGING_DEPLOYMENT=true
-
 # build app for production
 RUN yarn build
 
 # copy index.html to 404.html as http-server serves 404.html on all non "/" routes
 RUN cp ./dist/index.html ./dist/404.html
 
+FROM node:12.16.3-buster-slim AS umbrel-dashboard
+
+RUN yarn global add http-server
+
+COPY --from=umbrel-dashboard-builder /app/dist/ /dist
+
 EXPOSE 3004
-CMD [ "http-server", "-p 3004", "dist" ]
+CMD [ "http-server", "-p 3004", "/dist" ]

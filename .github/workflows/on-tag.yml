@@ -58,6 +58,6 @@ jobs:
                           run: |
                                 docker buildx build \
                                 --platform linux/amd64 \
-                                --file ./Dockerfile.stage \
+                                --build-arg STAGING_DEPLOYMENT=true \
                                 --tag ${{ secrets.DOCKER_HUB_USER }}/dashboard:stage \
                                 --output "type=registry" ./
