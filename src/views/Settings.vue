@@ -127,7 +127,10 @@
                   <p>Your Umbrel will be unresponsive untill it's back online.</p>
                 </div>
                 <div v-else>
-                  <p v-if="isRebooting">Your Umbrel is rebooting.</p>
+                  <p v-if="isRebooting">
+                    <b-spinner small label="Small Spinner"></b-spinner>
+                    Your Umbrel is rebooting.
+                  </p>
                   <p v-else>Successfully rebooted, your Umbrel is back online!</p>
                 </div>
               </b-modal>
