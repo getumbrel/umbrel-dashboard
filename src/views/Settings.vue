@@ -117,7 +117,6 @@
               <b-modal
                 ref="reboot-modal"
                 title="Are you sure?"
-                centered
                 no-close-on-backdrop
                 no-close-on-esc
                 @ok="reboot($event)"
