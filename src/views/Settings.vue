@@ -98,7 +98,7 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Shutdown</span>
-                <small class="d-block" style="opacity: 0.4">Power off the system</small>
+                <small class="d-block" style="opacity: 0.4">Power off your Umbrel</small>
               </div>
               <b-button
                 variant="danger"
@@ -110,7 +110,7 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Reboot</span>
-                <small class="d-block" style="opacity: 0.4">Reboot the system</small>
+                <small class="d-block" style="opacity: 0.4">Reboot your Umbrel</small>
               </div>
 
               <b-button variant="danger" @click="rebootPrompt">Reboot</b-button>
