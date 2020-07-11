@@ -92,6 +92,50 @@
           >{{ isChangingPassword ? 'Changing password...' : 'Change password'}}</b-button>
         </card-widget>
       </b-col>
+      <b-col col cols="12" md="6" xl="4">
+        <card-widget header="System">
+          <div class="pt-2">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Shutdown</span>
+                <small class="d-block" style="opacity: 0.4">Power off the system</small>
+              </div>
+              <b-button
+                variant="danger"
+                @click="shutdownPrompt"
+                >Shutdown</b-button>
+            </div>
+          </div>
+          <div class="pt-2">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Reboot</span>
+                <small class="d-block" style="opacity: 0.4">Reboot the system</small>
+              </div>
+
+              <b-button variant="danger" @click="rebootPrompt">Reboot</b-button>
+              <b-modal
+                ref="reboot-modal"
+                title="Are you sure?"
+                centered
+                no-close-on-backdrop
+                no-close-on-esc
+                @ok="reboot($event)"
+                :cancel-disabled="isRebooting || hasRebooted"
+                :ok-disabled="isRebooting">
+                <div v-if="!isRebooting && !hasRebooted">
+                  <p>Your Umbrel will be unresponsive untill it's back online.</p>
+                </div>
+                <div v-else>
+                  <p v-if="isRebooting">Your Umbrel is rebooting.</p>
+                  <p v-else>Successfully rebooted, your Umbrel is back online!</p>
+                </div>
+              </b-modal>
+
+            </div>
+          </div>
+        </card-widget>
+      </b-col>
     </b-row>
   </div>
 </template>
@@ -99,6 +143,7 @@
 <script>
 import { mapState } from "vuex";
 import API from "@/helpers/api";
+import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
@@ -112,7 +157,9 @@ export default {
       isIncorrectPassword: false,
       newPassword: "",
       confirmNewPassword: "",
-      isChangingPassword: false
+      isChangingPassword: false,
+      isRebooting: false,
+      hasRebooted: false
     };
   },
   computed: {
@@ -198,6 +245,50 @@ export default {
       this.currentPassword = "";
       this.newPassword = "";
       this.confirmNewPassword = "";
+    },
+    async shutdownPrompt() {
+      // Get user consent first
+      const approved = await this.$bvModal.msgBoxConfirm(
+        'Your Umbrel will be unresponsive untill you can get physical access to the device to power it back on.',
+        {title: "Are you sure?"}
+      );
+      if (!approved) {
+        return;
+      }
+
+      // TODO: Send shutdown request
+
+      this.$bvToast.toast(
+        `System is shutting down`,
+        {
+          title: "Your Umbrel will become unresponsive soon",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        }
+      );
+
+      // Hide the UI so they don't try to use it while Umbrel is down.
+      await delay(3000);
+      document.body.style.transition = 'opacity 2s ease'
+      document.body.style.opacity = 0
+    },
+    rebootPrompt() {
+      this.isRebooting = false
+      this.hasRebooted = false
+      this.$refs["reboot-modal"].show()
+    },
+    async reboot(event) {
+      if(this.hasRebooted) {
+        return;
+      }
+      event.preventDefault()
+      // TODO: Send reboot request
+      this.isRebooting = true;
+      await delay(3000); // TODO: Poll for reboot to complete
+      this.isRebooting = false;
+      this.hasRebooted = true;
     }
   },
   watch: {
