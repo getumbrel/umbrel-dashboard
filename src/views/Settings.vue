@@ -116,7 +116,7 @@
                 :title="hasRebooted ? 'Successfully rebooted' : 'Are you sure?'"
                 no-close-on-backdrop
                 no-close-on-esc
-                @ok.prevent="reboot()"
+                @ok="reboot($event)"
                 :cancel-disabled="isRebooting || hasRebooted"
                 :ok-disabled="isRebooting"
               >
@@ -269,10 +269,11 @@ export default {
       this.$store.commit("system/setHasRebooted", false);
       this.$refs["reboot-modal"].show();
     },
-    async reboot() {
+    async reboot(event) {
       if (this.hasRebooted) {
         return;
       }
+      event.preventDefault();
       await this.$store.dispatch("system/reboot");
     }
   },
