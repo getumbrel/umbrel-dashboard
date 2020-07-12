@@ -1,8 +1,13 @@
 import API from "@/helpers/api";
+import delay from "@/helpers/delay";
 
 // Initial state
 const state = () => ({
   loading: true,
+  rebooting: false,
+  hasRebooted: false,
+  shuttingDown: false,
+  hasShutdown: false,
   unit: "sats", //sats or btc
   api: {
     operational: false,
@@ -28,6 +33,18 @@ const mutations = {
   },
   setLoading(state, loading) {
     state.loading = loading;
+  },
+  setRebooting(state, rebooting) {
+    state.rebooting = rebooting;
+  },
+  setHasRebooted(state, hasRebooted) {
+    state.hasRebooted = hasRebooted;
+  },
+  setShuttingDown(state, shuttingDown) {
+    state.shuttingDown = shuttingDown;
+  },
+  setHasShutDown(state, hasShutdown) {
+    state.hasShutdown = hasShutdown;
   },
   setOnionAddress(state, address) {
     state.onionAddress = address;
@@ -64,6 +81,38 @@ const actions = {
   async getOnionAddress({ commit }) {
     const address = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/dashboard-hidden-service`);
     commit("setOnionAddress", address);
+  },
+  async shutdown({ commit }) {
+
+    // Reset any cached hasShutdown value from previous shutdown
+    commit("setHasShutDown", false);
+
+    // Shutting down
+    commit("setShuttingDown", true);
+
+    // API call here
+    await delay(3000);
+
+    // Not shutting down anymore because
+    // the system has shut down successfully 
+    commit("setShuttingDown", false);
+    commit("setHasShutDown", true);
+  },
+  async reboot({ commit }) {
+
+    // Reset any cached hasRebooted value from previous reboot
+    commit("setHasRebooted", false);
+
+    // Rebooting
+    commit("setRebooting", true);
+
+    // API call here
+    await delay(3000);
+
+    // Not rebooting down anymore because
+    // the system has rebooted successfully 
+    commit("setRebooting", false);
+    commit("setHasRebooted", true);
   }
 };
 

@@ -100,10 +100,7 @@
                 <span class="d-block">Shutdown</span>
                 <small class="d-block" style="opacity: 0.4">Power off your Umbrel</small>
               </div>
-              <b-button
-                variant="danger"
-                @click="shutdownPrompt"
-                >Shutdown</b-button>
+              <b-button variant="danger" @click="shutdownPrompt">Shutdown</b-button>
             </div>
           </div>
           <div class="pt-2">
@@ -116,24 +113,23 @@
               <b-button variant="danger" @click="rebootPrompt">Reboot</b-button>
               <b-modal
                 ref="reboot-modal"
-                title="Are you sure?"
+                :title="hasRebooted ? 'Successfully rebooted' : 'Are you sure?'"
                 no-close-on-backdrop
                 no-close-on-esc
-                @ok="reboot($event)"
+                @ok.prevent="reboot()"
                 :cancel-disabled="isRebooting || hasRebooted"
-                :ok-disabled="isRebooting">
+                :ok-disabled="isRebooting"
+              >
                 <div v-if="!isRebooting && !hasRebooted">
                   <p>Your Umbrel will be unresponsive untill it's back online.</p>
                 </div>
                 <div v-else>
                   <p v-if="isRebooting">
-                    <b-spinner small label="Small Spinner"></b-spinner>
-                    Your Umbrel is rebooting.
+                    <b-spinner class="mr-1" small label="Small Spinner"></b-spinner>Your Umbrel is rebooting.
                   </p>
-                  <p v-else>Successfully rebooted, your Umbrel is back online!</p>
+                  <p v-else>Your Umbrel is back online!</p>
                 </div>
               </b-modal>
-
             </div>
           </div>
         </card-widget>
@@ -145,7 +141,6 @@
 <script>
 import { mapState } from "vuex";
 import API from "@/helpers/api";
-import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
@@ -159,14 +154,14 @@ export default {
       isIncorrectPassword: false,
       newPassword: "",
       confirmNewPassword: "",
-      isChangingPassword: false,
-      isRebooting: false,
-      hasRebooted: false
+      isChangingPassword: false
     };
   },
   computed: {
     ...mapState({
-      onionAddress: state => state.system.onionAddress
+      onionAddress: state => state.system.onionAddress,
+      isRebooting: state => state.system.rebooting,
+      hasRebooted: state => state.system.hasRebooted
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -218,7 +213,7 @@ export default {
           this.$bvToast.toast(error.response.data, {
             title: "Error",
             autoHideDelay: 3000,
-            variant: "danger",
+            variant: "warning",
             solid: true,
             toaster: "b-toaster-bottom-right"
           });
@@ -251,46 +246,34 @@ export default {
     async shutdownPrompt() {
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
-        'Your Umbrel will be unresponsive untill you can get physical access to the device to power it back on.',
-        {title: "Are you sure?"}
+        "Your Umbrel will be unresponsive untill you can get physical access to the device to power it back on.",
+        { title: "Are you sure?" }
       );
       if (!approved) {
         return;
       }
 
-      // TODO: Send shutdown request
+      this.$bvToast.toast(`System is shutting down`, {
+        title: "Your Umbrel will become unresponsive soon",
+        autoHideDelay: 3000,
+        variant: "warning",
+        solid: true,
+        toaster: "b-toaster-bottom-right"
+      });
 
-      this.$bvToast.toast(
-        `System is shutting down`,
-        {
-          title: "Your Umbrel will become unresponsive soon",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right"
-        }
-      );
-
-      // Hide the UI so they don't try to use it while Umbrel is down.
-      await delay(3000);
-      document.body.style.transition = 'opacity 2s ease'
-      document.body.style.opacity = 0
+      // Shutdown request
+      await this.$store.dispatch("system/shutdown");
     },
     rebootPrompt() {
-      this.isRebooting = false
-      this.hasRebooted = false
-      this.$refs["reboot-modal"].show()
+      // Reset any cached hasRebooted value from previous reboot
+      this.$store.commit("system/setHasRebooted", false);
+      this.$refs["reboot-modal"].show();
     },
-    async reboot(event) {
-      if(this.hasRebooted) {
+    async reboot() {
+      if (this.hasRebooted) {
         return;
       }
-      event.preventDefault()
-      // TODO: Send reboot request
-      this.isRebooting = true;
-      await delay(3000); // TODO: Poll for reboot to complete
-      this.isRebooting = false;
-      this.hasRebooted = true;
+      await this.$store.dispatch("system/reboot");
     }
   },
   watch: {
