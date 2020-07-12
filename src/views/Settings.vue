@@ -270,11 +270,10 @@ export default {
       this.$refs["reboot-modal"].show();
     },
     async reboot(event) {
-      if (this.hasRebooted) {
-        return;
+      if (!this.hasRebooted) {
+        event.preventDefault();
+        await this.$store.dispatch("system/reboot");
       }
-      event.preventDefault();
-      await this.$store.dispatch("system/reboot");
     }
   },
   watch: {
