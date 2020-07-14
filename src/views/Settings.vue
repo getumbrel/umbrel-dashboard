@@ -280,7 +280,17 @@ export default {
     async reboot(event) {
       if (!this.hasRebooted) {
         event.preventDefault();
-        await this.$store.dispatch("system/reboot");
+        try {
+          await this.$store.dispatch("system/reboot");
+        } catch (e) {
+          this.$bvToast.toast("Reboot failed", {
+            title: "Something went wrong and Umbrel was not able to reboot",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
       }
     }
   },

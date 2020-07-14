@@ -108,15 +108,19 @@ const actions = {
     commit("setHasRebooted", false);
 
     // Rebooting
+    const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`);
+    if (!result) {
+      throw new Error('Reboot request failed');
+    }
+
     commit("setRebooting", true);
 
-    // API call here
-    await delay(3000);
-
-    // Not rebooting down anymore because
-    // the system has rebooted successfully
-    commit("setRebooting", false);
-    commit("setHasRebooted", true);
+    // TODO: We could poll the API until it becomes unresponsive
+    // and then responsive again to see when shutdown has completed.
+    delay(3000).then(() => {
+      commit("setRebooting", false);
+      commit("setHasRebooted", true);
+    });
   }
 };
 
