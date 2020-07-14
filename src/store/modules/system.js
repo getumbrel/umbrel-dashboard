@@ -88,13 +88,19 @@ const actions = {
     commit("setHasShutDown", false);
 
     // Shutting down
+    const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/shutdown`);
+    if (!result) {
+      throw new Error('Shutdown request failed');
+    }
+
     commit("setShuttingDown", true);
 
-    // API call here
+    // TODO: We could poll the API until it becomes unresponsive
+    // to see when shutdown has completed.
     await delay(3000);
 
     // Not shutting down anymore because
-    // the system has shut down successfully 
+    // the system has shut down successfully
     commit("setShuttingDown", false);
     commit("setHasShutDown", true);
   },
@@ -110,7 +116,7 @@ const actions = {
     await delay(3000);
 
     // Not rebooting down anymore because
-    // the system has rebooted successfully 
+    // the system has rebooted successfully
     commit("setRebooting", false);
     commit("setHasRebooted", true);
   }

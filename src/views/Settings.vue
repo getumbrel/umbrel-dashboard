@@ -262,7 +262,17 @@ export default {
       });
 
       // Shutdown request
-      await this.$store.dispatch("system/shutdown");
+      try {
+        await this.$store.dispatch("system/shutdown");
+      } catch (e) {
+        this.$bvToast.toast(`Shutdown failed`, {
+          title: "Something went wrong and Umbrel was not able to shutdown",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
     },
     rebootPrompt() {
       // Reset any cached hasRebooted value from previous reboot
