@@ -97,12 +97,10 @@ const actions = {
 
     // TODO: We could poll the API until it becomes unresponsive
     // to see when shutdown has completed.
-    await delay(3000);
-
-    // Not shutting down anymore because
-    // the system has shut down successfully
-    commit("setShuttingDown", false);
-    commit("setHasShutDown", true);
+    delay(3000).then(() => {
+      commit("setShuttingDown", false);
+      commit("setHasShutDown", true);
+    });
   },
   async reboot({ commit }) {
 

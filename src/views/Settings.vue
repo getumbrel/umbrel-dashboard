@@ -253,26 +253,24 @@ export default {
         return;
       }
 
-      this.$bvToast.toast(`System is shutting down`, {
-        title: "Your Umbrel will become unresponsive soon",
+      // Shutdown request
+      let toastText = '';
+      let toastOptions = {
         autoHideDelay: 3000,
-        variant: "warning",
         solid: true,
         toaster: "b-toaster-bottom-right"
-      });
-
-      // Shutdown request
+      };
       try {
         await this.$store.dispatch("system/shutdown");
+        toastText = "System is shutting down";
+        toastOptions.title = "Your Umbrel will become unresponsive soon";
+        toastOptions.variant = "warning";
       } catch (e) {
-        this.$bvToast.toast(`Shutdown failed`, {
-          title: "Something went wrong and Umbrel was not able to shutdown",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right"
-        });
+        toastText = "Shutdown failed";
+        toastOptions.title = "Something went wrong and Umbrel was not able to shutdown";
+        toastOptions.variant = "danger";
       }
+      this.$bvToast.toast(toastText, toastOptions);
     },
     rebootPrompt() {
       // Reset any cached hasRebooted value from previous reboot
