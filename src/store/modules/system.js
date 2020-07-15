@@ -88,7 +88,7 @@ const actions = {
     commit("setHasShutDown", false);
 
     // Shutting down
-    const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/shutdown`);
+    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/shutdown`);
     if (!result) {
       throw new Error('Shutdown request failed');
     }
@@ -108,7 +108,7 @@ const actions = {
     commit("setHasRebooted", false);
 
     // Rebooting
-    const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`);
+    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`);
     if (!result) {
       throw new Error('Reboot request failed');
     }
