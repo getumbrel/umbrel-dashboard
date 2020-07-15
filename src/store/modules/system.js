@@ -117,7 +117,7 @@ const actions = {
 
     // TODO: We could poll the API until it becomes unresponsive
     // and then responsive again to see when shutdown has completed.
-    delay(30000).then(() => {
+    delay(60000).then(() => {
       commit("setRebooting", false);
       commit("setHasRebooted", true);
     });
