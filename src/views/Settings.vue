@@ -213,7 +213,7 @@ export default {
           this.$bvToast.toast(error.response.data, {
             title: "Error",
             autoHideDelay: 3000,
-            variant: "warning",
+            variant: "danger",
             solid: true,
             toaster: "b-toaster-bottom-right"
           });
