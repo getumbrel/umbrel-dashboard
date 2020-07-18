@@ -1,4 +1,5 @@
 import API from "@/helpers/api";
+import delay from "@/helpers/delay";
 
 // Initial state
 const state = () => ({
@@ -13,6 +14,11 @@ const state = () => ({
     progress: 0, //progress of update installation
     description: ""
   },
+  loading: true,
+  rebooting: false,
+  hasRebooted: false,
+  shuttingDown: false,
+  hasShutdown: false,
   unit: "sats", //sats or btc
   api: {
     operational: false,
@@ -38,6 +44,21 @@ const mutations = {
   },
   setManagerApi(state, api) {
     state.managerApi = api;
+  },
+  setLoading(state, loading) {
+    state.loading = loading;
+  },
+  setRebooting(state, rebooting) {
+    state.rebooting = rebooting;
+  },
+  setHasRebooted(state, hasRebooted) {
+    state.hasRebooted = hasRebooted;
+  },
+  setShuttingDown(state, shuttingDown) {
+    state.shuttingDown = shuttingDown;
+  },
+  setHasShutDown(state, hasShutdown) {
+    state.hasShutdown = hasShutdown;
   },
   setOnionAddress(state, address) {
     state.onionAddress = address;
@@ -105,6 +126,46 @@ const actions = {
       commit("setUpdateStatus", status);
     }
   },
+  async shutdown({ commit }) {
+
+    // Reset any cached hasShutdown value from previous shutdown
+    commit("setHasShutDown", false);
+
+    // Shutting down
+    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/shutdown`);
+    if (!result) {
+      throw new Error('Shutdown request failed');
+    }
+
+    commit("setShuttingDown", true);
+
+    // TODO: We could poll the API until it becomes unresponsive
+    // to see when shutdown has completed.
+    delay(3000).then(() => {
+      commit("setShuttingDown", false);
+      commit("setHasShutDown", true);
+    });
+  },
+  async reboot({ commit }) {
+
+    // Reset any cached hasRebooted value from previous reboot
+    commit("setHasRebooted", false);
+
+    // Rebooting
+    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`);
+    if (!result) {
+      throw new Error('Reboot request failed');
+    }
+
+    commit("setRebooting", true);
+
+    // TODO: We could poll the API until it becomes unresponsive
+    // and then responsive again to see when shutdown has completed.
+    delay(60000).then(() => {
+      commit("setRebooting", false);
+      commit("setHasRebooted", true);
+    });
+  }
 };
 
 const getters = {};

@@ -94,6 +94,44 @@
       </b-col>
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="System" :loading="isCheckingForUpdate || isUpdating">
+          <div class="pt-2">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Shutdown</span>
+                <small class="d-block text-muted">Power off your Umbrel</small>
+              </div>
+              <b-button variant="danger" @click="shutdownPrompt">Shutdown</b-button>
+            </div>
+          </div>
+          <div class="pt-2">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Reboot</span>
+                <small class="d-block text-muted">Reboot your Umbrel</small>
+              </div>
+
+              <b-button variant="danger" @click="rebootPrompt">Reboot</b-button>
+              <b-modal
+                ref="reboot-modal"
+                :title="hasRebooted ? 'Successfully rebooted' : 'Are you sure?'"
+                no-close-on-backdrop
+                no-close-on-esc
+                @ok="reboot($event)"
+                :cancel-disabled="isRebooting || hasRebooted"
+                :ok-disabled="isRebooting"
+              >
+                <div v-if="!isRebooting && !hasRebooted">
+                  <p>Your Umbrel will be unresponsive untill it's back online.</p>
+                </div>
+                <div v-else>
+                  <p v-if="isRebooting">
+                    <b-spinner class="mr-1" small label="Small Spinner"></b-spinner>Your Umbrel is rebooting.
+                  </p>
+                  <p v-else>Your Umbrel is back online!</p>
+                </div>
+              </b-modal>
+            </div>
+          </div>
           <div class="px-4 pb-4">
             <div class="w-100 d-flex justify-content-between mb-2">
               <span class="align-self-end">Umbrel Version</span>
@@ -163,7 +201,9 @@ export default {
       version: state => state.system.version,
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
-      updateStatus: state => state.system.updateStatus
+      updateStatus: state => state.system.updateStatus,
+      isRebooting: state => state.system.rebooting,
+      hasRebooted: state => state.system.hasRebooted
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -274,6 +314,57 @@ export default {
           solid: true,
           toaster: "b-toaster-bottom-right"
         });
+      }
+    },
+    async shutdownPrompt() {
+      // Get user consent first
+      const approved = await this.$bvModal.msgBoxConfirm(
+        "Your Umbrel will be unresponsive untill you can get physical access to the device to power it back on.",
+        { title: "Are you sure?" }
+      );
+      if (!approved) {
+        return;
+      }
+
+      // Shutdown request
+      let toastText = "";
+      let toastOptions = {
+        autoHideDelay: 3000,
+        solid: true,
+        toaster: "b-toaster-bottom-right"
+      };
+      try {
+        await this.$store.dispatch("system/shutdown");
+        toastText = "System is shutting down";
+        toastOptions.title = "Your Umbrel will become unresponsive soon";
+        toastOptions.variant = "warning";
+      } catch (e) {
+        toastText = "Shutdown failed";
+        toastOptions.title =
+          "Something went wrong and Umbrel was not able to shutdown";
+        toastOptions.variant = "danger";
+      }
+      this.$bvToast.toast(toastText, toastOptions);
+    },
+    rebootPrompt() {
+      // Reset any cached hasRebooted value from previous reboot
+      this.$store.commit("system/setHasRebooted", false);
+      this.$refs["reboot-modal"].show();
+    },
+    async reboot(event) {
+      if (!this.hasRebooted) {
+        event.preventDefault();
+        try {
+          await this.$store.dispatch("system/reboot");
+        } catch (e) {
+          this.$bvToast.toast("Reboot failed", {
+            title: "Something went wrong and Umbrel was not able to reboot",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
       }
     }
   },

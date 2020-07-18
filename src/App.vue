@@ -6,6 +6,7 @@
         :text="`${updateStatus.description}...`"
         :progress="updateStatus.progress"
       ></loading>
+      <shutdown v-else-if="hasShutdown"></shutdown>
       <loading v-else-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
@@ -19,6 +20,7 @@
 
 <script>
 import { mapState } from "vuex";
+import Shutdown from "@/components/Shutdown";
 import Loading from "@/components/Loading";
 
 export default {
@@ -33,6 +35,7 @@ export default {
   },
   computed: {
     ...mapState({
+      hasShutdown: state => state.system.hasShutdown,
       isManagerApiOperational: state => state.system.managerApi.operational,
       isApiOperational: state => state.system.api.operational,
       isBitcoinOperational: state => state.bitcoin.operational,
@@ -205,7 +208,8 @@ export default {
     window.clearInterval(this.updateStatusInterval);
   },
   components: {
-    Loading
+    Loading,
+    Shutdown
   }
 };
 </script>
