@@ -144,7 +144,7 @@ export default {
         {
           heading: "access from anywhere",
           text:
-            "Even when you're not on your home network, you can access your Umbrel using Tor browser on the following URL"
+            "Even when you're not on your home network, you can access your Umbrel using Tor Browser on the following URL"
         },
         {
           heading: "one last thing",
