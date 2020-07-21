@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
-  >
+  <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
     <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
 
     <!-- <b-spinner class="my-4" variant="primary"></b-spinner> -->
@@ -13,13 +11,7 @@
       animated
       striped
     ></b-progress>
-
-    <span
-      class="text-muted w-75 text-center"
-      :style="{ opacity: text ? 1 : 0 }"
-    >
-      <small>{{ text || "Loading..." }}</small>
-    </span>
+    <slot></slot>
   </div>
 </template>
 
@@ -28,7 +20,7 @@ export default {
   data() {
     return {};
   },
-  props: { text: String, progress: Number },
+  props: { progress: Number },
   created() {},
   methods: {},
   components: {}

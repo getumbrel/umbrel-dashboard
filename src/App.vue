@@ -1,13 +1,20 @@
 <template>
   <div id="app">
     <transition name="loading" mode>
-      <loading
-        v-if="updating"
-        :text="`${updateStatus.description}...`"
-        :progress="updateStatus.progress"
-      ></loading>
+      <loading v-if="updating" :progress="updateStatus.progress">
+        <div class="text-center">
+          <small
+            class="text-muted d-block"
+          >{{`${updateStatus.description}Downloading docker images...`}}</small>
+          <b-alert class="update-alert" variant="warning" show>
+            <small>Please do not turn off or disconnect the device from the internet while the update is in progress</small>
+          </b-alert>
+        </div>
+      </loading>
       <shutdown v-else-if="hasShutdown"></shutdown>
-      <loading v-else-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
+      <loading v-else-if="loading" :progress="loadingProgress">
+        <small class="text-muted w-75 text-center">{{ loadingText }}</small>
+      </loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
     </transition>
@@ -236,5 +243,12 @@ export default {
 .loading-leave-to {
   opacity: 0;
   // filter: blur(70px);
+}
+
+.update-alert {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>
