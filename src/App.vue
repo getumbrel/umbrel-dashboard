@@ -3,9 +3,7 @@
     <transition name="loading" mode>
       <loading v-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
-          <small
-            class="text-muted d-block"
-          >{{`${updateStatus.description}Downloading docker images...`}}</small>
+          <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
           <b-alert class="update-alert" variant="warning" show>
             <small>Please do not turn off or disconnect the device from the internet while the update is in progress</small>
           </b-alert>
