@@ -358,16 +358,6 @@ export default {
       unit: state => state.system.unit,
       seed: state => state.user.seed
     })
-    // tweetLink() {
-    //   // const uri = this.uris[0];
-    //   const uri =
-    //     "03e8fc0e8435fbae69764cdd83f412b6bb9b8451f6f2fa1c5a9d1084f372c5f1a6@5xysszsgcth7ytej45e33zqrganqkn5j6uk4zr6pxclpwjsr74bndcad.onion:9735";
-    //   const tweet = `Running @getumbrel☂️.
-
-    //   ${uri}`;
-    //   const encodedTweet = encodeURIComponent(tweet);
-    //   return `https://twitter.com/intent/tweet?text=${encodedTweet}`;
-    // }
   },
   methods: {
     showNodeInfo() {
