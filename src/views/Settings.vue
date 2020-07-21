@@ -100,7 +100,7 @@
                 <span class="d-block">Shutdown</span>
                 <small class="d-block text-muted">Power off your Umbrel</small>
               </div>
-              <b-button variant="danger" @click="shutdownPrompt">Shutdown</b-button>
+              <b-button variant="outline-danger" size="sm" @click="shutdownPrompt">Shutdown</b-button>
             </div>
           </div>
           <div class="pt-2">
@@ -110,7 +110,7 @@
                 <small class="d-block text-muted">Reboot your Umbrel</small>
               </div>
 
-              <b-button variant="danger" @click="rebootPrompt">Reboot</b-button>
+              <b-button variant="outline-danger" size="sm" @click="rebootPrompt">Reboot</b-button>
               <b-modal
                 ref="reboot-modal"
                 :title="hasRebooted ? 'Successfully rebooted' : 'Are you sure?'"
@@ -254,7 +254,7 @@ export default {
       }
 
       // Shutdown request
-      let toastText = '';
+      let toastText = "";
       let toastOptions = {
         autoHideDelay: 3000,
         solid: true,
@@ -267,7 +267,8 @@ export default {
         toastOptions.variant = "warning";
       } catch (e) {
         toastText = "Shutdown failed";
-        toastOptions.title = "Something went wrong and Umbrel was not able to shutdown";
+        toastOptions.title =
+          "Something went wrong and Umbrel was not able to shutdown";
         toastOptions.variant = "danger";
       }
       this.$bvToast.toast(toastText, toastOptions);
