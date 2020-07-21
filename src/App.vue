@@ -25,6 +25,7 @@
 
 <script>
 import { mapState } from "vuex";
+import delay from "@/helpers/delay";
 import Shutdown from "@/components/Shutdown";
 import Loading from "@/components/Loading";
 
@@ -179,28 +180,25 @@ export default {
 
           // if it just finished updating, then show success/failure toast
           if (wasUpdating) {
-            if (this.updateStatus.state === "success") {
-              this.$bvToast.toast(this.updateStatus.description, {
-                title: "Update successful",
-                autoHideDelay: 2000,
-                variant: "success",
-                solid: true,
-                toaster: "b-toaster-bottom-right"
-              });
-            } else if (this.updateStatus.state === "failed") {
-              this.$bvToast.toast(this.updateStatus.description, {
-                title: "Update failed",
-                autoHideDelay: 2000,
-                variant: "danger",
-                solid: true,
-                toaster: "b-toaster-bottom-right"
-              });
+            const toastOptions = {
+              title: "Update successful",
+              autoHideDelay: 2000,
+              variant: "success",
+              solid: true,
+              toaster: "b-toaster-bottom-right"
+            };
+
+            if (this.updateStatus.state === "failed") {
+              toastOptions.title = "Update failed";
+              toastOptions.variant = "danger";
             }
 
+            this.$bvToast.toast(this.updateStatus.description, toastOptions);
+
             //refresh window to fetch latest code of dashboard
-            window.setTimeout(() => {
+            delay(2000).then(() => {
               window.location.reload(true);
-            }, 2000);
+            });
           }
         }
       },
