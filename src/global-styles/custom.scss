@@ -71,8 +71,10 @@ a {
     // Loading bar safari bug https://gist.github.com/ayamflow/b602ab436ac9f05660d9c15190f4fd7b
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 .neu-input {

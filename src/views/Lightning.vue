@@ -310,7 +310,7 @@
               </div>
             </b-modal>
 
-            <channel-list v-on:selectchannel="manageChannel"></channel-list>
+            <channel-list v-on:selectchannel="manageChannel" @showConnectionUri="showNodeInfo"></channel-list>
           </div>
         </card-widget>
       </b-col>
