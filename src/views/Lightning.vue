@@ -96,7 +96,7 @@
               </div>
             </template>
             <div class="px-2 px-sm-3 pb-2 pb-sm-3">
-              <div class="d-flex">
+              <div class="d-flex align-items-center">
                 <!-- Pubkey QR Code -->
                 <qr-code :value="pubkey" :size="180" class="qr-image" showLogo></qr-code>
                 <div class="w-100 align-self-center ml-3 ml-sm-4">
@@ -110,7 +110,7 @@
 
                   <h5 class="mt-2">connection uri</h5>
                   <div v-if="uris.length">
-                    <input-copy size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
+                    <input-copy class="mb-2" size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
                   </div>
                   <span
                     class="loading-placeholder loading-placeholder-lg mt-1"
@@ -329,7 +329,7 @@ import Stat from "@/components/Utility/Stat";
 import LightningWallet from "@/components/LightningWallet";
 import QrCode from "@/components/Utility/QrCode";
 import InputCopy from "@/components/Utility/InputCopy";
-import InputPassword from "@/components/InputPassword";
+import InputPassword from "@/components/Utility/InputPassword";
 import Seed from "@/components/Utility/Seed";
 import ChannelList from "@/components/Channels/List";
 import ChannelOpen from "@/components/Channels/Open";

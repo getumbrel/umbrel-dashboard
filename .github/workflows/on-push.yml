@@ -48,6 +48,6 @@ jobs:
                                 --cache-from "type=local,src=/tmp/.buildx-cache" \
                                 --cache-to "type=local,dest=/tmp/.buildx-cache" \
                                 --platform linux/amd64 \
-                                --file ./Dockerfile.stage \
+                                --build-arg STAGING_DEPLOYMENT=true \
                                 --tag ${{ secrets.DOCKER_HUB_USER }}/dashboard:stage-$BRANCH \
                                 --output "type=registry" ./
