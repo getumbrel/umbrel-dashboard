@@ -1,8 +1,18 @@
 <template>
   <div id="app">
     <transition name="loading" mode>
-      <shutdown v-if="hasShutdown"></shutdown>
-      <loading v-else-if="loading" :text="loadingText" :progress="loadingProgress"></loading>
+      <loading v-if="updating" :progress="updateStatus.progress">
+        <div class="text-center">
+          <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
+          <b-alert class="update-alert" variant="warning" show>
+            <small>Please do not turn off or disconnect the device from the internet while the update is in progress</small>
+          </b-alert>
+        </div>
+      </loading>
+      <shutdown v-else-if="hasShutdown"></shutdown>
+      <loading v-else-if="loading" :progress="loadingProgress">
+        <small class="text-muted w-75 text-center">{{ loadingText }}</small>
+      </loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
     </transition>
@@ -15,6 +25,7 @@
 
 <script>
 import { mapState } from "vuex";
+import delay from "@/helpers/delay";
 import Shutdown from "@/components/Shutdown";
 import Loading from "@/components/Loading";
 
@@ -35,8 +46,12 @@ export default {
       isApiOperational: state => state.system.api.operational,
       isBitcoinOperational: state => state.bitcoin.operational,
       isLndOperational: state => state.lightning.operational,
-      jwt: state => state.user.jwt
-    })
+      jwt: state => state.user.jwt,
+      updateStatus: state => state.system.updateStatus
+    }),
+    updating() {
+      return this.updateStatus.state === "installing";
+    }
   },
   methods: {
     //TODO: move this to the specific layout that needs this 100vh fix
@@ -47,8 +62,8 @@ export default {
       );
     },
     async getLoadingStatus() {
-      // Skip if previous poll in progress
-      if (this.loadingPollInProgress) {
+      // Skip if previous poll in progress or if system is updating
+      if (this.loadingPollInProgress || this.updating) {
         return;
       }
 
@@ -122,12 +137,11 @@ export default {
     }
   },
   created() {
-    //first check if loading...
+    //check if system is updating
+    this.$store.dispatch("system/getUpdateStatus");
 
-    //if not, check auth
-
-    this.updateViewPortHeightCSS();
     //for 100vh consistency
+    this.updateViewPortHeightCSS();
     window.addEventListener("resize", this.updateViewPortHeightCSS);
   },
   watch: {
@@ -149,11 +163,52 @@ export default {
         }
       },
       immediate: true
+    },
+    updating: {
+      handler: function(isUpdating, wasUpdating) {
+        window.clearInterval(this.updateStatusInterval);
+        // if updating, check loading status every two seconds
+        if (isUpdating) {
+          this.updateStatusInterval = window.setInterval(() => {
+            this.$store.dispatch("system/getUpdateStatus");
+          }, 2 * 1000);
+        } else {
+          //else check every minute
+          this.updateStatusInterval = window.setInterval(() => {
+            this.$store.dispatch("system/getUpdateStatus");
+          }, 60 * 1000);
+
+          // if it just finished updating, then show success/failure toast
+          if (wasUpdating) {
+            const toastOptions = {
+              title: "Update successful",
+              autoHideDelay: 2000,
+              variant: "success",
+              solid: true,
+              toaster: "b-toaster-bottom-right"
+            };
+
+            if (this.updateStatus.state === "failed") {
+              toastOptions.title = "Update failed";
+              toastOptions.variant = "danger";
+            }
+
+            this.$bvToast.toast(this.updateStatus.description, toastOptions);
+
+            //refresh window to fetch latest code of dashboard
+            delay(2000).then(() => {
+              window.location.reload(true);
+            });
+          }
+        }
+      },
+      immediate: true
     }
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.updateViewPortHeightCSS);
     window.clearInterval(this.loadingInterval);
+    window.clearInterval(this.updateStatusInterval);
   },
   components: {
     Loading,
@@ -184,5 +239,12 @@ export default {
 .loading-leave-to {
   opacity: 0;
   // filter: blur(70px);
+}
+
+.update-alert {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

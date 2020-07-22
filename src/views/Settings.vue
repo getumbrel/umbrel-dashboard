@@ -93,7 +93,7 @@
         </card-widget>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
-        <card-widget header="System">
+        <card-widget header="System" :loading="isCheckingForUpdate || isUpdating">
           <div class="pt-2">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
@@ -132,6 +132,43 @@
               </b-modal>
             </div>
           </div>
+          <div class="px-4 pb-4">
+            <div class="w-100 d-flex justify-content-between mb-2">
+              <span class="align-self-end">Umbrel Version</span>
+              <span class="font-weight-normal mb-0">{{ version }}</span>
+            </div>
+            <div v-show="!isCheckingForUpdate">
+              <span v-show="!availableUpdate.version">
+                <b-icon icon="check-circle-fill" variant="success"></b-icon>
+                <small class="text-muted ml-1">Your Umbrel is on the latest version</small>
+              </span>
+              <div v-show="availableUpdate.version">
+                <span class="d-block">
+                  <b-icon icon="bell-fill" variant="success"></b-icon>
+                  <small
+                    class="text-muted ml-1"
+                  >Umbrel v{{availableUpdate.version}} is now available to install</small>
+                </span>
+                <b-button
+                  class="mt-2"
+                  variant="primary"
+                  size="sm"
+                  @click="startUpdate"
+                  :disabled="isUpdating"
+                >Install now</b-button>
+              </div>
+            </div>
+          </div>
+          <b-button
+            class="w-100"
+            variant="success"
+            style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+            :disabled="isCheckingForUpdate || isUpdating"
+            @click="checkForUpdate"
+          >
+            <b-icon icon="arrow-repeat" class="mr-2" :animation="isCheckingForUpdate ? 'spin' : ''"></b-icon>
+            {{ isCheckingForUpdate ? "Checking for update" : "Check for update"}}
+          </b-button>
         </card-widget>
       </b-col>
     </b-row>
@@ -154,12 +191,17 @@ export default {
       isIncorrectPassword: false,
       newPassword: "",
       confirmNewPassword: "",
-      isChangingPassword: false
+      isChangingPassword: false,
+      isCheckingForUpdate: false,
+      isUpdating: false
     };
   },
   computed: {
     ...mapState({
+      version: state => state.system.version,
       onionAddress: state => state.system.onionAddress,
+      availableUpdate: state => state.system.availableUpdate,
+      updateStatus: state => state.system.updateStatus,
       isRebooting: state => state.system.rebooting,
       hasRebooted: state => state.system.hasRebooted
     }),
@@ -181,6 +223,7 @@ export default {
   },
   created() {
     this.$store.dispatch("system/getOnionAddress");
+    this.$store.dispatch("system/getVersion");
   },
   methods: {
     async changePassword() {
@@ -243,6 +286,36 @@ export default {
       this.newPassword = "";
       this.confirmNewPassword = "";
     },
+    async checkForUpdate() {
+      this.isCheckingForUpdate = true;
+      await this.$store.dispatch("system/getAvailableUpdate");
+      this.isCheckingForUpdate = false;
+    },
+    async startUpdate() {
+      try {
+        await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
+          {}
+        );
+        this.isUpdating = true;
+        // poll update status every 2s until the update process begins
+        // because after it's updated, the loading view will take over
+        this.pollUpdateStatus = window.setInterval(async () => {
+          await this.$store.dispatch("system/getUpdateStatus");
+          if (this.updateStatus.state === "installing") {
+            window.clearInterval(this.pollUpdateStatus);
+          }
+        }, 2 * 1000);
+      } catch (error) {
+        this.$bvToast.toast(`Unable to start the update process`, {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
+    },
     async shutdownPrompt() {
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
@@ -293,6 +366,11 @@ export default {
           });
         }
       }
+    }
+  },
+  beforeDestroy() {
+    if (this.pollUpdateStatus) {
+      window.clearInterval(this.pollUpdateStatus);
     }
   },
   watch: {

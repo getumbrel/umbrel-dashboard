@@ -3,6 +3,17 @@ import delay from "@/helpers/delay";
 
 // Initial state
 const state = () => ({
+  version: "",
+  availableUpdate: {
+    version: "", //update version available to download
+    name: "",
+    notes: "",
+  },
+  updateStatus: {
+    state: "", //available, unavailable, installing, successful, failed
+    progress: 0, //progress of update installation
+    description: ""
+  },
   loading: true,
   rebooting: false,
   hasRebooted: false,
@@ -22,6 +33,9 @@ const state = () => ({
 
 // Functions to update the state directly
 const mutations = {
+  setVersion(state, version) {
+    state.version = version;
+  },
   setUnit(state, unit) {
     state.unit = unit;
   },
@@ -48,11 +62,23 @@ const mutations = {
   },
   setOnionAddress(state, address) {
     state.onionAddress = address;
+  },
+  setAvailableUpdate(state, update) {
+    state.availableUpdate = update;
+  },
+  setUpdateStatus(state, status) {
+    state.updateStatus = status
   }
 };
 
 // Functions to get data from the API
 const actions = {
+  async getVersion({ commit }) {
+    const data = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/info`);
+    if (data && data.version) {
+      commit("setVersion", data.version);
+    }
+  },
   async getUnit({ commit }) {
     if (window.localStorage && window.localStorage.getItem("unit")) {
       commit("setUnit", window.localStorage.getItem("unit"));
@@ -81,6 +107,24 @@ const actions = {
   async getOnionAddress({ commit }) {
     const address = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/dashboard-hidden-service`);
     commit("setOnionAddress", address);
+  },
+  async getAvailableUpdate({ commit }) {
+    const update = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/get-update`);
+    if (update && update.version) {
+      commit("setAvailableUpdate", update);
+    } else {
+      commit("setAvailableUpdate", {
+        version: "",
+        name: "",
+        notes: "",
+      });
+    }
+  },
+  async getUpdateStatus({ commit }) {
+    const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`);
+    if (status && status.progress) {
+      commit("setUpdateStatus", status);
+    }
   },
   async shutdown({ commit }) {
 

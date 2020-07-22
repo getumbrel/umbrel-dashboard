@@ -69,6 +69,27 @@
 
       <b-col col lg="9" xl="10">
         <div class="pr-xl-2">
+          <b-alert
+            class="mt-4 mb-0"
+            variant="success"
+            :show="!!availableUpdate.version"
+            dismissible
+          >
+            <b-icon icon="bell-fill" class="mr-2"></b-icon>
+            <a
+              :href="`https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`"
+              target="_blank"
+              class="alert-link"
+            >Umbrel v{{ availableUpdate.version }}</a>
+            &nbsp;is now available to install
+            <a
+              href="#"
+              class="alert-link float-right"
+              @click.prevent="startUpdate"
+              v-show="!isUpdating"
+            >Install now</a>
+            <b-spinner v-show="isUpdating" variant="success" small class="float-right mt-1"></b-spinner>
+          </b-alert>
           <transition name="change-page" mode="out-in">
             <!-- Content -->
             <router-view></router-view>
@@ -90,16 +111,21 @@
 
 <script>
 import { mapState } from "vuex";
+import API from "@/helpers/api";
 import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar";
 
 export default {
   data() {
-    return {};
+    return {
+      isUpdating: false
+    };
   },
   computed: {
     ...mapState({
       name: state => state.user.name,
-      chain: state => state.bitcoin.chain
+      chain: state => state.bitcoin.chain,
+      availableUpdate: state => state.system.availableUpdate,
+      updateStatus: state => state.system.updateStatus
     }),
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
@@ -122,9 +148,35 @@ export default {
       this.$store.dispatch("lightning/getTransactions");
       this.$store.dispatch("lightning/getChannels");
       this.$store.dispatch("bitcoin/getPrice");
+      this.$store.dispatch("system/getAvailableUpdate");
     },
     toggleMobileMenu() {
       this.$store.commit("toggleMobileMenu");
+    },
+    async startUpdate() {
+      try {
+        await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
+          {}
+        );
+        this.isUpdating = true;
+        // poll update status every 2s until the update process begins
+        // because after it's updated, the loading view will take over
+        this.pollUpdateStatus = window.setInterval(async () => {
+          await this.$store.dispatch("system/getUpdateStatus");
+          if (this.updateStatus.state === "installing") {
+            window.clearInterval(this.pollUpdateStatus);
+          }
+        }, 2 * 1000);
+      } catch (error) {
+        this.$bvToast.toast(`Unable to start the update process`, {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
     }
   },
   created() {
@@ -137,6 +189,9 @@ export default {
   },
   beforeDestroy() {
     window.clearInterval(this.interval);
+    if (this.pollUpdateStatus) {
+      window.clearInterval(this.pollUpdateStatus);
+    }
   },
   watch: {},
   components: {
