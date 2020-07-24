@@ -4,6 +4,9 @@
 //Custom Variables (outside Bootstrap's scope)
 body {
     background-color: #F7F9FB;
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
 }
 // to fill svgs, eg. circle in status component
 .fill- {
