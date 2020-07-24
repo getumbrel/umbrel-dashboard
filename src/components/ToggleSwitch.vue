@@ -26,9 +26,6 @@ export default {
     };
   },
   computed: {},
-  // created() {
-  //   this.state.isOn = this.props.on;
-  // },
   methods: {
     toggle() {
       if (this.disabled) {
@@ -67,12 +64,7 @@ export default {
     box-shadow: none;
   }
   &.toggle-disabled {
-    // opacity: 1;
     cursor: not-allowed;
-    // pointer-events: none;
-    &:hover {
-      cursor: not-allowed;
-    }
   }
 }
 .toggle-switch {
