@@ -19,14 +19,22 @@
                 <span class="d-block">Bitcoin</span>
                 <small class="d-block" style="opacity: 0.4">Run Bitcoin Core on Tor</small>
               </div>
-              <toggle-switch class="align-self-center"></toggle-switch>
+              <toggle-switch
+                class="align-self-center"
+                disabled
+                tooltip="Sorry, Tor cannot be disabled for now"
+              ></toggle-switch>
             </div>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Lightning Network</span>
                 <small class="d-block" style="opacity: 0.4">Run Lightning on Tor</small>
               </div>
-              <toggle-switch class="align-self-center"></toggle-switch>
+              <toggle-switch
+                class="align-self-center"
+                disabled
+                tooltip="Sorry, Tor cannot be disabled for now"
+              ></toggle-switch>
             </div>
             <div class="px-3 px-lg-4 mb-4">
               <div class="d-flex justify-content-between w-100 mb-3">
@@ -34,7 +42,11 @@
                   <span class="d-block">Remote Access</span>
                   <small class="d-block" style="opacity: 0.4">Remotely access your Umbrel on Tor</small>
                 </div>
-                <toggle-switch class="align-self-center"></toggle-switch>
+                <toggle-switch
+                  class="align-self-center"
+                  disabled
+                  tooltip="Sorry, Tor cannot be disabled for now"
+                ></toggle-switch>
               </div>
               <input-copy class="w-100" size="sm" :value="onionAddress"></input-copy>
             </div>
