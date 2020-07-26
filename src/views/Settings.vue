@@ -90,7 +90,7 @@
             <b-alert variant="warning" show>
               <small>
                 ⚠ Remember, there is no "Forgot Password" button. If you lose
-                your password, you will have to recover your node using your 24
+                your password, you will have to recover your Umbrel using your 24
                 secret words.
               </small>
             </b-alert>
