@@ -66,7 +66,15 @@
           @click="nextStep"
           :disabled="!isStepValid || isRegistering"
           class="mt-3 mx-auto d-block px-4"
-        >{{ nextButtonText }}</b-button>
+        >
+          <b-spinner
+            small
+            style="vertical-align: middle"
+            class="mr-1"
+            v-if="currentStep === 8 && !unlocked"
+          ></b-spinner>
+          {{ nextButtonText }}
+        </b-button>
         <b-button
           variant="link"
           size="sm"
@@ -294,6 +302,14 @@ export default {
             return window.clearInterval(this.lndUnlockInterval);
           }
         }, 1000);
+
+        // TODO: Find the root problem and fix it
+        // Refresh page after 60s if LND still hasn't unlocked
+        window.setTimeout(() => {
+          if (!this.unlocked) {
+            window.location.reload(true);
+          }
+        }, 60 * 1000);
 
         //Ok. 3s is more than enough to celebrate.
         window.setTimeout(() => {
