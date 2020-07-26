@@ -45,8 +45,8 @@
 
         <input-copy v-if="currentStep === 6" class="w-100" size="sm" :value="onionAddress"></input-copy>
 
-        <div class="text-center br-4" v-show="currentStep === 7">
-          <div class="bg-white p-3 rounded">
+        <div v-show="currentStep === 7">
+          <div class="text-center bg-white p-3 rounded">
             <small
               class="d-block text-muted text-small text-center mb-3"
             >By clicking next, I agree that:</small>
