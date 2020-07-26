@@ -130,7 +130,7 @@ export default {
       steps: [
         {
           heading: "welcome to umbrel",
-          text: "First things first — let's make your Umbrel yours."
+          text: "Your journey to become bitcoin starts now."
         },
         {
           heading: "what is your name?",
@@ -153,7 +153,7 @@ export default {
         {
           heading: "note down your secret words",
           text:
-            'Remember, there is no "forget password" button. You will need these 24 words to recover your Umbrel node.'
+            'Remember, there is no "forget password" button. You will need these 24 words to recover your Umbrel.'
         },
         {
           heading: "access from anywhere",
