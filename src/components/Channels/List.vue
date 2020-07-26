@@ -7,11 +7,7 @@
         v-if="channels.length === 0"
       >
         <p class="text-muted w-75 text-center">
-          🎉 We're opening payment channels to our first few users for free! Simply tweet your
-          <a
-            href="#"
-            @click.prevent="$emit('showConnectionUri')"
-          >connection uri</a> with a screenshot of your Umbrel's dashboard and tag us
+          🎉 We're opening payment channels to our first few users for free! Simply tweet a screenshot of your Umbrel's dashboard and tag us
           <a
             href="https://twitter.com/getumbrel"
             target="_blank"
