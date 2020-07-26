@@ -45,15 +45,21 @@
 
         <input-copy v-if="currentStep === 6" class="w-100" size="sm" :value="onionAddress"></input-copy>
 
-        <div v-show="currentStep === 7">
-          <b-alert class="text-center" variant="light" show>
-            <small>
-              By clicking next, you agree that we're not responsible for any lost funds while using your Umbrel.
-              Lightning Network and Umbrel are both experimental technology. We have taken strong measures to protect
-              your funds by securing your Umbrel, but we cannot mitigate all risks since Lightning wallets are hot wallets
-              which are meant to be online.
-            </small>
-          </b-alert>
+        <div class="text-center br-4" v-show="currentStep === 7">
+          <div class="bg-white p-3 rounded">
+            <small
+              class="d-block text-muted text-small text-center mb-3"
+            >By clicking next, I agree that:</small>
+            <span class="d-block text-muted text-small mb-1">
+              <b-icon icon="check-circle-fill" variant="success" class="mr-1"></b-icon>Umbrel is in beta and should not be considered secure
+            </span>
+            <span class="d-block text-muted text-small mb-1">
+              <b-icon icon="check-circle-fill" variant="success" class="mr-1"></b-icon>I should not put more funds on my Umbrel than I'm prepared to lose
+            </span>
+            <span class="d-block text-muted text-small mb-1">
+              <b-icon icon="check-circle-fill" variant="success" class="mr-1"></b-icon>Craig Wright is a fraud
+            </span>
+          </div>
         </div>
 
         <!-- <p class="text-danger text-left align-self-start mt-1">
@@ -120,7 +126,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
-      currentStep: 0,
+      currentStep: 7,
       steps: [
         {
           heading: "welcome to umbrel",
