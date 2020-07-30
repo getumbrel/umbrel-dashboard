@@ -116,10 +116,6 @@ const API = {
       } finally {
         responsePending[url] = false; // eslint-disable-line require-atomic-updates
       }
-    } else {
-      console.warn(
-        `Warning: A request to ${url} is already in progress. Duplicate connection skipped.`
-      );
     }
 
     return response;
@@ -218,10 +214,6 @@ const API = {
       } finally {
         responsePending[url] = false; // eslint-disable-line require-atomic-updates
       }
-    } else {
-      console.warn(
-        `Warning: A request to ${url} is already in progress. Duplicate connection skipped.`
-      );
     }
 
     return response;
