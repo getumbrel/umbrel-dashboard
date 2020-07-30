@@ -327,7 +327,21 @@ export default {
         return this.$router.push("/dashboard");
       }
 
-      return (this.currentStep = this.currentStep + 1);
+      this.currentStep = this.currentStep + 1;
+
+      // if (this.currentStep === 1) {
+      //   window.setTimeout(() => {
+      //     this.$refs.name.focus();
+      //   }, 100);
+      // } else if (this.currentStep === 2) {
+      //   window.setTimeout(() => {
+      //     this.$refs.password.focus();
+      //   }, 100);
+      // } else if (this.currentStep === 1) {
+      //   window.setTimeout(() => {
+      //     this.$refs.confirmPassword.focus();
+      //   }, 100);
+      // }
     },
     prevStep() {
       this.currentStep = this.currentStep - 1;
@@ -347,6 +361,16 @@ export default {
 
     //generate a new seed on load
     this.$store.dispatch("user/getSeed");
+
+    // Go to next step if user presses enter
+    document.addEventListener("keypress", e => {
+      if (e.key === "Enter") {
+        console.log("enter");
+        if (this.isStepValid && !this.isRegistering) {
+          this.nextStep();
+        }
+      }
+    });
   },
   beforeDestroy() {
     window.clearInterval(this.lndUnlockInterval);
