@@ -178,7 +178,7 @@ const actions = {
     );
 
     if (data) {
-      const channels = data.channels;
+      const channels = data.channels || [];
       dispatch("getChannels", channels);
 
       const lightningInfo = data.lightningInfo;
