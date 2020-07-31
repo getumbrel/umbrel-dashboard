@@ -143,9 +143,12 @@ const actions = {
       const { version } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
       if (!version) {
         // System shut down succesfully
-        commit("setShuttingDown", false);
-        commit("setHasShutDown", true);
-        return window.clearInterval(pollIfDown);
+        window.clearInterval(pollIfDown);
+        // Optimistically give another 30s to the system to shut down
+        return window.setTimeout(() => {
+          commit("setShuttingDown", false);
+          commit("setHasShutDown", true);
+        }, 30 * 1000);
       }
     }, 2000);
   },
