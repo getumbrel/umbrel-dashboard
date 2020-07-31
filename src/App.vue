@@ -4,12 +4,23 @@
       <loading v-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
           <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
-          <b-alert class="update-alert" variant="warning" show>
-            <small>Please do not turn off or disconnect the device from the internet while the update is in progress</small>
+          <b-alert class="system-alert" variant="warning" show>
+            <small>Please do not turn off or disconnect your Umbrel from the internet while the update is in progress</small>
           </b-alert>
         </div>
       </loading>
-      <shutdown v-else-if="hasShutdown"></shutdown>
+      <shutdown
+        v-else-if="hasShutdown || shuttingDown || rebooting"
+        :hasShutdown="hasShutdown"
+        :shuttingDown="shuttingDown"
+        :rebooting="rebooting"
+      >
+        <div class="text-center" v-if="shuttingDown || rebooting">
+          <b-alert class="system-alert" variant="warning" show>
+            <small>Please do not turn off or disconnect your Umbrel from the internet while it is {{ shuttingDown ? 'shutting down' : 'rebooting'}}</small>
+          </b-alert>
+        </div>
+      </shutdown>
       <loading v-else-if="loading" :progress="loadingProgress">
         <small class="text-muted w-75 text-center">{{ loadingText }}</small>
       </loading>
@@ -42,6 +53,8 @@ export default {
   computed: {
     ...mapState({
       hasShutdown: state => state.system.hasShutdown,
+      shuttingDown: state => state.system.shuttingDown,
+      rebooting: state => state.system.rebooting,
       isManagerApiOperational: state => state.system.managerApi.operational,
       isApiOperational: state => state.system.api.operational,
       isBitcoinOperational: state => state.bitcoin.operational,
@@ -241,7 +254,7 @@ export default {
   // filter: blur(70px);
 }
 
-.update-alert {
+.system-alert {
   position: absolute;
   bottom: 20px;
   left: 50%;

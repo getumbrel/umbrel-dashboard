@@ -1,5 +1,4 @@
 import API from "@/helpers/api";
-import delay from "@/helpers/delay";
 
 // Initial state
 const state = () => ({
@@ -139,12 +138,16 @@ const actions = {
 
     commit("setShuttingDown", true);
 
-    // TODO: We could poll the API until it becomes unresponsive
-    // to see when shutdown has completed.
-    delay(3000).then(() => {
-      commit("setShuttingDown", false);
-      commit("setHasShutDown", true);
-    });
+    // Poll to check if system has shut down
+    const pollIfDown = window.setInterval(async () => {
+      const { version } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
+      if (!version) {
+        // System shut down succesfully
+        commit("setShuttingDown", false);
+        commit("setHasShutDown", true);
+        return window.clearInterval(pollIfDown);
+      }
+    }, 2000);
   },
   async reboot({ commit }) {
 
@@ -159,12 +162,28 @@ const actions = {
 
     commit("setRebooting", true);
 
-    // TODO: We could poll the API until it becomes unresponsive
-    // and then responsive again to see when shutdown has completed.
-    delay(60000).then(() => {
-      commit("setRebooting", false);
-      commit("setHasRebooted", true);
-    });
+    let pollIfUp;
+
+    // Poll to check if system has shut down
+    const pollIfDown = window.setInterval(async () => {
+      const { version } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
+      if (!version) {
+        // System shut down succesfully
+        window.clearInterval(pollIfDown);
+
+        // Now we'll poll to check if it's up
+        pollIfUp = window.setInterval(async () => {
+          const { version } = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
+          if (version) {
+            // System is online again
+            commit("setRebooting", false);
+            commit("setHasRebooted", true);
+            return window.clearInterval(pollIfUp);
+          }
+        }, 2000);
+        return;
+      }
+    }, 2000);
   }
 };
 
