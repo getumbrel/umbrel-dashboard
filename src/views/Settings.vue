@@ -125,21 +125,13 @@
               <b-button variant="outline-danger" size="sm" @click="rebootPrompt">Reboot</b-button>
               <b-modal
                 ref="reboot-modal"
-                :title="hasRebooted ? 'Successfully rebooted' : 'Are you sure?'"
+                title="Are you sure?"
                 no-close-on-backdrop
                 no-close-on-esc
                 @ok="reboot($event)"
-                :cancel-disabled="isRebooting || hasRebooted"
-                :ok-disabled="isRebooting"
               >
-                <div v-if="!isRebooting && !hasRebooted">
-                  <p>Your Umbrel will be unresponsive untill it's back online.</p>
-                </div>
-                <div v-else>
-                  <p v-if="isRebooting">
-                    <b-spinner class="mr-1" small label="Small Spinner"></b-spinner>Your Umbrel is rebooting.
-                  </p>
-                  <p v-else>Your Umbrel is back online!</p>
+                <div>
+                  <p>Don't forget to login to your dashboard after the restart is complete (required only once after a restart for your Umbrel to be online).</p>
                 </div>
               </b-modal>
             </div>
@@ -213,9 +205,7 @@ export default {
       version: state => state.system.version,
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
-      updateStatus: state => state.system.updateStatus,
-      isRebooting: state => state.system.rebooting,
-      hasRebooted: state => state.system.hasRebooted
+      updateStatus: state => state.system.updateStatus
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -331,7 +321,7 @@ export default {
     async shutdownPrompt() {
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
-        "Your Umbrel will be unresponsive untill you can get physical access to the device to power it back on.",
+        "Your lightning wallet will not be able to receive any payments while your Umbrel is offline. Also, don't forget to login to your dashboard after you restart (required only once after a restart for your Umbrel to be online).",
         { title: "Are you sure?" }
       );
       if (!approved) {
@@ -347,9 +337,6 @@ export default {
       };
       try {
         await this.$store.dispatch("system/shutdown");
-        toastText = "System is shutting down";
-        toastOptions.title = "Your Umbrel will become unresponsive soon";
-        toastOptions.variant = "warning";
       } catch (e) {
         toastText = "Shutdown failed";
         toastOptions.title =
