@@ -136,6 +136,17 @@
               </b-modal>
             </div>
           </div>
+          <div class="pt-2">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Logs</span>
+                <small class="d-block text-muted">View system logs in real-time</small>
+              </div>
+              <a class="card-link mr-2" href="/logs" target="_blank">
+                <small class="text-uppercase">View</small>
+              </a>
+            </div>
+          </div>
           <div class="px-4 pb-4">
             <div class="w-100 d-flex justify-content-between mb-2">
               <span class="align-self-end">Umbrel Version</span>
