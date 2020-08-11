@@ -330,6 +330,17 @@ export default {
       }
     },
     async shutdownPrompt() {
+      // disable on testnet
+      if (window.location.hostname === "testnet.getumbrel.com") {
+        return this.$bvToast.toast('y u try to do dis on testnet :"(', {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
+
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
         "Your lightning wallet will not be able to receive any payments while your Umbrel is offline. Also, don't forget to login to your dashboard after you restart (required only once after a restart for your Umbrel to be online).",
@@ -357,6 +368,16 @@ export default {
       this.$bvToast.toast(toastText, toastOptions);
     },
     rebootPrompt() {
+      // disable on testnet
+      if (window.location.hostname === "testnet.getumbrel.com") {
+        return this.$bvToast.toast('y u try to do dis on testnet :"(', {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
       // Reset any cached hasRebooted value from previous reboot
       this.$store.commit("system/setHasRebooted", false);
       this.$refs["reboot-modal"].show();
