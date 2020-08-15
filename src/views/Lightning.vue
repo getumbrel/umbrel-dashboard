@@ -108,7 +108,7 @@
                     v-else
                   ></span>
 
-                  <h5 class="mt-2">connection uri</h5>
+                  <h5 class="mt-2">peer address</h5>
                   <div v-if="uris.length">
                     <input-copy class="mb-2" size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
                   </div>
