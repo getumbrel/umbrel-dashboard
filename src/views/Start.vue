@@ -69,7 +69,7 @@
           <a
             href="#"
             v-b-tooltip.hover.bottom
-            title="Umbrel uses neutrino while Bitcoin Core is synching, and automatically switches to Bitcoin Core once the sync is complete"
+            title="Umbrel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synched"
           >
             <small>
               <b-icon icon="exclamation-circle-fill" variant="primary" class="mr-1"></b-icon>How?
@@ -141,7 +141,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
-      currentStep: 8,
+      currentStep: 0,
       steps: [
         {
           heading: "welcome to umbrel",
