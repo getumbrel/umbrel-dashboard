@@ -62,6 +62,21 @@
           </div>
         </div>
 
+        <div class="text-center" v-show="currentStep === 8">
+          <p
+            class="text-muted"
+          >But you don't have to wait for the sync to complete... You can start using Umbrel right away!</p>
+          <a
+            href="#"
+            v-b-tooltip.hover.bottom
+            title="Umbrel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synched"
+          >
+            <small>
+              <b-icon icon="exclamation-circle-fill" variant="primary" class="mr-1"></b-icon>How?
+            </small>
+          </a>
+        </div>
+
         <!-- <p class="text-danger text-left align-self-start mt-1">
           <small>{{ errorMessage }}</small>
         </p>-->
