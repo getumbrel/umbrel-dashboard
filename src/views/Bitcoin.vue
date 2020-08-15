@@ -23,7 +23,7 @@
             <span class="d-block text-muted">{{ version ? `v${version}` : "..." }}</span>
           </div>
         </div>
-        <div>
+        <!-- <div>
           <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
             <template v-slot:button-content>
               <svg
@@ -58,7 +58,7 @@
             <b-dropdown-divider />
             <b-dropdown-item variant="danger" href="#" disabled>Stop Bitcoin Core</b-dropdown-item>
           </b-dropdown>
-        </div>
+        </div>-->
       </div>
     </div>
     <b-row class="row-eq-height">
@@ -67,9 +67,9 @@
       </b-col>
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="Blockchain" :loading="syncPercent !== 100 || blocks.length === 0">
-          <template v-slot:menu>
+          <!-- <template v-slot:menu>
             <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
-          </template>
+          </template>-->
           <div class>
             <div class="px-3 px-lg-4 mb-3">
               <div class="w-100 d-flex justify-content-between mb-2">
