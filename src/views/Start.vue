@@ -87,15 +87,8 @@
           @click="nextStep"
           :disabled="!isStepValid || isRegistering"
           class="mt-3 mx-auto d-block px-4"
-        >
-          <b-spinner
-            small
-            style="vertical-align: middle"
-            class="mr-1"
-            v-if="currentStep === 8 && !unlocked"
-          ></b-spinner>
-          {{ nextButtonText }}
-        </b-button>
+          :class="{ 'loading-fade-blink': currentStep === 8 && !unlocked }"
+        >{{ nextButtonText }}</b-button>
         <b-button
           variant="link"
           size="sm"
@@ -390,5 +383,18 @@ export default {
   left: 0;
   border-radius: 0;
   background: transparent;
+}
+.loading-fade-blink {
+  animation: loadingFadeBlink 1s infinite linear;
+}
+
+@keyframes loadingFadeBlink {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 </style>
