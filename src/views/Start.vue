@@ -126,7 +126,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
-      currentStep: 7,
+      currentStep: 0,
       steps: [
         {
           heading: "welcome to umbrel",
