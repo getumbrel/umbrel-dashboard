@@ -51,13 +51,13 @@
               class="d-block text-muted text-small text-center mb-3"
             >By clicking next, I agree that:</small>
             <span class="d-block text-muted text-small mb-1">
-              <b-icon icon="check-circle-fill" variant="success" class="mr-1"></b-icon>Umbrel is in beta and should not be considered secure
+              <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>Umbrel is in beta and should not be considered secure
             </span>
             <span class="d-block text-muted text-small mb-1">
-              <b-icon icon="check-circle-fill" variant="success" class="mr-1"></b-icon>I should not put more funds on my Umbrel than I'm prepared to lose
+              <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>I should not put more funds on my Umbrel than I'm prepared to lose
             </span>
             <span class="d-block text-muted text-small mb-1">
-              <b-icon icon="check-circle-fill" variant="success" class="mr-1"></b-icon>Craig Wright is a fraud
+              <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>Craig Wright is a fraud
             </span>
           </div>
         </div>
@@ -126,7 +126,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
-      currentStep: 0,
+      currentStep: 7,
       steps: [
         {
           heading: "welcome to umbrel",
