@@ -70,14 +70,7 @@
           <b-modal id="node-info-modal" ref="node-info-modal" size="lg" centered hide-footer>
             <template v-slot:modal-header="{ close }">
               <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-                <h3 class="text-lowercase">
-                  <span v-if="alias">{{ alias }}</span>
-                  <span
-                    class="loading-placeholder loading-placeholder-lg"
-                    style="width: 240px;"
-                    v-else
-                  ></span>
-                </h3>
+                <h3 class="text-lowercase">Node information</h3>
                 <!-- Emulate built in modal header close button action -->
                 <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
                   <svg
