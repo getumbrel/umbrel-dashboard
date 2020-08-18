@@ -38,7 +38,7 @@
                   <div class="blockchain-block-icon-bg"></div>
                 </div>
                 <div class="align-self-center">
-                  <h6 class="mb-1 font-weight-normal">Block {{ block.height.toLocaleString() }},456</h6>
+                  <h6 class="mb-1 font-weight-normal">Block {{ block.height.toLocaleString() }}</h6>
                   <small class="text-muted" v-if="block.numTransactions">
                     {{
                     block.numTransactions.toLocaleString()
