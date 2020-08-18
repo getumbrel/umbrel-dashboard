@@ -365,6 +365,7 @@ export default {
     width: 100%;
     height: 100%;
     background: #fff;
+    min-width: 80px;
     opacity: 0;
   }
   &:before {
