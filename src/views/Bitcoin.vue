@@ -220,6 +220,7 @@ export default {
     this.$store.dispatch("bitcoin/getVersion");
     this.fetchStats();
     this.interval = window.setInterval(this.fetchStats, 5000);
+    this.$store.dispatch("bitcoin/getHiddenServiceUrl");
   },
   beforeDestroy() {
     window.clearInterval(this.interval);

@@ -220,6 +220,14 @@ const actions = {
     }
   },
 
+  async getHiddenServiceUrl({ commit }) {
+    const address = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-p2p-hidden-service`
+    );
+    console.log(address);
+    commit("onionAddress", address);
+  },
+
   async getSync({ commit, state }) {
     if (state.operational) {
       const sync = await API.get(
