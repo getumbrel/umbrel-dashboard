@@ -224,8 +224,11 @@ const actions = {
     const address = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-p2p-hidden-service`
     );
-    console.log(address);
-    commit("onionAddress", address);
+    if (address) {
+      commit("onionAddress", address);
+    } else {
+      commit("onionAddress", "Couldn't get P2P address")
+    }
   },
 
   async getSync({ commit, state }) {
