@@ -227,7 +227,7 @@
                   class="mt-2"
                   variant="primary"
                   size="sm"
-                  @click="startUpdate"
+                  @click.prevent="confirmUpdate"
                   :disabled="isUpdating"
                 >Install now</b-button>
               </div>
@@ -359,35 +359,13 @@ export default {
       this.newPassword = "";
       this.confirmNewPassword = "";
     },
+    confirmUpdate() {
+      this.$store.dispatch("system/confirmUpdate");
+    },
     async checkForUpdate() {
       this.isCheckingForUpdate = true;
       await this.$store.dispatch("system/getAvailableUpdate");
       this.isCheckingForUpdate = false;
-    },
-    async startUpdate() {
-      try {
-        await API.post(
-          `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update`,
-          {}
-        );
-        this.isUpdating = true;
-        // poll update status every 2s until the update process begins
-        // because after it's updated, the loading view will take over
-        this.pollUpdateStatus = window.setInterval(async () => {
-          await this.$store.dispatch("system/getUpdateStatus");
-          if (this.updateStatus.state === "installing") {
-            window.clearInterval(this.pollUpdateStatus);
-          }
-        }, 2 * 1000);
-      } catch (error) {
-        this.$bvToast.toast(`Unable to start the update process`, {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right"
-        });
-      }
     },
     async shutdownPrompt() {
       // disable on testnet
