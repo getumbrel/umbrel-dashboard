@@ -13,6 +13,7 @@ const state = () => ({
     progress: 0, //progress of update installation
     description: ""
   },
+  showUpdateConfirmationModal: false,
   loading: true,
   rebooting: false,
   hasRebooted: false,
@@ -67,6 +68,9 @@ const mutations = {
   },
   setUpdateStatus(state, status) {
     state.updateStatus = status
+  },
+  setShowUpdateConfirmationModal(state, show) {
+    state.showUpdateConfirmationModal = show;
   }
 };
 
@@ -118,6 +122,12 @@ const actions = {
         notes: "",
       });
     }
+  },
+  hideUpdateConfirmationModal({ commit }) {
+    commit("setShowUpdateConfirmationModal", false);
+  },
+  confirmUpdate({ commit }) {
+    commit("setShowUpdateConfirmationModal", true);
   },
   async getUpdateStatus({ commit }) {
     const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`);
