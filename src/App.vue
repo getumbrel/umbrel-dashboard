@@ -5,7 +5,7 @@
         <div class="text-center">
           <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
           <b-alert class="system-alert" variant="warning" show>
-            <small>Please do not turn off or disconnect your Umbrel from the internet while the update is in progress</small>
+            <small>Please do not refresh this page or turn off your Umbrel while the update is in progress</small>
           </b-alert>
         </div>
       </loading>
@@ -17,7 +17,7 @@
       >
         <div class="text-center" v-if="shuttingDown || rebooting">
           <b-alert class="system-alert" variant="warning" show>
-            <small>Please do not turn off or disconnect your Umbrel from the internet while it is {{ shuttingDown ? 'shutting down' : 'rebooting'}}</small>
+            <small>Please do not refresh this page or turn off your Umbrel while it is {{ shuttingDown ? 'shutting down' : 'rebooting'}}</small>
           </b-alert>
         </div>
       </shutdown>
