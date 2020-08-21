@@ -161,7 +161,7 @@ export default {
         {
           heading: "note down your secret words",
           text:
-            'Remember, there is no "forget password" button. You will need these 24 words to recover your Umbrel.'
+            'Remember, there is no "forgot password" button. You will need these 24 words to recover your Umbrel.'
         },
         {
           heading: "access from anywhere",
