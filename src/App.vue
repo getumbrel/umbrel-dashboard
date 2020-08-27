@@ -84,7 +84,7 @@ export default {
 
       // First check if manager api is up
       if (this.loadingProgress <= 20) {
-        // this.loadingText = "Starting Manager...";
+        this.loadingText = "Loading Manager...";
         this.loadingProgress = 20;
         await this.$store.dispatch("system/getManagerApi");
         if (!this.isManagerApiOperational) {
@@ -96,7 +96,7 @@ export default {
 
       // Then check if middleware api is up
       if (this.loadingProgress <= 40) {
-        // this.loadingText = "Starting Middleware...";
+        this.loadingText = "Loading Middleware...";
         this.loadingProgress = 40;
         await this.$store.dispatch("system/getApi");
         if (!this.isApiOperational) {
@@ -108,7 +108,7 @@ export default {
 
       // Then check if btc is operational
       if (this.loadingProgress <= 60) {
-        // this.loadingText = "Starting Bitcoin Core...";
+        this.loadingText = "Loading Bitcoin Core...";
         this.loadingProgress = 60;
         await this.$store.dispatch("bitcoin/getStatus");
         if (!this.isBitcoinOperational) {
@@ -120,7 +120,7 @@ export default {
 
       // Then check if lnd is operational
       if (this.loadingProgress <= 80) {
-        // this.loadingText = "Starting LND...";
+        this.loadingText = "Loading LND...";
         this.loadingProgress = 80;
         await this.$store.dispatch("lightning/getStatus");
         if (!this.isLndOperational) {
