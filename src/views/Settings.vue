@@ -97,9 +97,12 @@
             </div>
             <div class="px-3 px-lg-4 mb-4">
               <div class="d-flex justify-content-between w-100 mb-3">
-                <div>
+                <div class="w-75">
                   <span class="d-block">Remote Access</span>
-                  <small class="d-block" style="opacity: 0.4">Remotely access your Umbrel on Tor</small>
+                  <small
+                    class="d-block"
+                    style="opacity: 0.4"
+                  >Remotely access your Umbrel via Tor Browser on the following URL</small>
                 </div>
                 <toggle-switch
                   class="align-self-center"
