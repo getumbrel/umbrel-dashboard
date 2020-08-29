@@ -194,11 +194,11 @@
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
-                <span class="d-block">Reboot</span>
-                <small class="d-block" style="opacity: 0.4">Reboot your Umbrel</small>
+                <span class="d-block">Restart</span>
+                <small class="d-block" style="opacity: 0.4">Restart your Umbrel</small>
               </div>
 
-              <b-button variant="outline-danger" size="sm" @click="rebootPrompt">Reboot</b-button>
+              <b-button variant="outline-danger" size="sm" @click="rebootPrompt">Restart</b-button>
               <b-modal
                 ref="reboot-modal"
                 title="Are you sure?"
