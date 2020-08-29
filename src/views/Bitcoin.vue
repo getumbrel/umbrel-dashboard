@@ -92,7 +92,7 @@
           <!-- Pubkey QR Code -->
           <qr-code :value="onionAddress" :size="180" class="qr-image" showLogo></qr-code>
           <div class="w-100 align-self-center ml-3 ml-sm-4">
-            <p>You can connect your wallet to Bitcoin Core running on your Umbrel on the following address</p>
+            <p>Connect your wallet to Bitcoin Core using the following address</p>
             <input-copy size="sm" :value="onionAddress" v-if="onionAddress"></input-copy>
             <span
               class="loading-placeholder loading-placeholder-lg mt-1"
