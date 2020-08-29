@@ -167,6 +167,23 @@
         <card-widget header="System" :loading="isCheckingForUpdate || isUpdating">
           <div class="pt-2">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div class="w-75">
+                <span class="d-block">Backup</span>
+                <small class="d-block">
+                  <span
+                    style="opacity: 0.4"
+                  >Automatically encrypt and backup data such as your payment channels</span>
+                </small>
+              </div>
+              <toggle-switch
+                class="align-self-center"
+                disabled
+                tooltip="Sorry, backups cannot be disabled for now"
+              ></toggle-switch>
+            </div>
+          </div>
+          <div class="pt-0">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Shutdown</span>
                 <small class="d-block text-muted">Power off your Umbrel</small>
@@ -174,7 +191,7 @@
               <b-button variant="outline-danger" size="sm" @click="shutdownPrompt">Shutdown</b-button>
             </div>
           </div>
-          <div class="pt-2">
+          <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Reboot</span>
@@ -195,7 +212,7 @@
               </b-modal>
             </div>
           </div>
-          <div class="pt-2">
+          <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Logs</span>
