@@ -186,7 +186,7 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Shutdown</span>
-                <small class="d-block text-muted">Power off your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4">Power off your Umbrel</small>
               </div>
               <b-button variant="outline-danger" size="sm" @click="shutdownPrompt">Shutdown</b-button>
             </div>
@@ -195,7 +195,7 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Reboot</span>
-                <small class="d-block text-muted">Reboot your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4">Reboot your Umbrel</small>
               </div>
 
               <b-button variant="outline-danger" size="sm" @click="rebootPrompt">Reboot</b-button>
@@ -216,7 +216,7 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Logs</span>
-                <small class="d-block text-muted">View system logs in real-time</small>
+                <small class="d-block" style="opacity: 0.4">View system logs in real-time</small>
               </div>
               <a class="card-link mr-2" href="/logs" target="_blank">
                 <small class="text-uppercase">View</small>
@@ -231,7 +231,7 @@
             <div v-show="!isCheckingForUpdate">
               <span v-show="!availableUpdate.version">
                 <b-icon icon="check-circle-fill" variant="success"></b-icon>
-                <small class="text-muted ml-1">Your Umbrel is on the latest version</small>
+                <small class="ml-1" style="opacity: 0.4">Your Umbrel is on the latest version</small>
               </span>
               <div v-show="availableUpdate.version">
                 <span class="d-block">
