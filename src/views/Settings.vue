@@ -102,7 +102,7 @@
                   <small
                     class="d-block"
                     style="opacity: 0.4"
-                  >Remotely access your Umbrel Dashboard via Tor Browser on the following URL</small>
+                  >Remotely access your Umbrel via Tor Browser on the following URL</small>
                 </div>
                 <toggle-switch
                   class="align-self-center"
