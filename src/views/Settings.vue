@@ -173,9 +173,7 @@
               <div class="w-75">
                 <span class="d-block">Backup</span>
                 <small class="d-block">
-                  <span
-                    style="opacity: 0.4"
-                  >Automatically encrypt and backup data such as your payment channels</span>
+                  <span style="opacity: 0.4">Automatically encrypt and backup your payment channels</span>
                 </small>
               </div>
               <toggle-switch
