@@ -173,13 +173,18 @@
               <div class="w-75">
                 <span class="d-block">Backup</span>
                 <small class="d-block">
-                  <span style="opacity: 0.4">Automatically encrypt and backup your payment channels</span>
+                  <span style="opacity: 0.4">Automatically encrypt and backup your payment channels.</span>
+                  &nbsp;
+                  <a
+                    href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
+                    target="blank"
+                  >Learn more</a>
                 </small>
               </div>
               <toggle-switch
                 class="align-self-center"
                 disabled
-                tooltip="Sorry, backups cannot be disabled for now"
+                tooltip="Sorry, backup cannot be disabled for now"
               ></toggle-switch>
             </div>
           </div>
