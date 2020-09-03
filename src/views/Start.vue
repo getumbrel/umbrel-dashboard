@@ -69,7 +69,7 @@
           <a
             href="#"
             v-b-tooltip.hover.bottom
-            title="Umbrel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synched"
+            title="Umbrel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synced"
           >
             <small>
               <b-icon icon="exclamation-circle-fill" variant="primary" class="mr-1"></b-icon>How?
