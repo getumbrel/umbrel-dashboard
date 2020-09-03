@@ -162,7 +162,7 @@ const mutations = {
     for (const [speed, estimate] of Object.entries(fees)) {
       // If the API returned an error message
       if (estimate.code) {
-        state.fees[speed].total = "N/A";
+        state.fees[speed].total = 0;
         state.fees[speed].perByte = "N/A";
         state.fees[speed].error = {
           code: estimate.code,
