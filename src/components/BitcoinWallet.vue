@@ -614,7 +614,10 @@ export default {
 
       //in case going back from review withdrawal to edit withdrwal
       if (this.mode === "review-withdraw") {
-        return (this.mode = "withdraw");
+        // Clear any error
+        this.error = "";
+        this.mode = "withdraw";
+        return;
       }
 
       //reset state
@@ -700,8 +703,7 @@ export default {
         this.$store.dispatch("bitcoin/getBalance");
         this.$store.dispatch("bitcoin/getTransactions");
       } catch (error) {
-        this.error = error.reponse ? error.response.data : "Error sending BTC";
-        console.error("Error sending", error);
+        this.error = error.response.data || "Error sending BTC";
       }
       this.loading = false;
       this.withdraw.isWithdrawing = false;

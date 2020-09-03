@@ -127,6 +127,8 @@ export default {
   },
   methods: {
     selectFee(fee) {
+      // Remove any error shown due to fee
+      this.error = "";
       this.selectedFee = fee;
     },
     async openChannel() {
@@ -231,13 +233,22 @@ export default {
                 this.fee[speed].perByte = "N/A";
                 this.fee[speed].error = estimate.text;
                 this.fee[speed].sweepAmount = 0;
-                this.error = estimate.text;
               } else {
                 this.fee[speed].total = estimate.feeSat;
                 this.fee[speed].perByte = estimate.feerateSatPerByte;
                 this.fee[speed].sweepAmount = estimate.sweepAmount;
                 this.fee[speed].error = false;
               }
+            }
+
+            // all 4 fee result in error on incorrect peer address, funding amount etc.
+            // but we can't reliably pick the error on any of the those and show it
+            // since there's an edge case where if the error is due to low fee, it only
+            // is a part of the lower fee(s) keys. so we can reliably pick the highest fee's
+            // error text and show it
+
+            if (estimates.fast.text) {
+              this.error = estimates.fast.text;
             }
           }
         }
