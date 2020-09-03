@@ -248,7 +248,7 @@ export default {
             // error text and show it
             // https://github.com/getumbrel/umbrel-dashboard/issues/198
 
-            if (estimates.fast.text) {
+            if (estimates.fast && estimates.fast.text) {
               this.error = estimates.fast.text;
             }
           }
