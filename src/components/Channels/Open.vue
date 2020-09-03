@@ -241,11 +241,12 @@ export default {
               }
             }
 
-            // all 4 fee result in error on incorrect peer address, funding amount etc.
+            // All 4 fee result in error on incorrect peer address, funding amount etc.
             // but we can't reliably pick the error on any of the those and show it
             // since there's an edge case where if the error is due to low fee, it only
             // is a part of the lower fee(s) keys. so we can reliably pick the highest fee's
             // error text and show it
+            // https://github.com/getumbrel/umbrel-dashboard/issues/198
 
             if (estimates.fast.text) {
               this.error = estimates.fast.text;
