@@ -169,7 +169,7 @@
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="System" :loading="isCheckingForUpdate || isUpdating">
           <div class="pt-2">
-            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-1">
               <div class="w-75">
                 <span class="d-block">Backup</span>
                 <small class="d-block">
@@ -187,6 +187,20 @@
                 tooltip="Sorry, backup cannot be disabled for now"
               ></toggle-switch>
             </div>
+            <div class="px-3 px-lg-4 mb-4" v-if="backupStatus.status">
+              <b-icon
+                icon="x-circle-fill"
+                variant="danger"
+                class="mr-1"
+                v-if="backupStatus.status === 'failed'"
+              ></b-icon>
+              <small style="opacity: 0.4">
+                Last backup
+                <span v-if="backupStatus.status === 'failed'">failed</span>
+                at {{ getReadableTime(backupStatus.timestamp) }}
+              </small>
+            </div>
+            <div class="mb-4" v-else></div>
           </div>
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
@@ -230,7 +244,7 @@
             </div>
           </div>
           <div class="px-4 pb-4">
-            <div class="w-100 d-flex justify-content-between mb-2">
+            <div class="w-100 d-flex justify-content-between mb-1">
               <span class="align-self-end">Umbrel Version</span>
               <span class="font-weight-normal mb-0">{{ version }}</span>
             </div>
@@ -274,6 +288,8 @@
 
 <script>
 import { mapState } from "vuex";
+import moment from "moment";
+
 import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
@@ -299,7 +315,8 @@ export default {
       version: state => state.system.version,
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
-      updateStatus: state => state.system.updateStatus
+      updateStatus: state => state.system.updateStatus,
+      backupStatus: state => state.system.backupStatus
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -320,8 +337,12 @@ export default {
   created() {
     this.$store.dispatch("system/getOnionAddress");
     this.$store.dispatch("system/getVersion");
+    this.$store.dispatch("system/getBackupStatus");
   },
   methods: {
+    getReadableTime(timestamp) {
+      return moment(timestamp).format("MMM D, h:mm:ss a");
+    },
     async changePassword() {
       // disable on testnet
       if (window.location.hostname === "testnet.getumbrel.com") {
