@@ -13,6 +13,10 @@ const state = () => ({
     progress: 0, //progress of update installation
     description: ""
   },
+  backupStatus: {
+    status: "", //success, failed
+    timestamp: null
+  },
   showUpdateConfirmationModal: false,
   loading: true,
   rebooting: false,
@@ -67,7 +71,10 @@ const mutations = {
     state.availableUpdate = update;
   },
   setUpdateStatus(state, status) {
-    state.updateStatus = status
+    state.updateStatus = status;
+  },
+  setBackupStatus(state, status) {
+    state.backupStatus = status;
   },
   setShowUpdateConfirmationModal(state, show) {
     state.showUpdateConfirmationModal = show;
@@ -133,6 +140,12 @@ const actions = {
     const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/update-status`);
     if (status && status.progress) {
       commit("setUpdateStatus", status);
+    }
+  },
+  async getBackupStatus({ commit }) {
+    const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/backup-status`);
+    if (status && status.timestamp) {
+      commit("setBackupStatus", status);
     }
   },
   async shutdown({ commit }) {
