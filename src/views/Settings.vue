@@ -126,7 +126,12 @@
                 <small class="d-block" style="opacity: 0.4">Change the password of your Umbrel</small>
               </div>
 
-              <b-button variant="outline-primary" size="sm" v-b-modal.change-password-modal>Change</b-button>
+              <b-button
+                variant="outline-primary"
+                size="sm"
+                v-b-modal.change-password-modal
+                :disabled="isChangingPassword"
+              >Change</b-button>
 
               <b-modal id="change-password-modal" centered hide-footer>
                 <template v-slot:modal-header="{ close }">
