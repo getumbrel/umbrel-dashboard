@@ -59,7 +59,7 @@
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" @click.prevent="showNodeInfo">View info</b-dropdown-item>
+            <b-dropdown-item href="#" @click.prevent="showNodeInfo">Connect</b-dropdown-item>
             <b-dropdown-item href="/logs/?filter=umbrel+lnd" target="_blank">View logs</b-dropdown-item>
             <!-- <b-dropdown-divider /> -->
             <!-- <b-dropdown-item variant="danger" href="#" disabled>Stop LND</b-dropdown-item> -->
@@ -67,7 +67,7 @@
           <b-modal id="node-info-modal" ref="node-info-modal" size="lg" centered hide-footer>
             <template v-slot:modal-header="{ close }">
               <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-                <h3 class="text-lowercase">Node information</h3>
+                <h3 class="text-lowercase">peer address</h3>
                 <!-- Emulate built in modal header close button action -->
                 <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
                   <svg
@@ -92,15 +92,7 @@
                 <!-- Pubkey QR Code -->
                 <qr-code :value="pubkey" :size="180" class="qr-image" showLogo></qr-code>
                 <div class="w-100 align-self-center ml-3 ml-sm-4">
-                  <h5>public key</h5>
-                  <input-copy size="sm" :value="pubkey" v-if="pubkey"></input-copy>
-                  <span
-                    class="loading-placeholder loading-placeholder-lg mt-1"
-                    style="width: 100%;"
-                    v-else
-                  ></span>
-
-                  <h5 class="mt-2">peer address</h5>
+                  <p>Other Lightning nodes can open payment channels to your node on the following address</p>
                   <div v-if="uris.length">
                     <input-copy class="mb-2" size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
                   </div>
