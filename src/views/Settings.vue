@@ -280,7 +280,7 @@
               </b-modal>
             </div>
           </div>
-          <div class="px-4 pb-4">
+          <div class="px-3 px-lg-4 pb-4">
             <div class="w-100 d-flex justify-content-between mb-1">
               <span class="align-self-end">Umbrel Version</span>
               <span class="font-weight-normal mb-0">{{ version }}</span>
