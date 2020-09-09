@@ -33,6 +33,7 @@
             </svg>
           </template>
           <b-dropdown-item href="#" v-b-modal.seed-modal>View secret words</b-dropdown-item>
+          <b-dropdown-item href="/logs" target="_blank">View system logs</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -230,17 +231,6 @@
                   <p>Don't forget to login to your dashboard after the restart is complete (required only once after a restart for your Umbrel to be online).</p>
                 </div>
               </b-modal>
-            </div>
-          </div>
-          <div class="pt-0">
-            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
-              <div>
-                <span class="d-block">Logs</span>
-                <small class="d-block" style="opacity: 0.4">View system logs in real-time</small>
-              </div>
-              <a class="card-link mr-2" href="/logs" target="_blank">
-                <small class="text-uppercase">View</small>
-              </a>
             </div>
           </div>
           <div class="px-4 pb-4">
