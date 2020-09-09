@@ -92,6 +92,40 @@
       </b-col>
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="Account" :loading="isChangingPassword">
+          <div class="pt-2">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-1">
+              <div class="w-75">
+                <span class="d-block">Backup</span>
+                <small class="d-block">
+                  <span style="opacity: 0.4">Automatically encrypt and backup your payment channels.</span>
+                  &nbsp;
+                  <a
+                    href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
+                    target="blank"
+                  >Learn more</a>
+                </small>
+              </div>
+              <toggle-switch
+                class="align-self-center"
+                disabled
+                tooltip="Sorry, backup cannot be disabled for now"
+              ></toggle-switch>
+            </div>
+            <div class="px-3 px-lg-4 mb-4" v-if="backupStatus.status">
+              <b-icon
+                icon="x-circle-fill"
+                variant="danger"
+                class="mr-1"
+                v-if="backupStatus.status === 'failed'"
+              ></b-icon>
+              <small style="opacity: 0.4">
+                Last backup
+                <span v-if="backupStatus.status === 'failed'">failed</span>
+                at {{ getReadableTime(backupStatus.timestamp) }}
+              </small>
+            </div>
+            <div class="mb-4" v-else></div>
+          </div>
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
@@ -211,45 +245,12 @@
               </b-modal>
             </div>
           </div>
+          <div class="px-3 px-lg-4 py-2"></div>
         </card-widget>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
         <card-widget header="System" :loading="isCheckingForUpdate || isUpdating">
           <div class="pt-2">
-            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-1">
-              <div class="w-75">
-                <span class="d-block">Backup</span>
-                <small class="d-block">
-                  <span style="opacity: 0.4">Automatically encrypt and backup your payment channels.</span>
-                  &nbsp;
-                  <a
-                    href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
-                    target="blank"
-                  >Learn more</a>
-                </small>
-              </div>
-              <toggle-switch
-                class="align-self-center"
-                disabled
-                tooltip="Sorry, backup cannot be disabled for now"
-              ></toggle-switch>
-            </div>
-            <div class="px-3 px-lg-4 mb-4" v-if="backupStatus.status">
-              <b-icon
-                icon="x-circle-fill"
-                variant="danger"
-                class="mr-1"
-                v-if="backupStatus.status === 'failed'"
-              ></b-icon>
-              <small style="opacity: 0.4">
-                Last backup
-                <span v-if="backupStatus.status === 'failed'">failed</span>
-                at {{ getReadableTime(backupStatus.timestamp) }}
-              </small>
-            </div>
-            <div class="mb-4" v-else></div>
-          </div>
-          <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Shutdown</span>
