@@ -1013,13 +1013,15 @@ export default {
       } else if (this.unit === "btc") {
         this.receive.amount = btcToSats(val);
       }
+      console.log("NUMBER:", this.receive.amount);
     },
     unit: function(val) {
       if (val === "sats") {
-        this.receive.amount = Number(this.receive.amountInput);
+        this.receive.amountInput = btcToSats(this.receive.amountInput);
       } else if (val === "btc") {
-        this.receive.amount = btcToSats(this.receive.amountInput);
+        this.receive.amountInput = satsToBtc(this.receive.amountInput);
       }
+      console.log("STRING:", this.receive.amountInput);
     }
   },
   async created() {

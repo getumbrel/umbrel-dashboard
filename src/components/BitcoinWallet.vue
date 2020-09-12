@@ -733,9 +733,9 @@ export default {
     },
     unit: function(val) {
       if (val === "sats") {
-        this.withdraw.amount = Number(this.withdraw.amountInput);
+        this.withdraw.amountInput = btcToSats(this.withdraw.amountInput);
       } else if (val === "btc") {
-        this.withdraw.amount = btcToSats(this.withdraw.amountInput);
+        this.withdraw.amountInput = satsToBtc(this.withdraw.amountInput);
       }
       this.fetchWithdrawalFees();
     }

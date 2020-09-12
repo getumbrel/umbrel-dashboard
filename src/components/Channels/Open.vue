@@ -259,9 +259,9 @@ export default {
   watch: {
     unit: function(val) {
       if (val === "sats") {
-        this.fundingAmount = Number(this.fundingAmountInput);
+        this.fundingAmountInput = btcToSats(this.fundingAmountInput);
       } else if (val === "btc") {
-        this.fundingAmount = btcToSats(this.fundingAmountInput);
+        this.fundingAmountInput = satsToBtc(this.fundingAmountInput);
       }
       this.fetchFees();
     },
