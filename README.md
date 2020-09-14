@@ -4,6 +4,8 @@
 [![Docker Build](https://img.shields.io/github/workflow/status/getumbrel/umbrel-dashboard/Docker%20build%20on%20push?color=%235351FB)](https://github.com/getumbrel/umbrel-dashboard/actions?query=workflow%3A"Docker+build+on+push")
 [![Docker Pulls](https://img.shields.io/docker/pulls/getumbrel/dashboard?color=%235351FB)](https://hub.docker.com/repository/registry-1.docker.io/getumbrel/dashboard/tags?page=1)
 [![Chat](https://img.shields.io/badge/chat%20on-telegram-%235351FB)](https://t.me/getumbrel)
+[![Community Chat](https://img.shields.io/badge/community%20chat-telegram-%235351FB)](https://t.me/getumbrel)
+[![Developer Chat](https://img.shields.io/badge/dev%20chat-keybase-%235351FB)](https://keybase.io/team/getumbrel)
 
 [![Twitter](https://img.shields.io/twitter/follow/getumbrel?style=social)](https://twitter.com/getumbrel)
 [![Reddit](https://img.shields.io/reddit/subreddit-subscribers/getumbrel?label=Subscribe%20%2Fr%2Fgetumbrel&style=social)](https://reddit.com/r/getumbrel)
