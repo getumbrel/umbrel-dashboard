@@ -432,9 +432,9 @@ const actions = {
     commit("setChannelFocus", channel);
   },
 
-  async getLndConnectUrl({ commit }, type) {
+  async getLndConnectUrl({ commit }, { type, network }) {
     const url = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/lndconnect-url?type=${type}`
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/lndconnect-url?type=${type}&network=${network}`
     );
     if (url) {
       commit("setLndConnectUrl", url);
