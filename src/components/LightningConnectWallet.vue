@@ -17,15 +17,9 @@
         >lndconnect gRPC</b-form-select-option>
       </b-form-select-option-group>
     </b-form-select>
-    <div class="d-lg-flex align-items-center" v-if="lndConnectUrl">
+    <div class="d-lg-flex align-items-center" v-if="lndConnectUrl && selectedWallet.walletType">
       <!-- Pubkey QR Code -->
-      <qr-code
-        :value="lndConnectUrl"
-        :size="200"
-        level="M"
-        class="qr-image mb-3 mb-lg-0"
-        :showLogo="false"
-      ></qr-code>
+      <qr-code :value="lndConnectUrl" :size="200" level="M" class="qr-image mb-3 mb-lg-0" showLogo></qr-code>
       <div class="w-100 align-self-center ml-lg-3">
         <p
           class="text-center text-lg-left"
