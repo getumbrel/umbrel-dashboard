@@ -23,7 +23,7 @@
       <div class="w-100 align-self-center ml-lg-3">
         <p
           class="text-center text-lg-left"
-        >Connect to {{ selectedWallet.walletName }} using the following url or scan the QR code</p>
+        >Connect {{ selectedWallet.walletName }} to your Umbrel using the following url</p>
         <input-copy class="mb-2" size="sm" :value="lndConnectUrl"></input-copy>
       </div>
     </div>
