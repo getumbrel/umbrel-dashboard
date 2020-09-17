@@ -2,18 +2,14 @@
   <div class="qr-container">
     <!-- Popup umbrel logo in the middle of QR code -->
     <transition name="qr-logo-popup" appear>
-      <img
-        v-show="showLogo"
-        src="@/assets/umbrel-qr-icon.svg"
-        class="qr-logo"
-      />
+      <img v-show="showLogo" src="@/assets/umbrel-qr-icon.svg" class="qr-logo" />
     </transition>
 
     <!-- QR Code element -->
     <qrcode-vue
       :value="value"
       :size="size"
-      level="H"
+      :level="level"
       renderAs="svg"
       class="d-flex justify-content-center qr-image"
     ></qrcode-vue>
@@ -28,6 +24,10 @@ export default {
     size: {
       type: Number,
       default: 200
+    },
+    level: {
+      type: String,
+      default: "H"
     },
     value: String,
     showLogo: {
