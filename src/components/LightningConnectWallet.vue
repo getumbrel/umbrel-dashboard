@@ -17,11 +17,19 @@
         >lndconnect gRPC</b-form-select-option>
       </b-form-select-option-group>
     </b-form-select>
-    <div class="d-flex align-items-center" v-if="lndConnectUrl">
+    <div class="d-lg-flex align-items-center" v-if="lndConnectUrl">
       <!-- Pubkey QR Code -->
-      <qr-code :value="lndConnectUrl" :size="200" level="M" class="qr-image" :showLogo="false"></qr-code>
-      <div class="w-100 align-self-center ml-3 ml-sm-4">
-        <p>Connect to {{ selectedWallet.walletName }} using the following url or scan the QR code</p>
+      <qr-code
+        :value="lndConnectUrl"
+        :size="200"
+        level="M"
+        class="qr-image mb-3 mb-lg-0"
+        :showLogo="false"
+      ></qr-code>
+      <div class="w-100 align-self-center ml-lg-3">
+        <p
+          class="text-center text-lg-left"
+        >Connect to {{ selectedWallet.walletName }} using the following url or scan the QR code</p>
         <input-copy class="mb-2" size="sm" :value="lndConnectUrl"></input-copy>
       </div>
     </div>
