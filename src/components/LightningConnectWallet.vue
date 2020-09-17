@@ -7,7 +7,6 @@
       >Select your wallet</b-form-select-option>
       <b-form-select-option :value="{walletName: 'Zap Desktop', walletType: 'grpc'}">Zap Desktop</b-form-select-option>
       <b-form-select-option :value="{walletName: 'Zap Mobile', walletType: 'rest'}">Zap Mobile</b-form-select-option>
-      <b-form-select-option :value="{walletName: 'Zeus', walletType: 'rest'}">Zeus</b-form-select-option>
       <b-form-select-option-group label="Other">
         <b-form-select-option
           :value="{walletName: 'any other wallet that uses lndconnect REST', walletType: 'rest'}"
