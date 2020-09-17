@@ -306,13 +306,6 @@ export default {
     })
   },
   methods: {
-    showNodeInfo() {
-      this.$refs["node-info-modal"].show();
-    },
-    showConnectionInfo() {
-      this.$store.dispatch("lightning/getLndConnectUrl", "rest");
-      this.$refs["connect-info-modal"].show();
-    },
     async downloadChannelBackup() {
       await API.download(
         `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/download-channel-backup`,
