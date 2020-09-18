@@ -56,7 +56,6 @@ export default {
   },
   watch: {
     value: function() {
-      console.log("change!!!");
       this.isCopied = false;
     }
   }
