@@ -12,7 +12,7 @@
       <b-form-select-option :value="{walletName: 'Phoenix', type: 'electrum'}">Phoenix</b-form-select-option>
       <b-form-select-option-group label="Other">
         <b-form-select-option
-          :value="{walletName: 'any other wallet that can connect to Bitcoin Core\'s P2P port', type: 'p2p'}"
+:value="{walletName: 'any other wallet that supports Bitcoin Core\'s P2P port', type: 'p2p'}"
         >Bitcoin Core P2P</b-form-select-option>
         <b-form-select-option
           :value="{walletName: 'any other wallet that can connect to an Electrum server', type: 'electrum'}"
