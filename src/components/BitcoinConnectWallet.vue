@@ -15,7 +15,7 @@
 :value="{walletName: 'any other wallet that supports Bitcoin Core\'s P2P port', type: 'p2p'}"
         >Bitcoin Core P2P</b-form-select-option>
         <b-form-select-option
-          :value="{walletName: 'any other wallet that can connect to an Electrum server', type: 'electrum'}"
+:value="{walletName: 'any other wallet that supports an Electrum server', type: 'electrum'}"
         >Electrum Server</b-form-select-option>
       </b-form-select-option-group>
     </b-form-select>
