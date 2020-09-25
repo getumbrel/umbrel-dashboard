@@ -7,21 +7,33 @@
         >Select your wallet</b-form-select-option
       >
       <b-form-select-option
-        :value="{ walletName: 'Zap Desktop', type: 'grpc', network: 'tor' }"
+        :value="{ walletName: 'Zap Desktop', type: 'grpc', network: 'local' }"
         >Zap Desktop</b-form-select-option
       >
       <b-form-select-option
-        :value="{ walletName: 'Zap Mobile', type: 'rest', network: 'tor' }"
-        >Zap Mobile</b-form-select-option
+        :value="{ walletName: 'Zap on Android', type: 'grpc', network: 'tor' }"
+        >Zap Android</b-form-select-option
       >
       <b-form-select-option
-        :value="{ walletName: 'Zeus', type: 'rest', network: 'local' }"
-        >Zeus</b-form-select-option
+        :value="{ walletName: 'Zap on iOS', type: 'rest', network: 'tor' }"
+        >Zap iOS</b-form-select-option
+      >
+      <b-form-select-option
+        :value="{
+          walletName: 'Zeus on Android (using Orbot)',
+          type: 'rest',
+          network: 'tor'
+        }"
+        >Zeus Android</b-form-select-option
+      >
+      <b-form-select-option
+        :value="{ walletName: 'Zeus on iOS', type: 'rest', network: 'local' }"
+        >Zeus iOS</b-form-select-option
       >
       <b-form-select-option-group label="Other">
         <b-form-select-option
           :value="{
-            walletName: 'any other wallet that uses lndconnect gRPC',
+            walletName: 'any other wallet that supports lndconnect gRPC',
             type: 'grpc',
             network: 'local'
           }"
@@ -29,7 +41,8 @@
         >
         <b-form-select-option
           :value="{
-            walletName: 'any other wallet that uses lndconnect gRPC (Tor)',
+            walletName:
+              'any other wallet that supports lndconnect gRPC over Tor',
             type: 'grpc',
             network: 'tor'
           }"
@@ -37,7 +50,7 @@
         >
         <b-form-select-option
           :value="{
-            walletName: 'any other wallet that uses lndconnect REST',
+            walletName: 'any other wallet that supports lndconnect REST',
             type: 'rest',
             network: 'local'
           }"
@@ -45,7 +58,8 @@
         >
         <b-form-select-option
           :value="{
-            walletName: 'any other wallet that uses lndconnect REST (Tor)',
+            walletName:
+              'any other wallet that supports lndconnect REST over Tor',
             type: 'rest',
             network: 'tor'
           }"
