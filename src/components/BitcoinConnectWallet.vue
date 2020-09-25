@@ -5,11 +5,11 @@
         :value="{walletName: 'Select your wallet', type: null}"
         disabled
       >Select your wallet</b-form-select-option>
-      <b-form-select-option :value="{walletName: 'Wasabi', type: 'p2p'}">Wasabi</b-form-select-option>
-      <b-form-select-option :value="{walletName: 'Electrum', type: 'electrum'}">Electrum</b-form-select-option>
-      <b-form-select-option :value="{walletName: 'BlueWallet (on-chain only)', type: 'electrum'}">BlueWallet</b-form-select-option>
       <b-form-select-option :value="{walletName: 'Blockstream Green', type: 'p2p'}">Blockstream Green</b-form-select-option>
+      <b-form-select-option :value="{walletName: 'BlueWallet (on-chain only)', type: 'electrum'}">BlueWallet</b-form-select-option>
+      <b-form-select-option :value="{walletName: 'Electrum', type: 'electrum'}">Electrum</b-form-select-option>
       <b-form-select-option :value="{walletName: 'Phoenix', type: 'electrum'}">Phoenix</b-form-select-option>
+      <b-form-select-option :value="{walletName: 'Wasabi', type: 'p2p'}">Wasabi</b-form-select-option>
       <b-form-select-option-group label="Other">
         <b-form-select-option
 :value="{walletName: 'any other wallet that supports Bitcoin Core\'s P2P port', type: 'p2p'}"
