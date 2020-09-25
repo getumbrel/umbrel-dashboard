@@ -7,12 +7,12 @@
         >Select your wallet</b-form-select-option
       >
       <b-form-select-option
-        :value="{ walletName: 'Zap Desktop', type: 'grpcLocal' }"
-        >Zap Desktop</b-form-select-option
-      >
-      <b-form-select-option
         :value="{ walletName: 'Zap on Android', type: 'grpcTor' }"
         >Zap Android</b-form-select-option
+      >
+      <b-form-select-option
+        :value="{ walletName: 'Zap Desktop', type: 'grpcLocal' }"
+        >Zap Desktop</b-form-select-option
       >
       <b-form-select-option
         :value="{ walletName: 'Zap on iOS', type: 'restTor' }"
