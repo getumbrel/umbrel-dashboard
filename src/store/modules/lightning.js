@@ -31,7 +31,12 @@ const state = () => ({
   },
   alias: "",
   pubkey: "",
-  lndConnectUrl: "",
+  lndConnectUrls: {
+    restTor: "",
+    restLocal: "",
+    grpcTor: "",
+    grpcLocal: ""
+  },
   uris: [],
   numPendingChannels: 0,
   numActiveChannels: -1,
@@ -140,8 +145,8 @@ const mutations = {
     state.uris = uris;
   },
 
-  setLndConnectUrl(state, url) {
-    state.lndConnectUrl = url;
+  setLndConnectUrls(state, urls) {
+    state.lndConnectUrls = urls;
   }
 };
 
@@ -432,12 +437,12 @@ const actions = {
     commit("setChannelFocus", channel);
   },
 
-  async getLndConnectUrl({ commit }, { type, network }) {
-    const url = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/lndconnect-url?type=${type}&network=${network}`
+  async getLndConnectUrls({ commit }) {
+    const urls = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/lndconnect-urls`
     );
-    if (url) {
-      commit("setLndConnectUrl", url);
+    if (urls) {
+      commit("setLndConnectUrls", urls);
     }
   },
 
