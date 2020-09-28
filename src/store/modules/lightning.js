@@ -31,6 +31,12 @@ const state = () => ({
   },
   alias: "",
   pubkey: "",
+  lndConnectUrls: {
+    restTor: "",
+    restLocal: "",
+    grpcTor: "",
+    grpcLocal: ""
+  },
   uris: [],
   numPendingChannels: 0,
   numActiveChannels: -1,
@@ -137,6 +143,10 @@ const mutations = {
 
   setUris(state, uris) {
     state.uris = uris;
+  },
+
+  setLndConnectUrls(state, urls) {
+    state.lndConnectUrls = urls;
   }
 };
 
@@ -425,6 +435,15 @@ const actions = {
 
   selectChannel({ commit }, channel) {
     commit("setChannelFocus", channel);
+  },
+
+  async getLndConnectUrls({ commit }) {
+    const urls = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/lndconnect-urls`
+    );
+    if (urls) {
+      commit("setLndConnectUrls", urls);
+    }
   },
 
   async unlockWallet({ commit, state }, plainTextPassword) {
