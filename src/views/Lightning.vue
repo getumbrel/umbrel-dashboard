@@ -145,7 +145,7 @@
               <div class="d-flex align-items-center">
                 <!-- Pubkey QR Code -->
                 <qr-code
-                  :value="pubkey"
+                  :value="uris.length ? uris[0] : pubkey"
                   :size="180"
                   class="qr-image"
                   showLogo
