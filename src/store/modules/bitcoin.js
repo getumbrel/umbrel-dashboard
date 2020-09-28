@@ -8,6 +8,7 @@ const state = () => ({
   version: "",
   ipAddress: "",
   onionAddress: "",
+  electrumAddress: "",
   currentBlock: 0,
   chain: "",
   blockHeight: 0,
@@ -88,6 +89,10 @@ const mutations = {
 
   onionAddress(state, address) {
     state.onionAddress = address;
+  },
+
+  electrumAddress(state, address) {
+    state.electrumAddress = address;
   },
 
   syncStatus(state, sync) {
@@ -231,6 +236,17 @@ const actions = {
     }
   },
 
+  async getElectrumUrl({ commit }) {
+    const address = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/electrum-hidden-service`
+    );
+    if (address) {
+      commit("electrumAddress", address);
+    } else {
+      commit("electrumAddress", "Couldn't get Electrum address")
+    }
+  },
+
   async getSync({ commit, state }) {
     if (state.operational) {
       const sync = await API.get(
@@ -256,7 +272,7 @@ const actions = {
       }
 
       // Don't fetch blocks if < 3 blocks primarily because we don't have a UI
-      // ready for a blockchain with < 3 blocks 
+      // ready for a blockchain with < 3 blocks
       if (currentBlock < 3) {
         return;
       }
