@@ -22,15 +22,20 @@
             <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
             <span class="d-block text-muted">
               {{
-              this.lndVersion
-              ? `v${this.lndVersion.split(" commit")[0]}`
-              : "..."
+                this.lndVersion
+                  ? `v${this.lndVersion.split(" commit")[0]}`
+                  : "..."
               }}
             </span>
           </div>
         </div>
         <div>
-          <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
+          <b-dropdown
+            variant="link"
+            toggle-class="text-decoration-none p-0"
+            no-caret
+            right
+          >
             <template v-slot:button-content>
               <svg
                 width="18"
@@ -43,34 +48,46 @@
                   fill-rule="evenodd"
                   clip-rule="evenodd"
                   d="M2 4C3.10457 4 4 3.10457 4 2C4 0.89543 3.10457 0 2 0C0.89543 0 0 0.89543 0 2C0 3.10457 0.89543 4 2 4Z"
-                  fill="#C3C6D1"
+                  fill="#6c757d"
                 />
                 <path
                   fill-rule="evenodd"
                   clip-rule="evenodd"
                   d="M9 4C10.1046 4 11 3.10457 11 2C11 0.89543 10.1046 0 9 0C7.89543 0 7 0.89543 7 2C7 3.10457 7.89543 4 9 4Z"
-                  fill="#C3C6D1"
+                  fill="#6c757d"
                 />
                 <path
                   fill-rule="evenodd"
                   clip-rule="evenodd"
                   d="M16 4C17.1046 4 18 3.10457 18 2C18 0.89543 17.1046 0 16 0C14.8954 0 14 0.89543 14 2C14 3.10457 14.8954 4 16 4Z"
-                  fill="#C3C6D1"
+                  fill="#6c757d"
                 />
               </svg>
             </template>
-            <b-dropdown-item href="#" v-b-modal.connect-wallet-modal>Connect Wallet</b-dropdown-item>
-            <b-dropdown-item href="#" v-b-modal.peer-address-modal>Peer Address</b-dropdown-item>
-            <b-dropdown-item href="/logs/?filter=umbrel+lnd" target="_blank">View logs</b-dropdown-item>
+            <b-dropdown-item href="#" v-b-modal.connect-wallet-modal
+              >Connect Wallet</b-dropdown-item
+            >
+            <b-dropdown-item href="#" v-b-modal.peer-address-modal
+              >Peer Address</b-dropdown-item
+            >
+            <b-dropdown-item href="/logs/?filter=umbrel+lnd" target="_blank"
+              >View logs</b-dropdown-item
+            >
             <!-- <b-dropdown-divider /> -->
             <!-- <b-dropdown-item variant="danger" href="#" disabled>Stop LND</b-dropdown-item> -->
           </b-dropdown>
           <b-modal id="connect-wallet-modal" size="lg" centered hide-footer>
             <template v-slot:modal-header="{ close }">
-              <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+              <div
+                class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+              >
                 <h3 class="text-lowercase">connect wallet</h3>
                 <!-- Emulate built in modal header close button action -->
-                <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                <a
+                  href="#"
+                  class="align-self-center"
+                  v-on:click.stop.prevent="close"
+                >
                   <svg
                     width="18"
                     height="18"
@@ -89,16 +106,24 @@
               </div>
             </template>
             <div class="px-2 px-sm-3 pb-2 pb-sm-3">
-              <lightning-connect-wallet></lightning-connect-wallet>
+              <lightning-connect-wallet
+                :urls="lndConnectUrls"
+              ></lightning-connect-wallet>
             </div>
           </b-modal>
 
           <b-modal id="peer-address-modal" size="lg" centered hide-footer>
             <template v-slot:modal-header="{ close }">
-              <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+              <div
+                class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+              >
                 <h3 class="text-lowercase">peer address</h3>
                 <!-- Emulate built in modal header close button action -->
-                <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                <a
+                  href="#"
+                  class="align-self-center"
+                  v-on:click.stop.prevent="close"
+                >
                   <svg
                     width="18"
                     height="18"
@@ -119,11 +144,25 @@
             <div class="px-2 px-sm-3 pb-2 pb-sm-3">
               <div class="d-flex align-items-center">
                 <!-- Pubkey QR Code -->
-                <qr-code :value="pubkey" :size="180" class="qr-image" showLogo></qr-code>
+                <qr-code
+                  :value="pubkey"
+                  :size="180"
+                  class="qr-image"
+                  showLogo
+                ></qr-code>
                 <div class="w-100 align-self-center ml-3 ml-sm-4">
-                  <p>Other Lightning nodes can open payment channels to your node on the following address</p>
+                  <p>
+                    Other Lightning nodes can open payment channels to your node
+                    on the following address
+                  </p>
                   <div v-if="uris.length">
-                    <input-copy class="mb-2" size="sm" v-for="uri in uris" :value="uri" :key="uri"></input-copy>
+                    <input-copy
+                      class="mb-2"
+                      size="sm"
+                      v-for="uri in uris"
+                      :value="uri"
+                      :key="uri"
+                    ></input-copy>
                   </div>
                   <span
                     class="loading-placeholder loading-placeholder-lg mt-1"
@@ -148,19 +187,26 @@
               variant="outline-primary"
               size="sm"
               v-b-modal.open-channel-modal
-            >+ Open Channel</b-button>
+              >+ Open Channel</b-button
+            >
           </template>
           <template v-slot:menu>
             <b-dropdown-item
               href="#"
               @click.stop.prevent="downloadChannelBackup"
-            >Download Channel Backup</b-dropdown-item>
+              >Download Channel Backup</b-dropdown-item
+            >
           </template>
           <div class>
             <div class="px-3 px-lg-4">
               <b-row>
                 <b-col col cols="6" xl="3">
-                  <stat title="Connections" :value="numPeers" suffix="Peers" showNumericChange></stat>
+                  <stat
+                    title="Connections"
+                    :value="numPeers"
+                    suffix="Peers"
+                    showNumericChange
+                  ></stat>
                 </b-col>
                 <b-col col cols="6" xl="3">
                   <stat
@@ -199,10 +245,16 @@
               hide-footer
             >
               <template v-slot:modal-header="{ close }">
-                <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                <div
+                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+                >
                   <h2>open channel</h2>
                   <!-- Emulate built in modal header close button action -->
-                  <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                  <a
+                    href="#"
+                    class="align-self-center"
+                    v-on:click.stop.prevent="close"
+                  >
                     <svg
                       width="18"
                       height="18"
@@ -234,10 +286,16 @@
               hide-footer
             >
               <template v-slot:modal-header="{ close }">
-                <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                <div
+                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+                >
                   <h2>channel details</h2>
                   <!-- Emulate built in modal header close button action -->
-                  <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                  <a
+                    href="#"
+                    class="align-self-center"
+                    v-on:click.stop.prevent="close"
+                  >
                     <svg
                       width="18"
                       height="18"
@@ -256,7 +314,10 @@
                 </div>
               </template>
               <div class="px-2 px-sm-3 py-2">
-                <channel-manage :channel="selectedChannel" v-on:channelclose="onChannelClose"></channel-manage>
+                <channel-manage
+                  :channel="selectedChannel"
+                  v-on:channelclose="onChannelClose"
+                ></channel-manage>
               </div>
             </b-modal>
 
@@ -300,7 +361,7 @@ export default {
       alias: state => state.lightning.alias,
       pubkey: state => state.lightning.pubkey,
       uris: state => state.lightning.uris,
-      lndConnectUrl: state => state.lightning.lndConnectUrl,
+      lndConnectUrls: state => state.lightning.lndConnectUrls,
       channels: state => state.lightning.channels,
       unit: state => state.system.unit
     })
@@ -344,6 +405,7 @@ export default {
   },
   created() {
     this.fetchPageData();
+    this.$store.dispatch("lightning/getLndConnectUrls");
     this.interval = window.setInterval(this.fetchPageData, 10000);
   },
   beforeDestroy() {
