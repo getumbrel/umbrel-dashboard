@@ -9,6 +9,7 @@
       <b-form-select-option :value="{walletName: 'BlueWallet (on-chain only)', type: 'electrum'}">BlueWallet</b-form-select-option>
       <b-form-select-option :value="{walletName: 'Electrum', type: 'electrum'}">Electrum</b-form-select-option>
       <b-form-select-option :value="{walletName: 'Phoenix', type: 'electrum'}">Phoenix</b-form-select-option>
+      <b-form-select-option :value="{walletName: 'Sparrow', type: 'electrum'}">Sparrow</b-form-select-option>
       <b-form-select-option :value="{walletName: 'Wasabi', type: 'p2p'}">Wasabi</b-form-select-option>
       <b-form-select-option-group label="Other">
         <b-form-select-option
