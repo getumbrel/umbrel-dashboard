@@ -2,7 +2,7 @@
   <form @submit.prevent="openChannel">
     <b-row>
       <b-col col cols="12" sm="6">
-        <label class="sr-onlsy" for="peer-connection">Peer address</label>
+        <label class="sr-onlsy" for="peer-connection">Lightning address</label>
         <b-input
           id="peer-connection"
           class="mb-3 neu-input"
@@ -29,7 +29,10 @@
                 :disabled="isOpening || sweep"
               ></b-input>
               <b-input-group-append class="neu-input-group-append">
-                <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+                <sats-btc-switch
+                  class="align-self-center"
+                  size="sm"
+                ></sats-btc-switch>
               </b-input-group-append>
             </b-input-group>
           </div>
@@ -42,7 +45,8 @@
             <small
               class="text-muted d-block mb-0"
               :style="{ opacity: fundingAmount > 0 ? 1 : 0 }"
-            >~ {{ fundingAmount | satsToUSD }}</small>
+              >~ {{ fundingAmount | satsToUSD }}</small
+            >
           </div>
         </div>
 
@@ -55,15 +59,20 @@
         <fee-selector :fee="fee" class @change="selectFee"></fee-selector>
       </b-col>
       <b-col class="d-flex" col cols="12" sm="6">
-        <div class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end">
+        <div
+          class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end"
+        >
           <span>
-            <small class="text-danger align-self-center" v-if="error">{{ error }}</small>
+            <small class="text-danger align-self-center" v-if="error">{{
+              error
+            }}</small>
           </span>
           <b-button
             type="submit"
             variant="success"
             :disabled="isOpening || !!error"
-          >{{ this.isOpening ? "Opening..." : "Open Channel" }}</b-button>
+            >{{ this.isOpening ? "Opening..." : "Open Channel" }}</b-button
+          >
         </div>
       </b-col>
     </b-row>
@@ -172,7 +181,8 @@ export default {
         }
       } else {
         this.isOpening = false;
-        this.error = "Please check the peer connection code";
+        this.error =
+          "Please check the lightning address (also known as peer address)";
         return;
       }
 
