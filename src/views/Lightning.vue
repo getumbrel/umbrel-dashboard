@@ -67,8 +67,8 @@
             <b-dropdown-item href="#" v-b-modal.connect-wallet-modal
               >Connect Wallet</b-dropdown-item
             >
-            <b-dropdown-item href="#" v-b-modal.peer-address-modal
-              >Peer Address</b-dropdown-item
+            <b-dropdown-item href="#" v-b-modal.lightning-address-modal
+              >Lightning Address</b-dropdown-item
             >
             <b-dropdown-item href="/logs/?filter=umbrel+lnd" target="_blank"
               >View logs</b-dropdown-item
@@ -112,12 +112,12 @@
             </div>
           </b-modal>
 
-          <b-modal id="peer-address-modal" size="lg" centered hide-footer>
+          <b-modal id="lightning-address-modal" size="lg" centered hide-footer>
             <template v-slot:modal-header="{ close }">
               <div
                 class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
               >
-                <h3 class="text-lowercase">peer address</h3>
+                <h3 class="text-lowercase">Lightning Address</h3>
                 <!-- Emulate built in modal header close button action -->
                 <a
                   href="#"
