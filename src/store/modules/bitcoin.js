@@ -261,15 +261,9 @@ const actions = {
   },
 
   async getRpcInfo({ commit }) {
-    // const rpcInfo = await API.get(
-    //   `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-rpc-info`
-    // );
-    const rpcInfo = {
-      "rpcuser": "umbrelrpcuser",
-      "rpcpassword": "umbrelrpcpassword",
-      "address": "onionsmakemecrybutthatsnotthepointofthishiddenserviceaddress.onion:8332",
-      "connectionString": "btcstandup://umbrelrpc:testing123456@onionsmakemecry.onion:8332/?label=Mayank's%20Umbrel"
-    }
+    const rpcInfo = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-rpc-connection-details`
+    );
 
     if (rpcInfo) {
       commit("setRpcInfo", rpcInfo);
