@@ -14,9 +14,6 @@
         :value="{ walletName: 'BlueWallet (on-chain only)', type: 'electrum' }"
         >BlueWallet</b-form-select-option
       >
-      <b-form-select-option :value="{ walletName: 'Caravan', type: 'rpc' }"
-        >Caravan</b-form-select-option
-      >
       <b-form-select-option
         :value="{ walletName: 'Electrum', type: 'electrum' }"
         >Electrum</b-form-select-option
@@ -157,11 +154,7 @@ export default {
       }
     };
   },
-  methods: {
-    created() {
-      console.log(this.urls);
-    }
-  },
+  methods: {},
   components: {
     QrCode,
     InputCopy
