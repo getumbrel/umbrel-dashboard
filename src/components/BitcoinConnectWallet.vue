@@ -7,6 +7,10 @@
         >Select your wallet</b-form-select-option
       >
       <b-form-select-option
+        :value="{ walletName: 'BitBoxApp', type: 'electrum' }"
+        >BitBoxApp</b-form-select-option
+      >
+      <b-form-select-option
         :value="{ walletName: 'Blockstream Green', type: 'p2p' }"
         >Blockstream Green</b-form-select-option
       >
