@@ -9,6 +9,12 @@ const state = () => ({
   ipAddress: "",
   onionAddress: "",
   electrumAddress: "",
+  rpc: {
+    rpcuser: "",
+    rpcpassword: "",
+    address: "",
+    connectionString: ""
+  },
   currentBlock: 0,
   chain: "",
   blockHeight: 0,
@@ -124,6 +130,13 @@ const mutations = {
     state.stats.mempool = stats.mempool;
     state.stats.blockchainSize = stats.blockchainSize;
     state.stats.hashrate = stats.hashrate;
+  },
+
+  setRpcInfo(state, rpcInfo) {
+    state.rpc.rpcuser = rpcInfo.rpcuser;
+    state.rpc.rpcpassword = rpcInfo.rpcpassword;
+    state.rpc.address = rpcInfo.address;
+    state.rpc.connectionString = rpcInfo.connectionString;
   },
 
   peers(state, peers) {
@@ -247,6 +260,16 @@ const actions = {
     }
   },
 
+  async getRpcInfo({ commit }) {
+    const rpcInfo = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-rpc-connection-details`
+    );
+
+    if (rpcInfo) {
+      commit("setRpcInfo", rpcInfo);
+    }
+  },
+
   async getSync({ commit, state }) {
     if (state.operational) {
       const sync = await API.get(
@@ -279,8 +302,7 @@ const actions = {
 
       //TODO: Fetch only new blocks
       const latestThreeBlocks = await API.get(
-        `${
-        process.env.VUE_APP_MIDDLEWARE_API_URL
+        `${process.env.VUE_APP_MIDDLEWARE_API_URL
         }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
       );
 

@@ -20,10 +20,17 @@
             </svg>
             <small class="ml-1 text-success">Running</small>
             <h3 class="d-block font-weight-bold mb-1">Bitcoin Core</h3>
-            <span class="d-block text-muted">{{ version ? `v${version}` : "..." }}</span>
+            <span class="d-block text-muted">{{
+              version ? `v${version}` : "..."
+            }}</span>
           </div>
         </div>
-        <b-dropdown variant="link" toggle-class="text-decoration-none p-0" no-caret right>
+        <b-dropdown
+          variant="link"
+          toggle-class="text-decoration-none p-0"
+          no-caret
+          right
+        >
           <template v-slot:button-content>
             <svg
               width="18"
@@ -52,8 +59,12 @@
               />
             </svg>
           </template>
-          <b-dropdown-item href="#" v-b-modal.connect-wallet-modal>Connect Wallet</b-dropdown-item>
-          <b-dropdown-item href="/logs/?filter=umbrel+bitcoin" target="_blank">View logs</b-dropdown-item>
+          <b-dropdown-item href="#" v-b-modal.connect-wallet-modal
+            >Connect Wallet</b-dropdown-item
+          >
+          <b-dropdown-item href="/logs/?filter=umbrel+bitcoin" target="_blank"
+            >View logs</b-dropdown-item
+          >
           <!-- <b-dropdown-divider /> -->
           <!-- <b-dropdown-item variant="danger" href="#" disabled>Stop Bitcoin Core</b-dropdown-item> -->
         </b-dropdown>
@@ -84,11 +95,23 @@
         </div>
       </template>
       <div class="px-2 px-sm-3 pb-2 pb-sm-3">
-        <bitcoin-connect-wallet></bitcoin-connect-wallet>
+        <bitcoin-connect-wallet
+          :urls="{
+            p2p: onionAddress,
+            electrum: electrumAddress,
+            rpc: rpc
+          }"
+        ></bitcoin-connect-wallet>
       </div>
     </b-modal>
 
-    <b-modal id="connection-info-modal" ref="connection-info-modal" size="lg" centered hide-footer>
+    <b-modal
+      id="connection-info-modal"
+      ref="connection-info-modal"
+      size="lg"
+      centered
+      hide-footer
+    >
       <template v-slot:modal-header="{ close }">
         <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
           <h3 class="text-lowercase">connect to bitcoin core</h3>
@@ -114,10 +137,21 @@
       <div class="px-2 px-sm-3 pb-2 pb-sm-3">
         <div class="d-flex align-items-center">
           <!-- Pubkey QR Code -->
-          <qr-code :value="onionAddress" :size="180" class="qr-image" showLogo></qr-code>
+          <qr-code
+            :value="onionAddress"
+            :size="180"
+            class="qr-image"
+            showLogo
+          ></qr-code>
           <div class="w-100 align-self-center ml-3 ml-sm-4">
-            <p>Connect your wallet to Bitcoin Core using the following address</p>
-            <input-copy size="sm" :value="onionAddress" v-if="onionAddress"></input-copy>
+            <p>
+              Connect your wallet to Bitcoin Core using the following address
+            </p>
+            <input-copy
+              size="sm"
+              :value="onionAddress"
+              v-if="onionAddress"
+            ></input-copy>
             <span
               class="loading-placeholder loading-placeholder-lg mt-1"
               style="width: 100%;"
@@ -127,10 +161,19 @@
         </div>
         <div class="d-flex align-items-center">
           <!-- Pubkey QR Code -->
-          <qr-code :value="electrumAddress" :size="180" class="qr-image" showLogo></qr-code>
+          <qr-code
+            :value="electrumAddress"
+            :size="180"
+            class="qr-image"
+            showLogo
+          ></qr-code>
           <div class="w-100 align-self-center ml-3 ml-sm-4">
             <p>Connect your wallet to Electrum using the following address</p>
-            <input-copy size="sm" :value="electrumAddress" v-if="electrumAddress"></input-copy>
+            <input-copy
+              size="sm"
+              :value="electrumAddress"
+              v-if="electrumAddress"
+            ></input-copy>
             <span
               class="loading-placeholder loading-placeholder-lg mt-1"
               style="width: 100%;"
@@ -146,7 +189,10 @@
         <bitcoin-wallet></bitcoin-wallet>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
-        <card-widget header="Blockchain" :loading="syncPercent !== 100 || blocks.length === 0">
+        <card-widget
+          header="Blockchain"
+          :loading="syncPercent !== 100 || blocks.length === 0"
+        >
           <!-- <template v-slot:menu>
             <b-dropdown-item variant="danger" href="#" disabled>Resync Blockchain</b-dropdown-item>
           </template>-->
@@ -175,7 +221,10 @@
                 animated
                 striped
               ></b-progress>
-              <small class="text-muted d-block text-right" v-if="currentBlock < blockHeight - 1">
+              <small
+                class="text-muted d-block text-right"
+                v-if="currentBlock < blockHeight - 1"
+              >
                 {{ currentBlock.toLocaleString() }} of
                 {{ blockHeight.toLocaleString() }} blocks
               </small>
@@ -211,7 +260,12 @@
                   ></stat>
                 </b-col>-->
                 <b-col col cols="6" md="3" xl="6">
-                  <stat title="Connections" :value="stats.peers" suffix="Peers" showNumericChange></stat>
+                  <stat
+                    title="Connections"
+                    :value="stats.peers"
+                    suffix="Peers"
+                    showNumericChange
+                  ></stat>
                 </b-col>
                 <b-col col cols="6" md="3" xl="6">
                   <stat
@@ -264,14 +318,15 @@ export default {
   },
   computed: {
     ...mapState({
-      onionAddress: state => state.bitcoin.onionAddress,
       syncPercent: state => state.bitcoin.percent,
       blocks: state => state.bitcoin.blocks,
       version: state => state.bitcoin.version,
       currentBlock: state => state.bitcoin.currentBlock,
       blockHeight: state => state.bitcoin.blockHeight,
       stats: state => state.bitcoin.stats,
-      electrumAddress: state => state.bitcoin.electrumAddress
+      onionAddress: state => state.bitcoin.onionAddress,
+      electrumAddress: state => state.bitcoin.electrumAddress,
+      rpc: state => state.bitcoin.rpc
     })
   },
   methods: {
@@ -302,7 +357,8 @@ export default {
     fetchConnectionDetails() {
       return Promise.all([
         this.$store.dispatch("bitcoin/getHiddenServiceUrl"),
-        this.$store.dispatch("bitcoin/getElectrumUrl")
+        this.$store.dispatch("bitcoin/getElectrumUrl"),
+        this.$store.dispatch("bitcoin/getRpcInfo")
       ]);
     }
   },
