@@ -338,6 +338,10 @@ export default {
       return (this.currentStep = this.currentStep + 1);
     },
     prevStep() {
+      if (this.currentStep === 5) {
+        this.notedSeed = false;
+      }
+
       this.currentStep = this.currentStep - 1;
     },
     finishedSeed() {
