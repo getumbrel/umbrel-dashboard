@@ -87,7 +87,7 @@
           @click="nextStep"
           :disabled="!isStepValid || isRegistering"
           class="mt-3 mx-auto d-block px-4"
-          :class="{ 'loading-fade-blink': currentStep === 8 && !unlocked }"
+          :class="{ 'loading-fade-blink': currentStep === 8 && !unlocked, 'invisible': currentStep === 5 && recover && !isStepValid }"
         >{{ nextButtonText }}</b-button>
         <b-button
           variant="link"
