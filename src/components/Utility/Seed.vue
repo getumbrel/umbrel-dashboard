@@ -32,6 +32,7 @@
             class="neu-input"
             autofocus
             size="lg"
+            @keyup.enter="next"
           ></b-form-input>
         </div>
         <h2 class="text-center mb-0" v-else>
