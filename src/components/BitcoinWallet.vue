@@ -246,9 +246,14 @@
               </a>
             </div>
             <div class="mb-0">
-              <label class="sr-onlsy" for="input-withdrawal-amount"
-                >Amount</label
-              >
+              <div class="w-100 d-flex justify-content-between">
+                <label class="sr-onlsy" for="input-withdrawal-amount"
+                  >Amount</label
+                >
+                <b-form-checkbox v-model="withdraw.sweep" size="sm" switch>
+                  <small class="text-muted">Max</small>
+                </b-form-checkbox>
+              </div>
               <b-input-group class="neu-input-group">
                 <b-input
                   id="input-withdrawal-amount"
@@ -268,10 +273,7 @@
                   ></sats-btc-switch>
                 </b-input-group-append>
               </b-input-group>
-              <div class="my-1 w-100 d-flex justify-content-between">
-                <b-form-checkbox v-model="withdraw.sweep" size="sm" switch>
-                  <small class="text-muted">Withdraw all funds</small>
-                </b-form-checkbox>
+              <div class="mt-1 w-100 d-flex justify-content-between">
                 <div></div>
                 <small
                   class="text-muted mt-1 d-block text-right mb-0"
