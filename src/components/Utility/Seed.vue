@@ -117,7 +117,7 @@ export default {
       }
     },
     next() {
-      if (this.index < this.words.length) {
+      if (this.index < this.words.length - 1) {
         this.index += 1;
         // Autofocus input field if user is recovering
         if (this.recover) {
