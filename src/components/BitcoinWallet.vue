@@ -360,7 +360,7 @@
               <b class="d-block mt-3">{{ withdraw.address }}</b>
             </div>
             <div
-              class="w-100 text-center pb-3"
+              class="d-flex justify-content-between pb-3"
               v-if="withdraw.selectedFee.type === 'custom'"
             >
               <span class="text-muted">
@@ -370,8 +370,20 @@
                 <small>&nbsp;sat/vB</small>
                 <br />
                 <small>
+                  ~
+                  {{
+                    ((parseInt(fees.fast.total) / parseInt(fees.fast.perByte)) *
+                      parseInt(withdraw.selectedFee.satPerByte))
+                      | satsToUSD
+                  }}
                   Transaction fee
                 </small>
+              </span>
+              <span class="text-right text-muted">
+                <b>{{ projectedBalanceInSats | unit | localize }}</b>
+                <small>&nbsp;{{ unit | formatUnit }}</small>
+                <br />
+                <small>Remaining balance</small>
               </span>
             </div>
             <div class="d-flex justify-content-between pb-3" v-else>
@@ -673,7 +685,12 @@ export default {
 
         return remainingBalanceInSats;
       } else {
-        return "N/A";
+        const remainingBalanceInSats =
+          this.$store.state.bitcoin.balance.total -
+          this.withdraw.amount -
+          (parseInt(this.fees.fast.total) / parseInt(this.fees.fast.perByte)) *
+            parseInt(this.withdraw.selectedFee.satPerByte);
+        return remainingBalanceInSats;
       }
     }
   },
