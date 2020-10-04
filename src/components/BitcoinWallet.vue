@@ -224,7 +224,7 @@
         >
           <div class="px-3 px-lg-4">
             <!-- Back Button -->
-            <div class="pt-1 pb-3">
+            <div class="pb-3">
               <a
                 href="#"
                 class="card-link text-muted"
@@ -273,7 +273,7 @@
                   ></sats-btc-switch>
                 </b-input-group-append>
               </b-input-group>
-              <div class="mt-1 w-100 d-flex justify-content-between">
+              <div class="w-100 d-flex justify-content-between">
                 <div></div>
                 <small
                   class="text-muted mt-1 d-block text-right mb-0"

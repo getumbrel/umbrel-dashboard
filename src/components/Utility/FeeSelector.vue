@@ -25,7 +25,6 @@
         :max="customMaxFee"
         :interval="1"
         :dotSize="[22, 22]"
-        :tooltip-formatter="customFeeToolTipFormatter"
         contained
         :tooltip="
           fee.fast.total <= 0 ||
@@ -44,6 +43,26 @@
         @change="emitValue"
         key="custom-fee"
       >
+        <template v-slot:tooltip="{ value, focus }">
+          <div
+            :class="[
+              'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
+              { focus }
+            ]"
+          >
+            <span class="vue-slider-dot-tooltip-text d-block"
+              >{{ value }} sat/vB
+            </span>
+            <small class="text-muted"
+              >≈
+              {{
+                ((parseInt(fee.fast.total) / parseInt(fee.fast.perByte)) *
+                  value)
+                  | satsToUSD
+              }}</small
+            >
+          </div>
+        </template>
       </vue-slider>
       <div class="d-flex w-100 justify-content-between custom-fee-labels">
         <small class="text-muted mb-0">Slow</small>
@@ -57,7 +76,6 @@
         marks
         :data="data"
         :dotSize="[22, 22]"
-        :tooltip-formatter="tooltipFormatter"
         contained
         :tooltip="
           fee.fast.total <= 0 ||
@@ -79,6 +97,21 @@
         <template v-slot:label="{ active, value }">
           <div :class="['vue-slider-mark-label', 'text-center', { active }]">
             <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
+          </div>
+        </template>
+        <template v-slot:tooltip="{ value, focus }">
+          <div
+            :class="[
+              'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
+              { focus }
+            ]"
+          >
+            <span class="vue-slider-dot-tooltip-text d-block mb-0"
+              >{{ fee[value].total }} Sats
+            </span>
+            <small class="text-muted"
+              >≈ {{ fee[value].total | satsToUSD }}</small
+            >
           </div>
         </template>
       </vue-slider>
@@ -111,10 +144,7 @@ export default {
       chosenFee: "normal",
       useCustomFee: false,
       customFee: 30,
-      data: ["cheapest", "slow", "normal", "fast"],
-      tooltipFormatter: value =>
-        `${Number(this.fee[value]["total"]).toLocaleString()} Sats`,
-      customFeeToolTipFormatter: value => `${value} sat/vB`
+      data: ["cheapest", "slow", "normal", "fast"]
     };
   },
   computed: {},
@@ -193,7 +223,7 @@ $labelFontSize: 0.8rem;
 @import "~vue-slider-component/lib/theme/default.scss";
 
 .vue-slider-container {
-  padding-top: 2rem;
+  padding-top: 3rem;
   padding-bottom: 1.5rem;
   margin-bottom: 1rem;
   position: relative;
@@ -254,6 +284,9 @@ $labelFontSize: 0.8rem;
 }
 
 .vue-slider-dot-tooltip-inner {
+  padding: 5px;
+  font-size: 0.75rem;
+  line-height: 1rem;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.18);
 }
 
