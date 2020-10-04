@@ -32,6 +32,7 @@
             class="neu-input"
             autofocus
             size="lg"
+            @keyup.enter="next"
           ></b-form-input>
         </div>
         <h2 class="text-center mb-0" v-else>
@@ -116,7 +117,7 @@ export default {
       }
     },
     next() {
-      if (this.index < this.words.length) {
+      if (this.index < this.words.length - 1) {
         this.index += 1;
         // Autofocus input field if user is recovering
         if (this.recover) {

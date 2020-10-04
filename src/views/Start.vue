@@ -87,7 +87,7 @@
           @click="nextStep"
           :disabled="!isStepValid || isRegistering"
           class="mt-3 mx-auto d-block px-4"
-          :class="{ 'loading-fade-blink': currentStep === 8 && !unlocked }"
+          :class="{ 'loading-fade-blink': currentStep === 8 && !unlocked, 'invisible': currentStep === 5 && recover && !isStepValid }"
         >{{ nextButtonText }}</b-button>
         <b-button
           variant="link"
@@ -338,6 +338,10 @@ export default {
       return (this.currentStep = this.currentStep + 1);
     },
     prevStep() {
+      if (this.currentStep === 5) {
+        this.notedSeed = false;
+      }
+
       this.currentStep = this.currentStep - 1;
     },
     finishedSeed() {
