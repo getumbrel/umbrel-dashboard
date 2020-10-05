@@ -682,15 +682,14 @@ export default {
           this.$store.state.bitcoin.balance.total -
           this.withdraw.amount -
           this.fees[this.withdraw.selectedFee.type].total;
-
-        return remainingBalanceInSats;
+        return parseInt(remainingBalanceInSats);
       } else {
         const remainingBalanceInSats =
           this.$store.state.bitcoin.balance.total -
           this.withdraw.amount -
           (parseInt(this.fees.fast.total) / parseInt(this.fees.fast.perByte)) *
             parseInt(this.withdraw.selectedFee.satPerByte);
-        return remainingBalanceInSats;
+        return parseInt(remainingBalanceInSats);
       }
     }
   },
