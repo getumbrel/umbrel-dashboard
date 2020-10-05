@@ -107,7 +107,7 @@
             ]"
           >
             <span class="vue-slider-dot-tooltip-text d-block mb-0"
-              >{{ fee[value].total }} Sats
+              >{{ fee[value].perByte }} sat/vB
             </span>
             <small class="text-muted"
               >≈ {{ fee[value].total | satsToUSD }}</small
