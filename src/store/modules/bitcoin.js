@@ -384,7 +384,7 @@ const actions = {
 
   async getPrice({ commit }) {
     const price = await API.get(
-      "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD"
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price`
     );
 
     if (price) {
