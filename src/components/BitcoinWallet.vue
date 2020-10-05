@@ -372,8 +372,9 @@
                 <small>
                   ~
                   {{
-                    ((parseInt(fees.fast.total) / parseInt(fees.fast.perByte)) *
-                      parseInt(withdraw.selectedFee.satPerByte))
+                    ((parseInt(fees.fast.total, 10) /
+                      parseInt(fees.fast.perByte, 10)) *
+                      parseInt(withdraw.selectedFee.satPerByte, 10))
                       | satsToUSD
                   }}
                   Transaction fee
@@ -682,14 +683,15 @@ export default {
           this.$store.state.bitcoin.balance.total -
           this.withdraw.amount -
           this.fees[this.withdraw.selectedFee.type].total;
-        return parseInt(remainingBalanceInSats);
+        return parseInt(remainingBalanceInSats, 10);
       } else {
         const remainingBalanceInSats =
           this.$store.state.bitcoin.balance.total -
           this.withdraw.amount -
-          (parseInt(this.fees.fast.total) / parseInt(this.fees.fast.perByte)) *
-            parseInt(this.withdraw.selectedFee.satPerByte);
-        return parseInt(remainingBalanceInSats);
+          (parseInt(this.fees.fast.total, 10) /
+            parseInt(this.fees.fast.perByte, 10)) *
+            parseInt(this.withdraw.selectedFee.satPerByte, 10);
+        return parseInt(remainingBalanceInSats, 10);
       }
     }
   },
@@ -797,7 +799,7 @@ export default {
       const payload = {
         addr: this.withdraw.address,
         amt: this.withdraw.amount,
-        satPerByte: parseInt(this.withdraw.selectedFee.satPerByte),
+        satPerByte: parseInt(this.withdraw.selectedFee.satPerByte, 10),
         sendAll: this.withdraw.sweep
       };
 

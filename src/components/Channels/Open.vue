@@ -164,11 +164,11 @@ export default {
 
       const payload = {
         amt: this.sweep
-          ? parseInt(this.fee[this.selectedFee.type].sweepAmount)
-          : parseInt(this.fundingAmount),
+          ? parseInt(this.fee[this.selectedFee.type].sweepAmount, 10)
+          : parseInt(this.fundingAmount, 10),
         name: "",
         purpose: "",
-        satPerByte: parseInt(this.selectedFee.satPerByte)
+        satPerByte: parseInt(this.selectedFee.satPerByte, 10)
       };
 
       const parsedConnectionCode = this.peerConnectionCode.match(

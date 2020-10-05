@@ -56,7 +56,8 @@
             <small class="text-muted"
               >≈
               {{
-                ((parseInt(fee.fast.total) / parseInt(fee.fast.perByte)) *
+                ((parseInt(fee.fast.total, 10) /
+                  parseInt(fee.fast.perByte, 10)) *
                   value)
                   | satsToUSD
               }}</small
@@ -153,13 +154,13 @@ export default {
       if (this.useCustomFee) {
         const fee = {
           type: "custom",
-          satPerByte: parseInt(this.customFee)
+          satPerByte: parseInt(this.customFee, 10)
         };
         this.$emit("change", fee);
       } else {
         const fee = {
           type: this.chosenFee,
-          satPerByte: parseInt(this.fee[this.chosenFee].perByte)
+          satPerByte: parseInt(this.fee[this.chosenFee].perByte, 10)
         };
         this.$emit("change", fee);
       }
