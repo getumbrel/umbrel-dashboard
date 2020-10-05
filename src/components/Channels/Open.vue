@@ -55,7 +55,6 @@
     </b-row>
     <b-row>
       <b-col col cols="12" sm="6">
-        <small class="text-muted d-block mb-1">Mining Fee</small>
         <fee-selector :fee="fee" class @change="selectFee"></fee-selector>
       </b-col>
       <b-col class="d-flex" col cols="12" sm="6">
@@ -96,7 +95,10 @@ export default {
       fundingAmountInput: "",
       fundingAmount: 0,
       isOpening: false,
-      selectedFee: "normal",
+      selectedFee: {
+        type: "normal",
+        satPerByte: 0
+      },
       fee: {
         fast: {
           total: 0,
@@ -149,9 +151,12 @@ export default {
         return;
       }
 
-      if (this.fee[this.selectedFee].error) {
+      if (
+        this.selectedFee.type !== "custom" &&
+        this.fee[this.selectedFee.type].error
+      ) {
         this.isOpening = false;
-        this.error = this.fee[this.selectedFee].error;
+        this.error = this.fee[this.selectedFee.type].error;
         return;
       }
 
@@ -159,11 +164,11 @@ export default {
 
       const payload = {
         amt: this.sweep
-          ? parseInt(this.fee[this.selectedFee].sweepAmount)
-          : parseInt(this.fundingAmount),
+          ? parseInt(this.fee[this.selectedFee.type].sweepAmount, 10)
+          : parseInt(this.fundingAmount, 10),
         name: "",
         purpose: "",
-        satPerByte: parseInt(this.fee[this.selectedFee].perByte)
+        satPerByte: parseInt(this.selectedFee.satPerByte, 10)
       };
 
       const parsedConnectionCode = this.peerConnectionCode.match(

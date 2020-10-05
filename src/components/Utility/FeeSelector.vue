@@ -1,36 +1,122 @@
 <template>
-  <div class="vue-slider-container">
-    <vue-slider
-      v-model="chosenFee"
-      absorb
-      marks
-      :data="data"
-      :dotSize="[22, 22]"
-      :tooltip-formatter="tooltipFormatter"
-      contained
-      :tooltip="
-        fee.fast.total <= 0 ||
-        fee.fast.total === '--' ||
-        fee.fast.total === 'N/A' ||
-        disabled
-          ? 'none'
-          : 'always'
-      "
-      :disabled="
-        fee.fast.total <= 0 ||
+  <div>
+    <div class="d-flex w-100 justify-content-between">
+      <small class="text-muted d-block mb-0">Transaction Fee</small>
+      <b-form-checkbox
+        v-model="useCustomFee"
+        class=""
+        size="sm"
+        switch
+        :disabled="
+          fee.fast.total <= 0 ||
+            fee.fast.total === '--' ||
+            fee.fast.total === 'N/A'
+        "
+      >
+        <small class="text-muted">Custom</small>
+      </b-form-checkbox>
+    </div>
+    <div class="vue-slider-container" v-if="useCustomFee">
+      <vue-slider
+        v-model="customFee"
+        :marks="false"
+        hide-label
+        :min="customMinFee"
+        :max="customMaxFee"
+        :interval="1"
+        :dotSize="[22, 22]"
+        contained
+        :tooltip="
+          fee.fast.total <= 0 ||
           fee.fast.total === '--' ||
           fee.fast.total === 'N/A' ||
           disabled
-      "
-      @change="change"
-    >
-      <template v-slot:label="{ active, value }">
-        <div :class="['vue-slider-mark-label', 'text-center', { active }]">
-          <!-- <span class="text-capitalize">{{ value }}</span> -->
-          <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
-        </div>
-      </template>
-    </vue-slider>
+            ? 'none'
+            : 'always'
+        "
+        :disabled="
+          fee.fast.total <= 0 ||
+            fee.fast.total === '--' ||
+            fee.fast.total === 'N/A' ||
+            disabled
+        "
+        @change="emitValue"
+        key="custom-fee"
+      >
+        <template v-slot:tooltip="{ value, focus }">
+          <div
+            :class="[
+              'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
+              { focus }
+            ]"
+          >
+            <span class="vue-slider-dot-tooltip-text d-block"
+              >{{ value }} sat/vB
+            </span>
+            <small class="text-muted"
+              >≈
+              {{
+                ((parseInt(fee.fast.total, 10) /
+                  parseInt(fee.fast.perByte, 10)) *
+                  value)
+                  | satsToUSD
+              }}</small
+            >
+          </div>
+        </template>
+      </vue-slider>
+      <div class="d-flex w-100 justify-content-between custom-fee-labels">
+        <small class="text-muted mb-0">Slow</small>
+        <small class="text-muted mb-0">Fast</small>
+      </div>
+    </div>
+    <div class="vue-slider-container" v-else>
+      <vue-slider
+        v-model="chosenFee"
+        absorb
+        marks
+        :data="data"
+        :dotSize="[22, 22]"
+        contained
+        :tooltip="
+          fee.fast.total <= 0 ||
+          fee.fast.total === '--' ||
+          fee.fast.total === 'N/A' ||
+          disabled
+            ? 'none'
+            : 'always'
+        "
+        :disabled="
+          fee.fast.total <= 0 ||
+            fee.fast.total === '--' ||
+            fee.fast.total === 'N/A' ||
+            disabled
+        "
+        @change="emitValue"
+        key="recommended-fee"
+      >
+        <template v-slot:label="{ active, value }">
+          <div :class="['vue-slider-mark-label', 'text-center', { active }]">
+            <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
+          </div>
+        </template>
+        <template v-slot:tooltip="{ value, focus }">
+          <div
+            :class="[
+              'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
+              { focus }
+            ]"
+          >
+            <span class="vue-slider-dot-tooltip-text d-block mb-0"
+              >{{ fee[value].perByte }} sat/vB
+            </span>
+            <small class="text-muted"
+              >≈ {{ fee[value].total | satsToUSD }}</small
+            >
+          </div>
+        </template>
+      </vue-slider>
+    </div>
   </div>
 </template>
 
@@ -41,6 +127,14 @@ import "vue-slider-component/theme/default.css";
 export default {
   props: {
     fee: Object,
+    customMinFee: {
+      type: Number,
+      default: 1
+    },
+    customMaxFee: {
+      type: Number,
+      default: 350
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -49,15 +143,27 @@ export default {
   data() {
     return {
       chosenFee: "normal",
-      data: ["cheapest", "slow", "normal", "fast"],
-      tooltipFormatter: value =>
-        `${Number(this.fee[value]["total"]).toLocaleString()} Sats`
+      useCustomFee: false,
+      customFee: 30,
+      data: ["cheapest", "slow", "normal", "fast"]
     };
   },
   computed: {},
   methods: {
-    change(value) {
-      this.$emit("change", value);
+    emitValue() {
+      if (this.useCustomFee) {
+        const fee = {
+          type: "custom",
+          satPerByte: parseInt(this.customFee, 10)
+        };
+        this.$emit("change", fee);
+      } else {
+        const fee = {
+          type: this.chosenFee,
+          satPerByte: parseInt(this.fee[this.chosenFee].perByte, 10)
+        };
+        this.$emit("change", fee);
+      }
     },
     timeToConfirm(fee) {
       if (fee === "fast") {
@@ -72,6 +178,14 @@ export default {
       if (fee === "cheapest") {
         return "24 hrs";
       }
+    }
+  },
+  watch: {
+    useCustomFee: function() {
+      this.emitValue();
+    },
+    "fee.fast.total": function() {
+      this.emitValue();
     }
   },
   components: {
@@ -110,8 +224,10 @@ $labelFontSize: 0.8rem;
 @import "~vue-slider-component/lib/theme/default.scss";
 
 .vue-slider-container {
-  padding-top: 2rem;
-  padding-bottom: 3rem;
+  padding-top: 3rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
 }
 
 .vue-slider-ltr .vue-slider-mark-label,
@@ -169,6 +285,15 @@ $labelFontSize: 0.8rem;
 }
 
 .vue-slider-dot-tooltip-inner {
+  padding: 5px;
+  font-size: 0.75rem;
+  line-height: 1rem;
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.18);
+}
+
+.custom-fee-labels {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 </style>
