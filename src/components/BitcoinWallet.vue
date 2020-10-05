@@ -689,7 +689,7 @@ export default {
           this.withdraw.amount -
           (parseInt(this.fees.fast.total) / parseInt(this.fees.fast.perByte)) *
             parseInt(this.withdraw.selectedFee.satPerByte);
-        return parseInt(remainingBalanceInSats);
+        return parseInt(Math.round(remainingBalanceInSats), 10);
       }
     }
   },
