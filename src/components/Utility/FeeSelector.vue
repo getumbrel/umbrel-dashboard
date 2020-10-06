@@ -7,11 +7,7 @@
         class=""
         size="sm"
         switch
-        :disabled="
-          fee.fast.total <= 0 ||
-            fee.fast.total === '--' ||
-            fee.fast.total === 'N/A'
-        "
+        :disabled="isDisabled"
       >
         <small class="text-muted">Custom</small>
       </b-form-checkbox>
@@ -26,20 +22,8 @@
         :interval="1"
         :dotSize="[22, 22]"
         contained
-        :tooltip="
-          fee.fast.total <= 0 ||
-          fee.fast.total === '--' ||
-          fee.fast.total === 'N/A' ||
-          disabled
-            ? 'none'
-            : 'always'
-        "
-        :disabled="
-          fee.fast.total <= 0 ||
-            fee.fast.total === '--' ||
-            fee.fast.total === 'N/A' ||
-            disabled
-        "
+        :tooltip="isDisabled ? 'none' : 'always'"
+        :disabled="isDisabled"
         @change="emitValue"
         key="custom-fee"
       >
@@ -75,23 +59,11 @@
         v-model="chosenFee"
         absorb
         marks
-        :data="data"
+        :data="recommendedFees"
         :dotSize="[22, 22]"
         contained
-        :tooltip="
-          fee.fast.total <= 0 ||
-          fee.fast.total === '--' ||
-          fee.fast.total === 'N/A' ||
-          disabled
-            ? 'none'
-            : 'always'
-        "
-        :disabled="
-          fee.fast.total <= 0 ||
-            fee.fast.total === '--' ||
-            fee.fast.total === 'N/A' ||
-            disabled
-        "
+        :tooltip="isDisabled ? 'none' : 'always'"
+        :disabled="isDisabled"
         @change="emitValue"
         key="recommended-fee"
       >
@@ -144,11 +116,38 @@ export default {
     return {
       chosenFee: "normal",
       useCustomFee: false,
-      customFee: 30,
-      data: ["cheapest", "slow", "normal", "fast"]
+      customFee: 30
     };
   },
-  computed: {},
+  computed: {
+    isDisabled() {
+      return (
+        this.fee.fast.total <= 0 ||
+        this.fee.fast.total === "--" ||
+        this.fee.fast.total === "N/A" ||
+        this.disabled
+      );
+    },
+    recommendedFees() {
+      if (this.isDisabled) {
+        return ["cheapest", "slow", "normal", "fast"];
+      }
+      const intervals = [];
+      if (this.fee.cheapest && !this.fee.cheapest.error) {
+        intervals.push("cheapest");
+      }
+      if (this.fee.slow && !this.fee.slow.error) {
+        intervals.push("slow");
+      }
+      if (this.fee.normal && !this.fee.normal.error) {
+        intervals.push("normal");
+      }
+      if (this.fee.fast && !this.fee.fast.error) {
+        intervals.push("fast");
+      }
+      return intervals;
+    }
+  },
   methods: {
     emitValue() {
       if (this.useCustomFee) {
