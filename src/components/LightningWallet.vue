@@ -257,7 +257,7 @@
                     size="lg"
                     v-model.number="send.amountInput"
                     autofocus
-                    :disabled="!send.isCustomAmount || send.isSending"
+                    :disabled="send.isSending"
                   ></b-input>
                   <b-input-group-append class="neu-input-group-append">
                     <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
@@ -736,6 +736,7 @@ export default {
         paymentRequest: "", //Bolt 11 payment request/invoice entered by the user
         description: "", //invoice description
         amount: null, //invoice amount
+        amountInput: "", //input custom amount (tmp variable)
         isCustomAmount: false, //check if invoice needs a custom amount
         isValidInvoice: false, //check if invoice entered by user is a valid Bolt 11 invoice
         isSending: false, //used for transition while tx is being broadcasted,
@@ -819,7 +820,7 @@ export default {
         paymentRequest: "",
         description: "",
         amount: null,
-        amountInput: null,
+        amountInput: "",
         isCustomAmount: false,
         isValidInvoice: false,
         isSending: false
@@ -924,7 +925,7 @@ export default {
         this.send.description = "";
         this.send.isValidInvoice = false;
         this.send.amount = null;
-        this.send.amountInput = null;
+        this.send.amountInput = "";
         this.send.isCustomAmount = false;
         this.send.description = "";
         this.error = "";
@@ -934,7 +935,7 @@ export default {
       this.send.description = "";
       this.send.isValidInvoice = false;
       this.send.amount = null;
-      this.send.amountInput = null;
+      this.send.amountInput = "";
       this.send.isCustomAmount = false;
       this.send.description = "";
       this.error = "";
