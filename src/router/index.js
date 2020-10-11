@@ -13,6 +13,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Bitcoin from "../views/Bitcoin.vue";
 import Lightning from "../views/Lightning.vue";
 import Settings from "../views/Settings.vue";
+import ConnectWallet from "../views/ConnectWallet.vue";
 import Logout from "../views/Logout.vue";
 
 Vue.use(VueRouter);
@@ -91,6 +92,18 @@ const routes = [
             path: "",
             name: "settings",
             component: Settings
+          }
+        ]
+      },
+      {
+        path: "/connect",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: "",
+            name: "connect",
+            component: ConnectWallet
           }
         ]
       },
