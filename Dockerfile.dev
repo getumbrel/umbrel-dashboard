@@ -6,6 +6,7 @@ WORKDIR /app
 # This is required to pick up filesystem changes in the VirtualBox
 # shared folder for hot module reload
 ENV CHOKIDAR_USEPOLLING=true
+ENV CHOKIDAR_INTERVAL=1000
 
 # We need to make sure we build with production URLS so the NGINX proxy
 # in umbrel-dev routes them properly
