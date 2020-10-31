@@ -245,6 +245,15 @@
               </b-modal>
             </div>
           </div>
+          <div class="pt-0">
+              <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+                <div>
+                  <span class="d-block">Currency</span>
+                  <small class="d-block" style="opacity: 0.4">Select your fiat currency</small>
+                </div>
+                <b-form-select v-model="currency" @change="setCurrency" :options="currencyOptions" class="mb-3 w-50" ></b-form-select>
+              </div>
+          </div>
           <div class="px-3 px-lg-4 py-2"></div>
         </card-widget>
       </b-col>
@@ -282,7 +291,7 @@
           </div>
           <div class="px-3 px-lg-4 pb-4">
             <div class="w-100 d-flex justify-content-between mb-1">
-              <span class="align-self-end">Umbrel Version</span>
+              <span class="align-self-end">Umbrel `Version`</span>
               <span class="font-weight-normal mb-0">{{ version }}</span>
             </div>
             <div v-show="!isCheckingForUpdate">
@@ -344,7 +353,12 @@ export default {
       confirmNewPassword: "",
       isChangingPassword: false,
       isCheckingForUpdate: false,
-      isUpdating: false
+      isUpdating: false,
+      currencyOptions: [
+        {value: "USD", text: "USD"},
+        {value: "GBP", text: "GBP"},
+        {value: "EUR", text: "EUR"},
+      ]
     };
   },
   computed: {
@@ -353,7 +367,8 @@ export default {
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
-      backupStatus: state => state.system.backupStatus
+      backupStatus: state => state.system.backupStatus,
+      currency: state => state.system.currency
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -375,6 +390,7 @@ export default {
     this.$store.dispatch("system/getOnionAddress");
     this.$store.dispatch("system/getVersion");
     this.$store.dispatch("system/getBackupStatus");
+    this.$store.dispatch("system/getCurrency");
   },
   methods: {
     getReadableTime(timestamp) {
@@ -442,6 +458,9 @@ export default {
     },
     confirmUpdate() {
       this.$store.dispatch("system/confirmUpdate");
+    },
+    setCurrency(currency) {
+      this.$store.dispatch("system/changeCurrency", currency);
     },
     async checkForUpdate() {
       this.isCheckingForUpdate = true;
@@ -527,6 +546,9 @@ export default {
     currentPassword: function() {
       this.isIncorrectPassword = false;
     }
+    // currency: function(sym) {
+    //   this.$store.dispatch("bitcoin/getPrice", sym);
+    // }
   },
   components: {
     CardWidget,
