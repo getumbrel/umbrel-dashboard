@@ -388,13 +388,11 @@ const actions = {
   },
 
   async getPrice({ commit, state }) {
-    console.log('getting price', state.conversionCurrency, `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price`,);
     const price = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price`,
       {params: {currency: state.conversionCurrency}}
     );
 
-    console.log(price);
     if (price) {
       commit("price", price[state.conversionCurrency]);
     }
