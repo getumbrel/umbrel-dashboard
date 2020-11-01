@@ -24,7 +24,6 @@ const state = () => ({
   shuttingDown: false,
   hasShutdown: false,
   unit: "sats", //sats or btc
-  currency: "USD", // currency conversion 
   api: {
     operational: false,
     version: ""
