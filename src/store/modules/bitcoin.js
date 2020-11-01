@@ -389,8 +389,7 @@ const actions = {
 
   async getPrice({ commit, state }) {
     const price = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price`,
-      {params: {currency: state.conversionCurrency}}
+     `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price?currency=${state.conversionCurrency}`,
     );
 
     if (price) {
