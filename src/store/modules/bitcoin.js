@@ -399,9 +399,7 @@ const actions = {
   },
 
   async getConversionCurrency({ commit }) {
-    console.log('calling get conversion currency');
     if (window.localStorage && window.localStorage.getItem("conversionCurrency")) {
-      console.log(window.localStorage.getItem("conversionCurrency"));
       commit(
         "conversionCurrency",
         window.localStorage.getItem("conversionCurrency")
