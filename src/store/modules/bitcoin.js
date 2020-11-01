@@ -47,6 +47,7 @@ const state = () => ({
   ],
   pending: [],
   price: 0,
+  conversionCurrency: "USD",
   fees: {
     fast: {
       total: "--",
@@ -197,6 +198,10 @@ const mutations = {
 
   price(state, usd) {
     state.price = usd;
+  },
+
+  setConversionCurrency(state, conversionCurrency) {
+    state.conversionCurrency = conversionCurrency;
   }
 };
 
@@ -382,13 +387,33 @@ const actions = {
     }
   },
 
-  async getPrice({ commit }) {
+  async getPrice({ commit, state }) {
+    console.log('getting price', state.conversionCurrency, `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price`,);
     const price = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price`
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price`,
+      {params: {currency: state.conversionCurrency}}
     );
 
+    console.log(price);
     if (price) {
-      commit("price", price.USD);
+      commit("price", price[state.conversionCurrency]);
+    }
+  },
+
+  async getConversionCurrency({ commit }) {
+    if (window.localStorage && window.localStorage.getItem("conversionCurrency")) {
+      commit(
+        "setConversionCurrency",
+        window.localStorage.getItem("conversionCurrency")
+      );
+    }
+  },
+
+  changeConversionCurrency({ commit }, currency) {
+    const availableCurrencies = ["USD", "EUR", "GBP"];
+    if (availableCurrencies.includes(currency)) {
+      window.localStorage.setItem("currency", currency);
+      commit("setConversionCurrency", currency);
     }
   },
 

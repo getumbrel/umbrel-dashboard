@@ -41,7 +41,7 @@ Vue.filter("formatUnit", unit => {
 //transforms sats to usd
 Vue.filter("satsToUSD", value => {
   const symbol = (() => {
-    switch (store.state.user.currency) {
+    switch (store.state.bitcoin.conversionCurrency) {
       case "GBP":
         return "£";
       case "EUR":

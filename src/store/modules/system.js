@@ -44,9 +44,6 @@ const mutations = {
   setUnit(state, unit) {
     state.unit = unit;
   },
-  setCurrency(state, currency) {
-    state.currency = currency;
-  },
   setApi(state, api) {
     state.api = api;
   },
@@ -98,22 +95,10 @@ const actions = {
       commit("setUnit", window.localStorage.getItem("unit"));
     }
   },
-  async getCurrency({ commit }) {
-    if (window.localStorage && window.localStorage.getItem("currency")) {
-      commit("setCurrency", window.localStorage.getItem("currency"));
-    }
-  },
   changeUnit({ commit }, unit) {
     if (unit === "sats" || unit === "btc") {
       window.localStorage.setItem("unit", unit);
       commit("setUnit", unit);
-    }
-  },
-  changeCurrency({ commit }, currency) {
-    const availableCurrencies = ["USD", "EUR", "GBP"];
-    if (availableCurrencies.includes(currency)) {
-      window.localStorage.setItem("currency", currency);
-      commit("setCurrency", currency);
     }
   },
   async getApi({ commit }) {

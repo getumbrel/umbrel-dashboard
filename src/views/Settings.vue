@@ -248,10 +248,10 @@
           <div class="pt-0">
               <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
                 <div>
-                  <span class="d-block">Currency</span>
+                  <span class="d-block">Conversion Currency</span>
                   <small class="d-block" style="opacity: 0.4">Select your fiat currency</small>
                 </div>
-                <b-form-select v-model="currency" @change="setCurrency" :options="currencyOptions" class="mb-3 w-50" ></b-form-select>
+                <b-form-select :value="conversionCurrency" @change="setConversionCurrency" :options="currencyOptions" class="mb-3 w-50" ></b-form-select>
               </div>
           </div>
           <div class="px-3 px-lg-4 py-2"></div>
@@ -368,7 +368,7 @@ export default {
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
       backupStatus: state => state.system.backupStatus,
-      currency: state => state.system.currency
+      conversionCurrency: state => state.bitcoin.conversionCurrency
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -390,7 +390,7 @@ export default {
     this.$store.dispatch("system/getOnionAddress");
     this.$store.dispatch("system/getVersion");
     this.$store.dispatch("system/getBackupStatus");
-    this.$store.dispatch("system/getCurrency");
+    this.$store.dispatch("bitcoin/getConversionCurrency");
   },
   methods: {
     getReadableTime(timestamp) {
@@ -459,8 +459,8 @@ export default {
     confirmUpdate() {
       this.$store.dispatch("system/confirmUpdate");
     },
-    setCurrency(currency) {
-      this.$store.dispatch("system/changeCurrency", currency);
+    setConversionCurrency(currency) {
+      this.$store.dispatch("bitcoin/changeConversionCurrency", currency);
     },
     async checkForUpdate() {
       this.isCheckingForUpdate = true;
@@ -545,10 +545,10 @@ export default {
   watch: {
     currentPassword: function() {
       this.isIncorrectPassword = false;
+    },
+    conversionCurrency: function(currency) {
+      this.$store.dispatch("bitcoin/getPrice", currency);
     }
-    // currency: function(sym) {
-    //   this.$store.dispatch("bitcoin/getPrice", sym);
-    // }
   },
   components: {
     CardWidget,

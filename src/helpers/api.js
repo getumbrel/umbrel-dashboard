@@ -93,7 +93,8 @@ const API = {
 
         const requestOptions = {
           method: "get",
-          url
+          url,
+          params: data.params || {}
         };
 
         if (auth && store.state.user.jwt) {
