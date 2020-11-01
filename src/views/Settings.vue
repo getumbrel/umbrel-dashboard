@@ -460,7 +460,7 @@ export default {
       this.$store.dispatch("system/confirmUpdate");
     },
     setConversionCurrency(currency) {
-      this.$store.dispatch("bitcoin/changeConversionCurrency", currency);
+      this.$store.dispatch("bitcoin/setConversionCurrency", currency);
     },
     async checkForUpdate() {
       this.isCheckingForUpdate = true;

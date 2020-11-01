@@ -200,7 +200,7 @@ const mutations = {
     state.price = usd;
   },
 
-  setConversionCurrency(state, conversionCurrency) {
+  conversionCurrency(state, conversionCurrency) {
     state.conversionCurrency = conversionCurrency;
   }
 };
@@ -399,19 +399,21 @@ const actions = {
   },
 
   async getConversionCurrency({ commit }) {
+    console.log('calling get conversion currency');
     if (window.localStorage && window.localStorage.getItem("conversionCurrency")) {
+      console.log(window.localStorage.getItem("conversionCurrency"));
       commit(
-        "setConversionCurrency",
+        "conversionCurrency",
         window.localStorage.getItem("conversionCurrency")
       );
     }
   },
 
-  changeConversionCurrency({ commit }, currency) {
+  setConversionCurrency({ commit }, currency) {
     const availableCurrencies = ["USD", "EUR", "GBP"];
     if (availableCurrencies.includes(currency)) {
-      window.localStorage.setItem("currency", currency);
-      commit("setConversionCurrency", currency);
+      window.localStorage.setItem("conversionCurrency", currency);
+      commit("conversionCurrency", currency);
     }
   },
 
