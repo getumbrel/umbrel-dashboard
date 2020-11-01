@@ -39,7 +39,7 @@ Vue.filter("formatUnit", unit => {
 });
 
 //transforms sats to usd
-Vue.filter("satsToUSD", value => {
+Vue.filter("satsToFiat", value => {
   const symbol = (() => {
     switch (store.state.bitcoin.conversionCurrency) {
       case "GBP":

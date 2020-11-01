@@ -17,7 +17,7 @@
     <template v-slot:title>
       <div
         v-b-tooltip.hover.right
-        :title="walletBalanceInSats | satsToUSD"
+        :title="walletBalanceInSats | satsToFiat"
         v-if="walletBalance !== -1"
       >
         <CountUp
@@ -201,7 +201,7 @@
                     <span
                       class="font-weight-bold d-block"
                       v-b-tooltip.hover.left
-                      :title="tx.amount | satsToUSD"
+                      :title="tx.amount | satsToFiat"
                     >
                       <!-- Positive or negative prefix with amount -->
                       <span v-if="tx.type === 'incoming'">+</span>
@@ -278,7 +278,7 @@
                 <small
                   class="text-muted mt-1 d-block text-right mb-0"
                   :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
-                  >~ {{ withdraw.amount | satsToUSD }}</small
+                  >~ {{ withdraw.amount | satsToFiat }}</small
                 >
               </div>
             </div>
@@ -340,7 +340,7 @@
                 {{ unit | formatUnit }}
               </span>
               <small class="text-muted d-block mb-3"
-                >~ {{ withdraw.amount | satsToUSD }}</small
+                >~ {{ withdraw.amount | satsToFiat }}</small
               >
 
               <svg
@@ -375,7 +375,7 @@
                     ((parseInt(fees.fast.total, 10) /
                       parseInt(fees.fast.perByte, 10)) *
                       parseInt(withdraw.selectedFee.satPerByte, 10))
-                      | satsToUSD
+                      | satsToFiat
                   }}
                   Transaction fee
                 </small>
@@ -398,7 +398,7 @@
                 <br />
                 <small>
                   ~
-                  {{ fees[withdraw.selectedFee.type]["total"] | satsToUSD }}
+                  {{ fees[withdraw.selectedFee.type]["total"] | satsToFiat }}
                   Transaction fee
                 </small>
               </span>
