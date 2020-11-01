@@ -248,7 +248,7 @@
           <div class="pt-0">
               <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
                 <div>
-                  <span class="d-block">Conversion Currency</span>
+                  <span class="d-block">Currency</span>
                   <small class="d-block" style="opacity: 0.4">Select your fiat currency</small>
                 </div>
                 <b-form-select :value="conversionCurrency" @change="setConversionCurrency" :options="currencyOptions" class="mb-3 w-50" ></b-form-select>
