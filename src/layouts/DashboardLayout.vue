@@ -203,7 +203,7 @@ export default {
     },
     fetchData() {
       this.$store.dispatch("system/getUnit");
-      this.$store.dispatch("bitcoin/getConversionCurrency");
+      this.$store.dispatch("user/getConversionCurrency");
       this.$store.dispatch("bitcoin/getSync");
       this.$store.dispatch("bitcoin/getBalance");
       this.$store.dispatch("bitcoin/getTransactions");

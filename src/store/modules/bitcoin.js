@@ -47,7 +47,6 @@ const state = () => ({
   ],
   pending: [],
   price: 0,
-  conversionCurrency: "USD",
   fees: {
     fast: {
       total: "--",
@@ -198,10 +197,6 @@ const mutations = {
 
   price(state, usd) {
     state.price = usd;
-  },
-
-  conversionCurrency(state, conversionCurrency) {
-    state.conversionCurrency = conversionCurrency;
   }
 };
 
@@ -394,23 +389,6 @@ const actions = {
 
     if (price) {
       commit("price", price[state.conversionCurrency]);
-    }
-  },
-
-  async getConversionCurrency({ commit }) {
-    if (window.localStorage && window.localStorage.getItem("conversionCurrency")) {
-      commit(
-        "conversionCurrency",
-        window.localStorage.getItem("conversionCurrency")
-      );
-    }
-  },
-
-  setConversionCurrency({ commit }, currency) {
-    const availableCurrencies = ["USD", "EUR", "GBP"];
-    if (availableCurrencies.includes(currency)) {
-      window.localStorage.setItem("conversionCurrency", currency);
-      commit("conversionCurrency", currency);
     }
   },
 
