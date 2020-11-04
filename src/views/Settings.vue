@@ -251,7 +251,7 @@
                   <span class="d-block">Currency</span>
                   <small class="d-block" style="opacity: 0.4">Select your fiat currency</small>
                 </div>
-                <b-form-select :value="settings.currency" @change="setConversionCurrency" :options="currencyOptions" class="mb-3 w-50" ></b-form-select>
+                <b-form-select :value="selectedCurrency" @change="setCurrency" :options="currencyOptions" class="mb-3 w-50" ></b-form-select>
               </div>
           </div>
           <div class="px-3 px-lg-4 py-2"></div>
@@ -384,6 +384,9 @@ export default {
         return false;
       }
       return true;
+    },
+    selectedCurrency() {
+      return this.settings ? this.settings.currency : '';
     }
   },
   created() {
@@ -459,8 +462,9 @@ export default {
     confirmUpdate() {
       this.$store.dispatch("system/confirmUpdate");
     },
-    setConversionCurrency(currency) {
-      this.$store.dispatch("user/updateSetting", { setting: "currency", value: currency });
+    async setCurrency(currency) {
+      await this.$store.dispatch("user/updateSetting", { setting: "currency", value: currency });
+      this.$store.dispatch("bitcoin/getPrice");
     },
     async checkForUpdate() {
       this.isCheckingForUpdate = true;
@@ -545,10 +549,7 @@ export default {
   watch: {
     currentPassword: function() {
       this.isIncorrectPassword = false;
-    },
-    // conversionCurrency: function(currency) {
-    //   this.$store.dispatch("bitcoin/getPrice", currency);
-    // }
+    }
   },
   components: {
     CardWidget,

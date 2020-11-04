@@ -191,6 +191,9 @@ export default {
       return this.btcBalance >= 0 && this.lightningBalance >= 0;
     }
   },
+  created() {
+    this.$store.dispatch("user/getSettings");
+  },
   methods: {
     logout() {
       this.$store.dispatch("user/logout");

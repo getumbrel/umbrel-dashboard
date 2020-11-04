@@ -383,16 +383,16 @@ const actions = {
   },
 
   // eslint-disable-next-line no-unused-vars
-  async getPrice({ commit, state, rootState }) {
-    const currency = rootState.user.settings.currency;
-    if (currency) {
-      const price = await API.get(
-        `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price?currency=${rootState.user.settings.currency}`
-      );
+  async getPrice({ commit, rootState }) {
+    const { currency } = rootState.user.settings;
+    if(!currency) return;
+    
+    const price = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price?currency=${currency}`
+    );
 
-      if (price) {
-        commit("price", price[rootState.user.settings.currency]);
-      }
+    if (price) {
+      commit("price", price[currency]);
     }
   },
 
