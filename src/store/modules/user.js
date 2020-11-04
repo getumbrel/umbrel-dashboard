@@ -1,10 +1,6 @@
 import API from "@/helpers/api";
 import router from "@/router";
 
-const baseSettings = {
-  currency: "USD"
-};
-
 // Initial state
 const state = () => ({
   name: "",
@@ -83,7 +79,7 @@ const actions = {
     const settings = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings`
     );
-    commit("setSettings", { ...baseSettings, ...settings });
+    commit("setSettings", settings);
   },
 
   async updateSetting({ commit }, { setting, value }) {
@@ -91,7 +87,7 @@ const actions = {
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings/update`,
       { setting, value }
     );
-    commit("setSettings", { ...baseSettings, ...settings });
+    commit("setSettings", settings);
   },
 
   async getSeed({ commit, state, dispatch }, plainTextPassword) {
