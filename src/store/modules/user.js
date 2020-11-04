@@ -1,13 +1,17 @@
 import API from "@/helpers/api";
 import router from "@/router";
 
+const baseSettings = {
+  currency: "USD"
+};
+
 // Initial state
 const state = () => ({
   name: "",
   jwt: window.localStorage.getItem("jwt") || "",
   registered: true,
   seed: [],
-  conversionCurrency: "USD"
+  settings: {}
 });
 
 // Functions to update the state directly
@@ -25,8 +29,8 @@ const mutations = {
   setSeed(state, seed) {
     state.seed = seed;
   },
-  async setConversionCurrency(state, conversionCurrency) {
-    state.conversionCurrency = conversionCurrency;
+  setSettings(state, settings) {
+    state.settings = settings;
   }
 };
 
@@ -75,6 +79,21 @@ const actions = {
     commit("setName", name);
   },
 
+  async getSettings({ commit }) {
+    const settings = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings`
+    );
+    commit("setSettings", { ...baseSettings, ...settings });
+  },
+
+  async updateSetting({ commit }, { setting, value }) {
+    const settings = await API.post(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings/update`,
+      { setting, value }
+    );
+    commit("setSettings", { ...baseSettings, ...settings });
+  },
+
   async getSeed({ commit, state, dispatch }, plainTextPassword) {
     let rawSeed;
 
@@ -102,31 +121,6 @@ const actions = {
 
     if (rawSeed && rawSeed.seed) {
       commit("setSeed", rawSeed.seed);
-    }
-  },
-
-  async getConversionCurrency({ commit }) {
-    const settings = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings`
-    );
-
-    if (settings && settings.currency) {
-      commit("setConversionCurrency", settings.currency);
-    } else {
-      commit("setConversionCurrency", "USD");
-    }
-  },
-
-  async setConversionCurrency({ commit }, conversionCurrency) {
-    const availableCurrencies = ["USD", "EUR", "GBP"];
-
-    if (availableCurrencies.includes(conversionCurrency)) {
-      commit("setConversionCurrency", conversionCurrency);
-
-      await API.post(
-        `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings/update`, 
-        { setting: "currency", value: conversionCurrency }
-      );
     }
   },
 

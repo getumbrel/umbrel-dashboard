@@ -368,7 +368,7 @@ export default {
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
       backupStatus: state => state.system.backupStatus,
-      conversionCurrency: state => state.user.conversionCurrency
+      conversionCurrency: state => state.user.settings.currency
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -390,7 +390,7 @@ export default {
     this.$store.dispatch("system/getOnionAddress");
     this.$store.dispatch("system/getVersion");
     this.$store.dispatch("system/getBackupStatus");
-    this.$store.dispatch("user/getConversionCurrency");
+    this.$store.dispatch("user/getSettings");
   },
   methods: {
     getReadableTime(timestamp) {
@@ -460,7 +460,7 @@ export default {
       this.$store.dispatch("system/confirmUpdate");
     },
     setConversionCurrency(currency) {
-      this.$store.dispatch("user/setConversionCurrency", currency);
+      this.$store.dispatch("user/updateSetting", { currency });
     },
     async checkForUpdate() {
       this.isCheckingForUpdate = true;

@@ -186,8 +186,7 @@ export default {
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
       showUpdateConfirmationModal: state =>
-        state.system.showUpdateConfirmationModal,
-      conversionCurrency: state => state.bitcoin.conversionCurrency
+        state.system.showUpdateConfirmationModal
     }),
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
@@ -203,7 +202,7 @@ export default {
     },
     fetchData() {
       this.$store.dispatch("system/getUnit");
-      this.$store.dispatch("user/getConversionCurrency");
+      this.$store.dispatch("user/getSettings");
       this.$store.dispatch("bitcoin/getSync");
       this.$store.dispatch("bitcoin/getBalance");
       this.$store.dispatch("bitcoin/getTransactions");
