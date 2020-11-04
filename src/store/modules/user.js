@@ -7,7 +7,9 @@ const state = () => ({
   jwt: window.localStorage.getItem("jwt") || "",
   registered: true,
   seed: [],
-  settings: {}
+  settings: {
+    currency: "USD"
+  }
 });
 
 // Functions to update the state directly
@@ -76,17 +78,18 @@ const actions = {
   },
 
   async getSettings({ commit }) {
-    const settings = await API.get(
+    const { data: { settings } } = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings`
     );
     commit("setSettings", settings);
   },
 
   async updateSetting({ commit }, { setting, value }) {
-    const settings = await API.post(
+    const { data: { settings } } = await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings/update`,
-      { setting, value }
+      { [setting]: value }
     );
+    console.log("Returned settings", settings);
     commit("setSettings", settings);
   },
 
