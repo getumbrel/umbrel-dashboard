@@ -388,7 +388,7 @@ const actions = {
     );
 
     if (price) {
-      commit("price", price[state.conversionCurrency]);
+      commit("price", price[state.user.settings.currency]);
     }
   },
 
