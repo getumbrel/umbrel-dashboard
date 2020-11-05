@@ -140,7 +140,9 @@ export default {
       this.pollInProgress = true;
       //TODO: remove this timeout added so bitcoin can get fetch status first
       setTimeout(async () => {
-        await this.$store.dispatch("bitcoin/getBlocks");
+        window.requestAnimationFrame(async () => {
+          await this.$store.dispatch("bitcoin/getBlocks");
+        });
         this.pollInProgress = false;
       }, 1000);
     },
