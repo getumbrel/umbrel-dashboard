@@ -284,7 +284,7 @@ const actions = {
     }
   },
 
-  async getBlocks({ commit, state, dispatch }) { 
+  async getBlocks({ commit, state, dispatch }) {
     if (state.operational) {
       await dispatch("getSync");
 
