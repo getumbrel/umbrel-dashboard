@@ -89,7 +89,7 @@ const actions = {
 
   async updateSetting({ commit }, { setting, value }) {
     const settings = await API.post(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings/update`,
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings`,
       {
         setting,
         value
