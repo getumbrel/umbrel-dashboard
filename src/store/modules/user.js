@@ -88,14 +88,17 @@ const actions = {
   },
 
   async updateSetting({ commit }, { setting, value }) {
-    const settings = await API.post(
+    const { data: settings } = await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings`,
-      {
-        setting,
-        value
+      { 
+        setting, 
+        value 
       }
     );
-    commit("setSettings", settings);
+
+    if(settings) {
+      commit("setSettings", settings);
+    }
   },
 
   async getSeed({ commit, state, dispatch }, plainTextPassword) {
