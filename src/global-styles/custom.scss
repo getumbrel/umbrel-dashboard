@@ -453,3 +453,8 @@ body {
     }
     
 }
+
+// Helper class to support text with "\n" newline characters
+.text-newlines {
+    white-space: pre-line; 
+}
