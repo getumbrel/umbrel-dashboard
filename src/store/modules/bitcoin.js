@@ -8,11 +8,20 @@ const state = () => ({
   version: "",
   ipAddress: "",
   onionAddress: "",
-  electrumAddress: "",
+  p2p: {
+    address: "",
+    port: ""
+  },
+  electrum: {
+    address: "",
+    port: "",
+    connectionString: ""
+  },
   rpc: {
     rpcuser: "",
     rpcpassword: "",
     address: "",
+    port: "",
     connectionString: ""
   },
   currentBlock: 0,
@@ -93,14 +102,6 @@ const mutations = {
     state.ipAddress = address;
   },
 
-  onionAddress(state, address) {
-    state.onionAddress = address;
-  },
-
-  electrumAddress(state, address) {
-    state.electrumAddress = address;
-  },
-
   syncStatus(state, sync) {
     state.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
     state.currentBlock = sync.currentBlock;
@@ -132,10 +133,22 @@ const mutations = {
     state.stats.hashrate = stats.hashrate;
   },
 
+  setP2PInfo(state, p2pInfo) {
+    state.address = p2pInfo.address;
+    state.port = p2pInfo.port;
+  },
+
+  setElectrumInfo(state, electrumInfo) {
+    state.electrum.address = electrumInfo.address;
+    state.electrum.port = electrumInfo.port;
+    state.electrum.connectionString = electrumInfo.connectionString;
+  },
+
   setRpcInfo(state, rpcInfo) {
     state.rpc.rpcuser = rpcInfo.rpcuser;
     state.rpc.rpcpassword = rpcInfo.rpcpassword;
     state.rpc.address = rpcInfo.address;
+    state.rpc.port = rpcInfo.port;
     state.rpc.connectionString = rpcInfo.connectionString;
   },
 
@@ -238,25 +251,23 @@ const actions = {
     }
   },
 
-  async getHiddenServiceUrl({ commit }) {
-    const address = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-p2p-hidden-service`
+  async getP2PInfo({ commit }) {
+    const p2pInfo = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-p2p-connection-details`
     );
-    if (address) {
-      commit("onionAddress", address);
-    } else {
-      commit("onionAddress", "Couldn't get P2P address")
+
+    if (p2pInfo) {
+      commit("setP2PInfo", p2pInfo);
     }
   },
 
-  async getElectrumUrl({ commit }) {
-    const address = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/electrum-hidden-service`
+  async getElectrumInfo({ commit }) {
+    const electrumInfo = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/electrum-connection-details`
     );
-    if (address) {
-      commit("electrumAddress", address);
-    } else {
-      commit("electrumAddress", "Couldn't get Electrum address")
+    
+    if (electrumInfo) {
+      commit("setElectrumInfo", electrumInfo);
     }
   },
 
