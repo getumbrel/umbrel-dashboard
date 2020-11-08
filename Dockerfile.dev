@@ -15,4 +15,4 @@ ENV VUE_APP_MANAGER_API_URL=/manager-api
 
 EXPOSE 3004
 ENTRYPOINT ["bash"]
-CMD ["-c", "yarn && yarn vue-cli-service serve --port 3004"]
+CMD ["-c", "yarn && yarn vue-cli-service serve --port 3004 --skip-plugins eslint"]
