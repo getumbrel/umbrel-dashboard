@@ -2,7 +2,7 @@
   <div class="qr-container">
     <!-- Popup umbrel logo in the middle of QR code -->
     <transition name="qr-logo-popup" appear>
-      <img v-show="showLogo" src="@/assets/umbrel-qr-icon.svg" class="qr-logo" />
+      <img v-show="showLogo" :src="require(`@/assets/${logo}`)" class="qr-logo" />
     </transition>
 
     <!-- QR Code element -->
@@ -33,6 +33,10 @@ export default {
     showLogo: {
       type: Boolean,
       default: true
+    },
+    logo: {
+      type: String,
+      default: "umbrel-qr-icon.svg"
     }
   },
   data() {
