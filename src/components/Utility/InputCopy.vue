@@ -50,6 +50,9 @@ export default {
       copyText.select();
       copyText.setSelectionRange(0, 99999); /*For mobile devices*/
       document.execCommand("copy");
+      copyText.blur();
+
+      window.setTimeout(() => this.isCopied = false, 400);
 
       return (this.isCopied = true);
     }
