@@ -118,7 +118,7 @@ export default {
         if (!this.bitcoinStarted) {
           this.bitcoinStarted = Date.now();
         } else if (Date.now() - this.bitcoinStarted > bitcoinSlowDelay) {
-           this.loadingText += " This can take a while, don't pull the power!";
+           this.loadingText += " This can take a while, please don't turn off your Umbrel!";
         }
 
         this.loadingProgress = 60;
