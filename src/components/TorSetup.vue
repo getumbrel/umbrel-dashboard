@@ -3,7 +3,7 @@
     <div class="px-3 px-lg-4">
       <h6>Device</h6>
       <b-form-select v-model="selectedDevice" class="mb-3">
-        <b-form-select-option :value="null || ''" disabled >Select your device</b-form-select-option>
+        <b-form-select-option :value="null" disabled >Select your device</b-form-select-option>
         <b-form-select-option-group label="Computers">
           <b-form-select-option value="macOS">macOS</b-form-select-option>
           <b-form-select-option value="Linux">Linux</b-form-select-option>
@@ -77,10 +77,10 @@
           Download <strong>Orbot</strong>, available on Play Store and F-Droid.
           <div class="w-100 d-flex justify-content-around">
             <a href="https://f-droid.org/packages/org.torproject.android" target="_blank">
-              <img src="https://guardianproject.info/img/get-it-on-fdroid.png" alt="Get it on F-Droid" height="70">
+              <img src="https://guardianproject.info/img/get-it-on-fdroid.png" alt="Get it on F-Droid" height="60">
             </a>
             <a href="https://play.google.com/store/apps/details?id=org.torproject.android" target="_blank">
-              <img src="https://guardianproject.info/img/en-play-badge.png" alt="Get it on Google Play" height="70">
+              <img src="https://guardianproject.info/img/en-play-badge.png" alt="Get it on Google Play" height="60">
             </a>
           </div>
         </div>
@@ -107,7 +107,10 @@ import InputCopy from "@/components/Utility/InputCopy.vue";
 
 export default {
   props: {
-    selectedDevice: String
+    selectedDevice: {
+      type: String,
+      default: null
+    }
   },
   data() {
     return {

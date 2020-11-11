@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <b-row class="mb-2" align-v="center"> 
+    <b-row class="mb-2" align-v="center">
       <b-col col cols="8" class="d-flex align-items-center">
         <b-form-select class="mr-2" v-model="selectedLayer">
           <b-form-select-option :value="null" disabled>Select a layer</b-form-select-option>
@@ -42,7 +42,6 @@
 
 <script>
 import { mapState } from "vuex";
-import moment from "moment";
 
 import TorSetup from "@/components/TorSetup.vue";
 import ConnectWalletCard from "@/components/ConnectWallet/ConnectWalletCard.vue";
@@ -82,7 +81,11 @@ export default {
       ]);
     },
     changeSelectedDevice(device) {
-      this.selectedDevice = device;
+      if(device === 'Desktop') {
+        this.selectedDevice = null;
+      } else {
+        this.selectedDevice = device;
+      }
     }
   },
   created() {

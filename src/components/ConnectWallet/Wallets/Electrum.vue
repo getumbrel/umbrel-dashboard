@@ -5,7 +5,7 @@
       icon="icon-wallet-electrum.svg"
       subTitle="Instructions to setup Electrum"
     >
-      <div class="w-100 align-self-center ml-lg-3">
+      <div class="w-100 align-self-center pl-lg-3">
         <div class="d-flex mb-3 align-items-center">
           <p class="mb-0 mr-2">Device:</p>
           <b-button class="mr-2" :variant="selectedDevice === 'Desktop' ? 'primary' : ''" @click="changeSelectedDevice('Desktop')">Desktop</b-button>

@@ -5,7 +5,7 @@
       icon="icon-wallet-fullynoded.svg"
       subTitle="Instructions to setup Fully Noded on iOS"
     >
-      <div class="w-100 align-self-center">
+      <div class="w-100 align-self-center pl-lg-3">
         <instruction-line 
           text='Open the Fully Noded app.'
         >
@@ -16,7 +16,7 @@
         >
         </instruction-line>
 
-        <div class="d-flex">
+        <div class="d-flex w-100 pb-1">
           <instruction-line 
             text='Scan the QR Code:'
           >
