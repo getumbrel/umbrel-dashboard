@@ -134,8 +134,8 @@ const mutations = {
   },
 
   setP2PInfo(state, p2pInfo) {
-    state.address = p2pInfo.address;
-    state.port = p2pInfo.port;
+    state.p2p.address = p2pInfo.address;
+    state.p2p.port = p2pInfo.port;
   },
 
   setElectrumInfo(state, electrumInfo) {
