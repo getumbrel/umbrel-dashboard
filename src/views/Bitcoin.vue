@@ -356,8 +356,8 @@ export default {
     },
     fetchConnectionDetails() {
       return Promise.all([
-        this.$store.dispatch("bitcoin/getHiddenServiceUrl"),
-        this.$store.dispatch("bitcoin/getElectrumUrl"),
+        this.$store.dispatch("bitcoin/getP2PInfo"),
+        this.$store.dispatch("bitcoin/getElectrumInfo"),
         this.$store.dispatch("bitcoin/getRpcInfo")
       ]);
     }
