@@ -158,7 +158,9 @@ export default {
 
       // Add slight delay so the progress bar makes
       // it to 100% before disappearing
-      setTimeout(() => (this.loading = false), 300);
+      await delay(300);
+      this.loading = false;
+      this.bitcoinStarted = false;
     }
   },
   created() {
