@@ -49,7 +49,7 @@ export default {
       loading: true,
       loadingText: "",
       loadingProgress: 0,
-      bitcoinStarted: false,
+      bitcoinStarted: 0,
       loadingPollInProgress: false
     };
   },
