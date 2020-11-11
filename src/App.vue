@@ -49,7 +49,7 @@ export default {
       loading: true,
       loadingText: "",
       loadingProgress: 0,
-      bitcoinStarted: 0,
+      bitcoinPollStarted: 0,
       loadingPollInProgress: false
     };
   },
@@ -115,9 +115,9 @@ export default {
 
         // Warn users against pulling power if Core is taking a while
         const bitcoinSlowDelay = 10 * SECONDS_IN_MS;
-        if (!this.bitcoinStarted) {
-          this.bitcoinStarted = Date.now();
-        } else if (Date.now() - this.bitcoinStarted > bitcoinSlowDelay) {
+        if (!this.bitcoinPollStarted) {
+          this.bitcoinPollStarted = Date.now();
+        } else if (Date.now() - this.bitcoinPollStarted > bitcoinSlowDelay) {
            this.loadingText += " This can take a while, please don't turn off your Umbrel!";
         }
 
@@ -129,7 +129,7 @@ export default {
           return;
         }
       }
-      this.bitcoinStarted = 0;
+      this.bitcoinPollStarted = 0;
 
       // Then check if lnd is operational
       if (this.loadingProgress <= 80) {
