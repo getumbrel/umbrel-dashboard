@@ -6,16 +6,35 @@
       </div>
     </div>
 
-    <b-row class="row-eq-height">
-      <b-col col cols="12" md="6" xl="4">
-        <card-widget header="Wallet">
-
-        </card-widget>
+    <b-row class="mb-2" align-v="center"> 
+      <b-col col cols="8" class="d-flex align-items-center">
+        <b-form-select class="mr-2" v-model="selectedLayer">
+          <b-form-select-option :value="null" disabled>Select a layer</b-form-select-option>
+          <b-form-select-option value="bitcoin">Bitcoin</b-form-select-option>
+          <b-form-select-option value="lightning">Lightning</b-form-select-option>
+        </b-form-select>
+        <b-form-select v-model="selectedComponent" :options="wallets[selectedLayer]" text-field="name" value-field="component">
+          <template #first>
+            <b-form-select-option :value="null" disabled>Select a wallet</b-form-select-option>
+          </template>
+        </b-form-select>
       </b-col>
-      <b-col col cols="12" md="6" xl="8">
-        <card-widget header="Wallet">
+    </b-row>
 
-        </card-widget>
+    <b-row>
+      <b-col col cols="8">
+          <component 
+            v-if="selectedComponent" 
+            :is="selectedComponent" 
+            :urls="urls"
+            v-on:selectdevice="changeSelectedDevice"
+          ></component>
+          <connect-wallet-card v-else>
+            <p class="w-100 mb-0 text-center">Please select a wallet above.</p>
+          </connect-wallet-card>
+      </b-col>
+      <b-col col cols="4">
+        <tor-setup :selectedDevice="selectedDevice"></tor-setup>
       </b-col>
     </b-row>
   </div>
@@ -25,35 +44,53 @@
 import { mapState } from "vuex";
 import moment from "moment";
 
-import CardWidget from "@/components/CardWidget";
+import TorSetup from "@/components/TorSetup.vue";
+import ConnectWalletCard from "@/components/ConnectWallet/ConnectWalletCard.vue";
+
+import wallets from "@/components/ConnectWallet/wallets.js"
 
 export default {
   data() {
     return {
-    
-    };
+      selectedLayer: null,
+      selectedDevice: null,
+      selectedComponent: null,
+      wallets
+    }
   },
   computed: {
     ...mapState({
-      onionAddress: state => state.system.onionAddress
+      urls: state => {
+        return {
+          bitcoin: {
+            p2p: state.bitcoin.p2p,
+            electrum: state.bitcoin.electrum,
+            rpc: state.bitcoin.rpc
+          },
+          lnd: state.lightning.lndConnectUrls
+        }
+      }
     })
   },
-  created() {
-    
-  },
   methods: {
-    getReadableTime(timestamp) {
-      return moment(timestamp).format("MMM D, h:mm:ss a");
+    fetchConnectionDetails() {
+      return Promise.all([
+        this.$store.dispatch("lightning/getLndConnectUrls"),
+        this.$store.dispatch("bitcoin/getP2PInfo"),
+        this.$store.dispatch("bitcoin/getElectrumInfo"),
+        this.$store.dispatch("bitcoin/getRpcInfo")
+      ]);
+    },
+    changeSelectedDevice(device) {
+      this.selectedDevice = device;
     }
   },
-  beforeDestroy() {
-  
-  },
-  watch: {
-    
+  created() {
+    this.fetchConnectionDetails();
   },
   components: {
-    CardWidget
+    TorSetup,
+    ConnectWalletCard
   }
 };
 </script>
