@@ -17,17 +17,15 @@
       <div class="blockchain-block-icon-bg"></div>
     </div>
     <div>
-      <div v-if="instruction.field && instruction.value" class="d-flex justify-content-start align-items-center">
+      <div v-if="field && value" class="d-flex justify-content-start align-items-center flex-wrap">
         <div class="pr-2 text-center text-lg-left text-nw">
-          In the "<strong>{{ instruction.field }}</strong
-          >", enter
+          In the "<strong>{{ field }}</strong
+          >" field, enter
         </div>
-        <input-copy :value="instruction.dynamic ? url[instruction.value] : instruction.value" size="sm"></input-copy>
+        <input-copy :value="value" size="sm" :style="{ width: `${70+String(value).length*8}px`} /* Magical magic numbers */"></input-copy>
       </div>
-      <div>
-        <div v-if="typeof instruction === 'string'" class="text-center text-lg-left">
-          {{ instruction }}
-        </div>
+      <div v-if="text" class="text-center text-lg-left">
+        {{ text }}
       </div>
     </div>
   </b-list-group-item>
@@ -38,8 +36,9 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    instruction: [Object, String],
-    url: Object,
+    text: String,
+    field: String,
+    value: String,
     last: Boolean
   },
   data() {
