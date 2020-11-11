@@ -129,6 +129,7 @@ export default {
           return;
         }
       }
+      this.bitcoinStarted = 0;
 
       // Then check if lnd is operational
       if (this.loadingProgress <= 80) {
@@ -158,9 +159,7 @@ export default {
 
       // Add slight delay so the progress bar makes
       // it to 100% before disappearing
-      await delay(300);
-      this.loading = false;
-      this.bitcoinStarted = false;
+      setTimeout(() => (this.loading = false), 300);
     }
   },
   created() {
