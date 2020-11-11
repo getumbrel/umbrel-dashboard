@@ -40,6 +40,8 @@ import delay from "@/helpers/delay";
 import Shutdown from "@/components/Shutdown";
 import Loading from "@/components/Loading";
 
+const SECONDS_IN_MS = 1000;
+
 export default {
   name: "App",
   data() {
@@ -47,6 +49,7 @@ export default {
       loading: true,
       loadingText: "",
       loadingProgress: 0,
+      bitcoinStarted: false,
       loadingPollInProgress: false
     };
   },
@@ -109,6 +112,15 @@ export default {
       // Then check if btc is operational
       if (this.loadingProgress <= 60) {
         this.loadingText = "Loading Bitcoin Core...";
+
+        // Warn users against pulling power if Core is taking a while
+        const bitcoinSlowDelay = 10 * SECONDS_IN_MS;
+        if (!this.bitcoinStarted) {
+          this.bitcoinStarted = Date.now();
+        } else if (Date.now() - this.bitcoinStarted > bitcoinSlowDelay) {
+           this.loadingText += " This can take a while, don't pull the power!";
+        }
+
         this.loadingProgress = 60;
         await this.$store.dispatch("bitcoin/getStatus");
         if (!this.isBitcoinOperational) {
