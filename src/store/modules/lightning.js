@@ -1,5 +1,6 @@
 import API from "@/helpers/api";
 import { toPrecision } from "@/helpers/units";
+import moment from "moment";
 // import Events from '~/helpers/events';
 // import { sleep } from '@/helpers/utils';
 
@@ -58,7 +59,8 @@ const state = () => ({
   ],
   confirmedTransactions: [],
   pendingTransactions: [],
-  pendingChannelEdit: {}
+  pendingChannelEdit: {},
+  forwards: []
 });
 
 // Functions to update the state directly
@@ -147,6 +149,10 @@ const mutations = {
 
   setLndConnectUrls(state, urls) {
     state.lndConnectUrls = urls;
+  },
+
+  setForwards(state, forwards) {
+    state.forwards = forwards;
   }
 };
 
@@ -455,6 +461,21 @@ const actions = {
       if (result.status === 200) {
         commit("isUnlocked", true);
       }
+    }
+  },
+
+  async getForwards({ commit }) {
+    const startTime = moment()
+      .subtract(1, "week")
+      .unix();
+    const endTime = moment().unix();
+
+    const { forwardingEvents } = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/lightning/forwardingEvents?startTime=${startTime}&endTime=${endTime}`
+    );
+
+    if (forwardingEvents) {
+      commit("setForwards", forwardingEvents);
     }
   }
 };

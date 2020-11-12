@@ -326,6 +326,11 @@
         </card-widget>
       </b-col>
     </b-row>
+    <b-row class="row-eq-height">
+      <b-col col cols="12" md="12" xl="8">
+        <lightning-forwards></lightning-forwards>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -338,6 +343,7 @@ import CardWidget from "@/components/CardWidget";
 import Stat from "@/components/Utility/Stat";
 import LightningConnectWallet from "@/components/LightningConnectWallet";
 import LightningWallet from "@/components/LightningWallet";
+import LightningForwards from "@/components/LightningForwards";
 import QrCode from "@/components/Utility/QrCode";
 import InputCopy from "@/components/Utility/InputCopy";
 import ChannelList from "@/components/Channels/List";
@@ -419,6 +425,7 @@ export default {
   components: {
     LightningConnectWallet,
     LightningWallet,
+    LightningForwards,
     CardWidget,
     Stat,
     QrCode,
