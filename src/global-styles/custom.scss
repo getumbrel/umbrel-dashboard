@@ -458,3 +458,18 @@ body {
 .text-newlines {
     white-space: pre-line; 
 }
+
+// Helper class for fade in and out animation
+.fade-in-out {
+    animation: fadeInOut 1s infinite linear;
+}
+
+@keyframes fadeInOut {
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}

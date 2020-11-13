@@ -12,7 +12,8 @@
         :id="app.id"
         :name="app.name"
         :hiddenService="app.hiddenService"
-      ></installed-app>
+      >
+      </installed-app>
     </div>
   </div>
 </template>
@@ -33,6 +34,13 @@ export default {
   },
   created() {
     this.$store.dispatch("apps/getInstalledApps");
+  },
+  watch: {
+    apps: function(newApps) {
+      if (newApps.length === 0) {
+        this.$router.push("/dashboard");
+      }
+    }
   },
   components: {
     InstalledApp

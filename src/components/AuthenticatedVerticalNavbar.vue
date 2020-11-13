@@ -86,7 +86,12 @@
           Lightning
         </b-nav-item>
 
-        <b-nav-item to="/apps" class="my-1" exact-active-class="active">
+        <b-nav-item
+          to="/apps"
+          class="my-1"
+          exact-active-class="active"
+          v-if="hasInstalledApps"
+        >
           <svg
             width="24"
             height="24"
@@ -238,7 +243,8 @@ export default {
     ...mapState({
       btcBalance: state => state.bitcoin.balance.total,
       lightningBalance: state => state.lightning.balance.total,
-      unit: state => state.system.unit
+      unit: state => state.system.unit,
+      hasInstalledApps: state => state.apps.installed.length
     }),
     walletBalance() {
       return this.unit === "sats"

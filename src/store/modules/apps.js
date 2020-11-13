@@ -1,6 +1,7 @@
 // import API from "@/helpers/api";
+// import Vue from "vue";
 
-const appStore = [
+let appStore = [
   {
     id: "btcpay",
     category: "Merchants",
@@ -59,27 +60,22 @@ const appStore = [
   }
 ];
 
-const installedApps = [
-  {
-    id: "btcpays",
-    name: "BTCPay Server",
-    hiddenService: "btcpayuiuewndsokhdj.onion"
-  },
-  {
-    id: "mempool-space",
-    name: "mempool.space",
-    hiddenService: "mempooljhssdskhjshd.onion"
-  },
-  {
-    id: "dojo",
-    name: "Dojo",
-    hiddenService: "dojoqoisbsxsdsduriw.onion"
-  },
-  {
-    id: "btc-rpc-explorer",
-    name: "BTC RPC Explorer",
-    hiddenService: "btcrpcexplrerodhsjd.onion"
-  }
+let installedApps = [
+  // {
+  //   id: "mempool-space",
+  //   name: "mempool.space",
+  //   hiddenService: "mempooljhssdskhjshd.onion"
+  // },
+  // {
+  //   id: "dojo",
+  //   name: "Dojo",
+  //   hiddenService: "dojoqoisbsxsdsduriw.onion"
+  // },
+  // {
+  //   id: "btc-rpc-explorer",
+  //   name: "BTC RPC Explorer",
+  //   hiddenService: "btcrpcexplrerodhsjd.onion"
+  // }
 ];
 
 // Initial state
@@ -91,18 +87,20 @@ const state = () => ({
 // Functions to update the state directly
 const mutations = {
   setInstalledApps(state, apps) {
-    state.installed = apps;
+    const alphabeticallySortedApps = apps.sort((a, b) => a.name.localeCompare(b.name));
+    state.installed = alphabeticallySortedApps;
   },
   setAppStore(state, appStore) {
-    const installedApps = state.installed;
-    for (let installedApp of installedApps) {
-      const appIndex = appStore.findIndex((app) => app.id === installedApp.id);
-      appStore[appIndex] = {
-        ...appStore[appIndex],
-        isInstalled: true
-      };
-    }
-    console.log(appStore);
+    // const installedApps = state.installed;
+    // for (let installedApp of installedApps) {
+    //   const appIndex = appStore.findIndex((app) => app.id === installedApp.id);
+
+    //   // To trigger reactive changes: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
+    //   Vue.set(appStore, appIndex, {
+    //     ...appStore[appIndex],
+    //     isInstalled: true
+    //   });
+    // }
     state.store = appStore;
   }
 };
@@ -119,6 +117,21 @@ const actions = {
   async getAppStore({ commit, dispatch }) {
     dispatch("getInstalledApps");
     commit("setAppStore", appStore);
+  },
+  installFakeApp({ state }, app) {
+    console.log(state);
+    installedApps.push({
+      id: app.id,
+      name: app.name,
+      hiddenService: 'testing.onion'
+    });
+  },
+  uninstallFakeApp({ dispatch }, appId) {
+
+    const appIndex = installedApps.findIndex((app) => app.id === appId);
+    installedApps = installedApps.slice(0, appIndex).concat(installedApps.slice(appIndex + 1, installedApps.length));
+
+    dispatch("getAppStore");
   }
 };
 

@@ -35,15 +35,30 @@
           </div>
         </div>
         <b-button
-          variant="outline-primary"
+          variant="primary"
           size="lg"
           class="px-4"
-          v-if="app.isInstalled"
+          v-if="isInstalled"
+          :href="url"
+          target="_blank"
           >Open</b-button
         >
-        <b-button variant="success" size="lg" class="px-4" v-else
-          >Install</b-button
-        >
+        <div class="d-flex flex-column align-items-center" v-else>
+          <b-button
+            variant="success"
+            size="lg"
+            class="px-4"
+            :class="isInstalling ? 'fade-in-out' : ''"
+            @click="installApp"
+            :disabled="isInstalling"
+            >{{ isInstalling ? "Installing..." : "Install" }}</b-button
+          >
+          <small
+            :style="{ opacity: isInstalling ? 1 : 0 }"
+            class="mt-1 d-block text-muted"
+            >This may take a few minutes</small
+          >
+        </div>
       </div>
     </div>
     <div class="gallery pt-3 pb-4 px-4 mb-3">
@@ -58,7 +73,7 @@
       <b-col col cols="12" sm="8">
         <card-widget header="About this app">
           <div class="px-3 px-lg-4 pb-4">
-            <p class="respect-newline">{{ app.description }}</p>
+            <p class="text-newlines">{{ app.description }}</p>
           </div>
         </card-widget>
       </b-col>
@@ -131,18 +146,40 @@
 <script>
 import { mapState } from "vuex";
 
+// import API from "@/helpers/api";
+
 import CardWidget from "@/components/CardWidget";
 
 export default {
   data() {
-    return {};
+    return {
+      isInstalling: false
+    };
   },
   computed: {
     ...mapState({
-      store: state => state.apps.store
+      installedApps: state => state.apps.installed,
+      appStore: state => state.apps.store
     }),
+    isInstalled: function() {
+      const installedAppIndex = this.installedApps.findIndex(
+        app => app.id === this.$route.params.id
+      );
+      return installedAppIndex !== -1;
+    },
+    url: function() {
+      const origin = window.location.origin;
+      if (origin.indexOf(".onion") > 0) {
+        const installedApp = this.installedApps.find(
+          app => app.id === this.$route.params.id
+        );
+        return `http://${installedApp.hiddenService}`;
+      } else {
+        return `${origin}/app/${this.app.id}`;
+      }
+    },
     app: function() {
-      return this.store.find(app => app.id === this.$route.params.id);
+      return this.appStore.find(app => app.id === this.$route.params.id);
     }
   },
   methods: {
@@ -156,10 +193,41 @@ export default {
         name = "Electrs";
       }
       return `${name} v${dependency.version}+`;
+    },
+    async installApp() {
+      this.isInstalling = true;
+
+      // const appId = this.app.id;
+      // try {
+      //   await API.post(
+      //     `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/install`,
+      //     {
+      //       id: appId
+      //     }
+      //   );
+      // } catch (error) {
+      //   if (error.response && error.response.data) {
+      //     this.$bvToast.toast(error.response.data, {
+      //       title: "Error",
+      //       autoHideDelay: 3000,
+      //       variant: "danger",
+      //       solid: true,
+      //       toaster: "b-toaster-bottom-right"
+      //     });
+      //   }
+      //   this.isInstalling = false;
+      //   return;
+      // }
+
+      setTimeout(async () => {
+        await this.$store.dispatch("apps/installFakeApp", this.app);
+        await this.$store.dispatch("apps/getAppStore");
+        this.isInstalling = false;
+      }, 1000);
     }
   },
-  created() {
-    this.$store.dispatch("apps/getAppStore");
+  async created() {
+    await this.$store.dispatch("apps/getAppStore");
   },
   components: {
     CardWidget

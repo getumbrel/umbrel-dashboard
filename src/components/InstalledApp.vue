@@ -1,6 +1,6 @@
 <template>
   <div class="mr-2 mb-4 installed-app d-flex flex-column align-items-center">
-    <a class="d-block mb-3 installed-app-link" :href="url"
+    <a class="d-block mb-3 installed-app-link" :href="url" target="_blank"
       ><img
         class="installed-app-icon"
         :alt="name"
@@ -8,6 +8,9 @@
     /></a>
     <span class="text-center mb-1">{{ name }}</span>
     <!-- <status variant="success">Running</status> -->
+    <b-button variant="outline-danger" size="sm" @click="uninstall(name, id)"
+      ><small><b-icon icon="trash"></b-icon> Uninstall</small></b-button
+    >
   </div>
 </template>
 
@@ -27,13 +30,23 @@ export default {
     url: function() {
       const origin = window.location.origin;
       if (origin.indexOf(".onion") > 0) {
-        return this.hiddenService;
+        return `http://${this.hiddenService}`;
       } else {
         return `${origin}/app/${this.id}`;
       }
     }
   },
-  methods: {},
+  methods: {
+    uninstall(name, id) {
+      if (
+        window.confirm(
+          `Are you sure you want to uninstall ${name}? This is will also delete all of its data.`
+        )
+      ) {
+        this.$store.dispatch("apps/uninstallFakeApp", id);
+      }
+    }
+  },
   components: {
     // Status
   }
