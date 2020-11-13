@@ -1,6 +1,13 @@
 <template>
   <card-widget header="Weekly Forwarding">
-    <div class="px-3 px-lg-4">
+    <div class="px-3 px-lg-4" v-if="forwards.length === 0">
+      <p class="text-muted w-50 text-center mx-auto">
+        😢 No forwards this week
+        <br />
+        Hang tight and keep openning channels 🤩
+      </p>
+    </div>
+    <div class="px-3 px-lg-4" v-else>
       <b-row>
         <b-col col cols="6" xl="3">
           <stat
@@ -48,9 +55,12 @@ export default {
   props: {},
   computed: {
     ...mapState({
-      forwards: state => state.lightning.forwards,
-      unit: state => state.system.unit
+      // forwards: (state) => state.lightning.forwards,
+      unit: (state) => state.system.unit,
     }),
+    forwards() {
+      return [];
+    },
     totalInbound() {
       return this.forwards.reduce((count, current) => {
         return count + parseInt(current.amtIn);
@@ -65,7 +75,7 @@ export default {
       return this.forwards.reduce((count, current) => {
         return count + parseInt(current.fee);
       }, 0);
-    }
+    },
   },
   methods: {},
   watch: {},
@@ -74,7 +84,7 @@ export default {
   },
   components: {
     CardWidget,
-    Stat
+    Stat,
   },
 };
 </script>
