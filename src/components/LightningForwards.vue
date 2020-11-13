@@ -55,12 +55,9 @@ export default {
   props: {},
   computed: {
     ...mapState({
-      // forwards: (state) => state.lightning.forwards,
+      forwards: (state) => state.lightning.forwards,
       unit: (state) => state.system.unit,
     }),
-    forwards() {
-      return [];
-    },
     totalInbound() {
       return this.forwards.reduce((count, current) => {
         return count + parseInt(current.amtIn);
