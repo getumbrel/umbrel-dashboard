@@ -128,8 +128,7 @@ export default {
   computed: {
     ...mapState({
       syncPercent: state => state.bitcoin.percent,
-      // Limit to 6 latest blocks
-      blocks: state => state.bitcoin.blocks.slice(0, 6)
+      blocks: state => state.bitcoin.blocks
     })
   },
   methods: {
