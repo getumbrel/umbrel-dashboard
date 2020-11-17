@@ -459,6 +459,14 @@ body {
     white-space: pre-line; 
 }
 
+// Helper class to truncate text with "..."
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
 // Helper class for fade in and out animation
 .fade-in-out {
     animation: fadeInOut 1s infinite linear;
@@ -473,3 +481,24 @@ body {
         opacity: 0.3;
     }
 }
+
+.app-icon {
+  height: 100px;
+  width: 100px;
+  border-radius: 16px;
+}
+
+.app-gallery {
+    display: flex;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    margin-left: -40px;
+    margin-right: -30px;
+    .app-gallery-screen {
+      height: 350px;
+      width: auto;
+      display: block;
+      box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.8);
+      border-radius: 5px;
+    }
+  }

@@ -19,31 +19,38 @@
         </svg>
         Back</router-link
       >
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex justify-content-start">
+      <div
+        class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
+      >
+        <div class="d-flex w-xs-100 justify-content-start pr-2">
           <img
-            style="height: auto; width: 12vw; max-width: 140px; border-radius: 20px;"
-            class="mr-2 mr-sm-3"
+            class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
             :src="require(`@/assets/apps/${app.id}/icon.svg`)"
           />
           <div>
-            <h3 class="d-block font-weight-bold my-1">{{ app.name }}</h3>
+            <h3 class="d-block font-weight-bold mb-1">
+              {{ app.name }}
+            </h3>
             <p class="text-muted">{{ app.tagline }}</p>
             <p>
               <small>{{ app.developer }}</small>
             </p>
           </div>
         </div>
-        <b-button
-          variant="primary"
-          size="lg"
-          class="px-4"
+        <div
+          class="w-xs-100 d-flex flex-column align-items-sm-center"
           v-if="isInstalled"
-          :href="url"
-          target="_blank"
-          >Open</b-button
         >
-        <div class="d-flex flex-column align-items-center" v-else>
+          <b-button
+            variant="primary"
+            size="lg"
+            class="px-4"
+            :href="url"
+            target="_blank"
+            >Open</b-button
+          >
+        </div>
+        <div class="d-flex flex-column align-items-sm-center w-xs-100" v-else>
           <b-button
             variant="success"
             size="lg"
@@ -55,29 +62,30 @@
           >
           <small
             :style="{ opacity: isInstalling ? 1 : 0 }"
-            class="mt-1 d-block text-muted"
+            class="mt-1 d-block text-muted text-center"
             >This may take a few minutes</small
           >
         </div>
       </div>
     </div>
-    <div class="gallery pt-3 pb-4 px-4 mb-3">
+    <div class="app-gallery pt-3 pb-4 px-4 mb-3">
       <img
-        class="gallery-screen mr-3"
+        class="app-gallery-screen mr-3"
         v-for="image in app.gallery"
         :key="image"
         :src="require(`@/assets/apps/${app.id}/gallery/${image}`)"
       />
+      <div class="d-block" style="padding: 1px;"></div>
     </div>
     <b-row>
-      <b-col col cols="12" sm="8">
+      <b-col col cols="12" lg="6" xl="8">
         <card-widget header="About this app">
           <div class="px-3 px-lg-4 pb-4">
             <p class="text-newlines">{{ app.description }}</p>
           </div>
         </card-widget>
       </b-col>
-      <b-col col cols="12" sm="4">
+      <b-col col cols="12" lg="6" xl="4">
         <card-widget header="Information">
           <div class="px-3 px-lg-4 pb-4">
             <div class="d-flex justify-content-between mb-3">
@@ -236,17 +244,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.gallery {
-  display: flex;
-  overflow-x: scroll;
-  margin-left: -40px;
-  margin-right: -40px;
-  .gallery-screen {
-    height: 350px;
-    width: auto;
-    display: block;
-    box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.8);
-    border-radius: 5px;
-  }
-}
 </style>

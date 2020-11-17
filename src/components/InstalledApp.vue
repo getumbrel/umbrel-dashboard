@@ -1,12 +1,12 @@
 <template>
-  <div class="mr-2 mb-4 installed-app d-flex flex-column align-items-center">
+  <div class="mb-4 installed-app d-flex flex-column align-items-center">
     <a class="d-block mb-3 installed-app-link" :href="url" target="_blank"
       ><img
-        class="installed-app-icon"
+        class="installed-app-icon app-icon"
         :alt="name"
         :src="require(`@/assets/apps/${id}/icon.svg`)"
     /></a>
-    <span class="text-center mb-1">{{ name }}</span>
+    <span class="text-center text-truncate mb-1">{{ name }}</span>
     <!-- <status variant="success">Running</status> -->
     <b-button variant="outline-danger" size="sm" @click="uninstall(name, id)"
       ><small><b-icon icon="trash"></b-icon> Uninstall</small></b-button
@@ -57,13 +57,8 @@ export default {
 .installed-app {
   width: 200px;
   .installed-app-link {
-    width: 100px;
-    height: 100px;
     text-decoration: none;
     .installed-app-icon {
-      width: 100px;
-      height: 100px;
-      border-radius: 18px;
       box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
     }
   }

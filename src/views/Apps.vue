@@ -5,7 +5,7 @@
         <h1>apps</h1>
       </div>
     </div>
-    <div class="d-flex flex-wrap">
+    <div class="d-flex flex-wrap justify-content-start apps-container">
       <installed-app
         v-for="app in apps"
         :key="app.id"
@@ -48,4 +48,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.apps-container {
+  column-gap: 2rem;
+}
+</style>

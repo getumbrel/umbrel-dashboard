@@ -24,11 +24,11 @@
         >
           <div class="d-flex">
             <img
-              class="app-icon"
+              class="app-icon mr-2 mr-lg-3"
               :src="require(`@/assets/apps/${app.id}/icon.svg`)"
             />
             <div class="d-flex justify-content-center flex-column">
-              <h3 class="font-weight-bolder text-dark mb-1">
+              <h3 class="app-name font-weight-bolder text-dark mb-1">
                 {{ app.name }}
               </h3>
               <p class="text-muted">
@@ -42,7 +42,7 @@
             viewBox="0 0 14 25"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            class="ml-4"
+            class="ml-4 icon-arrow"
           >
             <path
               d="M0.512563 3.0484C-0.170855 2.35104 -0.170855 1.22039 0.512563 0.523023C1.19598 -0.174341 2.30402 -0.174341 2.98744 0.523023L13.4874 11.2373C14.1499 11.9133 14.1731 13.0019 13.54 13.7066L3.91502 24.4209C3.26193 25.1479 2.15494 25.197 1.44248 24.5306C0.730023 23.8642 0.681893 22.7346 1.33498 22.0076L9.82776 12.5537L0.512563 3.0484Z"
@@ -94,11 +94,15 @@ export default {
   &:last-child {
     border-bottom: none;
   }
-}
-.app-icon {
-  height: 100px;
-  widows: 100px;
-  border-radius: 18px;
-  margin-right: 20px;
+  .icon-arrow {
+    will-change: tranform;
+    transform: translate3d(0, 0, 0);
+    transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  &:hover {
+    .icon-arrow {
+      transform: translate3d(6px, 0, 0);
+    }
+  }
 }
 </style>
