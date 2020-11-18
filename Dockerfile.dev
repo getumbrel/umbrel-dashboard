@@ -6,7 +6,14 @@ WORKDIR /app
 # This is required to pick up filesystem changes in the VirtualBox
 # shared folder for hot module reload
 ENV CHOKIDAR_USEPOLLING=true
+<<<<<<< HEAD
+<<<<<<< HEAD
 ENV CHOKIDAR_INTERVAL=1000
+=======
+>>>>>>> 5f85afa (Add development Dockerfile for umbrel-dev (#244))
+=======
+ENV CHOKIDAR_INTERVAL=1000
+>>>>>>> 3df335f (Set fs poll interval to 1 second in dev Dockerfile (#248))
 
 # We need to make sure we build with production URLS so the NGINX proxy
 # in umbrel-dev routes them properly

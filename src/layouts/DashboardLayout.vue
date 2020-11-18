@@ -30,7 +30,8 @@
           v-if="chain !== 'main'"
           class="align-self-center mr-2 text-capitalize"
           pill
-        >{{ chain === "test" ? "testnet" : chain }}</b-badge>
+          >{{ chain === "test" ? "testnet" : chain }}</b-badge
+        >
 
         <div
           class="nav-hamburger-icon d-lg-none d-xl-none ml-1"
@@ -39,7 +40,11 @@
         >
           <div></div>
         </div>
-        <b-nav-item-dropdown class="d-none d-lg-block d-xl-block" right no-caret>
+        <b-nav-item-dropdown
+          class="d-none d-lg-block d-xl-block"
+          right
+          no-caret
+        >
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>{{ name.split(" ")[0] }}</template>
           <b-dropdown-item @click="logout">Log out</b-dropdown-item>
@@ -49,7 +54,10 @@
 
     <!-- Mobile menu -->
     <transition name="mobile-vertical-menu">
-      <div class="mobile-vertical-menu d-lg-none d-xl-none" v-if="isMobileMenuOpen">
+      <div
+        class="mobile-vertical-menu d-lg-none d-xl-none"
+        v-if="isMobileMenuOpen"
+      >
         <authenticated-vertical-navbar :isMobileMenu="true" />
       </div>
     </transition>
@@ -63,7 +71,12 @@
     </transition>
 
     <b-row class="mx-0">
-      <b-col col lg="3" xl="2" class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2">
+      <b-col
+        col
+        lg="3"
+        xl="2"
+        class="d-none d-lg-block d-xl-block pl-0 pr-0 pr-xl-2"
+      >
         <authenticated-vertical-navbar />
       </b-col>
 
@@ -104,18 +117,24 @@
           </template>
           <div class="px-2 px-sm-3 pb-2 pb-sm-3">
             <div class>
-              <p v-if="availableUpdate.notes">{{ availableUpdate.notes }}</p>
+              <p class="text-newlines" v-if="availableUpdate.notes">
+                {{ availableUpdate.notes }}
+              </p>
               <b-alert variant="warning" show>
-                <small>Please download the latest backup of your payment channels before updating and make sure to note down your 24 secret words (if you haven't already). You'll need these to recover your funds in case something goes wrong.</small>
+                <small
+                  >Please download the latest backup of your payment channels
+                  before updating and make sure to note down your 24 secret
+                  words (if you haven't already). You'll need these to recover
+                  your funds in case something goes wrong.</small
+                >
                 <b-button
                   class="mt-2 mb-1 d-block"
                   variant="warning"
                   size="sm"
                   @click="downloadChannelBackup"
                 >
-                  <small>
-                    <b-icon icon="download" class="mr-1"></b-icon>
-                  </small>Download channel backup
+                  <small> <b-icon icon="download" class="mr-1"></b-icon> </small
+                  >Download channel backup
                 </b-button>
               </b-alert>
               <b-button
@@ -123,7 +142,10 @@
                 variant="success"
                 :disabled="isUpdating"
                 @click="startUpdate"
-              >{{isUpdating ? 'Starting update...' : 'Install now'}}</b-button>
+                >{{
+                  isUpdating ? "Starting update..." : "Install now"
+                }}</b-button
+              >
             </div>
           </div>
         </b-modal>
@@ -136,18 +158,27 @@
           >
             <b-icon icon="bell-fill" class="mr-2"></b-icon>
             <a
-              :href="`https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`"
+              :href="
+                `https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`
+              "
               target="_blank"
               class="alert-link"
-            >Umbrel v{{ availableUpdate.version }}</a>
+              >Umbrel v{{ availableUpdate.version }}</a
+            >
             &nbsp;is now available to install
             <a
               href="#"
               class="alert-link float-right"
               @click.prevent="confirmUpdate"
               v-show="!isUpdating"
-            >Install now</a>
-            <b-spinner v-show="isUpdating" variant="success" small class="float-right mt-1"></b-spinner>
+              >Install now</a
+            >
+            <b-spinner
+              v-show="isUpdating"
+              variant="success"
+              small
+              class="float-right mt-1"
+            ></b-spinner>
           </b-alert>
           <transition name="change-page" mode="out-in">
             <!-- Content -->

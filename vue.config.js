@@ -11,10 +11,14 @@ module.exports = {
   devServer: {
     allowedHosts: [
       'umbrel-dev.local',
+<<<<<<< HEAD
     ],
     watchOptions: {
       poll: true
     }
+=======
+    ]
+>>>>>>> 84f16c4 (Allow umbrel-dev.local to access HMR (#243))
   },
   chainWebpack: config => {
     config.plugin("html").tap(args => {

@@ -78,8 +78,8 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 35%;
-  height: 35%;
+  width: 25%;
+  height: 25%;
   transform: translate3d(-50%, -50%, 0) scale(1);
 }
 </style>
