@@ -14,7 +14,7 @@ jobs:
                 name: Build and push dashboard image
                 steps:
                         - name: Set env variables
-                          run: echo ::set-env name=TAG::${GITHUB_REF/refs\/tags\//}
+                          run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
                         - name: Show set env variables
                           run: |
                                   printf "    TAG: %s\n"  "$TAG"                                  
