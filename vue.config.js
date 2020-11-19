@@ -8,9 +8,14 @@ module.exports = {
   //         }
   //     }
   // }
-  // devServer: {
-  //     proxy: 'http://umbrel.local/',
-  // }
+  devServer: {
+    allowedHosts: [
+      'umbrel-dev.local',
+    ],
+    watchOptions: {
+      poll: true
+    }
+  },
   chainWebpack: config => {
     config.plugin("html").tap(args => {
       args[0].template =
