@@ -1,143 +1,83 @@
 <template>
-  <div>
-    <connect-wallet-card
-      name="Specter Desktop"
-      icon="icon-wallet-specter.svg"
-      subTitle="Instructions to setup Specter Desktop"
-    >
-      <div class="w-100 align-self-center ml-lg-3">
-        <instruction-line 
-          text="Make sure Tor is installed and running on your system."
-        >
-        </instruction-line>
-
-        <instruction-line 
-          text='Open Specter Desktop and click "Configure Node".'
-        >
-        </instruction-line>
-
-        <instruction-line 
-          text='Disable "Auto-detect"'
-        >
-        </instruction-line>
-
-        <instruction-line 
-          field="Username"
-          :value="urls.bitcoin.rpc.rpcuser"
-        >
-        </instruction-line>
-
-        <instruction-line 
-          field="Password"
-          :value="urls.bitcoin.rpc.rpcpassword"
-        >
-        </instruction-line>
-
-        <instruction-line 
-          field="Host"
-          :value="urls.bitcoin.rpc.address"
-        >
-        </instruction-line>
-
-        <instruction-line 
-          field="Port"
-          :value="urls.bitcoin.rpc.port"
-        >
-        </instruction-line>
-
-        <instruction-line 
-          text='Click "Test" to verify if Specter is able to connect to your Umbrel.'
-        >
-        </instruction-line>
-
-        <instruction-line 
-          text='After verifying, click "Save".'
-        >
-        </instruction-line>
-
-        <instruction-line 
-          text="Congratulations! You've successfully connected Specter Desktop to your Umbrel."
-          last
-        >
-        </instruction-line>
-      </div>
-
-      <img 
-        :src="require(`@/assets/qr-code-icon.svg`)" 
-        v-b-modal.qr-code-modal
-      />
-    </connect-wallet-card>
-
-    <b-modal id="qr-code-modal" size="lg" centered hide-footer>
-      <template v-slot:modal-header="{ close }">
-        <div
-          class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
-        >
-          <h3 class="text-lowercase">specter desktop</h3>
-          <!-- Emulate built in modal header close button action -->
-          <a
-            href="#"
-            class="align-self-center"
-            v-on:click.stop.prevent="close"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
-                fill="#6c757d"
-              />
-            </svg>
-          </a>
-        </div>
-      </template>
-      <div class="">
-        <div class="d-flex flex-column-reverse justify-content-center align-items-center">
-          <div class="m-2">
-            <p>
-              Scan this QR Code to connect.
-            </p>
-          </div>
-          <!-- Pubkey QR Code -->
-          <qr-code
-            :value="urls.bitcoin.rpc.connectionString"
-            :size="300"
-            class="qr-image"
-            showLogo
-            logo="icon-wallet-specter.svg"
-          ></qr-code>
-        </div>
-      </div>
+  <card-widget header="Here's how to connect Specter Wallet to your Umbrel">
+    <div class="px-3 px-lg-4 pb-3">
+      <ol class="connect-wallet-steps">
+        <li class="connect-wallet-step">
+          Make sure Tor is up and running on your system.
+          <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.
+        </li>
+        <li class="connect-wallet-step">
+          Open Specter Wallet and click
+          <span class="font-weight-bold">"Configure Node"</span>.
+        </li>
+        <li class="connect-wallet-step">
+          Disable <span class="font-weight-bold">"Auto-detect"</span>.
+        </li>
+        <li class="connect-wallet-step">
+          In the <span class="font-weight-bold">"Username"</span>, enter
+          <input-copy
+            :value="urls.bitcoin.rpc.rpcuser"
+            size="sm"
+            auto-width
+          ></input-copy>
+        </li>
+        <li class="connect-wallet-step">
+          In the <span class="font-weight-bold">"Password"</span>, enter
+          <input-copy
+            :value="urls.bitcoin.rpc.rpcpassword"
+            size="sm"
+            auto-width
+          ></input-copy>
+        </li>
+        <li class="connect-wallet-step">
+          In the <span class="font-weight-bold">"Host"</span>, enter
+          <input-copy
+            :value="urls.bitcoin.rpc.address"
+            size="sm"
+            auto-width
+          ></input-copy>
+        </li>
+        <li class="connect-wallet-step">
+          In the <span class="font-weight-bold">"Port"</span>, enter
+          <input-copy
+            :value="urls.bitcoin.rpc.port"
+            size="sm"
+            auto-width
+          ></input-copy>
+        </li>
+        <li class="connect-wallet-step">
+          Click <span class="font-weight-bold">"Test"</span> to verify if
+          Specter is able to connect to your Umbrel.
+        </li>
+        <li class="connect-wallet-step">
+          After verifying, click
+          <span class="font-weight-bold">"Save"</span>.
+        </li>
+        <li class="connect-wallet-step">
+          Congratulations! You have successfully connected Specter Wallet to
+          your Umbrel.
+        </li>
+      </ol>
+    </div>
+    <b-modal id="tor-modal" centered hide-footer>
+      <tor-setup></tor-setup>
     </b-modal>
-  </div>
+  </card-widget>
 </template>
 
 <script>
-import ConnectWalletCard from "@/components/ConnectWallet/ConnectWalletCard.vue";
-import InstructionLine from "@/components/ConnectWallet/InstructionLine.vue";
-import QrCode from "@/components/Utility/QrCode.vue";
+import CardWidget from "@/components/CardWidget";
+import TorSetup from "@/components/ConnectWallet/TorSetup.vue";
+import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
   components: {
-    ConnectWalletCard,
-    InstructionLine,
-    QrCode
-  }
+    CardWidget,
+    InputCopy,
+    TorSetup,
+  },
 };
 </script>
-
-<style lang="scss" scoped></style>

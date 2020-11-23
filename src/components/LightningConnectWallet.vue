@@ -21,7 +21,7 @@
       <b-form-select-option
         :value="{
           walletName: 'Zeus on Android (using Orbot)',
-          type: 'restTor'
+          type: 'restTor',
         }"
         >Zeus Android</b-form-select-option
       >
@@ -33,7 +33,7 @@
         <b-form-select-option
           :value="{
             walletName: 'any other wallet that supports lndconnect gRPC',
-            type: 'grpcLocal'
+            type: 'grpcLocal',
           }"
           >lndconnect gRPC</b-form-select-option
         >
@@ -41,14 +41,14 @@
           :value="{
             walletName:
               'any other wallet that supports lndconnect gRPC over Tor',
-            type: 'grpcTor'
+            type: 'grpcTor',
           }"
           >lndconnect gRPC (Tor)</b-form-select-option
         >
         <b-form-select-option
           :value="{
             walletName: 'any other wallet that supports lndconnect REST',
-            type: 'restLocal'
+            type: 'restLocal',
           }"
           >lndconnect REST</b-form-select-option
         >
@@ -56,7 +56,7 @@
           :value="{
             walletName:
               'any other wallet that supports lndconnect REST over Tor',
-            type: 'restTor'
+            type: 'restTor',
           }"
           >lndconnect REST (Tor)</b-form-select-option
         >
@@ -71,7 +71,7 @@
         :value="urls[selectedWallet.type]"
         :size="200"
         level="M"
-        class="qr-image mb-3 mb-lg-0"
+        class="qr-image mx-auto mb-3 mb-lg-0"
         showLogo
       ></qr-code>
       <div class="w-100 align-self-center ml-lg-3">
@@ -95,21 +95,21 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   data() {
     return {
       selectedWallet: {
         walletName: "Select your wallet",
-        type: null
-      }
+        type: null,
+      },
     };
   },
   methods: {},
   components: {
     QrCode,
-    InputCopy
-  }
+    InputCopy,
+  },
 };
 </script>
 

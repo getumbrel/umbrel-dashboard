@@ -16,6 +16,11 @@ import Settings from "../views/Settings.vue";
 import ConnectWallet from "../views/ConnectWallet.vue";
 import Logout from "../views/Logout.vue";
 
+// Wallet components for wallet connector
+import ElectrumAndroid from "../components/ConnectWallet/Wallets/ElectrumAndroid.vue";
+import FullyNoded from "../components/ConnectWallet/Wallets/FullyNoded.vue";
+import SpecterDesktop from "../components/ConnectWallet/Wallets/SpecterDesktop.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -103,7 +108,30 @@ const routes = [
           {
             path: "",
             name: "connect",
-            component: ConnectWallet
+            component: ConnectWallet,
+            children: [
+              {
+                path: "electrum-android",
+                component: ElectrumAndroid,
+                meta: {
+                  wallet: "electrum-android"
+                }
+              },
+              {
+                path: "fully-noded",
+                component: FullyNoded,
+                meta: {
+                  wallet: "fully-noded"
+                }
+              },
+              {
+                path: "specter-desktop",
+                component: SpecterDesktop,
+                meta: {
+                  wallet: "specter-desktop"
+                }
+              }
+            ]
           }
         ]
       },

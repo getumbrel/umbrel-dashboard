@@ -99,7 +99,7 @@
           :urls="{
             p2p: onionAddress,
             electrum: electrumAddress,
-            rpc: rpc
+            rpc: rpc,
           }"
         ></bitcoin-connect-wallet>
       </div>
@@ -140,7 +140,7 @@
           <qr-code
             :value="onionAddress"
             :size="180"
-            class="qr-image"
+            class="qr-image mx-auto"
             showLogo
           ></qr-code>
           <div class="w-100 align-self-center ml-3 ml-sm-4">
@@ -154,7 +154,7 @@
             ></input-copy>
             <span
               class="loading-placeholder loading-placeholder-lg mt-1"
-              style="width: 100%;"
+              style="width: 100%"
               v-else
             ></span>
           </div>
@@ -164,7 +164,7 @@
           <qr-code
             :value="electrumAddress"
             :size="180"
-            class="qr-image"
+            class="qr-image mx-auto"
             showLogo
           ></qr-code>
           <div class="w-100 align-self-center ml-3 ml-sm-4">
@@ -176,7 +176,7 @@
             ></input-copy>
             <span
               class="loading-placeholder loading-placeholder-lg mt-1"
-              style="width: 100%;"
+              style="width: 100%"
               v-else
             ></span>
           </div>
@@ -208,7 +208,7 @@
 
                   <span
                     class="loading-placeholder loading-placeholder-lg d-block"
-                    style="width: 6rem;"
+                    style="width: 6rem"
                     v-else
                   ></span>
                 </h3>
@@ -318,16 +318,16 @@ export default {
   },
   computed: {
     ...mapState({
-      syncPercent: state => state.bitcoin.percent,
-      blocks: state => state.bitcoin.blocks,
-      version: state => state.bitcoin.version,
-      currentBlock: state => state.bitcoin.currentBlock,
-      blockHeight: state => state.bitcoin.blockHeight,
-      stats: state => state.bitcoin.stats,
-      onionAddress: state => state.bitcoin.onionAddress,
-      electrumAddress: state => state.bitcoin.electrumAddress,
-      rpc: state => state.bitcoin.rpc
-    })
+      syncPercent: (state) => state.bitcoin.percent,
+      blocks: (state) => state.bitcoin.blocks,
+      version: (state) => state.bitcoin.version,
+      currentBlock: (state) => state.bitcoin.currentBlock,
+      blockHeight: (state) => state.bitcoin.blockHeight,
+      stats: (state) => state.bitcoin.stats,
+      onionAddress: (state) => state.bitcoin.onionAddress,
+      electrumAddress: (state) => state.bitcoin.electrumAddress,
+      rpc: (state) => state.bitcoin.rpc,
+    }),
   },
   methods: {
     random(min, max) {
@@ -358,9 +358,9 @@ export default {
       return Promise.all([
         this.$store.dispatch("bitcoin/getP2PInfo"),
         this.$store.dispatch("bitcoin/getElectrumInfo"),
-        this.$store.dispatch("bitcoin/getRpcInfo")
+        this.$store.dispatch("bitcoin/getRpcInfo"),
       ]);
-    }
+    },
   },
   created() {
     this.$store.dispatch("bitcoin/getVersion");
@@ -378,8 +378,8 @@ export default {
     InputCopy,
     Stat,
     BitcoinWallet,
-    BitcoinConnectWallet
-  }
+    BitcoinConnectWallet,
+  },
 };
 </script>
 

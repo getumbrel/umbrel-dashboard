@@ -1,75 +1,96 @@
 <template>
   <div class="p-sm-2">
-    <div class="my-3 pb-2">
-      <div class="d-flex justify-content-between align-items-center">
+    <div class="my-3">
+      <div>
         <h1>connect wallet</h1>
+        <p>Connect your Bitcoin or Lightning wallet to your Umbrel</p>
       </div>
     </div>
 
-    <b-row class="mb-2" align-v="center">
-      <b-col col cols="8" class="d-flex align-items-center">
-        <b-form-select class="mr-2" v-model="selectedLayer">
-          <b-form-select-option :value="null" disabled>Select a layer</b-form-select-option>
-          <b-form-select-option value="bitcoin">Bitcoin</b-form-select-option>
-          <b-form-select-option value="lightning">Lightning</b-form-select-option>
-        </b-form-select>
-        <b-form-select v-model="selectedComponent" :options="wallets[selectedLayer]" text-field="name" value-field="component">
-          <template #first>
-            <b-form-select-option :value="null" disabled>Select a wallet</b-form-select-option>
-          </template>
-        </b-form-select>
+    <b-row>
+      <b-col cols="12" md="4" xl="3">
+        <b-form-select
+          :value="wallet"
+          :options="options"
+          @change="selectWallet"
+          class="mb-4"
+        ></b-form-select>
       </b-col>
     </b-row>
 
-    <b-row>
-      <b-col col cols="8">
-          <component 
-            v-if="selectedComponent" 
-            :is="selectedComponent" 
-            :urls="urls"
-            v-on:selectdevice="changeSelectedDevice"
-          ></component>
-          <connect-wallet-card v-else>
-            <p class="w-100 mb-0 text-center">Please select a wallet above.</p>
-          </connect-wallet-card>
-      </b-col>
-      <b-col col cols="4">
-        <tor-setup :selectedDevice="selectedDevice"></tor-setup>
-      </b-col>
-    </b-row>
+    <router-view :urls="urls"></router-view>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 
-import TorSetup from "@/components/TorSetup.vue";
-import ConnectWalletCard from "@/components/ConnectWallet/ConnectWalletCard.vue";
-
-import wallets from "@/components/ConnectWallet/wallets.js"
-
 export default {
   data() {
     return {
-      selectedLayer: null,
-      selectedDevice: null,
-      selectedComponent: null,
-      wallets
-    }
+      options: [
+        { value: null, text: "Select your wallet", disabled: true },
+        {
+          label: "Bitcoin",
+          options: [
+            { value: "bitboxapp", text: "BitBoxApp" },
+            { value: "blockstream-green", text: "Blockstream Green (Android)" },
+            { value: "bluewallet-android", text: "BlueWallet (Android)" },
+            { value: "electrum-android", text: "Electrum (Android)" },
+            { value: "electrum-desktop", text: "Electrum (Desktop)" },
+            { value: "fully-noded", text: "Fully Noded" },
+            { value: "phoenix", text: "Phoenix" },
+            { value: "sparrow", text: "Sparrow" },
+            { value: "specter-desktop", text: "Specter Desktop" },
+            { value: "wasabi", text: "Wasabi" },
+          ],
+        },
+        {
+          label: "Bitcoin (Custom)",
+          options: [
+            { value: "bitcoin-core-p2p", text: "Bitcoin Core P2P" },
+            { value: "bitcoin-core-rpc", text: "Bitcoin Core RPC" },
+            { value: "electrum-server", text: "Electrum Server" },
+          ],
+        },
+        {
+          label: "Lightning",
+          options: [
+            { value: "zap-android", text: "Zap (Android)" },
+            { value: "zap-desktop", text: "Zap (Desktop)" },
+            { value: "zap-ios", text: "Zap (iOS)" },
+            { value: "zeus-android", text: "Zeus (Android)" },
+            { value: "zeus-ios", text: "Zeus (iOS)" },
+          ],
+        },
+        {
+          label: "Lightning (Custom)",
+          options: [
+            { value: "lndconnect-grpc-local", text: "lndconnect gRPC" },
+            { value: "lndconnect-grpc-tor", text: "lndconnect gRPC (Tor)" },
+            { value: "lndconnect-rest-local", text: "lndconnect REST" },
+            { value: "lndconnect-rest-tor", text: "lndconnect REST (Tor)" },
+          ],
+        },
+      ],
+    };
   },
   computed: {
     ...mapState({
-      urls: state => {
+      urls: (state) => {
         return {
           bitcoin: {
             p2p: state.bitcoin.p2p,
             electrum: state.bitcoin.electrum,
-            rpc: state.bitcoin.rpc
+            rpc: state.bitcoin.rpc,
           },
-          lnd: state.lightning.lndConnectUrls
-        }
-      }
-    })
+          lnd: state.lightning.lndConnectUrls,
+        };
+      },
+    }),
+    wallet() {
+      return this.$route.meta.wallet || null;
+    },
   },
   methods: {
     fetchConnectionDetails() {
@@ -77,24 +98,17 @@ export default {
         this.$store.dispatch("lightning/getLndConnectUrls"),
         this.$store.dispatch("bitcoin/getP2PInfo"),
         this.$store.dispatch("bitcoin/getElectrumInfo"),
-        this.$store.dispatch("bitcoin/getRpcInfo")
+        this.$store.dispatch("bitcoin/getRpcInfo"),
       ]);
     },
-    changeSelectedDevice(device) {
-      if(device === 'Desktop') {
-        this.selectedDevice = null;
-      } else {
-        this.selectedDevice = device;
-      }
-    }
+    selectWallet(wallet) {
+      this.$router.push(`/connect/${wallet}`);
+    },
   },
   created() {
     this.fetchConnectionDetails();
   },
-  components: {
-    TorSetup,
-    ConnectWalletCard
-  }
+  components: {},
 };
 </script>
 

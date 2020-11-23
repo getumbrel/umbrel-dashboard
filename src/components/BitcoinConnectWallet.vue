@@ -43,21 +43,21 @@
           :value="{
             walletName:
               'any other wallet that supports Bitcoin Core\'s P2P port',
-            type: 'p2p'
+            type: 'p2p',
           }"
           >Bitcoin Core P2P</b-form-select-option
         >
         <b-form-select-option
           :value="{
             walletName: 'any other wallet that supports Bitcoin Core\'s RPC',
-            type: 'rpc'
+            type: 'rpc',
           }"
           >Bitcoin Core RPC</b-form-select-option
         >
         <b-form-select-option
           :value="{
             walletName: 'any other wallet that supports an Electrum server',
-            type: 'electrum'
+            type: 'electrum',
           }"
           >Electrum Server</b-form-select-option
         >
@@ -67,8 +67,8 @@
       class="d-lg-flex align-items-center"
       v-if="
         selectedWallet.type &&
-          urls[selectedWallet.type] &&
-          selectedWallet.type !== 'rpc'
+        urls[selectedWallet.type] &&
+        selectedWallet.type !== 'rpc'
       "
     >
       <!-- Pubkey QR Code -->
@@ -76,7 +76,7 @@
         :value="urls[selectedWallet.type]"
         :size="200"
         level="M"
-        class="qr-image mb-3 mb-lg-0"
+        class="qr-image mb-3 mx-auto mb-lg-0"
         showLogo
       ></qr-code>
       <div class="w-100 align-self-center ml-lg-3">
@@ -95,8 +95,8 @@
       class="d-lg-flex align-items-center"
       v-else-if="
         selectedWallet.type &&
-          urls[selectedWallet.type] &&
-          selectedWallet.type === 'rpc'
+        urls[selectedWallet.type] &&
+        selectedWallet.type === 'rpc'
       "
     >
       <!-- Pubkey QR Code -->
@@ -104,7 +104,7 @@
         :value="urls.rpc.connectionString"
         :size="200"
         level="M"
-        class="qr-image mb-3 mb-lg-0"
+        class="qr-image mx-auto mb-3 mb-lg-0"
         showLogo
       ></qr-code>
       <div class="w-100 align-self-center ml-lg-3">
@@ -148,21 +148,21 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   data() {
     return {
       selectedWallet: {
         walletName: "Select your wallet",
-        type: null
-      }
+        type: null,
+      },
     };
   },
   methods: {},
   components: {
     QrCode,
-    InputCopy
-  }
+    InputCopy,
+  },
 };
 </script>
 
