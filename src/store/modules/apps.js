@@ -15,6 +15,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6001
   },
   {
     id: "mempool-space",
@@ -29,6 +30,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6002
   },
   {
     id: "btc-rpc-explorer",
@@ -43,6 +45,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6003
   },
   {
     id: "dojo",
@@ -57,6 +60,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6004
   },
   {
     id: "specter",
@@ -71,6 +75,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6005
   },
   {
     id: "lndhub",
@@ -85,6 +90,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6006
   },
   {
     id: "rtl",
@@ -99,6 +105,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6007
   },
   {
     id: "thunderhub",
@@ -113,6 +120,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6008
   },
   {
     id: "sphinx",
@@ -127,6 +135,7 @@ let appStore = [
     compatible: true,
     dependencies: [{ id: "bitcoind", version: "0.20.1" }, { id: "lnd", version: "0.11.1" }],
     website: "https://btcpayserver.org",
+    port: 6009
   }
 ];
 
@@ -193,7 +202,8 @@ const actions = {
     installedApps.push({
       id: app.id,
       name: app.name,
-      hiddenService: 'testing.onion'
+      hiddenService: 'testing.onion',
+      port: app.port
     });
   },
   uninstallFakeApp({ dispatch }, appId) {

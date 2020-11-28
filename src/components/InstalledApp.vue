@@ -8,7 +8,11 @@
     /></a>
     <span class="text-center text-truncate mb-1">{{ name }}</span>
     <!-- <status variant="success">Running</status> -->
-    <b-button variant="outline-danger" size="sm" @click="uninstall(name, id)"
+    <b-button
+      v-if="showUninstallButton"
+      variant="outline-danger"
+      size="sm"
+      @click="uninstall(name, id)"
       ><small><b-icon icon="trash"></b-icon> Uninstall</small></b-button
     >
   </div>
@@ -21,20 +25,24 @@ export default {
   props: {
     id: String,
     name: String,
-    hiddenService: String
+    hiddenService: String,
+    port: Number,
+    showUninstallButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {};
   },
   computed: {
-    url: function() {
-      const origin = window.location.origin;
-      if (origin.indexOf(".onion") > 0) {
+    url: function () {
+      if (window.location.origin.indexOf(".onion") > 0) {
         return `http://${this.hiddenService}`;
       } else {
-        return `${origin}/app/${this.id}`;
+        return `http://${window.location.hostname}:${this.port}`;
       }
-    }
+    },
   },
   methods: {
     uninstall(name, id) {
@@ -45,11 +53,11 @@ export default {
       ) {
         this.$store.dispatch("apps/uninstallFakeApp", id);
       }
-    }
+    },
   },
   components: {
     // Status
-  }
+  },
 };
 </script>
 
