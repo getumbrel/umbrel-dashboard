@@ -845,7 +845,7 @@ export default {
     },
     async createInvoice() {
       // Check that there is enough in the recieve
-      if (!this.maxRecieve || this.receive.amount > this.maxRecieve) {
+      if (!this.maxRecieve || this.recieve.amount > this.maxRecieve) {
         const toastOptions = {
           title: "Low incoming balance",
           autoHideDelay: 3000,
@@ -855,7 +855,7 @@ export default {
         };
 
         this.$bvToast.toast(
-          "You need more inbound capacity in order to recieve a payment. ",
+          "You need more inbound capacity in order to recieve this payment. ",
           toastOptions
         );
 
