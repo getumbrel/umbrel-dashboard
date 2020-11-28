@@ -725,7 +725,8 @@ export default {
         expiresOn: null //expiry date of the unpaid/expired invoice
       },
       loading: false, //overall state of the wallet. eg. used to toggle progress bar on top of the card,
-      error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
+      error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
+      showLowRecieveBalance: false
     };
   },
   props: {},
@@ -744,7 +745,8 @@ export default {
         return state.lightning.balance.total;
       },
       walletBalanceInSats: state => state.lightning.balance.total,
-      unit: state => state.system.unit
+      unit: state => state.system.unit,
+      maxRecieve: state => state.lightning.maxRecieve
     }),
     isLightningPage() {
       return this.$router.currentRoute.path === "/lightning";
@@ -842,7 +844,26 @@ export default {
       this.send.isSending = false;
     },
     async createInvoice() {
+      // Check that there is enough in the recieve
+      if (!this.maxRecieve || this.receive.amount > this.maxRecieve) {
+        const toastOptions = {
+          title: "Low incoming balance",
+          autoHideDelay: 3000,
+          variant: "warning",
+          solid: true,
+          toaster: "b-toaster-top-center"
+        };
+
+        this.$bvToast.toast(
+          "You need more inbound capacity in order to recieve a payment. ",
+          toastOptions
+        );
+
+        return;
+      }
+
       //generate invoice to receive payment
+      this.showLowRecieveBalance = false;
       this.loading = true;
       this.receive.isGeneratingInvoice = true;
       this.mode = "invoice";
@@ -1025,6 +1046,7 @@ export default {
   async created() {
     window.moment = moment;
     await this.$store.dispatch("lightning/getStatus");
+    await this.$store.dispatch("lightning/getChannels");
   },
   beforeDestroy() {
     window.clearInterval(this.QRAnimation);
