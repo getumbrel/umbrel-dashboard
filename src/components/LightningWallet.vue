@@ -844,7 +844,6 @@ export default {
     },
     async createInvoice() {
       // Check that there is enough liquidity to recieve
-      console.log(this.receive.amount, this.maxReceive);
       if (this.receive.amount > this.maxReceive) {
         const toastOptions = {
           title: "Error creating invoice",
