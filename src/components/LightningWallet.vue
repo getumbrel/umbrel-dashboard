@@ -725,8 +725,7 @@ export default {
         expiresOn: null //expiry date of the unpaid/expired invoice
       },
       loading: false, //overall state of the wallet. eg. used to toggle progress bar on top of the card,
-      error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
-      showLowRecieveBalance: false
+      error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     };
   },
   props: {},
@@ -746,7 +745,7 @@ export default {
       },
       walletBalanceInSats: state => state.lightning.balance.total,
       unit: state => state.system.unit,
-      maxRecieve: state => state.lightning.maxRecieve
+      maxReceive: state => state.lightning.maxReceive
     }),
     isLightningPage() {
       return this.$router.currentRoute.path === "/lightning";
@@ -844,8 +843,9 @@ export default {
       this.send.isSending = false;
     },
     async createInvoice() {
-      // Check that there is enough in the recieve
-      if (!this.maxRecieve || this.recieve.amount > this.maxRecieve) {
+      // Check that there is enough liquidity to recieve
+      console.log(this.receive.amount, this.maxReceive);
+      if (this.receive.amount > this.maxReceive) {
         const toastOptions = {
           title: "Error creating invoice",
           autoHideDelay: 3000,
@@ -1138,9 +1138,5 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-}
-
-.low-incoming-toast {
-  width: 60%;
 }
 </style>
