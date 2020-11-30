@@ -849,9 +849,9 @@ export default {
         const toastOptions = {
           title: "Error creating invoice",
           autoHideDelay: 3000,
-          variant: "warning",
+          variant: "danger",
           solid: true,
-          toaster: "b-toaster-top-full"
+          toaster: "b-toaster-bottom-right"
         };
 
         this.$bvToast.toast(
