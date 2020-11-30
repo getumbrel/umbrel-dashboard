@@ -847,7 +847,7 @@ export default {
       // Check that there is enough in the recieve
       if (!this.maxRecieve || this.recieve.amount > this.maxRecieve) {
         const toastOptions = {
-          title: "Low incoming balance",
+          title: "Error creating invoice",
           autoHideDelay: 3000,
           variant: "warning",
           solid: true,
