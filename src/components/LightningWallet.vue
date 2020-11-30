@@ -848,14 +848,17 @@ export default {
       if (!this.maxRecieve || this.recieve.amount > this.maxRecieve) {
         const toastOptions = {
           title: "Low incoming balance",
-          autoHideDelay: 3000,
-          variant: "warning",
+          autoHideDelay: 6000,
+          variant: "danger",
           solid: true,
-          toaster: "b-toaster-top-center"
+          toaster: "b-toaster-top-full"
         };
 
         this.$bvToast.toast(
-          "You need more inbound capacity in order to recieve this payment. ",
+          `
+            You will need more inbound capacity to receieve this. 
+            Try having other nodes open a channel with yours or spend some BTC over lightning.
+          `,
           toastOptions
         );
 
@@ -863,7 +866,6 @@ export default {
       }
 
       //generate invoice to receive payment
-      this.showLowRecieveBalance = false;
       this.loading = true;
       this.receive.isGeneratingInvoice = true;
       this.mode = "invoice";
@@ -1136,5 +1138,9 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.low-incoming-toast {
+  width: 60%;
 }
 </style>
