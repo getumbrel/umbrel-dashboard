@@ -856,8 +856,8 @@ export default {
 
         this.$bvToast.toast(
           `
-            You will need more inbound capacity to receieve this. 
-            Try having other nodes open a channel with yours or spend some BTC over lightning.
+            You can receive a maximum of ${this.maxReceive.toLocaleString()} Sats through your payment channels. 
+            Increase your limit by getting other Lightning nodes to open channels with you.
           `,
           toastOptions
         );
