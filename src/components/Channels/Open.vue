@@ -45,7 +45,7 @@
             <small
               class="text-muted d-block mb-0"
               :style="{ opacity: fundingAmount > 0 ? 1 : 0 }"
-              >~ {{ fundingAmount | satsToUSD }}</small
+              >~ {{ fundingAmount | satsToFiat }}</small
             >
           </div>
         </div>

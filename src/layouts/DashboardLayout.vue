@@ -233,6 +233,7 @@ export default {
     },
     fetchData() {
       this.$store.dispatch("system/getUnit");
+      this.$store.dispatch("user/getSettings");
       this.$store.dispatch("bitcoin/getSync");
       this.$store.dispatch("bitcoin/getBalance");
       this.$store.dispatch("bitcoin/getTransactions");

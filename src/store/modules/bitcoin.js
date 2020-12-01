@@ -382,13 +382,17 @@ const actions = {
     }
   },
 
-  async getPrice({ commit }) {
+  // eslint-disable-next-line no-unused-vars
+  async getPrice({ commit, rootState }) {
+    const { currency } = rootState.user.settings;
+    if(!currency) return;
+    
     const price = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price`
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/external/price?currency=${currency}`
     );
 
     if (price) {
-      commit("price", price.USD);
+      commit("price", price[currency]);
     }
   },
 

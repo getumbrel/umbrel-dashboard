@@ -21,7 +21,7 @@
             </h3>
             <small class="text-muted"
               >~
-              {{ (this.btcBalance + this.lightningBalance) | satsToUSD }}</small
+              {{ (this.btcBalance + this.lightningBalance) | satsToFiat }}</small
             >
           </div>
           <span
@@ -190,6 +190,9 @@ export default {
     balanceLoaded() {
       return this.btcBalance >= 0 && this.lightningBalance >= 0;
     }
+  },
+  created() {
+    this.$store.dispatch("user/getSettings");
   },
   methods: {
     logout() {

@@ -6,7 +6,8 @@ const state = () => ({
   name: "",
   jwt: window.localStorage.getItem("jwt") || "",
   registered: true,
-  seed: []
+  seed: [],
+  settings: {}
 });
 
 // Functions to update the state directly
@@ -23,6 +24,9 @@ const mutations = {
   },
   setSeed(state, seed) {
     state.seed = seed;
+  },
+  setSettings(state, settings) {
+    state.settings = settings;
   }
 };
 
@@ -69,6 +73,25 @@ const actions = {
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`
     );
     commit("setName", name);
+  },
+
+  async getSettings({ commit }) {
+    const settings = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings`
+    );
+
+    commit("setSettings", settings);
+  },
+
+  async updateSetting({ commit }, { setting, value }) {
+    const { data: settings } = await API.post(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/settings`,
+      { setting, value }
+    );
+
+    if(settings) {
+      commit("setSettings", settings);
+    }
   },
 
   async getSeed({ commit, state, dispatch }, plainTextPassword) {

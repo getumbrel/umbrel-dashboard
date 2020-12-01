@@ -35,13 +35,13 @@
             <span
               class="text-primary font-weight-bold"
               v-b-tooltip.hover.right
-              :title="channel.localBalance | satsToUSD"
+              :title="channel.localBalance | satsToFiat"
               >{{ channel.localBalance | unit | localize }}
               {{ unit | formatUnit }}</span
             >
             <span
               v-b-tooltip.hover.left
-              :title="channel.remoteBalance | satsToUSD"
+              :title="channel.remoteBalance | satsToFiat"
               class="text-success text-right font-weight-bold"
               >{{ channel.remoteBalance | unit | localize }}
               {{ unit | formatUnit }}</span
