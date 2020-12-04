@@ -150,11 +150,12 @@ let installedApps = [
   //   name: "Dojo",
   //   hiddenService: "dojoqoisbsxsdsduriw.onion"
   // },
-  // {
-  //   id: "btc-rpc-explorer",
-  //   name: "BTC RPC Explorer",
-  //   hiddenService: "btcrpcexplrerodhsjd.onion"
-  // }
+  {
+    id: "btc-rpc-explorer",
+    name: "BTC RPC Explorer",
+    hiddenService: "btcrpcexplrerodhsjd.onion",
+    port: 3002
+  }
 ];
 
 // Initial state
@@ -198,7 +199,6 @@ const actions = {
     commit("setAppStore", appStore);
   },
   installFakeApp({ state }, app) {
-    console.log(state);
     installedApps.push({
       id: app.id,
       name: app.name,

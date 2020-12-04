@@ -7,7 +7,6 @@
         :src="require(`@/assets/apps/${id}/icon.svg`)"
     /></a>
     <span class="text-center text-truncate mb-1">{{ name }}</span>
-    <!-- <status variant="success">Running</status> -->
     <b-button
       v-if="showUninstallButton"
       variant="outline-danger"
@@ -19,7 +18,7 @@
 </template>
 
 <script>
-// import Status from "@/components/Utility/Status";
+import API from "@/helpers/api";
 
 export default {
   props: {
@@ -45,13 +44,28 @@ export default {
     },
   },
   methods: {
-    uninstall(name, id) {
+    async uninstall(name, id) {
       if (
-        window.confirm(
+        !window.confirm(
           `Are you sure you want to uninstall ${name}? This is will also delete all of its data.`
         )
       ) {
-        this.$store.dispatch("apps/uninstallFakeApp", id);
+        return;
+      }
+      try {
+        await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${id}/uninstall`
+        );
+      } catch (error) {
+        if (error.response && error.response.data) {
+          this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right",
+          });
+        }
       }
     },
   },

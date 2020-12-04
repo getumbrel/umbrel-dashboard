@@ -75,7 +75,7 @@
         :key="image"
         :src="require(`@/assets/apps/${app.id}/gallery/${image}`)"
       />
-      <div class="d-block" style="padding: 1px;"></div>
+      <div class="d-block" style="padding: 1px"></div>
     </div>
     <b-row>
       <b-col col cols="12" lg="6" xl="8">
@@ -120,7 +120,7 @@
                     :src="
                       require(`@/assets/app-store/dependencies/${dependency.id}.svg`)
                     "
-                    style="width: 50px; height: 50px;"
+                    style="width: 50px; height: 50px"
                     class="mr-2"
                   />
                   <span class="text-muted my-0">{{
@@ -154,41 +154,40 @@
 <script>
 import { mapState } from "vuex";
 
-// import API from "@/helpers/api";
+import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
 
 export default {
   data() {
     return {
-      isInstalling: false
+      isInstalling: false,
     };
   },
   computed: {
     ...mapState({
-      installedApps: state => state.apps.installed,
-      appStore: state => state.apps.store
+      installedApps: (state) => state.apps.installed,
+      appStore: (state) => state.apps.store,
     }),
-    isInstalled: function() {
+    isInstalled: function () {
       const installedAppIndex = this.installedApps.findIndex(
-        app => app.id === this.$route.params.id
+        (app) => app.id === this.$route.params.id
       );
       return installedAppIndex !== -1;
     },
-    url: function() {
-      const origin = window.location.origin;
-      if (origin.indexOf(".onion") > 0) {
+    url: function () {
+      if (window.location.origin.indexOf(".onion") > 0) {
         const installedApp = this.installedApps.find(
-          app => app.id === this.$route.params.id
+          (app) => app.id === this.$route.params.id
         );
         return `http://${installedApp.hiddenService}`;
       } else {
-        return `${origin}/app/${this.app.id}`;
+        return `http://${window.location.hostname}:${this.app.port}`;
       }
     },
-    app: function() {
-      return this.appStore.find(app => app.id === this.$route.params.id);
-    }
+    app: function () {
+      return this.appStore.find((app) => app.id === this.$route.params.id);
+    },
   },
   methods: {
     formatDependency(dependency) {
@@ -205,41 +204,40 @@ export default {
     async installApp() {
       this.isInstalling = true;
 
-      // const appId = this.app.id;
-      // try {
-      //   await API.post(
-      //     `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/install`,
-      //     {
-      //       id: appId
-      //     }
-      //   );
-      // } catch (error) {
-      //   if (error.response && error.response.data) {
-      //     this.$bvToast.toast(error.response.data, {
-      //       title: "Error",
-      //       autoHideDelay: 3000,
-      //       variant: "danger",
-      //       solid: true,
-      //       toaster: "b-toaster-bottom-right"
-      //     });
-      //   }
-      //   this.isInstalling = false;
-      //   return;
-      // }
+      const appId = this.app.id;
 
-      setTimeout(async () => {
-        await this.$store.dispatch("apps/installFakeApp", this.app);
-        await this.$store.dispatch("apps/getAppStore");
-        this.isInstalling = false;
-      }, 1000);
-    }
+      try {
+        await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/install`
+        );
+      } catch (error) {
+        if (error.response && error.response.data) {
+          this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right",
+          });
+        }
+      }
+
+      this.isInstalling = false;
+      return;
+
+      // setTimeout(async () => {
+      //   await this.$store.dispatch("apps/installFakeApp", this.app);
+      //   await this.$store.dispatch("apps/getAppStore");
+      //   this.isInstalling = false;
+      // }, 1000);
+    },
   },
   async created() {
     await this.$store.dispatch("apps/getAppStore");
   },
   components: {
-    CardWidget
-  }
+    CardWidget,
+  },
 };
 </script>
 
