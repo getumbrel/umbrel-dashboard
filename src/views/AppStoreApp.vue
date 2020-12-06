@@ -52,16 +52,31 @@
         </div>
         <div class="d-flex flex-column align-items-sm-center w-xs-100" v-else>
           <b-button
+            v-if="isInstalling"
+            variant="success"
+            size="lg"
+            class="px-4 fade-in-out"
+            disabled
+            >Installing...</b-button
+          >
+          <b-button
+            v-else-if="isUninstalling"
+            variant="warning"
+            size="lg"
+            class="px-4 fade-in-out"
+            disabled
+            >Uninstalling...</b-button
+          >
+          <b-button
+            v-else
             variant="success"
             size="lg"
             class="px-4"
-            :class="isInstalling ? 'fade-in-out' : ''"
             @click="installApp"
-            :disabled="isInstalling"
-            >{{ isInstalling ? "Installing..." : "Install" }}</b-button
+            >Install</b-button
           >
           <small
-            :style="{ opacity: isInstalling ? 1 : 0 }"
+            :style="{ opacity: isInstalling || isUninstalling ? 1 : 0 }"
             class="mt-1 d-block text-muted text-center"
             >This may take a few minutes</small
           >
@@ -161,19 +176,33 @@ import CardWidget from "@/components/CardWidget";
 export default {
   data() {
     return {
-      isInstalling: false,
+      // isInstalling: false,
     };
   },
   computed: {
     ...mapState({
       installedApps: (state) => state.apps.installed,
       appStore: (state) => state.apps.store,
+      installing: (state) => state.apps.installing,
+      uninstalling: (state) => state.apps.uninstalling,
     }),
     isInstalled: function () {
       const installedAppIndex = this.installedApps.findIndex(
         (app) => app.id === this.$route.params.id
       );
       return installedAppIndex !== -1;
+    },
+    isInstalling: function () {
+      const index = this.installing.findIndex(
+        (app) => app.id === this.$route.params.id
+      );
+      return index !== -1;
+    },
+    isUninstalling: function () {
+      const index = this.uninstalling.findIndex(
+        (app) => app.id === this.$route.params.id
+      );
+      return index !== -1;
     },
     url: function () {
       if (window.location.origin.indexOf(".onion") > 0) {
@@ -202,7 +231,7 @@ export default {
       return `${name} v${dependency.version}+`;
     },
     async installApp() {
-      this.isInstalling = true;
+      // this.isInstalling = true;
 
       const appId = this.app.id;
 
@@ -222,14 +251,8 @@ export default {
         }
       }
 
-      this.isInstalling = false;
+      // this.isInstalling = false;
       return;
-
-      // setTimeout(async () => {
-      //   await this.$store.dispatch("apps/installFakeApp", this.app);
-      //   await this.$store.dispatch("apps/getAppStore");
-      //   this.isInstalling = false;
-      // }, 1000);
     },
   },
   async created() {

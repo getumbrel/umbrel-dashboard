@@ -4,7 +4,7 @@
       <div class="balance-container w-100 px-3 pt-4 pb-3 mb-3">
         <p class="text-muted">
           Balance
-          <span style="cursor: pointer;" @click="toggleBalance">
+          <span style="cursor: pointer" @click="toggleBalance">
             <!-- <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon> -->
           </span>
         </p>
@@ -15,7 +15,7 @@
               <CountUp
                 :value="{
                   endVal: walletBalance,
-                  decimalPlaces: unit === 'sats' ? 0 : 5
+                  decimalPlaces: unit === 'sats' ? 0 : 5,
                 }"
               />
             </h3>
@@ -235,16 +235,16 @@ export default {
   data() {
     return {
       state: {
-        showBalance: true
-      }
+        showBalance: true,
+      },
     };
   },
   computed: {
     ...mapState({
-      btcBalance: state => state.bitcoin.balance.total,
-      lightningBalance: state => state.lightning.balance.total,
-      unit: state => state.system.unit,
-      hasInstalledApps: state => state.apps.installed.length
+      btcBalance: (state) => state.bitcoin.balance.total,
+      lightningBalance: (state) => state.lightning.balance.total,
+      unit: (state) => state.system.unit,
+      hasInstalledApps: (state) => state.user.installedApps.length,
     }),
     walletBalance() {
       return this.unit === "sats"
@@ -253,7 +253,7 @@ export default {
     },
     balanceLoaded() {
       return this.btcBalance >= 0 && this.lightningBalance >= 0;
-    }
+    },
   },
   methods: {
     logout() {
@@ -261,15 +261,15 @@ export default {
     },
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);
-    }
+    },
   },
   props: {
-    isMobileMenu: Boolean
+    isMobileMenu: Boolean,
   },
   components: {
     CountUp,
-    SatsBtcSwitch
-  }
+    SatsBtcSwitch,
+  },
 };
 </script>
 

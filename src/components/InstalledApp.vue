@@ -69,9 +69,7 @@ export default {
       }
     },
   },
-  components: {
-    // Status
-  },
+  components: {},
 };
 </script>
 
