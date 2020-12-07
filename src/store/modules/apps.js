@@ -5,8 +5,8 @@ import API from "@/helpers/api";
 const state = () => ({
   installed: [],
   store: [],
-  installing: [{ id: 'btcpay', startedAt: new Date() }],
-  uninstalling: [{ id: 'mempool-space', startedAt: new Date() }]
+  installing: [],
+  uninstalling: []
 });
 
 // Functions to update the state directly
@@ -16,17 +16,29 @@ const mutations = {
     state.installed = alphabeticallySortedApps;
   },
   setAppStore(state, appStore) {
-    // const installedApps = state.installed;
-    // for (let installedApp of installedApps) {
-    //   const appIndex = appStore.findIndex((app) => app.id === installedApp.id);
-
-    //   // To trigger reactive changes: https://vuejs.org/v2/guide/reactivity.html#For-Arrays
-    //   Vue.set(appStore, appIndex, {
-    //     ...appStore[appIndex],
-    //     isInstalled: true
-    //   });
-    // }
     state.store = appStore;
+  },
+  addInstallingApp(state, appId) {
+    if (!state.installing.includes(appId)) {
+      state.installing.push(appId);
+    }
+  },
+  removeInstallingApp(state, appId) {
+    const index = state.installing.findIndex((id) => id === appId);
+    if (index !== -1) {
+      state.installing.splice(index, 1);
+    }
+  },
+  addUninstallingApp(state, appId) {
+    if (!state.uninstalling.includes(appId)) {
+      state.uninstalling.push(appId);
+    }
+  },
+  removeUninstallingApp(state, appId) {
+    const index = state.uninstalling.findIndex((id) => id === appId);
+    if (index !== -1) {
+      state.uninstalling.splice(index, 1);
+    }
   }
 };
 
@@ -44,6 +56,62 @@ const actions = {
     if (appStore) {
       commit("setAppStore", appStore);
     }
+  },
+  async uninstall({ state, commit, dispatch }, appId) {
+    try {
+      await API.post(
+        `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/uninstall`
+      );
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return this.$bvToast.toast(error.response.data, {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right",
+        });
+      }
+    }
+
+    commit("addUninstallingApp", appId);
+
+    const poll = window.setInterval(async () => {
+      await dispatch("getInstalledApps");
+      const index = state.installed.findIndex((app) => app.id === appId);
+      if (index === -1) {
+        commit("removeUninstallingApp", appId);
+        window.clearInterval(poll);
+      }
+    }, 5000);
+  },
+  async install({ state, commit, dispatch }, appId) {
+    try {
+      await API.post(
+        `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/install`
+      );
+    } catch (error) {
+      if (error.response && error.response.data) {
+        return this.$bvToast.toast(error.response.data, {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right",
+        });
+      }
+    }
+
+    commit("addInstallingApp", appId);
+
+    const poll = window.setInterval(async () => {
+      await dispatch("getInstalledApps");
+      const index = state.installed.findIndex((app) => app.id === appId);
+      if (index !== -1) {
+        commit("removeInstallingApp", appId);
+        window.clearInterval(poll);
+      }
+    }, 5000);
   }
 };
 

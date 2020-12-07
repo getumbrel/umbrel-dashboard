@@ -1,14 +1,21 @@
 <template>
   <div class="mb-4 installed-app d-flex flex-column align-items-center">
-    <a class="d-block mb-3 installed-app-link" :href="url" target="_blank"
+    <a
+      class="d-block mb-3 installed-app-link"
+      :href="url"
+      target="_blank"
+      :class="isUninstalling ? 'fade-in-out' : ''"
+      :disabled="isUninstalling"
       ><img
         class="installed-app-icon app-icon"
         :alt="name"
         :src="require(`@/assets/apps/${id}/icon.svg`)"
     /></a>
-    <span class="text-center text-truncate mb-1">{{ name }}</span>
+    <span class="text-center text-truncate mb-1">{{
+      isUninstalling ? "Uninstalling..." : name
+    }}</span>
     <b-button
-      v-if="showUninstallButton"
+      v-if="showUninstallButton && !isUninstalling"
       variant="outline-danger"
       size="sm"
       @click="uninstall(name, id)"
@@ -18,6 +25,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 import API from "@/helpers/api";
 
 export default {
@@ -30,11 +39,18 @@ export default {
       type: Boolean,
       default: false,
     },
+    isUninstalling: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {};
   },
   computed: {
+    ...mapState({
+      installedApps: (state) => state.apps.installed,
+    }),
     url: function () {
       if (window.location.origin.indexOf(".onion") > 0) {
         return `http://${this.hiddenService}`;
@@ -44,7 +60,7 @@ export default {
     },
   },
   methods: {
-    async uninstall(name, id) {
+    uninstall(name, appId) {
       if (
         !window.confirm(
           `Are you sure you want to uninstall ${name}? This is will also delete all of its data.`
@@ -52,21 +68,7 @@ export default {
       ) {
         return;
       }
-      try {
-        await API.post(
-          `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${id}/uninstall`
-        );
-      } catch (error) {
-        if (error.response && error.response.data) {
-          this.$bvToast.toast(error.response.data, {
-            title: "Error",
-            autoHideDelay: 3000,
-            variant: "danger",
-            solid: true,
-            toaster: "b-toaster-bottom-right",
-          });
-        }
-      }
+      this.$store.dispatch("apps/uninstall", appId);
     },
   },
   components: {},

@@ -39,7 +39,7 @@
         </div>
         <div
           class="w-xs-100 d-flex flex-column align-items-sm-center"
-          v-if="isInstalled"
+          v-if="isInstalled && !isUninstalling"
         >
           <b-button
             variant="primary"
@@ -175,9 +175,7 @@ import CardWidget from "@/components/CardWidget";
 
 export default {
   data() {
-    return {
-      // isInstalling: false,
-    };
+    return {};
   },
   computed: {
     ...mapState({
@@ -186,36 +184,34 @@ export default {
       installing: (state) => state.apps.installing,
       uninstalling: (state) => state.apps.uninstalling,
     }),
+    app: function () {
+      return this.appStore.find((app) => app.id === this.$route.params.id);
+    },
     isInstalled: function () {
       const installedAppIndex = this.installedApps.findIndex(
-        (app) => app.id === this.$route.params.id
+        (app) => app.id === this.app.id
       );
       return installedAppIndex !== -1;
     },
     isInstalling: function () {
-      const index = this.installing.findIndex(
-        (app) => app.id === this.$route.params.id
-      );
+      const index = this.installing.findIndex((appId) => appId === this.app.id);
       return index !== -1;
     },
     isUninstalling: function () {
       const index = this.uninstalling.findIndex(
-        (app) => app.id === this.$route.params.id
+        (appId) => appId === this.app.id
       );
       return index !== -1;
     },
     url: function () {
       if (window.location.origin.indexOf(".onion") > 0) {
         const installedApp = this.installedApps.find(
-          (app) => app.id === this.$route.params.id
+          (app) => app.id === this.app.id
         );
         return `http://${installedApp.hiddenService}`;
       } else {
         return `http://${window.location.hostname}:${this.app.port}`;
       }
-    },
-    app: function () {
-      return this.appStore.find((app) => app.id === this.$route.params.id);
     },
   },
   methods: {
@@ -230,29 +226,8 @@ export default {
       }
       return `${name} v${dependency.version}+`;
     },
-    async installApp() {
-      // this.isInstalling = true;
-
-      const appId = this.app.id;
-
-      try {
-        await API.post(
-          `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/install`
-        );
-      } catch (error) {
-        if (error.response && error.response.data) {
-          this.$bvToast.toast(error.response.data, {
-            title: "Error",
-            autoHideDelay: 3000,
-            variant: "danger",
-            solid: true,
-            toaster: "b-toaster-bottom-right",
-          });
-        }
-      }
-
-      // this.isInstalling = false;
-      return;
+    installApp() {
+      this.$store.dispatch("apps/install", this.app.id);
     },
   },
   async created() {

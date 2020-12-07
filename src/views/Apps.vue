@@ -12,13 +12,14 @@
     </div>
     <div class="d-flex flex-wrap justify-content-start apps-container">
       <installed-app
-        v-for="app in apps"
+        v-for="app in installedApps"
         :key="app.id"
         :id="app.id"
         :name="app.name"
         :port="app.port"
         :hiddenService="app.hiddenService"
         :showUninstallButton="isEditing"
+        :isUninstalling="uninstallingApps.includes(app.id)"
       >
       </installed-app>
     </div>
@@ -38,7 +39,8 @@ export default {
   },
   computed: {
     ...mapState({
-      apps: (state) => state.apps.installed,
+      installedApps: (state) => state.apps.installed,
+      uninstallingApps: (state) => state.apps.uninstalling,
     }),
   },
   created() {
@@ -50,7 +52,7 @@ export default {
     },
   },
   watch: {
-    apps: function (newApps) {
+    installedApps: function (newApps) {
       if (newApps.length === 0) {
         this.$router.push("/dashboard");
       }

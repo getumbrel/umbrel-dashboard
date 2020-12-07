@@ -239,12 +239,15 @@ export default {
       },
     };
   },
+  props: {
+    isMobileMenu: Boolean,
+  },
   computed: {
     ...mapState({
       btcBalance: (state) => state.bitcoin.balance.total,
       lightningBalance: (state) => state.lightning.balance.total,
       unit: (state) => state.system.unit,
-      hasInstalledApps: (state) => state.user.installedApps.length,
+      hasInstalledApps: (state) => state.apps.installed.length,
     }),
     walletBalance() {
       return this.unit === "sats"
@@ -263,8 +266,8 @@ export default {
       return (this.state.showBalance = !this.state.showBalance);
     },
   },
-  props: {
-    isMobileMenu: Boolean,
+  created() {
+    this.$store.dispatch("apps/getInstalledApps");
   },
   components: {
     CountUp,

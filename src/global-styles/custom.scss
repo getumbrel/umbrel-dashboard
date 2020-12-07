@@ -54,9 +54,12 @@ a {
     &.btn-danger,&.btn-warning {
         color: #fff;
     }
-    &.btn-outline-danger:hover {
-        color: #fff;
+    &.btn-outline-danger {
+        &:hover,&:active {
+            color: #fff !important;
+        }
     }
+    
 }
 
 .card {
