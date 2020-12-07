@@ -128,12 +128,12 @@
               <div
                 class="d-flex align-items-center justify-content-between mb-3"
                 v-for="dependency in app.dependencies"
-                :key="dependency.id"
+                :key="dependency"
               >
                 <div class="d-flex align-items-center">
                   <img
                     :src="
-                      require(`@/assets/app-store/dependencies/${dependency.id}.svg`)
+                      require(`@/assets/app-store/dependencies/${dependency}.svg`)
                     "
                     style="width: 50px; height: 50px"
                     class="mr-2"
@@ -217,14 +217,14 @@ export default {
   methods: {
     formatDependency(dependency) {
       let name;
-      if (dependency.id === "bitcoind") {
+      if (dependency === "bitcoind") {
         name = "Bitcoin Core";
-      } else if (dependency.id === "lnd") {
+      } else if (dependency === "lnd") {
         name = "LND";
-      } else if (dependency.id === "electrs") {
-        name = "Electrs";
+      } else if (dependency === "electrum") {
+        name = "Electrum Server";
       }
-      return `${name} v${dependency.version}+`;
+      return name;
     },
     installApp() {
       this.$store.dispatch("apps/install", this.app.id);
