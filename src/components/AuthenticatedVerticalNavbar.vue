@@ -34,7 +34,7 @@
       </div>
       <!-- <div class="py-2"></div> -->
       <b-nav vertical class="px-1">
-        <b-nav-item to="/dashboard" class="my-1" exact-active-class="active">
+        <b-nav-item to="/dashboard" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -53,7 +53,7 @@
           </svg>
           Home
         </b-nav-item>
-        <b-nav-item to="/bitcoin" class="my-1" exact-active-class="active">
+        <b-nav-item to="/bitcoin" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -69,7 +69,7 @@
           </svg>
           Bitcoin
         </b-nav-item>
-        <b-nav-item to="/lightning" class="my-1" exact-active-class="active">
+        <b-nav-item to="/lightning" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -86,7 +86,7 @@
           Lightning
         </b-nav-item>
 
-        <b-nav-item to="/apps" class="my-1" exact-active-class="active">
+        <b-nav-item to="/apps" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -115,7 +115,7 @@
           Apps
         </b-nav-item>
 
-        <b-nav-item to="/app-store" class="my-1" exact-active-class="active">
+        <b-nav-item to="/app-store" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -148,7 +148,7 @@
           to="/settings"
           class="my-1"
           v-if="isMobileMenu"
-          exact-active-class="active"
+          active-class="active"
         >
           <svg
             width="24"
@@ -173,7 +173,7 @@
           @click="logout"
           class="my-1"
           v-if="isMobileMenu"
-          exact-active-class="active"
+          active-class="active"
         >
           <svg
             width="24"
@@ -194,12 +194,7 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item
-          to="/settings"
-          class="my-1"
-          v-else
-          exact-active-class="active"
-        >
+        <b-nav-item to="/settings" class="my-1" v-else active-class="active">
           <svg
             width="24"
             height="24"
