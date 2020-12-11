@@ -108,17 +108,20 @@
               <span>{{ app.version }}</span>
             </div>
             <div class="d-flex justify-content-between mb-3">
-              <span>Developer</span>
-              <span>{{ app.developer }}</span>
-            </div>
-            <div class="d-flex justify-content-between mb-3">
               <span>Source Code</span>
               <a :href="app.repo" target="_blank">Open Source</a>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+              <span>Developer</span>
+              <span>{{ app.developer }}</span>
             </div>
             <div class="d-flex justify-content-between mb-3">
               <span>Developer Website</span>
               <a :href="app.website" target="_blank">View</a>
             </div>
+            <b-button variant="light" size="sm" class="mb-3" block
+              >Get support</b-button
+            >
             <div class="d-flex justify-content-between mb-3">
               <span>Compatibility</span>
               <span>Compatible</span>

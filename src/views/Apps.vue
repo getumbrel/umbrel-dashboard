@@ -1,27 +1,42 @@
 <template>
   <div class="p-sm-2">
-    <div class="my-3 pb-3">
-      <div class="d-flex justify-content-between align-items-center">
-        <h1>apps</h1>
-        <div>
-          <b-button variant="outline-primary" size="sm" @click="toggleEdit">{{
-            isEditing ? "Done" : "Edit"
-          }}</b-button>
+    <div v-if="installedApps.length">
+      <div class="my-3 pb-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1>apps</h1>
+          <div>
+            <b-button variant="outline-primary" size="sm" @click="toggleEdit">{{
+              isEditing ? "Done" : "Edit"
+            }}</b-button>
+          </div>
         </div>
       </div>
+      <div class="d-flex flex-wrap justify-content-start apps-container">
+        <installed-app
+          v-for="app in installedApps"
+          :key="app.id"
+          :id="app.id"
+          :name="app.name"
+          :port="app.port"
+          :hiddenService="app.hiddenService"
+          :showUninstallButton="isEditing"
+          :isUninstalling="uninstallingApps.includes(app.id)"
+        >
+        </installed-app>
+      </div>
     </div>
-    <div class="d-flex flex-wrap justify-content-start apps-container">
-      <installed-app
-        v-for="app in installedApps"
-        :key="app.id"
-        :id="app.id"
-        :name="app.name"
-        :port="app.port"
-        :hiddenService="app.hiddenService"
-        :showUninstallButton="isEditing"
-        :isUninstalling="uninstallingApps.includes(app.id)"
-      >
-      </installed-app>
+    <div v-else>
+      <div class="my-3 pb-3">
+        <h1>apps</h1>
+        <div
+          class="d-flex flex-column justify-content-center align-items-center py-5 mb-lg-5"
+        >
+          <p class="text-muted mb-2">You don't have any apps installed yet</p>
+          <b-button variant="success" class="px-4" :to="'app-store'"
+            >Go to App Store</b-button
+          >
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -49,13 +64,6 @@ export default {
   methods: {
     toggleEdit() {
       this.isEditing = !this.isEditing;
-    },
-  },
-  watch: {
-    installedApps: function (newApps) {
-      if (newApps.length === 0) {
-        this.$router.push("/dashboard");
-      }
     },
   },
   components: {

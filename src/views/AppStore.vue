@@ -4,8 +4,7 @@
       <div class="">
         <h1>app store</h1>
         <p class="text-muted">
-          Add super powers to your Umbrel with featureful open-source
-          applications.
+          Add super powers to your Umbrel with amazing open-source applications
         </p>
       </div>
     </div>
@@ -66,22 +65,22 @@ export default {
   },
   computed: {
     ...mapState({
-      store: state => state.apps.store
+      store: (state) => state.apps.store,
     }),
-    categorizedAppStore: function() {
+    categorizedAppStore: function () {
       let group = this.store.reduce((r, a) => {
         r[a.category] = [...(r[a.category] || []), a];
         return r;
       }, {});
       return group;
-    }
+    },
   },
   created() {
     this.$store.dispatch("apps/getAppStore");
   },
   components: {
-    CardWidget
-  }
+    CardWidget,
+  },
 };
 </script>
 
