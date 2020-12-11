@@ -208,7 +208,6 @@
                         decimalPlaces: syncPercent >= 99.99 ? 0 : 2
                       }"
                       suffix="%"
-                      v-if="syncPercent !== -1"
                     />
                   </span>
 
