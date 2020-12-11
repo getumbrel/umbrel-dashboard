@@ -120,7 +120,7 @@
               <p class="text-newlines" v-if="availableUpdate.notes">
                 {{ availableUpdate.notes }}
               </p>
-              <b-alert variant="warning" show v-if="0 < numChannels">
+              <b-alert variant="warning" show v-if="numChannels">
                 <small
                   >Please download the latest backup of your payment channels
                   before updating and make sure to note down your 24 secret
