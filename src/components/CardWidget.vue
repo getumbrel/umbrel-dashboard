@@ -18,6 +18,7 @@
           >
             <slot name="header-right"></slot>
             <b-dropdown
+              v-if="(!!$slots['menu'] && !!$slots['menu'][0])"
               variant="link"
               toggle-class="text-decoration-none p-0"
               no-caret

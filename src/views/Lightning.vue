@@ -190,17 +190,11 @@
               >+ Open Channel</b-button
             >
           </template>
-          <template v-slot:menu>
+          <template v-slot:menu v-if="numChannels">
             <b-dropdown-item
-              v-if="0 < numChannels"
               href="#"
               @click.stop.prevent="downloadChannelBackup"
               >Download Channel Backup</b-dropdown-item
-            >
-            <b-dropdown-item
-              v-if="numChannels <= 0"
-              v-b-modal.open-channel-modal
-              >+ Open Channel</b-dropdown-item
             >
           </template>
           <div class>
