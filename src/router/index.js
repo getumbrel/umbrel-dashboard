@@ -12,6 +12,9 @@ import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Bitcoin from "../views/Bitcoin.vue";
 import Lightning from "../views/Lightning.vue";
+import Apps from "../views/Apps.vue";
+import AppStore from "../views/AppStore.vue";
+import AppStoreApp from "../views/AppStoreApp.vue";
 import Settings from "../views/Settings.vue";
 import Logout from "../views/Logout.vue";
 
@@ -79,6 +82,35 @@ const routes = [
             path: "",
             name: "lightning",
             component: Lightning
+          }
+        ]
+      },
+      {
+        path: "/apps",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: "",
+            name: "apps",
+            component: Apps
+          }
+        ]
+      },
+      {
+        path: "/app-store",
+        component: DashboardLayout,
+        meta: { requiresAuth: true },
+        children: [
+          {
+            path: "",
+            name: "app-store",
+            component: AppStore
+          },
+          {
+            path: ":id",
+            name: "app-store-app",
+            component: AppStoreApp
           }
         ]
       },
