@@ -113,20 +113,13 @@
             </div>
             <div class="d-flex justify-content-between mb-3">
               <span>Developer</span>
-              <span>{{ app.developer }}</span>
+              <a :href="app.website" target="_blank">{{ app.developer }}</a>
             </div>
-            <div class="d-flex justify-content-between mb-3">
-              <span>Developer Website</span>
-              <a :href="app.website" target="_blank">View</a>
-            </div>
-            <b-button variant="light" size="sm" class="mb-3" block
-              >Get support</b-button
-            >
             <div class="d-flex justify-content-between mb-3">
               <span>Compatibility</span>
               <span>Compatible</span>
             </div>
-            <div class="mb-3">
+            <div class="mb-4">
               <span class="d-block mb-3">Requires</span>
               <div
                 class="d-flex align-items-center justify-content-between mb-3"
@@ -162,6 +155,14 @@
                 </div>
               </div>
             </div>
+            <b-link
+              :href="app.support"
+              target="_blank"
+              size="sm"
+              class="mb-2 py-1"
+              block
+              >Get support</b-link
+            >
           </div>
         </card-widget>
       </b-col>
