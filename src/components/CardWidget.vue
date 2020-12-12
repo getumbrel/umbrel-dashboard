@@ -13,12 +13,10 @@
           >{{ status.text }}</status>
           <!-- Only render this div if either there's a menu or a  -->
           <!-- header on the right, else it causes spacing issues -->
-          <div
-            v-if="(!!$slots['header-right'] && !!$slots['header-right'][0]) || (!!$slots['menu'] && !!$slots['menu'][0])"
-          >
-            <slot name="header-right"></slot>
+          <div>
+            <slot name="header-right" v-if="!!$slots['header-right'] && !!$slots['header-right'][0]"></slot>
             <b-dropdown
-              v-if="(!!$slots['menu'] && !!$slots['menu'][0])"
+              v-if="!!$slots['menu'] && !!$slots['menu'][0]"
               variant="link"
               toggle-class="text-decoration-none p-0"
               no-caret
