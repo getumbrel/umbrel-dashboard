@@ -120,7 +120,7 @@
               <p class="text-newlines" v-if="availableUpdate.notes">
                 {{ availableUpdate.notes }}
               </p>
-              <b-alert variant="warning" show>
+              <b-alert variant="warning" show v-if="numChannels">
                 <small
                   >Please download the latest backup of your payment channels
                   before updating and make sure to note down your 24 secret
@@ -214,6 +214,7 @@ export default {
     ...mapState({
       name: state => state.user.name,
       chain: state => state.bitcoin.chain,
+      numChannels: state => state.lightning.channels.length,
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
       showUpdateConfirmationModal: state =>

@@ -190,7 +190,7 @@
               >+ Open Channel</b-button
             >
           </template>
-          <template v-slot:menu>
+          <template v-slot:menu v-if="numChannels">
             <b-dropdown-item
               href="#"
               @click.stop.prevent="downloadChannelBackup"
@@ -363,6 +363,7 @@ export default {
       uris: state => state.lightning.uris,
       lndConnectUrls: state => state.lightning.lndConnectUrls,
       channels: state => state.lightning.channels,
+      numChannels: state => state.lightning.channels.length,
       unit: state => state.system.unit
     })
   },
