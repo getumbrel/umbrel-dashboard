@@ -1,5 +1,5 @@
 <template>
-  <card-widget header="Here's how to connect Specter Desktop to your Umbrel">
+  <card-widget header="Here's how to connect Electrum (Desktop) to your Umbrel">
     <div class="px-3 px-lg-4 pb-3">
       <ol class="connect-wallet-steps">
         <li class="connect-wallet-step">
@@ -7,55 +7,47 @@
           <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.
         </li>
         <li class="connect-wallet-step">
-          Open Specter Wallet and click
-          <span class="font-weight-bold">"Configure Node"</span>.
+          Open Electrum and click on the colored dot at the bottom right to open server setttings.
         </li>
         <li class="connect-wallet-step">
-          Disable <span class="font-weight-bold">"Auto-detect"</span>.
+          Disable <span class="font-weight-bold">"Select server automatically"</span>. 
+          You may also want to add "oneserver: true" to your Electrum config file (usually "~/.electrum/config").
         </li>
         <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Username"</span>, enter
+          In the <span class="font-weight-bold">"Server"</span>, enter
           <input-copy
-            :value="urls.bitcoin.rpc.rpcuser"
+            :value="urls.bitcoin.electrum.address"
+            size="sm"
+            auto-width
+          ></input-copy>
+          <input-copy
+            :value="urls.bitcoin.electrum.port"
             size="sm"
             auto-width
           ></input-copy>
         </li>
         <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Password"</span>, enter
+          Go to the <span class="font-weight-bold">"Proxy"</span> tab.
+        </li>
+        <li class="connect-wallet-step">
+          Check <span class="font-weight-bold">"Use Tor proxy at port 9050"</span>
+          or manually enter this:
           <input-copy
-            :value="urls.bitcoin.rpc.rpcpassword"
+            value="127.0.0.1"
+            size="sm"
+            auto-width
+          ></input-copy>
+          <input-copy
+            value="9050"
             size="sm"
             auto-width
           ></input-copy>
         </li>
         <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Host"</span>, enter
-          <input-copy
-            :value="urls.bitcoin.rpc.address"
-            size="sm"
-            auto-width
-          ></input-copy>
+          Close the server settings.
         </li>
         <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Port"</span>, enter
-          <input-copy
-            :value="urls.bitcoin.rpc.port"
-            size="sm"
-            auto-width
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          Click <span class="font-weight-bold">"Test"</span> to verify if
-          Specter is able to connect to your Umbrel.
-        </li>
-        <li class="connect-wallet-step">
-          After verifying, click
-          <span class="font-weight-bold">"Save"</span>.
-        </li>
-        <li class="connect-wallet-step">
-          Congratulations! You have successfully connected Specter Desktop to
-          your Umbrel.
+          If the dot turns blue, congratulations! You've successfully connected Electrum to your Umbrel.
         </li>
       </ol>
     </div>

@@ -10,7 +10,8 @@ const state = () => ({
   onionAddress: "",
   p2p: {
     address: "",
-    port: ""
+    port: "",
+    connectionString: ""
   },
   electrum: {
     address: "",
@@ -136,6 +137,7 @@ const mutations = {
   setP2PInfo(state, p2pInfo) {
     state.p2p.address = p2pInfo.address;
     state.p2p.port = p2pInfo.port;
+    state.p2p.connectionString = p2pInfo.connectionString;
   },
 
   setElectrumInfo(state, electrumInfo) {

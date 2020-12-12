@@ -66,9 +66,9 @@ export default {
         {
           label: "Lightning (Custom)",
           options: [
-            { value: "lndconnect-grpc-local", text: "lndconnect gRPC" },
+            { value: "lndconnect-grpc-local", text: "lndconnect gRPC (Local)" },
             { value: "lndconnect-grpc-tor", text: "lndconnect gRPC (Tor)" },
-            { value: "lndconnect-rest-local", text: "lndconnect REST" },
+            { value: "lndconnect-rest-local", text: "lndconnect REST (Local)" },
             { value: "lndconnect-rest-tor", text: "lndconnect REST (Tor)" },
           ],
         },
