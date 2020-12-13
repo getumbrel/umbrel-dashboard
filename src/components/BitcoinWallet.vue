@@ -729,7 +729,7 @@ export default {
       return moment(timestamp).format("MMMM D, h:mm:ss a"); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
     getTxUrl(txHash) {
-      let url = `https://blockstream.info`;
+      let url = `https://mempool.space`;
 
       if (this.chain === "test") {
         url += "/testnet";
