@@ -12,7 +12,7 @@
         <li class="connect-wallet-step">
           Scan this QR Code
           <qr-code
-            :value="urls.lnd.grpcTor"
+            :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')"
             :size="300"
             class="qr-image mt-2"
             showLogo
@@ -25,7 +25,7 @@
         <li class="connect-wallet-step">
           Copy 
           <input-copy
-            :value="urls.lnd.grpcTor"
+            :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')"
             size="sm"
             auto-width
           ></input-copy>
