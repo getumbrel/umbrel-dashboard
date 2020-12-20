@@ -232,9 +232,9 @@ export default {
         const installedApp = this.installedApps.find(
           (app) => app.id === this.app.id
         );
-        return `http://${installedApp.hiddenService}`;
+        return `http://${installedApp.hiddenService}${this.app.path}`;
       } else {
-        return `http://${window.location.hostname}:${this.app.port}`;
+        return `http://${window.location.hostname}:${this.app.port}${this.app.path}`;
       }
     },
   },

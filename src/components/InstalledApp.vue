@@ -35,6 +35,7 @@ export default {
     name: String,
     hiddenService: String,
     port: Number,
+    path: String,
     showUninstallButton: {
       type: Boolean,
       default: false,
@@ -53,9 +54,9 @@ export default {
     }),
     url: function () {
       if (window.location.origin.indexOf(".onion") > 0) {
-        return `http://${this.hiddenService}`;
+        return `http://${this.hiddenService}${this.path}`;
       } else {
-        return `http://${window.location.hostname}:${this.port}`;
+        return `http://${window.location.hostname}:${this.port}${this.path}`;
       }
     },
   },
