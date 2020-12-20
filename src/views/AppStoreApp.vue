@@ -49,6 +49,14 @@
             target="_blank"
             >Open</b-button
           >
+          <div class="mt-2 text-center" v-if="app.defaultPassword">
+            <small class="">The default password of this app is</small>
+            <input-copy
+              size="sm"
+              :value="app.defaultPassword"
+              class="mt-1"
+            ></input-copy>
+          </div>
         </div>
         <div class="d-flex flex-column align-items-sm-center w-xs-100" v-else>
           <b-button
@@ -80,6 +88,17 @@
             class="mt-1 d-block text-muted text-center"
             >This may take a few minutes</small
           >
+          <div
+            class="mt-2 text-center"
+            v-if="isInstalling && app.defaultPassword"
+          >
+            <small class="">The default password of this app is</small>
+            <input-copy
+              size="sm"
+              :value="app.defaultPassword"
+              class="mt-1"
+            ></input-copy>
+          </div>
         </div>
       </div>
     </div>
@@ -176,6 +195,7 @@ import { mapState } from "vuex";
 import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
+import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   data() {
@@ -239,6 +259,7 @@ export default {
   },
   components: {
     CardWidget,
+    InputCopy,
   },
 };
 </script>
