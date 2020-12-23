@@ -27,8 +27,6 @@
 <script>
 import { mapState } from "vuex";
 
-import API from "@/helpers/api";
-
 export default {
   props: {
     id: String,

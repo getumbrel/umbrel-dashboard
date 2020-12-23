@@ -1,6 +1,6 @@
 <template>
   <div class="p-sm-2">
-    <div class="my-3 pb-2">
+    <div class="mt-3 mb-1 mb-sm-3 pb-lg-2">
       <router-link
         to="/app-store"
         class="card-link text-muted d-flex align-items-center mb-4"
@@ -102,10 +102,10 @@
         </div>
       </div>
     </div>
-    <div class="app-gallery pt-3 pb-4 px-4 mb-3">
+    <div class="app-gallery pt-3 pb-4 mb-2 mb-sm-3">
       <img
-        class="app-gallery-screen mr-3"
         v-for="image in app.gallery"
+        class="app-gallery-screen mr-3"
         :key="image"
         :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/${image}`"
       />
@@ -191,8 +191,6 @@
 
 <script>
 import { mapState } from "vuex";
-
-import API from "@/helpers/api";
 
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/Utility/InputCopy";

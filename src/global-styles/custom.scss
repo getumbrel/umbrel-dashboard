@@ -495,8 +495,10 @@ body {
     display: flex;
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
-    margin-left: -40px;
-    margin-right: -30px;
+    margin-left: calc(-15px - 1.5rem);
+    margin-right: calc(-15px - 1.5rem);
+    padding-left: calc(30px + 0.75rem);
+    padding-right: calc(30px + 0.75rem);
     .app-gallery-screen {
       height: 350px;
       width: auto;
