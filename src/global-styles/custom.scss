@@ -489,6 +489,7 @@ body {
   height: 100px;
   width: 100px;
   border-radius: 16px;
+  object-fit: contain;
 }
 
 .app-gallery {
@@ -505,5 +506,6 @@ body {
       display: block;
       box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.8);
       border-radius: 5px;
+      object-fit: contain;
     }
   }
