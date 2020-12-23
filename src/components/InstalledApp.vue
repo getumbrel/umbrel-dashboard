@@ -9,7 +9,7 @@
       ><img
         class="installed-app-icon app-icon"
         :alt="name"
-        :src="require(`@/assets/apps/${id}/icon.svg`)"
+        :src="`https://static.getumbrel.com/umbrel-apps-gallery/${id}/icon.svg`"
     /></a>
     <span class="text-center text-truncate mb-1">{{
       isUninstalling ? "Uninstalling..." : name

@@ -25,7 +25,7 @@
         <div class="d-flex w-xs-100 justify-content-start pr-2">
           <img
             class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
-            :src="require(`@/assets/apps/${app.id}/icon.svg`)"
+            :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
           />
           <div>
             <h3 class="d-block font-weight-bold mb-1">
@@ -107,7 +107,7 @@
         class="app-gallery-screen mr-3"
         v-for="image in app.gallery"
         :key="image"
-        :src="require(`@/assets/apps/${app.id}/gallery/${image}`)"
+        :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/${image}`"
       />
       <div class="d-block" style="padding: 1px"></div>
     </div>

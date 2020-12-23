@@ -24,7 +24,7 @@
           <div class="d-flex">
             <img
               class="app-icon mr-2 mr-lg-3"
-              :src="require(`@/assets/apps/${app.id}/icon.svg`)"
+              :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
             />
             <div class="d-flex justify-content-center flex-column">
               <h3 class="app-name font-weight-bolder text-dark mb-1">
