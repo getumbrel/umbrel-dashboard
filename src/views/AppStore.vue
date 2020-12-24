@@ -48,6 +48,15 @@
               fill="#C3C6D1"
             />
           </svg>
+          <!-- Preload gallery images -->
+          <div class="d-none">
+            <img
+              v-for="image in app.gallery"
+              class="d-none"
+              :key="app.id + image"
+              :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/${image}`"
+            />
+          </div>
         </router-link>
       </card-widget>
     </div>

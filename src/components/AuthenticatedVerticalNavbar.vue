@@ -212,6 +212,15 @@
         </b-nav-item>
       </b-nav>
     </div>
+    <!-- Preload all app icons to cache them locally  -->
+    <div class="d-none">
+      <img
+        v-for="app in appStore"
+        :key="app.id"
+        :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+        class="d-none"
+      />
+    </div>
   </div>
 </template>
 
@@ -237,6 +246,7 @@ export default {
       btcBalance: (state) => state.bitcoin.balance.total,
       lightningBalance: (state) => state.lightning.balance.total,
       unit: (state) => state.system.unit,
+      appStore: (state) => state.apps.store,
     }),
     walletBalance() {
       return this.unit === "sats"
@@ -257,6 +267,7 @@ export default {
   },
   created() {
     this.$store.dispatch("apps/getInstalledApps");
+    this.$store.dispatch("apps/getAppStore");
   },
   components: {
     CountUp,
