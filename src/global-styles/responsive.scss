@@ -26,7 +26,7 @@
     .app-icon {
         height: 66px !important;
         width: 66px !important;
-        border-radius: 10px !important;
+        border-radius: 12px !important;
     }
     .installed-app {
         width: calc(50% - 1rem) !important;
@@ -50,7 +50,7 @@
     .app-icon {
         height: 70px;
         width: 70px;
-        border-radius: 10px;
+        border-radius: 14px;
     }
     .app-gallery {
         margin-left: calc(-15px - 0.75rem);
@@ -67,7 +67,7 @@
     .app-icon {
         height: 80px;
         width: 80px;
-        border-radius: 12px;
+        border-radius: 16px;
     }
     .app-gallery {
         margin-left: calc(-15px - 0.75rem);
@@ -90,7 +90,7 @@
     .app-icon {
         height: 80px;
         width: 80px;
-        border-radius: 12px;
+        border-radius: 16px;
     }
 }
 
@@ -98,6 +98,6 @@
     .app-icon.app-icon-lg {
         height: 140px;
         width: 140px;
-        border-radius: 20px;
+        border-radius: 28px;
     }
 }
