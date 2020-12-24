@@ -40,7 +40,7 @@
         padding-left: 15px;
         padding-right: 15px;
         .app-gallery-screen {
-            height: auto;
+            height: intrinsic; // https://stackoverflow.com/a/64108625
             width: calc(100vw);
         }
     }
@@ -98,6 +98,6 @@
     .app-icon.app-icon-lg {
         height: 140px;
         width: 140px;
-        border-radius: 28px;
+        border-radius: 24px;
     }
 }
