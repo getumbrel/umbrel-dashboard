@@ -4,7 +4,7 @@
       <div class="">
         <h1>app store</h1>
         <p class="text-muted">
-          Add super powers to your Umbrel with amazing open-source applications
+          Add super powers to your Umbrel with amazing self-hosted applications
         </p>
       </div>
     </div>
