@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4 installed-app d-flex flex-column align-items-center">
+  <div class="pb-3 mb-2 installed-app d-flex flex-column align-items-center">
     <a
       class="d-block mb-3 installed-app-link"
       :href="url"
@@ -15,6 +15,7 @@
       isUninstalling ? "Uninstalling..." : name
     }}</span>
     <b-button
+      class="uninstall-btn"
       v-if="showUninstallButton && !isUninstalling"
       variant="outline-danger"
       size="sm"
@@ -77,11 +78,18 @@ export default {
 <style lang="scss" scoped>
 .installed-app {
   width: 200px;
+  position: relative;
   .installed-app-link {
     text-decoration: none;
     .installed-app-icon {
       box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.5);
     }
+  }
+  .uninstall-btn {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 </style>
