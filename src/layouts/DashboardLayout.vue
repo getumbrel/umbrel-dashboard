@@ -189,6 +189,8 @@
           <p>
             <small>
               <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
+              |
+              <a href="https://t.me/getumbrel" target="_blank">chat</a>
             </small>
           </p>
         </footer>

@@ -121,5 +121,7 @@ export default {
     0 1px 2px rgba(209, 213, 223, 0) !important;
   margin-top: 16px !important;
   margin-bottom: 16px !important;
+  display: inline-block;
+  width: 100%;
 }
 </style>
