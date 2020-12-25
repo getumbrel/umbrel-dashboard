@@ -23,10 +23,12 @@
         class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
       >
         <div class="d-flex w-xs-100 justify-content-start pr-2">
-          <img
-            class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
-            :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
-          />
+          <div class="d-block">
+            <img
+              class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
+              :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+            />
+          </div>
           <div>
             <h3 class="d-block font-weight-bold mb-1">
               {{ app.name }}

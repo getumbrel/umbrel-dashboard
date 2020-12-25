@@ -12,7 +12,7 @@
       <card-widget
         v-for="categorizedApps in categorizedAppStore"
         :key="categorizedApps[0].category"
-        class="pb-2"
+        class="pb-2 card-app-list"
         :header="categorizedApps[0].category"
       >
         <router-link
@@ -22,15 +22,17 @@
           class="app-list-app d-flex justify-content-between align-items-center px-3 px-lg-4 py-3"
         >
           <div class="d-flex">
-            <img
-              class="app-icon mr-2 mr-lg-3"
-              :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
-            />
+            <div class="d-block">
+              <img
+                class="app-icon mr-2 mr-lg-3"
+                :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+              />
+            </div>
             <div class="d-flex justify-content-center flex-column">
               <h3 class="app-name font-weight-bolder text-dark mb-1">
                 {{ app.name }}
               </h3>
-              <p class="text-muted">
+              <p class="text-muted mb-0">
                 {{ app.tagline }}
               </p>
             </div>
@@ -112,5 +114,12 @@ export default {
       transform: translate3d(6px, 0, 0);
     }
   }
+}
+.card-app-list {
+  // https://stackoverflow.com/a/34115300
+  box-shadow: 0 1px 10px rgba(209, 213, 223, 0.5),
+    0 1px 2px rgba(209, 213, 223, 0) !important;
+  margin-top: 16px !important;
+  margin-bottom: 16px !important;
 }
 </style>
