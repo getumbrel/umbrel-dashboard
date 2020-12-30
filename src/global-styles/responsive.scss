@@ -40,7 +40,8 @@
         padding-left: 15px;
         padding-right: 15px;
         .app-gallery-screen {
-            height: intrinsic; // https://stackoverflow.com/a/64108625
+            height: auto; // so it doesn't break on Chrome (i.e. show white padding on top/bottom)
+            height: intrinsic; // so it doesn't break on Safari (i.e. show white padding on top/bottom) https://stackoverflow.com/a/64108625
             width: calc(100vw);
         }
     }
