@@ -4,7 +4,7 @@
       <div class="balance-container w-100 px-3 pt-4 pb-3 mb-3">
         <p class="text-muted">
           Balance
-          <span style="cursor: pointer;" @click="toggleBalance">
+          <span style="cursor: pointer" @click="toggleBalance">
             <!-- <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon> -->
           </span>
         </p>
@@ -15,7 +15,7 @@
               <CountUp
                 :value="{
                   endVal: walletBalance,
-                  decimalPlaces: unit === 'sats' ? 0 : 5
+                  decimalPlaces: unit === 'sats' ? 0 : 5,
                 }"
               />
             </h3>
@@ -34,7 +34,7 @@
       </div>
       <!-- <div class="py-2"></div> -->
       <b-nav vertical class="px-1">
-        <b-nav-item to="/dashboard" class="my-1" exact-active-class="active">
+        <b-nav-item to="/dashboard" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -53,7 +53,7 @@
           </svg>
           Home
         </b-nav-item>
-        <b-nav-item to="/bitcoin" class="my-1" exact-active-class="active">
+        <b-nav-item to="/bitcoin" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -69,7 +69,7 @@
           </svg>
           Bitcoin
         </b-nav-item>
-        <b-nav-item to="/lightning" class="my-1" exact-active-class="active">
+        <b-nav-item to="/lightning" class="my-1" active-class="active">
           <svg
             width="24"
             height="24"
@@ -86,11 +86,69 @@
           Lightning
         </b-nav-item>
 
+        <b-nav-item to="/apps" class="my-1" active-class="active">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="mr-2"
+          >
+            <path
+              d="M8.82158 6.21425H18.7859V5.89282C18.7859 5.36029 18.3541 4.92853 17.8216 4.92853H6.893C6.36047 4.92853 5.92871 5.36029 5.92871 5.89282V18.1071C5.92871 18.6397 6.36047 19.0714 6.893 19.0714H7.21443V7.82139C7.21553 6.93417 7.93435 6.21534 8.82158 6.21425Z"
+              fill="#C3C6D1"
+            />
+            <path
+              d="M20.7141 9.42853H7.85693V20.0357C7.85693 20.5682 8.2887 21 8.82122 21H19.7498C20.2824 21 20.7141 20.5682 20.7141 20.0357V9.42853Z"
+              fill="#C3C6D1"
+            />
+            <path
+              d="M6.89287 4.28572H16.8572V3.96429C16.8572 3.43176 16.4254 3 15.8929 3H4.96429C4.43176 3 4 3.43176 4 3.96429V16.1786C4 16.7111 4.43176 17.1429 4.96429 17.1429H5.28572V5.89287C5.28682 5.00564 6.00564 4.28682 6.89287 4.28572Z"
+              fill="#C3C6D1"
+            />
+            <path
+              d="M20.7141 7.82147C20.7141 7.28894 20.2824 6.85718 19.7498 6.85718H8.82122C8.2887 6.85718 7.85693 7.28894 7.85693 7.82147V8.78576H20.7141V7.82147ZM9.11691 7.94357C9.10059 7.9825 9.07768 8.01844 9.04942 8.04967C8.95745 8.14164 8.81871 8.16848 8.69912 8.11716C8.65972 8.10162 8.62378 8.0787 8.59302 8.04967C8.56477 8.01844 8.54185 7.9825 8.52553 7.94357C8.49132 7.86573 8.49132 7.77721 8.52553 7.69936C8.54107 7.65997 8.56398 7.62403 8.59302 7.59326C8.72187 7.4743 8.92057 7.4743 9.04942 7.59326C9.07846 7.62403 9.10137 7.65997 9.11691 7.69936C9.15128 7.77721 9.15128 7.86573 9.11691 7.94357ZM10.0812 7.94357C10.0649 7.9825 10.042 8.01844 10.0137 8.04967C9.92174 8.14164 9.783 8.16848 9.66341 8.11716C9.62448 8.10083 9.58854 8.07808 9.55731 8.04967C9.52906 8.01844 9.50614 7.9825 9.48982 7.94357C9.47177 7.90543 9.46298 7.86369 9.46408 7.82147C9.46455 7.7794 9.47334 7.73797 9.48982 7.69936C9.50536 7.65997 9.52827 7.62403 9.55731 7.59326C9.68616 7.4743 9.88486 7.4743 10.0137 7.59326C10.0427 7.62403 10.0657 7.65997 10.0812 7.69936C10.1156 7.77721 10.1156 7.86573 10.0812 7.94357ZM10.978 8.04967C10.886 8.14243 10.7471 8.1702 10.6266 8.12014C10.5059 8.07007 10.4276 7.95205 10.4284 7.82147C10.4273 7.77925 10.4361 7.7375 10.4541 7.69936C10.4696 7.65997 10.4926 7.62403 10.5216 7.59326C10.6505 7.4743 10.8491 7.4743 10.978 7.59326C11.007 7.62403 11.03 7.65997 11.0455 7.69936C11.0968 7.81896 11.07 7.9577 10.978 8.04967Z"
+              fill="#C3C6D1"
+            />
+          </svg>
+          Apps
+        </b-nav-item>
+
+        <b-nav-item to="/app-store" class="my-1" active-class="active">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="mr-2"
+          >
+            <path
+              d="M4.58203 3C3.7097 3 3 3.7097 3 4.58203V11.0156H11.0156V3H4.58203ZM8.23828 7.53516H7.53516V8.23828C7.53516 8.52952 7.29905 8.76563 7.00781 8.76563C6.71658 8.76563 6.48047 8.52952 6.48047 8.23828V7.53516H5.77734C5.48611 7.53516 5.25 7.29905 5.25 7.00781C5.25 6.71658 5.48611 6.48047 5.77734 6.48047H6.48047V5.77734C6.48047 5.48611 6.71658 5.25 7.00781 5.25C7.29905 5.25 7.53516 5.48611 7.53516 5.77734V6.48047H8.23828C8.52952 6.48047 8.76563 6.71658 8.76563 7.00781C8.76563 7.29905 8.52952 7.53516 8.23828 7.53516Z"
+              fill="#C3C6D1"
+            />
+            <path
+              d="M19.7989 11.0156H20.0859V4.58203C20.0859 3.7097 19.3762 3 18.5039 3H12.0703V10.8254C13.114 10.0402 14.4108 9.57422 15.8145 9.57422C17.328 9.57422 18.7172 10.116 19.7989 11.0156ZM14.3203 7.00781C14.3203 6.71658 14.5564 6.48047 14.8477 6.48047H17.3086C17.5998 6.48047 17.8359 6.71658 17.8359 7.00781C17.8359 7.29905 17.5998 7.53516 17.3086 7.53516H14.8477C14.5564 7.53516 14.3203 7.29905 14.3203 7.00781Z"
+              fill="#C3C6D1"
+            />
+            <path
+              d="M10.8254 12.0703H3V18.5039C3 19.3762 3.7097 20.0859 4.58203 20.0859H11.0156V19.7989C10.116 18.7172 9.57422 17.328 9.57422 15.8145C9.57422 14.4108 10.0402 13.114 10.8254 12.0703ZM8.25959 16.5842C8.46553 16.7901 8.46553 17.124 8.25959 17.3299C8.15665 17.4329 8.02168 17.4844 7.88672 17.4844C7.75175 17.4844 7.61679 17.4329 7.51385 17.3299L7.00781 16.8239L6.50177 17.3299C6.39884 17.4329 6.26387 17.4844 6.12891 17.4844C5.99394 17.4844 5.85898 17.4329 5.75604 17.3299C5.55009 17.124 5.55009 16.7901 5.75604 16.5841L6.26204 16.0781L5.756 15.5721C5.55006 15.3661 5.55006 15.0323 5.756 14.8263C5.96191 14.6204 6.29583 14.6204 6.50177 14.8263L7.00781 15.3324L7.51385 14.8263C7.71976 14.6204 8.05368 14.6204 8.25962 14.8263C8.46557 15.0323 8.46557 15.3661 8.25962 15.5721L7.75358 16.0781L8.25959 16.5842Z"
+              fill="#C3C6D1"
+            />
+            <path
+              d="M15.8145 10.6289C12.9551 10.6289 10.6289 12.9551 10.6289 15.8145C10.6289 18.6738 12.9551 21 15.8145 21C18.6738 21 21 18.6738 21 15.8145C21 12.9551 18.6738 10.6289 15.8145 10.6289ZM17.0449 17.2207H14.584C14.2928 17.2207 14.0566 16.9846 14.0566 16.6934C14.0566 16.4021 14.2928 16.166 14.584 16.166H17.0449C17.3362 16.166 17.5723 16.4021 17.5723 16.6934C17.5723 16.9846 17.3362 17.2207 17.0449 17.2207ZM17.0449 15.4629H14.584C14.2928 15.4629 14.0566 15.2268 14.0566 14.9355C14.0566 14.6443 14.2928 14.4082 14.584 14.4082H17.0449C17.3362 14.4082 17.5723 14.6443 17.5723 14.9355C17.5723 15.2268 17.3362 15.4629 17.0449 15.4629Z"
+              fill="#C3C6D1"
+            />
+          </svg>
+          App Store
+        </b-nav-item>
+
         <b-nav-item
           to="/settings"
           class="my-1"
           v-if="isMobileMenu"
-          exact-active-class="active"
+          active-class="active"
         >
           <svg
             width="24"
@@ -115,7 +173,7 @@
           @click="logout"
           class="my-1"
           v-if="isMobileMenu"
-          exact-active-class="active"
+          active-class="active"
         >
           <svg
             width="24"
@@ -136,12 +194,7 @@
           </svg>
           Log out
         </b-nav-item>
-        <b-nav-item
-          to="/settings"
-          class="my-1"
-          v-else
-          exact-active-class="active"
-        >
+        <b-nav-item to="/settings" class="my-1" v-else active-class="active">
           <svg
             width="24"
             height="24"
@@ -159,6 +212,15 @@
         </b-nav-item>
       </b-nav>
     </div>
+    <!-- Preload all app icons to cache them locally  -->
+    <div class="d-none">
+      <img
+        v-for="app in appStore"
+        :key="app.id"
+        :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+        class="d-none"
+      />
+    </div>
   </div>
 </template>
 
@@ -172,15 +234,19 @@ export default {
   data() {
     return {
       state: {
-        showBalance: true
-      }
+        showBalance: true,
+      },
     };
+  },
+  props: {
+    isMobileMenu: Boolean,
   },
   computed: {
     ...mapState({
-      btcBalance: state => state.bitcoin.balance.total,
-      lightningBalance: state => state.lightning.balance.total,
-      unit: state => state.system.unit
+      btcBalance: (state) => state.bitcoin.balance.total,
+      lightningBalance: (state) => state.lightning.balance.total,
+      unit: (state) => state.system.unit,
+      appStore: (state) => state.apps.store,
     }),
     walletBalance() {
       return this.unit === "sats"
@@ -189,7 +255,7 @@ export default {
     },
     balanceLoaded() {
       return this.btcBalance >= 0 && this.lightningBalance >= 0;
-    }
+    },
   },
   methods: {
     logout() {
@@ -197,15 +263,16 @@ export default {
     },
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);
-    }
+    },
   },
-  props: {
-    isMobileMenu: Boolean
+  created() {
+    this.$store.dispatch("apps/getInstalledApps");
+    this.$store.dispatch("apps/getAppStore");
   },
   components: {
     CountUp,
-    SatsBtcSwitch
-  }
+    SatsBtcSwitch,
+  },
 };
 </script>
 

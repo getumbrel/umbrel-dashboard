@@ -149,7 +149,7 @@
             </div>
           </div>
         </b-modal>
-        <div class="pr-xl-2">
+        <div class="pr-xl-2 content-container">
           <b-alert
             class="mt-4 mb-0"
             variant="success"
@@ -158,9 +158,7 @@
           >
             <b-icon icon="bell-fill" class="mr-2"></b-icon>
             <a
-              :href="
-                `https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`
-              "
+              :href="`https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`"
               target="_blank"
               class="alert-link"
               >Umbrel v{{ availableUpdate.version }}</a
@@ -191,6 +189,8 @@
           <p>
             <small>
               <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
+              |
+              <a href="https://t.me/getumbrel" target="_blank">chat</a>
             </small>
           </p>
         </footer>
@@ -207,21 +207,21 @@ import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavba
 export default {
   data() {
     return {
-      isUpdating: false
+      isUpdating: false,
     };
   },
   computed: {
     ...mapState({
-      name: state => state.user.name,
-      chain: state => state.bitcoin.chain,
-      availableUpdate: state => state.system.availableUpdate,
-      updateStatus: state => state.system.updateStatus,
-      showUpdateConfirmationModal: state =>
-        state.system.showUpdateConfirmationModal
+      name: (state) => state.user.name,
+      chain: (state) => state.bitcoin.chain,
+      availableUpdate: (state) => state.system.availableUpdate,
+      updateStatus: (state) => state.system.updateStatus,
+      showUpdateConfirmationModal: (state) =>
+        state.system.showUpdateConfirmationModal,
     }),
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
-    }
+    },
   },
   methods: {
     logout() {
@@ -280,10 +280,10 @@ export default {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right"
+          toaster: "b-toaster-bottom-right",
         });
       }
-    }
+    },
   },
   created() {
     //load this data once:
@@ -301,8 +301,8 @@ export default {
   },
   watch: {},
   components: {
-    AuthenticatedVerticalNavbar
-  }
+    AuthenticatedVerticalNavbar,
+  },
 };
 </script>
 
@@ -315,6 +315,10 @@ export default {
 
 .nav-horizontal {
   top: 0;
+}
+
+.content-container {
+  min-height: calc(100vh - 150px);
 }
 
 .input-search-form {
