@@ -26,7 +26,7 @@
           <div class="d-block">
             <img
               class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
-              :src="`http://static.getumbrel.com.s3-website-us-east-1.amazonaws.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
             />
           </div>
           <div>
@@ -109,7 +109,7 @@
         v-for="image in app.gallery"
         class="app-gallery-screen mr-3"
         :key="image"
-        :src="`http://static.getumbrel.com.s3-website-us-east-1.amazonaws.com/umbrel-apps-gallery/${app.id}/${image}`"
+        :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
       />
       <div class="d-block" style="padding: 1px"></div>
     </div>

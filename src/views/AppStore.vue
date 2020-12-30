@@ -25,7 +25,7 @@
             <div class="d-block">
               <img
                 class="app-icon mr-2 mr-lg-3"
-                :src="`http://static.getumbrel.com.s3-website-us-east-1.amazonaws.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+                :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
               />
             </div>
             <div class="d-flex justify-content-center flex-column">
@@ -56,7 +56,7 @@
               v-for="image in app.gallery"
               class="d-none"
               :key="app.id + image"
-              :src="`http://static.getumbrel.com.s3-website-us-east-1.amazonaws.com/umbrel-apps-gallery/${app.id}/${image}`"
+              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
             />
           </div>
         </router-link>
