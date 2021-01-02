@@ -280,6 +280,33 @@
               </b-modal>
             </div>
           </div>
+          <div class="pt-0">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Debug</span>
+                <small class="d-block" style="opacity: 0.4">Run the debug script</small>
+              </div>
+              <b-button variant="outline-warning" size="sm" @click="debugPrompt">Debug</b-button>
+              <b-modal
+                ref="debug-modal"
+                title="Results"
+                no-close-on-backdrop
+                no-close-on-esc
+                cancel-title="Run again"
+                @cancel="debugPrompt"
+                @ok="clearDebugInterval"
+              >
+                <div v-if="this.loadingDebug">
+                  <p>Processing...</p>
+                </div>
+                <div v-else>
+                    <p>Please share the following links and paste it in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you with your problem.</p>
+                    <input-copy class="mb-1" size="sm" auto-width :value="this.debugResult.linkDebug"></input-copy>
+                    <input-copy size="sm" auto-width :value="this.debugResult.linkDmesg"></input-copy>
+                  </div>
+              </b-modal>
+            </div>
+          </div>
           <div class="px-3 px-lg-4 pb-4">
             <div class="w-100 d-flex justify-content-between mb-1">
               <span class="align-self-end">Umbrel Version</span>
@@ -344,7 +371,8 @@ export default {
       confirmNewPassword: "",
       isChangingPassword: false,
       isCheckingForUpdate: false,
-      isUpdating: false
+      isUpdating: false,
+      loadingDebug: false
     };
   },
   computed: {
@@ -353,7 +381,8 @@ export default {
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
-      backupStatus: state => state.system.backupStatus
+      backupStatus: state => state.system.backupStatus,
+      debugResult: state => state.system.debugResult
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -448,6 +477,39 @@ export default {
       await this.$store.dispatch("system/getAvailableUpdate");
       this.isCheckingForUpdate = false;
     },
+    async getDebugLoadingStatus() {
+      await this.$store.dispatch("system/getDebugResult");
+
+      if(this.debugResult.status != "success") {
+        this.loadingDebug = true;
+      } else {
+        this.loadingDebug = false;
+      }
+    },
+    clearDebugInterval() {
+      window.clearInterval(this.loadingDebugInterval);
+    },
+    async debugPrompt() {
+      let toastText = "";
+      let toastOptions = {
+        autoHideDelay: 3000,
+        solid: true,
+        toaster: "b-toaster-bottom-right"
+      };
+
+      try {
+        await this.$store.dispatch("system/debug");
+      } catch (e) {
+        toastText = "Debug request failed";
+        toastOptions.title =
+          "Something went wrong and Umbrel was not able to run the debug script";
+        toastOptions.variant = "danger";
+      }
+
+      this.$bvToast.toast(toastText, toastOptions);
+      this.loadingDebug = true;
+      this.$refs["debug-modal"].show();
+    },
     async shutdownPrompt() {
       // disable on testnet
       if (window.location.hostname === "testnet.getumbrel.com") {
@@ -526,6 +588,20 @@ export default {
   watch: {
     currentPassword: function() {
       this.isIncorrectPassword = false;
+    },
+    loadingDebug: {
+      handler: function(isLoading) {
+        window.clearInterval(this.loadingDebugInterval);
+
+        if (isLoading) {
+          this.getDebugLoadingStatus();
+          this.loadingDebugInterval = window.setInterval(
+            this.getDebugLoadingStatus,
+            2000
+          );
+        }
+      },
+      immediate: true
     }
   },
   components: {
