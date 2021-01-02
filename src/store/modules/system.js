@@ -17,6 +17,12 @@ const state = () => ({
     status: "", //success, failed
     timestamp: null
   },
+  debugResult: {
+    status: "", //success, processing
+    linkDebug: "",
+    linkDmesg: "",
+    output: ""
+  },
   showUpdateConfirmationModal: false,
   loading: true,
   rebooting: false,
@@ -75,6 +81,9 @@ const mutations = {
   },
   setBackupStatus(state, status) {
     state.backupStatus = status;
+  },
+  setDebugResult(state, result) {
+    state.debugResult = result;
   },
   setShowUpdateConfirmationModal(state, show) {
     state.showUpdateConfirmationModal = show;
@@ -147,6 +156,21 @@ const actions = {
     if (status && status.timestamp) {
       commit("setBackupStatus", status);
     }
+  },
+  async getDebugResult({ commit }) {
+    const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-result`);
+    if (result && result.status) {
+      commit("setDebugResult", result);
+    }
+  },
+  async debug({ commit }) {
+    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug`);
+    
+    if (!result) {
+      throw new Error('Debug request failed');
+    }
+
+    commit("setDebugResult", result);
   },
   async shutdown({ commit }) {
 
