@@ -300,7 +300,7 @@
                   <p>Processing...</p>
                 </div>
                 <div v-else>
-                    <p>Please share the following links and paste it in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you with your problem.</p>
+                    <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
                     <input-copy class="mb-1" size="sm" auto-width :value="this.debugResult.linkDebug"></input-copy>
                     <input-copy size="sm" auto-width :value="this.debugResult.linkDmesg"></input-copy>
                   </div>
@@ -594,7 +594,6 @@ export default {
         window.clearInterval(this.loadingDebugInterval);
 
         if (isLoading) {
-          this.getDebugLoadingStatus();
           this.loadingDebugInterval = window.setInterval(
             this.getDebugLoadingStatus,
             2000
