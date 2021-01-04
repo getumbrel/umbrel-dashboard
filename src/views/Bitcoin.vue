@@ -202,8 +202,13 @@
                 <span class="align-self-end">Synchronized</span>
                 <h3 class="font-weight-normal mb-0">
                   <span v-if="syncPercent !== -1">
-                    {{ syncPercent >= 99.99 ? 100 : syncPercent }}
-                    <small class>%</small>
+                    <CountUp
+                      :value="{
+                        endVal: syncPercent >= 99.99 ? 100 : syncPercent,
+                        decimalPlaces: syncPercent >= 99.99 ? 0 : 2
+                      }"
+                      suffix="%"
+                    />
                   </span>
 
                   <span
@@ -311,6 +316,7 @@ import InputCopy from "@/components/Utility/InputCopy";
 import Stat from "@/components/Utility/Stat";
 import BitcoinWallet from "@/components/BitcoinWallet";
 import BitcoinConnectWallet from "@/components/BitcoinConnectWallet";
+import CountUp from "@/components/Utility/CountUp";
 
 export default {
   data() {
@@ -372,6 +378,7 @@ export default {
     window.clearInterval(this.interval);
   },
   components: {
+    CountUp,
     CardWidget,
     Blockchain,
     QrCode,
