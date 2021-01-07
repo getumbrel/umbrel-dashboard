@@ -118,7 +118,8 @@ const mutations = {
     const mergedBlocks = [...blocks, ...state.blocks];
     // remove duplicate blocks
     const uniqueBlocks = mergedBlocks.filter((v, i, a) => a.findIndex(t => (t.height === v.height)) === i);
-    state.blocks = uniqueBlocks;
+    // limit to latest 6 blocks
+    state.blocks = [...uniqueBlocks.slice(0, 6)];
   },
 
   setVersion(state, version) {
