@@ -53,11 +53,6 @@ export default {
   props: {
     urls: Object,
   },
-  methods: {
-    async zoomModal() {
-      this.$refs["qr-modal"].show();
-    }
-  },
   components: {
     CardWidget,
     InputCopy,
