@@ -10,12 +10,14 @@
           <span class="font-weight-bold">Settings > Node Manager > +</span>.
         </li>
         <li class="connect-wallet-step">
-          Scan this QR Code
+          Scan this QR Code (click to enlarge)
           <qr-code
             :value="urls.bitcoin.rpc.connectionString"
             :size="200"
             class="qr-image mt-2"
             showLogo
+            @click="$emit('showQrModal', { wallet: 'Fully Noded', value: urls.bitcoin.rpc.connectionString })"
+            v-bind:style="{ cursor: 'pointer' }"
           ></qr-code>
         </li>
       </ol>

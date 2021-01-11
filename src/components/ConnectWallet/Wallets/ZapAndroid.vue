@@ -10,12 +10,14 @@
           <span class="font-weight-bold">"Connect"</span> on the welcome screen.
         </li>
         <li class="connect-wallet-step">
-          Scan this QR Code
+          Scan this QR Code (click to enlarge)
           <qr-code
             :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')"
             :size="300"
             class="qr-image mt-2"
             showLogo
+            @click="$emit('showQrModal', { wallet: 'Zap (Android)', value: urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'') })"
+            v-bind:style="{ cursor: 'pointer' }"
           ></qr-code>
         </li>
       </ol>
@@ -50,6 +52,11 @@ import QrCode from "@/components/Utility/QrCode.vue";
 export default {
   props: {
     urls: Object,
+  },
+  methods: {
+    async zoomModal() {
+      this.$refs["qr-modal"].show();
+    }
   },
   components: {
     CardWidget,

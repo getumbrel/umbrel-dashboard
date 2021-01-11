@@ -1,29 +1,49 @@
 <template>
-  <div class="p-sm-2">
-    <div class="my-3">
-      <div>
-        <h1>connect wallet</h1>
-        <p>Connect your Bitcoin or Lightning wallet to your Umbrel</p>
+  <div>
+    <div class="p-sm-2">
+      <div class="my-3">
+        <div>
+          <h1>connect wallet</h1>
+          <p>Connect your Bitcoin or Lightning wallet to your Umbrel</p>
+        </div>
       </div>
+
+      <b-row>
+        <b-col cols="12" md="4" xl="3">
+          <b-form-select
+            :value="wallet"
+            :options="options"
+            @change="selectWallet"
+            class="mb-4"
+          ></b-form-select>
+        </b-col>
+      </b-row>
+
+      <router-view :urls="urls" @showQrModal="showQrModal"></router-view>
     </div>
 
-    <b-row>
-      <b-col cols="12" md="4" xl="3">
-        <b-form-select
-          :value="wallet"
-          :options="options"
-          @change="selectWallet"
-          class="mb-4"
-        ></b-form-select>
-      </b-col>
-    </b-row>
-
-    <router-view :urls="urls"></router-view>
+    <b-modal
+      ref="qr-modal"
+      :title="`${this.qrModalData.wallet} QR Code`"
+      no-close-on-backdrop
+      ok-only
+      size="lg"
+    >
+      <div class="d-flex w-100 align-items-center justify-content-center">
+        <qr-code
+          :value="this.qrModalData.value"
+          :size="500"
+          class="qr-image mt-2"
+          showLogo
+        ></qr-code>
+      </div>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import QrCode from "@/components/Utility/QrCode.vue";
 
 export default {
   data() {
@@ -73,6 +93,10 @@ export default {
           ],
         },
       ],
+      qrModalData: {
+        wallet: "",
+        value: ""
+      },
     };
   },
   computed: {
@@ -104,11 +128,17 @@ export default {
     selectWallet(wallet) {
       this.$router.push(`/connect/${wallet}`);
     },
+    showQrModal(data, event) {
+      this.qrModalData = data
+      this.$refs["qr-modal"].show();
+    }
   },
   created() {
     this.fetchConnectionDetails();
   },
-  components: {},
+  components: {
+    QrCode
+  },
 };
 </script>
 

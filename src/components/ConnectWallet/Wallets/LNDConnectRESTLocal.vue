@@ -7,6 +7,8 @@
           level="M"
           class="qr-image mx-auto mb-3 mb-lg-0"
           showLogo
+          @click="$emit('showQrModal', { wallet: 'LND REST (Local)', value: urls.lnd.restLocal })"
+          v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
       <div class="w-100 align-self-center ml-lg-3">
         <label class="mb-1 d-block"><small>LNDConnect URL</small></label>

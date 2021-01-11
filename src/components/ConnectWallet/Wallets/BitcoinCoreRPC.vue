@@ -7,6 +7,8 @@
           level="M"
           class="qr-image mx-auto mb-3 mb-lg-0"
           showLogo
+          @click="$emit('showQrModal', { wallet: 'Bitcoin Core\'s RPC', value: urls.bitcoin.rpc.connectionString })"
+          v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
       <div class="w-100 align-self-center ml-lg-3 connect-wallet-steps">
         <div class="connect-wallet-step">

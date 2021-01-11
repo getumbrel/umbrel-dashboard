@@ -10,12 +10,14 @@
           <span class="font-weight-bold">"Connect"</span> on the welcome screen.
         </li>
         <li class="connect-wallet-step">
-          Scan this QR Code
+          Scan this QR Code (click to enlarge)
           <qr-code
             :value="urls.lnd.restTor"
             :size="300"
             class="qr-image mt-2"
             showLogo
+            @click="$emit('showQrModal', { wallet: 'Zap (iOS)', value: urls.lnd.restTor })"
+            v-bind:style="{ cursor: 'pointer' }"
           ></qr-code>
         </li>
       </ol>

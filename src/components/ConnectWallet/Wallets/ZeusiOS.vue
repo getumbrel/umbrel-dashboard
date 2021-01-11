@@ -10,12 +10,14 @@
           <span class="font-weight-bold">"Scan lndconnect config"</span>.
         </li>
         <li class="connect-wallet-step">
-          Scan this QR Code
+          Scan this QR Code (click to enlarge)
           <qr-code
             :value="urls.lnd.restLocal"
             :size="300"
             class="qr-image mt-2"
             showLogo
+            @click="$emit('showQrModal', { wallet: 'Zeus (iOS)', value: urls.lnd.restLocal })"
+            v-bind:style="{ cursor: 'pointer' }"
           ></qr-code>
         </li>
       </ol>
