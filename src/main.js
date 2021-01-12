@@ -1,5 +1,6 @@
 import Vue from "vue";
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
+import DisableAutocomplete from "@/mixins/disable-autocomplete";
 
 import App from "./App.vue";
 import router from "./router";
@@ -13,6 +14,7 @@ import { satsToBtc } from "@/helpers/units";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
+Vue.use(DisableAutocomplete);
 
 //transforms a number to sats or btc based on store
 Vue.filter("unit", value => {
