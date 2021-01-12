@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @keydown="handleKeyboard">
     <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">{{ heading }}</h1>
@@ -250,6 +250,13 @@ export default {
     }
   },
   methods: {
+    handleKeyboard(event) {
+      if (event.key === "Enter") {
+        if (this.isStepValid && !this.isRegistering) {
+          this.nextStep();
+        }
+      }
+    },
     skipSeed() {
       if (this.currentStep === 4) {
         this.currentStep = 5;
