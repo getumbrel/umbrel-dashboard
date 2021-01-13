@@ -183,14 +183,32 @@
                       <span
                         v-if="
                           tx.description === 'Lightning Wallet' &&
-                            tx.type === 'outgoing'
+                            tx.type === 'outgoing' &&
+                            tx.confirmations === 0
+                        "
+                        >&bull; Channel opening</span
+                      >
+                      <span
+                        v-else-if="
+                          tx.description === 'Lightning Wallet' &&
+                            tx.type === 'outgoing' &&
+                            tx.confirmations > 0
                         "
                         >&bull; Channel open</span
                       >
                       <span
                         v-else-if="
                           tx.description === 'Lightning Wallet' &&
-                            tx.type === 'incoming'
+                            tx.type === 'incoming' &&
+                            tx.confirmations === 0
+                        "
+                        >&bull; Channel closing</span
+                      >
+                      <span
+                        v-else-if="
+                          tx.description === 'Lightning Wallet' &&
+                            tx.type === 'incoming' &&
+                            tx.confirmations > 0
                         "
                         >&bull; Channel close</span
                       >
