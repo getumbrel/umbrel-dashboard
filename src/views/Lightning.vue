@@ -204,6 +204,7 @@
                   <stat
                     title="Connections"
                     :value="numPeers"
+                    :raw-value="numPeers"
                     suffix="Peers"
                     showNumericChange
                   ></stat>
@@ -212,6 +213,7 @@
                   <stat
                     title="Active Channels"
                     :value="numActiveChannels"
+                    :raw-value="numActiveChannels"
                     suffix="Channels"
                     showNumericChange
                   ></stat>
@@ -220,6 +222,7 @@
                   <stat
                     title="Max Send"
                     :value="maxSend | unit"
+                    :raw-value="maxSend | unit"
                     :suffix="unit | formatUnit"
                     :hasDecimals="unit === 'btc'"
                     abbreviateValue
@@ -229,6 +232,7 @@
                   <stat
                     title="Max Receive"
                     :value="maxReceive | unit"
+                    :raw-value="maxReceive | unit"
                     :suffix="unit | formatUnit"
                     :hasDecimals="unit === 'btc'"
                     abbreviateValue
