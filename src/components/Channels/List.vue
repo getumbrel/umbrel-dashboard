@@ -7,11 +7,10 @@
         v-if="channels.length === 0"
       >
         <p class="text-muted w-75 text-center">
-          You need to open channels with other nodes to transact on the
+          You need to open payment channels with other nodes to transact on the
           Lightning Network.
-          <br />When you open a payment channel, the balance is automatically
-          deducted from your Bitcoin wallet and credited to your Lightning
-          wallet.
+          <br />When you open a channel, the balance is automatically deducted
+          from your Bitcoin wallet and credited to your Lightning wallet.
         </p>
       </div>
 
