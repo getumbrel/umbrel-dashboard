@@ -1,72 +1,59 @@
 <template>
-  <card-widget header="Here's how to connect Zeus (iOS) to your Umbrel">
-    <div class="px-3 px-lg-4 pb-3">
-      <ol class="connect-wallet-steps">
-        <li class="connect-wallet-step">
-          Open the Zeus app on your iPhone connected to the same local network as your Umbrel.
-        </li>
-        <li class="connect-wallet-step">
-          Click
-          <span class="font-weight-bold">"Scan lndconnect config"</span>.
-        </li>
-        <li class="connect-wallet-step">
-          Scan this QR Code (click to enlarge)
-          <qr-code
-            :value="urls.lnd.restLocal"
-            :size="300"
-            class="qr-image mt-2"
-            showLogo
-            @click="$emit('showQrModal', { wallet: 'Zeus (iOS)', value: urls.lnd.restLocal })"
-            v-bind:style="{ cursor: 'pointer' }"
-          ></qr-code>
-        </li>
-      </ol>
-      <hr />
-      <p class="text-muted">Or manually enter the following details</p>
-      <ol class="connect-wallet-steps">
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Host"</span>, enter
-          <input-copy
-            value="umbrel.local"
-            size="sm"
-            auto-width
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"REST Port"</span>, enter
-          <input-copy
-            value="8080"
-            size="sm"
-            auto-width
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter
-          <input-copy
-            :value="macaroonHex"
-            size="sm"
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          Click <span class="font-weight-bold">"Save Node Config"</span>.
-        </li>
-        <li class="connect-wallet-step">
-          Congratulations! You have successfully connected Zeus (iOS) to your
-          Umbrel.
-        </li>
-      </ol>
-    </div>
-  </card-widget>
+  <connection-details name="Zeus (iOS)">
+    <step-list>
+      <step>
+        Open the Zeus app on your iPhone connected to the same local network as your Umbrel.
+      </step>
+      <step>
+        Click <span class="font-weight-bold">"Scan lndconnect config"</span>.
+      </step>
+      <step>
+        Scan this QR Code (click to enlarge)
+        <qr-code
+          :value="urls.lnd.restLocal"
+          :size="300"
+          class="qr-image mt-2"
+          showLogo
+          @click="$emit('showQrModal', { wallet: 'Zeus (iOS)', value: urls.lnd.restLocal })"
+          v-bind:style="{ cursor: 'pointer' }"
+        ></qr-code>
+      </step>
+    </step-list>
+    <hr />
+    <p class="text-muted">Or manually enter the following details</p>
+    <step-list>
+      <step>
+        In the <span class="font-weight-bold">"Host"</span>, enter
+        <input-copy value="umbrel.local" auto-width></input-copy>
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"REST Port"</span>, enter
+        <input-copy value="8080" auto-width></input-copy>
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter 
+        <input-copy :value="macaroonHex"></input-copy>
+      </step>
+      <step>
+        Click <span class="font-weight-bold">"Save Node Config"</span>.
+      </step>
+      <step>
+        Congratulations! You have successfully connected Zeus (iOS) to your Umbrel.
+      </step>
+    </step-list>
+  </connection-details>
 </template>
 
 <script>
-import CardWidget from "@/components/CardWidget";
+import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
+import StepList from "@/components/ConnectWallet/StepList";
+import Step from "@/components/ConnectWallet/Step";
 import InputCopy from "@/components/Utility/InputCopy";
-import QrCode from "@/components/Utility/QrCode.vue";
+import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object,
+    urls: Object
   },
   computed: {
     macaroonHex() {
@@ -74,9 +61,11 @@ export default {
     }
   },
   components: {
-    CardWidget,
+    ConnectionDetails,
+    StepList,
+    Step,
     InputCopy,
-    QrCode,
-  },
+    QrCode
+  }
 };
 </script>

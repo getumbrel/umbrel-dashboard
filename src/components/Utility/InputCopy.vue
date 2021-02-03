@@ -6,7 +6,7 @@
       width: autoWidth ? `${(10 + value.toString().length) * 8}px` : 'auto',
       maxWidth: '100%',
     }"
-    :size="size"
+    :size="size ? size : 'sm'"
   >
     <b-form-input
       ref="copy-input-field"
@@ -57,7 +57,7 @@ export default {
   },
   data() {
     return {
-      isCopied: false,
+      isCopied: false
     };
   },
   methods: {

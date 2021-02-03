@@ -1,89 +1,79 @@
 <template>
-  <card-widget
-    header="Here's how to connect Electrum (Android) to your Umbrel"
-  >
-    <div class="px-3 px-lg-4 pb-3">
-      <ol class="connect-wallet-steps">
-        <li class="connect-wallet-step">
-          Download
-          <b-link
-            href="https://play.google.com/store/apps/details?id=org.torproject.android"
-            target="_blank"
-            >Orbot</b-link
-          >.
-        </li>
-        <li class="connect-wallet-step">
-          Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add
-          Electrum Wallet.
-        </li>
-        <li class="connect-wallet-step">
-          Click <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on 
-          the <span class="font-weight-bold">"VPN Mode"</span>.
-        </li>
-        <li class="connect-wallet-step">
-          Start Tor by tapping the big onion icon.
-        </li>
-        <li class="connect-wallet-step">
-          Open Electrum Wallet, tap the settings icon and select
-          <span class="font-weight-bold">"Network"</span>.
-        </li>
-        <li class="connect-wallet-step">
-          Set <span class="font-weight-bold">"Auto-connect"</span> to OFF and
-          <span class="font-weight-bold">"One-server mode"</span> to ON.
-        </li>
-        <li class="connect-wallet-step">
-          Set the <span class="font-weight-bold">"Proxy"</span> settings with
-          the following details, and select
-          <span class="font-weight-bold">"socks5"</span> mode.
-        </li>
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Proxy"</span>, enter
-          <input-copy value="localhost" size="sm" auto-width></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Port"</span>, enter
-          <input-copy value="9050" size="sm" auto-width></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          Set the <span class="font-weight-bold">"Server"</span> settings with
-          the following details.
-        </li>
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Server"</span>, enter
-          <input-copy
-            :value="urls.bitcoin.electrum.address"
-            size="sm"
-            auto-width
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Port"</span>, enter
-          <input-copy
-            :value="urls.bitcoin.electrum.port"
-            size="sm"
-            auto-width
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          Congratulations! You have successfully connected Electrum to
-          your Umbrel.
-        </li>
-      </ol>
-    </div>
-  </card-widget>
+  <connection-details name="Electrum (Android)">
+    <step-list>
+      <step>
+        Download
+        <b-link
+          href="https://play.google.com/store/apps/details?id=org.torproject.android"
+          target="_blank"
+        >Orbot</b-link>.
+      </step>
+      <step>
+        Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add
+        Electrum Wallet.
+      </step>
+      <step>
+        Click <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on 
+        the <span class="font-weight-bold">"VPN Mode"</span>.
+      </step>
+      <step>
+        Start Tor by tapping the big onion icon.
+      </step>
+      <step>
+        Open Electrum Wallet, tap the settings icon and select
+        <span class="font-weight-bold">"Network"</span>.
+      </step>
+      <step>
+        Set <span class="font-weight-bold">"Auto-connect"</span> to OFF and
+        <span class="font-weight-bold">"One-server mode"</span> to ON.
+      </step>
+      <step>
+        Set the <span class="font-weight-bold">"Proxy"</span> settings with
+        the following details, and select
+        <span class="font-weight-bold">"socks5"</span> mode.
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"Proxy"</span>, enter
+        <input-copy value="localhost" auto-width></input-copy>
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"Port"</span>, enter
+        <input-copy value="9050" auto-width></input-copy>
+      </step>
+      <step>
+        Set the <span class="font-weight-bold">"Server"</span> settings with
+        the following details.
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"Server"</span>, enter
+        <input-copy :value="urls.bitcoin.electrum.address" auto-width></input-copy>
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"Port"</span>, enter
+        <input-copy :value="urls.bitcoin.electrum.port" auto-width></input-copy>
+      </step>
+      <step>
+        Congratulations! You have successfully connected Electrum to your Umbrel.
+      </step>
+    </step-list>
+  </connection-details>
 </template>
 
 <script>
-import CardWidget from "@/components/CardWidget";
+import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
+import StepList from "@/components/ConnectWallet/StepList";
+import Step from "@/components/ConnectWallet/Step";
 import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object,
+    urls: Object
   },
   components: {
-    CardWidget,
-    InputCopy,
-  },
+    ConnectionDetails,
+    StepList,
+    Step,
+    InputCopy
+  }
 };
 </script>

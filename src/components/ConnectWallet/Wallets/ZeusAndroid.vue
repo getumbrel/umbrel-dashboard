@@ -1,91 +1,79 @@
 <template>
-  <card-widget header="Here's how to connect Zeus (Android) to your Umbrel">
-    <div class="px-3 px-lg-4 pb-3">
-      <ol class="connect-wallet-steps">
-        <li class="connect-wallet-step">
-          Download
-          <b-link
-            href="https://play.google.com/store/apps/details?id=org.torproject.android"
-            target="_blank"
-            >Orbot</b-link
-          >.
-        </li>
-        <li class="connect-wallet-step">
-          Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add
-          Zeus.
-        </li>
-        <li class="connect-wallet-step">
-          Click <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on 
-          the <span class="font-weight-bold">"VPN Mode"</span>.
-        </li>
-        <li class="connect-wallet-step">
-          Start Tor by tapping the big onion icon.
-        </li>
-        <li class="connect-wallet-step">
-          Open the Zeus app on your Android.
-        </li>
-        <li class="connect-wallet-step">
-          Click
-          <span class="font-weight-bold">"Scan lndconnect config"</span>.
-        </li>
-        <li class="connect-wallet-step">
-          Scan this QR Code (click to enlarge)
-          <qr-code
-            :value="urls.lnd.restTor"
-            :size="300"
-            class="qr-image mt-2"
-            showLogo
-            @click="$emit('showQrModal', { wallet: 'Zeus (Android)', value: urls.lnd.restTor })"
-            v-bind:style="{ cursor: 'pointer' }"
-          ></qr-code>
-        </li>
-      </ol>
-      <hr />
-      <p class="text-muted">Or manually enter the following details</p>
-      <ol class="connect-wallet-steps">
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Host"</span>, enter
-          <input-copy
-            :value="Array.from(urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm), m => m[1])[0]"
-            size="sm"
-            auto-width
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"REST Port"</span>, enter
-          <input-copy
-            value="8080"
-            size="sm"
-            auto-width
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter
-          <input-copy
-            :value="macaroonHex"
-            size="sm"
-          ></input-copy>
-        </li>
-        <li class="connect-wallet-step">
-          Click <span class="font-weight-bold">"Save Node Config"</span>.
-        </li>
-        <li class="connect-wallet-step">
-          Congratulations! You have successfully connected Zeus (Android) to your
-          Umbrel.
-        </li>
-      </ol>
-    </div>
-  </card-widget>
+  <connection-details name="Zeus (Android)">
+    <step-list>
+      <step>
+        Download
+        <b-link
+          href="https://play.google.com/store/apps/details?id=org.torproject.android"
+          target="_blank"
+        >Orbot</b-link>.
+      </step>
+      <step>
+        Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add Zeus.
+      </step>
+      <step>
+        Click <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on 
+        the <span class="font-weight-bold">"VPN Mode"</span>.
+      </step>
+      <step>
+        Start Tor by tapping the big onion icon.
+      </step>
+      <step>
+        Open the Zeus app on your Android.
+      </step>
+      <step>
+        Click <span class="font-weight-bold">"Scan lndconnect config"</span>.
+      </step>
+      <step>
+        Scan this QR Code (click to enlarge)
+        <qr-code
+          :value="urls.lnd.restTor"
+          :size="300"
+          class="qr-image mt-2"
+          showLogo
+          @click="$emit('showQrModal', { wallet: 'Zeus (Android)', value: urls.lnd.restTor })"
+          v-bind:style="{ cursor: 'pointer' }"
+        ></qr-code>
+      </step>
+    </step-list>
+    <hr />
+    <p class="text-muted">Or manually enter the following details</p>
+    <step-list>
+      <step>
+        In the <span class="font-weight-bold">"Host"</span>, enter
+        <input-copy
+          :value="Array.from(urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm), m => m[1])[0]"
+          auto-width
+        ></input-copy>
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"REST Port"</span>, enter
+        <input-copy value="8080" auto-width></input-copy>
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter
+        <input-copy :value="macaroonHex"></input-copy>
+      </step>
+      <step>
+        Click <span class="font-weight-bold">"Save Node Config"</span>.
+      </step>
+      <step>
+        Congratulations! You have successfully connected Zeus (Android) to your Umbrel.
+      </step>
+    </step-list>
+  </connection-details>
 </template>
 
 <script>
-import CardWidget from "@/components/CardWidget";
+import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
+import StepList from "@/components/ConnectWallet/StepList";
+import Step from "@/components/ConnectWallet/Step";
 import InputCopy from "@/components/Utility/InputCopy";
-import QrCode from "@/components/Utility/QrCode.vue";
+import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object,
+    urls: Object
   },
   computed: {
     macaroonHex() {
@@ -93,9 +81,11 @@ export default {
     }
   },
   components: {
-    CardWidget,
+    ConnectionDetails,
+    StepList,
+    Step,
     InputCopy,
-    QrCode,
-  },
+    QrCode
+  }
 };
 </script>

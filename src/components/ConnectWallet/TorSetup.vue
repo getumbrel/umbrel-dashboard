@@ -43,6 +43,7 @@
     </ol>
 
     <ol class="pl-3" v-else-if="selectedOS == 'Windows'">
+      <p>You can find PowerShell like any other app with the Windows Search. Open it as an administrator.</p>
       <li class="mb-3">
         Install Chocolatey from
         <a target="_blank" href="https://chocolatey.org/install">here</a>.
@@ -66,8 +67,8 @@ export default {
   props: {
     selectedOS: {
       type: String,
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     return {};
@@ -75,8 +76,8 @@ export default {
   computed: {},
   methods: {},
   components: {
-    InputCopy,
-  },
+    InputCopy
+  }
 };
 </script>
 
