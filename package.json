@@ -1,6 +1,6 @@
 {
   "name": "umbrel-dashboard",
-  "version": "0.3.13",
+  "version": "0.3.15",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

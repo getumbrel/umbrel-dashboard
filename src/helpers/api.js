@@ -122,7 +122,7 @@ const API = {
   },
 
   // Wrap a post call
-  async post(url, data, auth = true) {
+  async post(url, data = {}, auth = true) {
     const requestOptions = {
       method: "post",
       url,
