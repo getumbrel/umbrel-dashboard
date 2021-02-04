@@ -207,21 +207,21 @@ import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavba
 export default {
   data() {
     return {
-      isUpdating: false,
+      isUpdating: false
     };
   },
   computed: {
     ...mapState({
-      name: (state) => state.user.name,
-      chain: (state) => state.bitcoin.chain,
-      availableUpdate: (state) => state.system.availableUpdate,
-      updateStatus: (state) => state.system.updateStatus,
-      showUpdateConfirmationModal: (state) =>
+      name: state => state.user.name,
+      chain: state => state.bitcoin.chain,
+      availableUpdate: state => state.system.availableUpdate,
+      updateStatus: state => state.system.updateStatus,
+      showUpdateConfirmationModal: state =>
         state.system.showUpdateConfirmationModal,
     }),
     isMobileMenuOpen() {
       return this.$store.getters.isMobileMenuOpen;
-    },
+    }
   },
   methods: {
     logout() {
@@ -280,10 +280,10 @@ export default {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right",
+          toaster: "b-toaster-bottom-right"
         });
       }
-    },
+    }
   },
   created() {
     //load this data once:
@@ -301,8 +301,8 @@ export default {
   },
   watch: {},
   components: {
-    AuthenticatedVerticalNavbar,
-  },
+    AuthenticatedVerticalNavbar
+  }
 };
 </script>
 
