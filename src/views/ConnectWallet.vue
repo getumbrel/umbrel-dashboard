@@ -91,12 +91,12 @@ export default {
   },
   computed: {
     ...mapState({
-      urls: (state) => {
+      urls: state => {
         return {
           bitcoin: {
             p2p: state.bitcoin.p2p,
             electrum: state.bitcoin.electrum,
-            rpc: state.bitcoin.rpc,
+            rpc: state.bitcoin.rpc
           },
           lnd: state.lightning.lndConnectUrls,
         };
@@ -112,7 +112,7 @@ export default {
         this.$store.dispatch("lightning/getLndConnectUrls"),
         this.$store.dispatch("bitcoin/getP2PInfo"),
         this.$store.dispatch("bitcoin/getElectrumInfo"),
-        this.$store.dispatch("bitcoin/getRpcInfo"),
+        this.$store.dispatch("bitcoin/getRpcInfo")
       ]);
     },
     selectWallet(wallet) {

@@ -76,13 +76,13 @@ export default {
       }, 1000);
 
       return (this.isCopied = true);
-    },
+    }
   },
   watch: {
-    value: function () {
+    value: function() {
       this.isCopied = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

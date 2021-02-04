@@ -128,7 +128,7 @@
                   </div>
                   <span
                     class="loading-placeholder loading-placeholder-lg mt-1"
-                    style="width: 100%"
+                    style="width: 100%;"
                     v-else
                   ></span>
                 </div>
@@ -309,23 +309,23 @@ export default {
   data() {
     return {
       status: "Running",
-      selectedChannel: {},
+      selectedChannel: {}
     };
   },
   computed: {
     ...mapState({
-      lndVersion: (state) => state.lightning.version,
-      numActiveChannels: (state) => state.lightning.numActiveChannels,
-      maxReceive: (state) => state.lightning.maxReceive,
-      maxSend: (state) => state.lightning.maxSend,
-      numPeers: (state) => state.lightning.numPeers,
-      alias: (state) => state.lightning.alias,
-      pubkey: (state) => state.lightning.pubkey,
-      uris: (state) => state.lightning.uris,
-      lndConnectUrls: (state) => state.lightning.lndConnectUrls,
-      channels: (state) => state.lightning.channels,
-      unit: (state) => state.system.unit,
-    }),
+      lndVersion: state => state.lightning.version,
+      numActiveChannels: state => state.lightning.numActiveChannels,
+      maxReceive: state => state.lightning.maxReceive,
+      maxSend: state => state.lightning.maxSend,
+      numPeers: state => state.lightning.numPeers,
+      alias: state => state.lightning.alias,
+      pubkey: state => state.lightning.pubkey,
+      uris: state => state.lightning.uris,
+      lndConnectUrls: state => state.lightning.lndConnectUrls,
+      channels: state => state.lightning.channels,
+      unit: state => state.system.unit
+    })
   },
   methods: {
     async downloadChannelBackup() {
@@ -362,7 +362,7 @@ export default {
     },
     fetchPageData() {
       this.$store.dispatch("lightning/getLndPageData");
-    },
+    }
   },
   created() {
     this.fetchPageData();
@@ -373,9 +373,9 @@ export default {
     window.clearInterval(this.interval);
   },
   watch: {
-    password: function () {
+    password: function() {
       this.isIncorrectPassword = false;
-    },
+    }
   },
   components: {
     LightningWallet,
@@ -385,8 +385,8 @@ export default {
     InputCopy,
     ChannelList,
     ChannelOpen,
-    ChannelManage,
-  },
+    ChannelManage
+  }
 };
 </script>
 

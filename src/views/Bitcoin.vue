@@ -92,7 +92,7 @@
 
                   <span
                     class="loading-placeholder loading-placeholder-lg d-block"
-                    style="width: 6rem"
+                    style="width: 6rem;"
                     v-else
                   ></span>
                 </h3>
@@ -201,16 +201,16 @@ export default {
   },
   computed: {
     ...mapState({
-      syncPercent: (state) => state.bitcoin.percent,
-      blocks: (state) => state.bitcoin.blocks,
-      version: (state) => state.bitcoin.version,
-      currentBlock: (state) => state.bitcoin.currentBlock,
-      blockHeight: (state) => state.bitcoin.blockHeight,
-      stats: (state) => state.bitcoin.stats,
-      onionAddress: (state) => state.bitcoin.onionAddress,
-      electrumAddress: (state) => state.bitcoin.electrumAddress,
-      rpc: (state) => state.bitcoin.rpc,
-    }),
+      syncPercent: state => state.bitcoin.percent,
+      blocks: state => state.bitcoin.blocks,
+      version: state => state.bitcoin.version,
+      currentBlock: state => state.bitcoin.currentBlock,
+      blockHeight: state => state.bitcoin.blockHeight,
+      stats: state => state.bitcoin.stats,
+      onionAddress: state => state.bitcoin.onionAddress,
+      electrumAddress: state => state.bitcoin.electrumAddress,
+      rpc: state => state.bitcoin.rpc
+    })
   },
   methods: {
     random(min, max) {
@@ -241,9 +241,9 @@ export default {
       return Promise.all([
         this.$store.dispatch("bitcoin/getP2PInfo"),
         this.$store.dispatch("bitcoin/getElectrumInfo"),
-        this.$store.dispatch("bitcoin/getRpcInfo"),
+        this.$store.dispatch("bitcoin/getRpcInfo")
       ]);
-    },
+    }
   },
   created() {
     this.$store.dispatch("bitcoin/getVersion");
@@ -261,7 +261,8 @@ export default {
     InputCopy,
     Stat,
     BitcoinWallet,
-  },
+    BitcoinConnectWallet
+  }
 };
 </script>
 
