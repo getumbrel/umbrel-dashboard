@@ -393,8 +393,8 @@ export default {
       }
 
       const payload = {
-        password: this.currentPassword,
-        newPassword: this.newPassword
+        password: btoa(this.currentPassword),
+        newPassword: btoa(this.newPassword)
       };
 
       this.isChangingPassword = true;

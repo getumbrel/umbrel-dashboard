@@ -95,7 +95,7 @@ export default {
       this.isLoggingIn = true;
 
       try {
-        await this.$store.dispatch("user/login", this.password);
+        await this.$store.dispatch("user/login", btoa(this.password));
       } catch (error) {
         if (error.response && error.response.data === "Incorrect password") {
           this.isIncorrectPassword = true;
@@ -109,7 +109,7 @@ export default {
 
       if (!this.unlocked) {
         try {
-          await this.$store.dispatch("lightning/unlockWallet", this.password);
+          await this.$store.dispatch("lightning/unlockWallet", btoa(this.password));
         } catch (error) {
           if (error.response && error.response.data) {
             this.$bvToast.toast(`${error.response.data}`, {

@@ -275,7 +275,7 @@ export default {
         try {
           await this.$store.dispatch("user/register", {
             name: this.name,
-            password: this.password,
+            password: btoa(this.password),
             seed
           });
         } catch (error) {
