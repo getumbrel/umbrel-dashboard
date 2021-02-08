@@ -118,7 +118,7 @@ export default {
     selectWallet(wallet) {
       this.$router.push(`/connect/${wallet}`);
     },
-    showQrModal(data, event) {
+    showQrModal(data) {
       this.qrModalData = data
       this.$refs["qr-modal"].show();
     }

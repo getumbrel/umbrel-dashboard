@@ -190,8 +190,6 @@ import { mapState } from "vuex";
 
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
-import QrCode from "@/components/Utility/QrCode";
-import InputCopy from "@/components/Utility/InputCopy";
 import Stat from "@/components/Utility/Stat";
 import BitcoinWallet from "@/components/BitcoinWallet";
 
@@ -257,11 +255,8 @@ export default {
   components: {
     CardWidget,
     Blockchain,
-    QrCode,
-    InputCopy,
     Stat,
-    BitcoinWallet,
-    BitcoinConnectWallet
+    BitcoinWallet
   }
 };
 </script>
