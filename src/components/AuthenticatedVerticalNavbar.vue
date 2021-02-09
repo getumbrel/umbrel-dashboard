@@ -284,6 +284,7 @@ export default {
   // width: 280px;
   height: calc(var(--vh100, 100vh) - 82px);
   top: 82px;
+  overflow-y: auto;
   .nav-item {
     .nav-link {
       color: #141821;
