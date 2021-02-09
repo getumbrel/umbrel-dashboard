@@ -5,7 +5,7 @@
         Open the Zap app on your iPhone.
       </step>
       <step>
-        Click <span class="font-weight-bold">"Connect"</span> on the welcome screen.
+        Tap <span class="font-weight-bold">"Connect"</span> on the welcome screen.
       </step>
       <step>
         Scan this QR Code (click to enlarge)
@@ -14,7 +14,7 @@
           :size="300"
           class="qr-image mt-2"
           showLogo
-          @click="$emit('showQrModal', { wallet: 'Zap (iOS)', value: urls.lnd.restTor.replace(/cert=(.*)&/gm,'') })"
+          @click="$emit('showQrModal', urls.lnd.restTor.replace(/cert=(.*)&/gm,''))"
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
@@ -23,10 +23,10 @@
     <p class="text-muted">Or manually enter the following details</p>
     <step-list>
       <step>
-        Copy <input-copy :balue="urls.lnd.restTor.replace(/cert=(.*)&/gm,'')" auto-width></input-copy>
+        Copy <input-copy :value="urls.lnd.restTor.replace(/cert=(.*)&/gm,'')" class="d-block mt-2"></input-copy>
       </step>
       <step>
-        Click <span class="font-weight-bold">"Paste"</span> and <span class="font-weight-bold">"Save"</span>.
+        Tap <span class="font-weight-bold">"Paste"</span> and <span class="font-weight-bold">"Save"</span>.
       </step>
       <step>
         Congratulations! You have successfully connected Zap (iOS) to your Umbrel.

@@ -24,16 +24,14 @@
 
     <b-modal
       ref="qr-modal"
-      :title="`${this.qrModalData.wallet} QR Code`"
-      no-close-on-backdrop
-      ok-only
+      hide-footer
       size="lg"
     >
       <div class="d-flex w-100 align-items-center justify-content-center">
         <qr-code
           :value="this.qrModalData.value"
-          :size="500"
-          class="qr-image mt-2"
+          :size="this.qrModalData.size"
+          class="qr-image mb-5"
           showLogo
         ></qr-code>
       </div>
@@ -50,28 +48,23 @@ export default {
     return {
       options: [
         { value: null, text: "Select your wallet", disabled: true },
+        { value: "bitboxapp", text: "BitBoxApp" },
+        { value: "blockstream-green", text: "Blockstream Green (Android)" },
+        { value: "bluewallet-android", text: "BlueWallet (Android)" },
+        { value: "electrum-android", text: "Electrum Wallet (Android)" },
+        { value: "electrum-desktop", text: "Electrum Wallet (Desktop)" },
+        { value: "fully-noded", text: "Fully Noded (iOS)" },
+        { value: "phoenix", text: "Phoenix Wallet" },
+        { value: "sparrow", text: "Sparrow" },
+        { value: "specter-desktop", text: "Specter Desktop" },
+        { value: "wasabi", text: "Wasabi" },
+        { value: "zap-android", text: "Zap (Android)" },
+        { value: "zap-desktop", text: "Zap (Desktop)" },
+        { value: "zap-ios", text: "Zap (iOS)" },
+        { value: "zeus-android", text: "Zeus (Android)" },
+        { value: "zeus-ios", text: "Zeus (iOS)" },
         {
-          label: "Wallets",
-          options: [
-            { value: "bitboxapp", text: "BitBoxApp" },
-            { value: "blockstream-green", text: "Blockstream Green (Android)" },
-            { value: "bluewallet-android", text: "BlueWallet (Android)" },
-            { value: "electrum-android", text: "Electrum (Android)" },
-            { value: "electrum-desktop", text: "Electrum (Desktop)" },
-            { value: "fully-noded", text: "Fully Noded" },
-            { value: "phoenix", text: "Phoenix" },
-            { value: "sparrow", text: "Sparrow" },
-            { value: "specter-desktop", text: "Specter Desktop" },
-            { value: "wasabi", text: "Wasabi" },
-            { value: "zap-android", text: "Zap (Android)" },
-            { value: "zap-desktop", text: "Zap (Desktop)" },
-            { value: "zap-ios", text: "Zap (iOS)" },
-            { value: "zeus-android", text: "Zeus (Android)" },
-            { value: "zeus-ios", text: "Zeus (iOS)" }
-          ],
-        },
-        {
-          label: "Protocols",
+          label: "Other",
           options: [
             { value: "bitcoin-core-p2p", text: "Bitcoin Core P2P" },
             { value: "bitcoin-core-rpc", text: "Bitcoin Core RPC" },
@@ -84,8 +77,8 @@ export default {
         }
       ],
       qrModalData: {
-        wallet: "",
-        value: ""
+        value: "",
+        size: window.innerWidth < 600 ? window.innerWidth - 60 : 500
       },
     };
   },
@@ -118,8 +111,8 @@ export default {
     selectWallet(wallet) {
       this.$router.push(`/connect/${wallet}`);
     },
-    showQrModal(data) {
-      this.qrModalData = data
+    showQrModal(value) {
+      this.qrModalData.value = value
       this.$refs["qr-modal"].show();
     }
   },

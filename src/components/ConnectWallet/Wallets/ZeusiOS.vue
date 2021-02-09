@@ -2,7 +2,10 @@
   <connection-details name="Zeus (iOS)">
     <step-list>
       <step>
-        Open the Zeus app on your iPhone connected to the same local network as your Umbrel.
+        Make sure your iPhone is connected to the same network as your Umbrel.
+      </step>
+      <step>
+        Open Zeus on your iPhone.
       </step>
       <step>
         Click <span class="font-weight-bold">"Scan lndconnect config"</span>.
@@ -14,7 +17,7 @@
           :size="300"
           class="qr-image mt-2"
           showLogo
-          @click="$emit('showQrModal', { wallet: 'Zeus (iOS)', value: urls.lnd.restLocal })"
+          @click="$emit('showQrModal', urls.lnd.restLocal)"
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
@@ -32,10 +35,10 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter 
-        <input-copy :value="macaroonHex"></input-copy>
+        <input-copy :value="macaroonHex" class="d-block mt-2"></input-copy>
       </step>
       <step>
-        Click <span class="font-weight-bold">"Save Node Config"</span>.
+        Tap <span class="font-weight-bold">"Save Node Config"</span>.
       </step>
       <step>
         Congratulations! You have successfully connected Zeus (iOS) to your Umbrel.

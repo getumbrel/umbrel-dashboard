@@ -12,8 +12,8 @@
 
     <ol class="pl-3" v-if="selectedOS == 'macOS'">
       <li class="mb-3">
-        Open Terminal and install
-        <a href="https://brew.sh/" target="_blank">Homebrew</a>:
+        Open the "Terminal" app on your Mac and install
+        <a href="https://brew.sh/" target="_blank">Homebrew</a> by running:
         <input-copy
           class="mt-2"
           value='/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"'
@@ -22,7 +22,7 @@
       </li>
 
       <li class="mb-3">
-        Install Tor:
+        Install Tor by running:
         <input-copy
           class="mt-2"
           value="brew install tor"
@@ -33,7 +33,7 @@
 
     <ol class="pl-3" v-else-if="selectedOS == 'Linux'">
       <li class="mb-3">
-        Install Tor:
+        Open Terminal and install Tor:
         <input-copy
           class="mt-2"
           value="sudo apt-get install tor"
@@ -43,18 +43,12 @@
     </ol>
 
     <ol class="pl-3" v-else-if="selectedOS == 'Windows'">
-      <p>You can find PowerShell like any other app with the Windows Search. Open it as an administrator.</p>
       <li class="mb-3">
-        Install Chocolatey from
-        <a target="_blank" href="https://chocolatey.org/install">here</a>.
+        Download Tor "Windows Expert Bundle" from
+        <a target="_blank" href="https://www.torproject.org/download/tor/">here</a>.
       </li>
       <li class="mb-3">
-        In the PowerShell, run:
-        <input-copy class="mt-2" value="choco install tor"></input-copy>
-      </li>
-      <li class="mb-3">
-        Install Tor:
-        <input-copy class="mt-2" value="tor -service install"></input-copy>
+        Unzip the file, open the "Tor" folder inside it and install "tor.exe"
       </li>
     </ol>
   </div>

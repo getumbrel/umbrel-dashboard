@@ -6,8 +6,7 @@
         <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.
       </step>
       <step>
-        Open Wasabi, open the <span class="font-weight-bold">"Tools"</span> menu 
-        and click <span class="font-weight-bold">"Settings"</span>.
+        Open Wasabi, go to <span class="font-weight-bold">Tools > Settings</span>.
       </step>
       <step>
         In the <span class="font-weight-bold">"Bitcoin P2P Endpoint"</span>, enter
@@ -18,10 +17,7 @@
         <input-copy value="127.0.0.1:9050" auto-width></input-copy>
       </step>
       <step>
-        Restart the app.
-      </step>
-      <step>
-        Wait a little while. The footer should display "Tor is running - Backend is connected".
+        Restart Wasabi and wait for ~2 minutes. The blue bar on the bottom should display "Tor is running - Backend is connected".
       </step>
       <step>
         Congratulations! You have successfully connected Wasabi to your Umbrel.

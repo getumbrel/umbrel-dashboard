@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Fully Noded">
+  <connection-details name="Fully Noded (iOS)">
     <step-list>
       <step>
         Open the Fully Noded app on your iPhone.
@@ -14,7 +14,7 @@
           :size="200"
           class="qr-image mt-2"
           showLogo
-          @click="$emit('showQrModal', { wallet: 'Fully Noded', value: urls.bitcoin.rpc.connectionString })"
+          @click="$emit('showQrModal', urls.bitcoin.rpc.connectionString)"
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
@@ -35,7 +35,7 @@
         <input-copy :value="`${urls.bitcoin.rpc.address}:${urls.bitcoin.rpc.port}`" auto-width></input-copy>
       </step>
       <step>
-        Click <span class="font-weight-bold">"Save"</span>.
+        Tap <span class="font-weight-bold">"Save"</span>.
       </step>
       <step>
         Congratulations! You have successfully connected Fully Noded to your Umbrel.

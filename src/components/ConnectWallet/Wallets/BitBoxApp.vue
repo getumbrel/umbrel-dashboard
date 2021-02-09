@@ -12,7 +12,7 @@
         <input-copy value="127.0.0.1:9050" auto-width></input-copy>
       </step>
       <step>
-        Click <span class="font-weight-bold">"Set proxy address"</span> and restart the app.
+        Click <span class="font-weight-bold">"Set proxy address"</span> and restart BitBoxApp.
       </step>
       <step>
         Go to <span class="font-weight-bold">Settings > Connect your own full node</span>.
@@ -28,7 +28,7 @@
         Click <span class="font-weight-bold">"Check"</span> to verify if BitBoxApp is able to connect to your Umbrel.
       </step>
       <step>
-        Click <span class="font-weight-bold">"Add"</span> and restart the app.
+        Click <span class="font-weight-bold">"Add"</span> and restart BitBoxApp.
       </step>
       <step>
         Congratulations! You have successfully connected BitBoxApp to your Umbrel.

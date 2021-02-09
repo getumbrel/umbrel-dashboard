@@ -2,9 +2,12 @@
   <connection-details name="Sparrow">
     <step-list>
       <step>
-        From the Welcome screen, click <span class="font-weight-bold">"Configure Server"</span> 
-        to add the details of your Umbrel&#39;s Electrum server, or go to 
+        If you're setting up Sparrow from scratch, click <span class="font-weight-bold">"Configure Server"</span> on the welcome screen.
+        If you're already using Sparrow, go to
         <span class="font-weight-bold">Preferences > Server</span>.
+      </step>
+      <step>
+        In the <span class="font-weight-bold">"Type"</span>, select <span class="font-weight-bold">"Electrum Server"</span>
       </step>
       <step>
         In the <span class="font-weight-bold">"URL"</span>, enter
@@ -20,10 +23,6 @@
       </step>
       <step>
         After verifying, click <span class="font-weight-bold">"Close"</span>.
-      </step>
-      <step>
-        At any moment, you can turn on or off the connection using the switch 
-        in the bottom right of the window.
       </step>
       <step>
         Congratulations! You have successfully connected Sparrow to

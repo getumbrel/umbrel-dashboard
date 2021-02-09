@@ -6,13 +6,13 @@
         <b-link
           href="https://play.google.com/store/apps/details?id=org.torproject.android"
           target="_blank"
-        >Orbot</b-link>.
+        >Orbot</b-link> on your phone.
       </step>
       <step>
         Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add Zeus.
       </step>
       <step>
-        Click <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on 
+        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on 
         the <span class="font-weight-bold">"VPN Mode"</span>.
       </step>
       <step>
@@ -22,7 +22,7 @@
         Open the Zeus app on your Android.
       </step>
       <step>
-        Click <span class="font-weight-bold">"Scan lndconnect config"</span>.
+        Tap <span class="font-weight-bold">"Scan lndconnect config"</span>.
       </step>
       <step>
         Scan this QR Code (click to enlarge)
@@ -31,7 +31,7 @@
           :size="300"
           class="qr-image mt-2"
           showLogo
-          @click="$emit('showQrModal', { wallet: 'Zeus (Android)', value: urls.lnd.restTor })"
+          @click="$emit('showQrModal', urls.lnd.restTor)"
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
@@ -52,10 +52,10 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter
-        <input-copy :value="macaroonHex"></input-copy>
+        <input-copy :value="macaroonHex" class="d-block mt-2"></input-copy>
       </step>
       <step>
-        Click <span class="font-weight-bold">"Save Node Config"</span>.
+        Tap <span class="font-weight-bold">"Save Node Config"</span>.
       </step>
       <step>
         Congratulations! You have successfully connected Zeus (Android) to your Umbrel.

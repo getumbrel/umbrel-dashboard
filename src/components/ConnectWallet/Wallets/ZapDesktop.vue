@@ -2,14 +2,11 @@
   <connection-details name="Zap (Desktop)">
     <step-list>
       <step>
-        Open the Zap Desktop app on your computer.
-      </step>
-      <step>
-        Click <span class="font-weight-bold">"Connect"</span> on the welcome screen.
+        Open Zap Desktop and click <span class="font-weight-bold">"Connect"</span> on the welcome screen.
       </step>
       <step>
         In the <span class="font-weight-bold">"Connection String"</span>, enter 
-        <input-copy :value="urls.lnd.grpcLocal" auto-width></input-copy>
+        <input-copy class="d-block mt-2" :value="urls.lnd.grpcLocal"></input-copy>
       </step>
       <step>
         Click <span class="font-weight-bold">"Next"</span> two times to confirm.

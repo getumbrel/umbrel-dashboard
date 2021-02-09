@@ -2,22 +2,19 @@
   <connection-details name="Blockstream Green">
     <step-list>
       <step>
-        Open Green Wallet and go to <span class="font-weight-bold">Settings > SPV synchronization</span>.
+        Open Green on your phone and go to <span class="font-weight-bold">Settings > SPV synchronization</span>.
       </step>
       <step>
         Check <span class="font-weight-bold">"Enable SPV"</span>.
       </step>
       <step>
-        Click <span class="font-weight-bold">"Only connect to trusted node(s) for SPV"</span>.
+        Tap <span class="font-weight-bold">"Only connect to trusted node(s) for SPV"</span>.
       </step>
       <step>
         Enter <input-copy :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`" auto-width></input-copy>
       </step>
       <step>
-        Click <span class="font-weight-bold">"Ok"</span>.
-      </step>
-      <step>
-        Restart the app.
+        Tap <span class="font-weight-bold">"Ok"</span> and restart Green.
       </step>
       <step>
         Congratulations! You have successfully connected Blockstream Green to your Umbrel.

@@ -1,11 +1,14 @@
 <template>
-  <connection-details name="Phoenix">
+  <connection-details name="Phoenix Wallet">
     <step-list>
+      <step>
+        Open Phoenix Wallet on your phone.
+      </step>
       <step>
         Go to <span class="font-weight-bold">Settings > Electrum Server</span>.
       </step>
       <step>
-        Click <span class="font-weight-bold">"Set an Electrum server"</span>.
+        Tap <span class="font-weight-bold">"Set an Electrum server"</span>.
       </step>
       <step>
         Check <span class="font-weight-bold">"Use custom Electrum server"</span>.
@@ -18,13 +21,10 @@
         ></input-copy>
       </step>
       <step>
-        Click <span class="font-weight-bold">"Confirm"</span>.
+        Tap <span class="font-weight-bold">"Confirm"</span> and restart Phoenix Wallet.
       </step>
       <step>
-        Restart the app.
-      </step>
-      <step>
-        Congratulations! You have successfully connected Phoenix to your Umbrel.
+        Congratulations! You have successfully connected Phoenix Wallet to your Umbrel.
       </step>
     </step-list>
   </connection-details>
