@@ -670,7 +670,7 @@ export default {
       fees: state => state.bitcoin.fees,
       unit: state => state.system.unit,
       chain: state => state.bitcoin.chain,
-      localExplorer: state => {
+      localExplorerTxUrl: state => {
         // Check for mempool app
         const mempool = state.apps.installed.find(({id}) => id === 'mempool');
         if (mempool) {
@@ -721,8 +721,8 @@ export default {
     },
     openTxInExplorer(txHash) {
       let url = "";
-      if (this.localExplorer) {
-        url = `${this.localExplorer}${txHash}`;
+      if (this.localExplorerTxUrl) {
+        url = `${this.localExplorerTxUrl}${txHash}`;
       }
       else {
         if (!window.confirm('This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?')) {
