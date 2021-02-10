@@ -17,17 +17,17 @@
           @click="$emit('showQrModal', urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'') )"
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
-      </step>
-    </step-list>
-    <hr />
-    <p class="text-muted">Or manually enter the following details</p>
-    <step-list>
-      <step>
-        Copy 
-        <input-copy :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')" class="d-block mt-2"></input-copy>
-      </step>
-      <step>
-        Tap <span class="font-weight-bold">"Paste"</span> and <span class="font-weight-bold">"Save"</span>.
+        <hr/>
+        <p class="text-muted">Or manually enter the following details</p>
+        <ul class="connect-wallet-substeps">
+          <li class="connect-wallet-substep">
+            Copy 
+            <input-copy :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')" class="d-block mt-2"></input-copy>
+          </li>
+          <li class="connect-wallet-substep">
+            Tap <span class="font-weight-bold">"Paste"</span> and <span class="font-weight-bold">"Save"</span>.
+          </li>
+        </ul>
       </step>
       <step>
         Congratulations! You have successfully connected Zap (Android) to your Umbrel.

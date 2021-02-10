@@ -467,6 +467,13 @@ body {
         margin-bottom: 1.2rem;
     }   
 }
+.connect-wallet-substeps {
+    list-style-type: lower-roman;
+    padding: 0 0 0 20px;
+    .connect-wallet-substep {
+        margin-bottom: 1.2rem;
+    }
+}
 
 // Helper class to truncate text with "..."
 .text-truncate {
