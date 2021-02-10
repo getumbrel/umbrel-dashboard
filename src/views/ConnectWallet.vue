@@ -55,6 +55,7 @@ export default {
         { value: "electrum-desktop", text: "Electrum Wallet (Desktop)" },
         { value: "fully-noded", text: "Fully Noded (iOS)" },
         { value: "phoenix", text: "Phoenix Wallet" },
+        { value: "samourai-wallet", text: "Samourai Wallet" },
         { value: "sparrow", text: "Sparrow" },
         { value: "specter-desktop", text: "Specter Desktop" },
         { value: "wasabi", text: "Wasabi" },

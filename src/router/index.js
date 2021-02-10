@@ -30,6 +30,7 @@ import ElectrumDesktop from "../components/ConnectWallet/Wallets/ElectrumDesktop
 import ElectrumServer from "../components/ConnectWallet/Wallets/ElectrumServer.vue";
 import FullyNoded from "../components/ConnectWallet/Wallets/FullyNoded.vue";
 import Phoenix from "../components/ConnectWallet/Wallets/Phoenix.vue";
+import SamouraiWallet from "../components/ConnectWallet/Wallets/SamouraiWallet.vue";
 import Sparrow from "../components/ConnectWallet/Wallets/Sparrow.vue";
 import SpecterDesktop from "../components/ConnectWallet/Wallets/SpecterDesktop.vue";
 import Wasabi from "../components/ConnectWallet/Wallets/Wasabi.vue";
@@ -210,6 +211,13 @@ const routes = [
                 component: Phoenix,
                 meta: {
                   wallet: "phoenix"
+                }
+              },
+              {
+                path: "samourai-wallet",
+                component: SamouraiWallet,
+                meta: {
+                  wallet: "samourai-wallet"
                 }
               },
               {
