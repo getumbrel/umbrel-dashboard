@@ -14,6 +14,7 @@
         lightningSyncPercent < 100
     "
   >
+  {{ explorer }}
     <template v-slot:title>
       <div
         v-b-tooltip.hover.right
@@ -85,8 +86,8 @@
                 v-for="tx in transactions"
                 :key="tx.hash"
                 class="flex-column align-items-start px-3 px-lg-4"
-                :href="getTxUrl(tx.hash)"
-                target="_blank"
+                href="#"
+                @click="openTxInExplorer(tx.hash)"
               >
                 <!-- Loading Transactions Placeholder -->
                 <div
@@ -668,7 +669,28 @@ export default {
       depositAddress: state => state.bitcoin.depositAddress,
       fees: state => state.bitcoin.fees,
       unit: state => state.system.unit,
-      chain: state => state.bitcoin.chain
+      chain: state => state.bitcoin.chain,
+      localExplorer: state => {
+        // Check for mempool app
+        const mempool = state.apps.installed.find(({id}) => id === 'mempool');
+        if (mempool) {
+          let url = window.location.origin.indexOf(".onion") > 0 ? `http://${mempool.hiddenService}${mempool.path}` : `http://${window.location.hostname}:${mempool.port}${mempool.path}`;
+          if (this.chain === "test") {
+            url += "/testnet";
+          }
+          url += '/tx/';
+          return url;
+        }
+
+        // Check for btc-rpc-explorer app
+        const btcRpcExplorer = state.apps.installed.find(({id}) => id === 'btc-rpc-explorer');
+        if (btcRpcExplorer) {
+          return window.location.origin.indexOf(".onion") > 0 ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/` : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
+        }
+
+        // Else return empty string
+        return "";
+      }
     }),
     ...mapGetters({
       transactions: "bitcoin/transactions"
@@ -702,13 +724,18 @@ export default {
     getReadableTime(timestamp) {
       return moment(timestamp).format("MMMM D, h:mm:ss a"); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
-    getTxUrl(txHash) {
-      let url = `https://mempool.space`;
-
-      if (this.chain === "test") {
-        url += "/testnet";
+    openTxInExplorer(txHash) {
+      let url = "";
+      if (this.localExplorer) {
+        url = `${this.localExplorer}${txHash}`;
       }
-      return `${url}/tx/${txHash}`;
+      else {
+        if (!window.confirm('This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?')) {
+          return;
+        }
+        url = this.chain === "test" ? `https://mempool.space/testnet/tx/${txHash}` : `https://mempool.space/tx/${txHash}`;
+      }
+      return window.open(url, '_blank');
     },
     async changeMode(mode) {
       //change between different modes/screens of the wallet from - transactions (default), withdraw, withdrawan, depsoit
@@ -855,6 +882,10 @@ export default {
   },
   async created() {
     this.$store.dispatch("bitcoin/getStatus");
+
+    // to fetch any installed explorers
+    // and their hidden services
+    this.$store.dispatch("apps/getInstalledApps");
   },
   components: {
     CardWidget,
