@@ -674,12 +674,7 @@ export default {
         // Check for mempool app
         const mempool = state.apps.installed.find(({id}) => id === 'mempool');
         if (mempool) {
-          let url = window.location.origin.indexOf(".onion") > 0 ? `http://${mempool.hiddenService}${mempool.path}` : `http://${window.location.hostname}:${mempool.port}${mempool.path}`;
-          if (this.chain === "test") {
-            url += "/testnet";
-          }
-          url += '/tx/';
-          return url;
+          return window.location.origin.indexOf(".onion") > 0 ? `http://${mempool.hiddenService}${mempool.path}/tx/` : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
         }
 
         // Check for btc-rpc-explorer app
