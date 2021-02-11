@@ -14,7 +14,6 @@
         lightningSyncPercent < 100
     "
   >
-  {{ explorer }}
     <template v-slot:title>
       <div
         v-b-tooltip.hover.right
@@ -86,8 +85,9 @@
                 v-for="tx in transactions"
                 :key="tx.hash"
                 class="flex-column align-items-start px-3 px-lg-4"
-                href="#"
-                @click="openTxInExplorer(tx.hash)"
+                :href="getTxExplorerUrl(tx.hash)"
+                target="_blank"
+                @click="openTxInExplorer"
               >
                 <!-- Loading Transactions Placeholder -->
                 <div
@@ -594,8 +594,9 @@
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         :disabled="withdraw.isWithdrawing"
         v-else-if="mode === 'withdrawn'"
-        :href="getTxUrl(withdraw.txHash)"
+        :href="getTxExplorerUrl(withdraw.txHash)"
         target="_blank"
+        @click="openTxInExplorer"
       >
         <svg
           width="19"
@@ -719,18 +720,18 @@ export default {
     getReadableTime(timestamp) {
       return moment(timestamp).format("MMMM D, h:mm:ss a"); //used in the list of txs, eg "March 08, 2020 3:03:12 pm"
     },
-    openTxInExplorer(txHash) {
-      let url = "";
+    getTxExplorerUrl(txHash) {
       if (this.localExplorerTxUrl) {
-        url = `${this.localExplorerTxUrl}${txHash}`;
+        return `${this.localExplorerTxUrl}${txHash}`;
       }
-      else {
-        if (!window.confirm('This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?')) {
-          return;
-        }
-        url = this.chain === "test" ? `https://mempool.space/testnet/tx/${txHash}` : `https://mempool.space/tx/${txHash}`;
+      else { 
+        return this.chain === "test" ? `https://mempool.space/testnet/tx/${txHash}` : `https://mempool.space/tx/${txHash}`;
       }
-      return window.open(url, '_blank');
+    },
+    openTxInExplorer(event) {
+      if (!this.localExplorerTxUrl && !window.confirm('This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?')) {
+        event.preventDefault();
+      }
     },
     async changeMode(mode) {
       //change between different modes/screens of the wallet from - transactions (default), withdraw, withdrawan, depsoit
