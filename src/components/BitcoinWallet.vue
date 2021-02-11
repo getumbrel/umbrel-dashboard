@@ -724,7 +724,10 @@ export default {
       if (this.localExplorerTxUrl) {
         return `${this.localExplorerTxUrl}${txHash}`;
       }
-      else { 
+      else {
+        if (window.location.origin.indexOf(".onion") > 0) {
+          return this.chain === "test" ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}` : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
+        }
         return this.chain === "test" ? `https://mempool.space/testnet/tx/${txHash}` : `https://mempool.space/tx/${txHash}`;
       }
     },
