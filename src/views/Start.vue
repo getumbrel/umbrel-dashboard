@@ -56,9 +56,6 @@
             <span class="d-block text-muted text-small mb-1">
               <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>I should not put more funds on my Umbrel than I'm prepared to lose
             </span>
-            <span class="d-block text-muted text-small mb-1">
-              <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>Craig Wright is a fraud
-            </span>
           </div>
         </div>
 
