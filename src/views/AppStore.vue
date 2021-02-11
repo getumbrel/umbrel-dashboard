@@ -61,6 +61,18 @@
           </div>
         </router-link>
       </card-widget>
+      <card-widget
+        class="pb-2 card-app-list umbrel-dev-note mt-2"
+      >
+      <div class="px-3 px-lg-4 py-3">
+        <span class="rocket ml-3 ml-lg-4">🚀</span>
+        <h4 class="font-weight-normal mt-4">Get your app on the Umbrel App Store</h4>
+        <p class="text-muted mb-3">
+          Use any programming language, database or framework to build your app for Umbrel.
+        </p>
+        <b-link href="https://github.com/getumbrel/umbrel/blob/master/apps/README.md" target="_blank">Learn more</b-link>
+      </div>
+      </card-widget>
     </div>
   </div>
 </template>
@@ -123,5 +135,16 @@ export default {
   margin-bottom: 16px !important;
   display: inline-block;
   width: 100%;
+}
+
+.umbrel-dev-note {
+  position: relative;
+  overflow: visible;
+  .rocket {
+    font-size: 60px;
+    position: absolute;
+    top: -30px;
+    left: 0;
+  }
 }
 </style>
