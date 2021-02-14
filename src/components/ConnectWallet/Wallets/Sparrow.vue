@@ -10,7 +10,7 @@
         In the <span class="font-weight-bold">"Type"</span>, select <span class="font-weight-bold">"Electrum Server"</span>
       </step>
       <step>
-        In the <span class="font-weight-bold">"URL"</span>, enter
+        For <span class="font-weight-bold">"URL"</span>, enter
         <input-copy class="my-1" :value="urls.bitcoin.electrum.address" auto-width></input-copy>
         <input-copy class="my-1" :value="urls.bitcoin.electrum.port" auto-width></input-copy>
       </step>
@@ -18,7 +18,7 @@
         Disable <span class="font-weight-bold">"Use SSL"</span>.
       </step>
       <step>
-        Click <span class="font-weight-bold">"Test Connection"</span> to verify if
+        Click <span class="font-weight-bold">"Test Connection"</span> to verify
         Sparrow is able to connect to your Umbrel.
       </step>
       <step>
