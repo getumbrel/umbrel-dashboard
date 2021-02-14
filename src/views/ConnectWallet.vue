@@ -22,21 +22,22 @@
       <router-view :urls="urls" @showQrModal="showQrModal"></router-view>
     </div>
 
-    <b-modal
-      ref="qr-modal"
-      hide-footer
-      size="lg"
-    >
-      <div class="d-flex w-100 align-items-center justify-content-center">
-        <qr-code
-          :value="this.qrModalData.value"
-          :size="this.qrModalData.size"
-          class="qr-image mb-5"
-          showLogo
-        ></qr-code>
-      </div>
-    </b-modal>
-  </div>
+      <b-modal
+        id="qr-modal"
+        ref="qr-modal"
+        hide-footer
+        size="lg"
+      >
+        <div class="d-flex w-100 align-items-center justify-content-center">
+          <qr-code
+            :value="this.qrModalData.value"
+            :size="this.qrModalData.size"
+            class="qr-image mb-5"
+            showLogo
+          ></qr-code>
+        </div>
+      </b-modal>
+    </div>
 </template>
 
 <script>
@@ -126,4 +127,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+@media (min-width: 456px) {
+  #qr-modal {
+    .modal-dialog {
+      max-width: 600px;
+      margin: 1.75rem auto;
+    }
+  }
+}
+</style>
