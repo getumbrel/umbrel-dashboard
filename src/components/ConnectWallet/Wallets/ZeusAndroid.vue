@@ -12,7 +12,7 @@
         Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add Zeus.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on 
+        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on
         the <span class="font-weight-bold">"VPN Mode"</span>.
       </step>
       <step>

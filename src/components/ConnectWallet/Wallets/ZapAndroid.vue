@@ -21,7 +21,7 @@
         <p class="text-muted">Or manually enter the following details</p>
         <ul class="connect-wallet-substeps">
           <li class="connect-wallet-substep">
-            Copy 
+            Copy
             <input-copy :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')" class="d-block mt-2"></input-copy>
           </li>
           <li class="connect-wallet-substep">
