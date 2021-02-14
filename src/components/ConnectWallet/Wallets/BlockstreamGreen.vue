@@ -19,7 +19,7 @@
         Start Tor by tapping the big onion icon.
       </step>
       <step>
-        Open Green on your phone and go to <span class="font-weight-bold">Settings > SPV synchronization</span>.
+        Open Green on your phone and go to <span class="font-weight-bold">Settings > Advanced > SPV synchronization</span>.
       </step>
       <step>
         Check <span class="font-weight-bold">"Enable SPV"</span>.
