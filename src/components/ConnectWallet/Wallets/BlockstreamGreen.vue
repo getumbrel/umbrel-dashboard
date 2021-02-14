@@ -25,13 +25,18 @@
         Check <span class="font-weight-bold">"Enable SPV"</span>.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"Only connect to trusted node(s) for SPV"</span>.
+        Tap <span class="font-weight-bold">"Scan a QR code for SPV pairing"</span>.
       </step>
       <step>
-        Enter <input-copy class="my-1" :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`" auto-width></input-copy>
-      </step>
-      <step>
-        Tap <span class="font-weight-bold">"Ok"</span> and restart Green.
+        Scan this QR Code (click to enlarge)
+        <qr-code
+          :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`"
+          :size="300"
+          class="qr-image mt-2"
+          showLogo
+          @click="$emit('showQrModal', `${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`)"
+          v-bind:style="{ cursor: 'pointer' }"
+        ></qr-code>
       </step>
       <step>
         Congratulations! You have successfully connected Blockstream Green to your Umbrel.
@@ -45,6 +50,7 @@ import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
 import StepList from "@/components/ConnectWallet/StepList";
 import Step from "@/components/ConnectWallet/Step";
 import InputCopy from "@/components/Utility/InputCopy";
+import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
@@ -54,7 +60,8 @@ export default {
     ConnectionDetails,
     StepList,
     Step,
-    InputCopy
+    InputCopy,
+    QrCode
   }
 };
 </script>
