@@ -27,19 +27,6 @@
         Set <span class="font-weight-bold">"Auto-connect"</span> to OFF.
       </step>
       <step>
-        Set the <span class="font-weight-bold">"Proxy"</span> settings with
-        the following details, and select
-        <span class="font-weight-bold">"socks5"</span> mode.
-      </step>
-      <step>
-        In the <span class="font-weight-bold">"Proxy"</span>, enter
-        <input-copy value="localhost" auto-width></input-copy>
-      </step>
-      <step>
-        In the <span class="font-weight-bold">"Port"</span>, enter
-        <input-copy value="9050" auto-width></input-copy>
-      </step>
-      <step>
         Set the <span class="font-weight-bold">"Server"</span> setting to
         <input-copy :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}:t`" auto-width></input-copy>
       </step>
