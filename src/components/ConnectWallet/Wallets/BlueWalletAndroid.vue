@@ -9,18 +9,18 @@
         >Orbot</b-link> on your phone.
       </step>
       <step>
-        Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> 
+        Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span>
         and add BlueWallet.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn 
+        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn
         on <span class="font-weight-bold">"VPN Mode"</span>.
       </step>
       <step>
         Start Tor by tapping the big onion icon.
       </step>
       <step>
-        Open BlueWallet, tap the three dots to access the settings and go to 
+        Open BlueWallet, tap the three dots to access the settings and go to
         <span class="font-weight-bold">Network > Electrum server</span>.
       </step>
       <step>
