@@ -21,7 +21,13 @@
         ></input-copy>
       </step>
       <step>
-        Tap <span class="font-weight-bold">"Confirm"</span> and restart Phoenix Wallet.
+        Tap <span class="font-weight-bold">"Confirm"</span>
+      </step>
+      <step>
+        Go to <span class="font-weight-bold">Settings > Tor</span>.
+      </step>
+      <step>
+        Enable Tor.
       </step>
       <step>
         Congratulations! You have successfully connected Phoenix Wallet to your Umbrel.
