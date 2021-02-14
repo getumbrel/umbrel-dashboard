@@ -13,7 +13,7 @@
         Electrum Wallet.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on 
+        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on
          <span class="font-weight-bold">"VPN Mode"</span>.
       </step>
       <step>
