@@ -14,7 +14,7 @@
         Check <span class="font-weight-bold">"Use a custom server"</span>.
       </step>
       <step>
-        In the <span class="font-weight-bold">"URL"</span>, enter
+        For your server address enter
         <input-copy
           :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
           auto-width
