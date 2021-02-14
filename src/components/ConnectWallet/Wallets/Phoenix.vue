@@ -8,10 +8,10 @@
         Go to <span class="font-weight-bold">Settings > Electrum Server</span>.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"Set an Electrum server"</span>.
+        Tap <span class="font-weight-bold">"Set server..."</span>.
       </step>
       <step>
-        Check <span class="font-weight-bold">"Use custom Electrum server"</span>.
+        Check <span class="font-weight-bold">"Use a custom server"</span>.
       </step>
       <step>
         In the <span class="font-weight-bold">"URL"</span>, enter
