@@ -58,6 +58,9 @@
         Tap <span class="font-weight-bold">"Save Node Config"</span>.
       </step>
       <step>
+        Tap <span class="font-weight-bold">"I understand, save my node config"</span>.
+      </step>
+      <step>
         Congratulations! You have successfully connected Zeus (Android) to your Umbrel.
       </step>
     </step-list>
