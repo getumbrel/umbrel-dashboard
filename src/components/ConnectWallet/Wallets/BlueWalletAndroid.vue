@@ -21,7 +21,7 @@
       </step>
       <step>
         Open BlueWallet, tap the three dots to access the settings and go to
-        <span class="font-weight-bold">Network > Electrum server</span>.
+        <span class="font-weight-bold">Network > Electrum Server</span>.
       </step>
       <step>
         In the <span class="font-weight-bold">"Host"</span>, enter
