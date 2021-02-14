@@ -40,16 +40,8 @@
         <input-copy value="9050" auto-width></input-copy>
       </step>
       <step>
-        Set the <span class="font-weight-bold">"Server"</span> settings with
-        the following details.
-      </step>
-      <step>
-        In the <span class="font-weight-bold">"Server"</span>, enter
-        <input-copy :value="urls.bitcoin.electrum.address" auto-width></input-copy>
-      </step>
-      <step>
-        In the <span class="font-weight-bold">"Port"</span>, enter
-        <input-copy :value="urls.bitcoin.electrum.port" auto-width></input-copy>
+        Set the <span class="font-weight-bold">"Server"</span> setting to
+        <input-copy :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}:t`" auto-width></input-copy>
       </step>
       <step>
         Congratulations! You have successfully connected Electrum Wallet to your Umbrel.
