@@ -10,7 +10,7 @@
       <step>
         Scan this QR Code (click to enlarge)
         <qr-code
-          :value="urls.lnd.restTor"
+          :value="urls.lnd.restTor.replace(/cert=(.*)&/gm,'')"
           :size="300"
           class="qr-image mt-2"
           showLogo
