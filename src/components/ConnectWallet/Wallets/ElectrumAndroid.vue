@@ -24,8 +24,7 @@
         <span class="font-weight-bold">"Network"</span>.
       </step>
       <step>
-        Set <span class="font-weight-bold">"Auto-connect"</span> to OFF and
-        <span class="font-weight-bold">"One-server mode"</span> to ON.
+        Set <span class="font-weight-bold">"Auto-connect"</span> to OFF.
       </step>
       <step>
         Set the <span class="font-weight-bold">"Proxy"</span> settings with
