@@ -24,12 +24,18 @@
         <span class="font-weight-bold">Network > Electrum Server</span>.
       </step>
       <step>
-        In the <span class="font-weight-bold">"Host"</span>, enter
-        <input-copy class="my-1" :value="urls.bitcoin.electrum.address" auto-width></input-copy>
+        Tap <span class="font-weight-bold">"Scan or import a file"</span>.
       </step>
       <step>
-        In the <span class="font-weight-bold">"TCP Port"</span>, enter
-        <input-copy class="my-1" :value="urls.bitcoin.electrum.port" auto-width></input-copy>
+        Scan this QR Code (click to enlarge)
+        <qr-code
+          :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
+          :size="300"
+          class="qr-image mt-2"
+          showLogo
+          @click="$emit('showQrModal', `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`)"
+          v-bind:style="{ cursor: 'pointer' }"
+        ></qr-code>
       </step>
       <step>
           Tap <span class="font-weight-bold">"Save"</span> and restart BlueWallet.
@@ -46,6 +52,7 @@ import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
 import StepList from "@/components/ConnectWallet/StepList";
 import Step from "@/components/ConnectWallet/Step";
 import InputCopy from "@/components/Utility/InputCopy";
+import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
@@ -55,7 +62,8 @@ export default {
     ConnectionDetails,
     StepList,
     Step,
-    InputCopy
+    InputCopy,
+    QrCode
   }
 };
 </script>
