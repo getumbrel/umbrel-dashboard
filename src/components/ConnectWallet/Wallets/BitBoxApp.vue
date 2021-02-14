@@ -9,7 +9,7 @@
       </step>
       <step>
         Check <span class="font-weight-bold">"Enable tor proxy"</span> and enter:
-        <input-copy value="127.0.0.1:9050" auto-width></input-copy>
+        <input-copy class="my-1" value="127.0.0.1:9050" auto-width></input-copy>
       </step>
       <step>
         Click <span class="font-weight-bold">"Set proxy address"</span> and restart BitBoxApp.

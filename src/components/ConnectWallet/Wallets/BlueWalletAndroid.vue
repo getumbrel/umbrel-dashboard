@@ -25,11 +25,11 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"Host"</span>, enter
-        <input-copy :value="urls.bitcoin.electrum.address" auto-width></input-copy>
+        <input-copy class="my-1" :value="urls.bitcoin.electrum.address" auto-width></input-copy>
       </step>
       <step>
         In the <span class="font-weight-bold">"TCP Port"</span>, enter
-        <input-copy :value="urls.bitcoin.electrum.port" auto-width></input-copy>
+        <input-copy class="my-1" :value="urls.bitcoin.electrum.port" auto-width></input-copy>
       </step>
       <step>
           Tap <span class="font-weight-bold">"Save"</span> and restart BlueWallet.

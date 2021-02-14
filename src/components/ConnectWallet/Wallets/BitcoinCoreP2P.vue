@@ -13,11 +13,11 @@
       <div class="w-100 align-self-center ml-lg-3 connect-wallet-steps">
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"><small class="ml-1 font-weight-bold">Bitcoin Core P2P Address (Host)</small></label>
-          <input-copy :value="urls.bitcoin.p2p.address" auto-width></input-copy>
+          <input-copy class="my-1" :value="urls.bitcoin.p2p.address" auto-width></input-copy>
         </div>
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"><small class="ml-1 font-weight-bold">Bitcoin Core P2P Port</small></label>
-          <input-copy :value="urls.bitcoin.p2p.port" auto-width></input-copy>
+          <input-copy class="my-1" :value="urls.bitcoin.p2p.port" auto-width></input-copy>
         </div>
       </div>
     </div>

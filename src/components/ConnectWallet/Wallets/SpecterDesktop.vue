@@ -14,19 +14,19 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"Username"</span>, enter
-        <input-copy :value="urls.bitcoin.rpc.rpcuser" auto-width></input-copy>
+        <input-copy class="my-1" :value="urls.bitcoin.rpc.rpcuser" auto-width></input-copy>
       </step>
       <step>
         In the <span class="font-weight-bold">"Password"</span>, enter
-        <input-copy :value="urls.bitcoin.rpc.rpcpassword" auto-width></input-copy>
+        <input-copy class="my-1" :value="urls.bitcoin.rpc.rpcpassword" auto-width></input-copy>
       </step>
       <step>
         In the <span class="font-weight-bold">"Host"</span>, enter
-        <input-copy :value="urls.bitcoin.rpc.address" auto-width></input-copy>
+        <input-copy class="my-1" :value="urls.bitcoin.rpc.address" auto-width></input-copy>
       </step>
       <step>
         In the <span class="font-weight-bold">"Port"</span>, enter
-        <input-copy :value="urls.bitcoin.rpc.port" auto-width></input-copy>
+        <input-copy class="my-1" :value="urls.bitcoin.rpc.port" auto-width></input-copy>
       </step>
       <step>
         Click <span class="font-weight-bold">"Test"</span> to verify if

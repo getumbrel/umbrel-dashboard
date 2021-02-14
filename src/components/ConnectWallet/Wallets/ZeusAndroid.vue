@@ -48,11 +48,11 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"REST Port"</span>, enter
-        <input-copy value="8080" auto-width></input-copy>
+        <input-copy class="my-1" value="8080" auto-width></input-copy>
       </step>
       <step>
         In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter
-        <input-copy :value="macaroonHex" class="d-block mt-2"></input-copy>
+        <input-copy class="my-1" :value="macaroonHex"></input-copy>
       </step>
       <step>
         Tap <span class="font-weight-bold">"Save Node Config"</span>.

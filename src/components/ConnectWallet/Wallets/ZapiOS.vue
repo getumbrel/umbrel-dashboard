@@ -21,7 +21,7 @@
         <p class="text-muted">Or manually enter the following details</p>
         <ul class="connect-wallet-substeps">
           <li class="connect-wallet-substep">
-            Copy <input-copy :value="urls.lnd.restTor.replace(/cert=(.*)&/gm,'')" class="d-block mt-2"></input-copy>
+            Copy <input-copy class="my-1" :value="urls.lnd.restTor.replace(/cert=(.*)&/gm,'')"></input-copy>
           </li>
           <li class="connect-wallet-substep">
             Tap <span class="font-weight-bold">"Paste"</span> and <span class="font-weight-bold">"Save"</span>.

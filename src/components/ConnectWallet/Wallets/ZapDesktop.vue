@@ -6,7 +6,7 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"Connection String"</span>, enter 
-        <input-copy class="d-block mt-2" :value="urls.lnd.grpcLocal"></input-copy>
+        <input-copy class="d-block mt-2 mb-1" :value="urls.lnd.grpcLocal"></input-copy>
       </step>
       <step>
         Click <span class="font-weight-bold">"Next"</span> two times to confirm.

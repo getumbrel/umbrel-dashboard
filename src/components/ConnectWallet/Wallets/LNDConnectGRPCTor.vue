@@ -12,7 +12,7 @@
       ></qr-code>
       <div class="w-100 align-self-center ml-lg-3">
         <label class="mb-1 d-block"><small class="font-weight-bold">lndconnect URL</small></label>
-        <input-copy :value="urls.lnd.grpcTor"></input-copy>
+        <input-copy class="my-1" :value="urls.lnd.grpcTor"></input-copy>
       </div>
     </div>
   </connection-details>

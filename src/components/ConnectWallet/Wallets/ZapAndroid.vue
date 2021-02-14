@@ -39,7 +39,7 @@
         <ul class="connect-wallet-substeps">
           <li class="connect-wallet-substep">
             Copy
-            <input-copy :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')" class="d-block mt-2"></input-copy>
+            <input-copy class="my-1" :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')"></input-copy>
           </li>
           <li class="connect-wallet-substep">
             Tap <span class="font-weight-bold">"Paste"</span> and <span class="font-weight-bold">"Save"</span>.

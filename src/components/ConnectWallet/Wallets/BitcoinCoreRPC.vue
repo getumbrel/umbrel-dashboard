@@ -13,19 +13,19 @@
       <div class="w-100 align-self-center ml-lg-3 connect-wallet-steps">
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"><small class="ml-1 font-weight-bold">Bitcoin Core RPC Username</small></label>
-          <input-copy :value="urls.bitcoin.rpc.rpcuser" auto-width></input-copy>
+          <input-copy class="my-1" :value="urls.bitcoin.rpc.rpcuser" auto-width></input-copy>
         </div>
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"><small class="ml-1 font-weight-bold">Bitcoin Core RPC Password</small></label>
-          <input-copy :value="urls.bitcoin.rpc.rpcpassword" auto-width></input-copy>
+          <input-copy class="my-1" :value="urls.bitcoin.rpc.rpcpassword" auto-width></input-copy>
         </div>
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"><small class="ml-1 font-weight-bold">Bitcoin Core RPC Address (Host)</small></label>
-          <input-copy :value="urls.bitcoin.rpc.address" auto-width></input-copy>
+          <input-copy class="my-1" :value="urls.bitcoin.rpc.address" auto-width></input-copy>
         </div>
         <div class="connect-wallet-step">
           <label class="mb-1 d-block"><small class="ml-1 font-weight-bold">Bitcoin Core RPC Port</small></label>
-          <input-copy :value="urls.bitcoin.rpc.port" auto-width></input-copy>
+          <input-copy class="my-1" :value="urls.bitcoin.rpc.port" auto-width></input-copy>
         </div>
       </div>
     </div>

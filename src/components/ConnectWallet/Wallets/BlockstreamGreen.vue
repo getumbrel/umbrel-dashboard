@@ -11,7 +11,7 @@
         Tap <span class="font-weight-bold">"Only connect to trusted node(s) for SPV"</span>.
       </step>
       <step>
-        Enter <input-copy :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`" auto-width></input-copy>
+        Enter <input-copy class="my-1" :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`" auto-width></input-copy>
       </step>
       <step>
         Tap <span class="font-weight-bold">"Ok"</span> and restart Green.

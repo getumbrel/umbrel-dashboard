@@ -10,11 +10,11 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"Bitcoin P2P Endpoint"</span>, enter
-        <input-copy :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`" auto-width></input-copy>
+        <input-copy class="my-1" :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`" auto-width></input-copy>
       </step>
       <step>
         In the <span class="font-weight-bold">"Tor SOCKS5 Endpoint"</span>, enter
-        <input-copy value="127.0.0.1:9050" auto-width></input-copy>
+        <input-copy class="my-1" value="127.0.0.1:9050" auto-width></input-copy>
       </step>
       <step>
         Restart Wasabi and wait for ~2 minutes. The blue bar on the bottom should display "Tor is running - Backend is connected".

@@ -11,8 +11,8 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"URL"</span>, enter
-        <input-copy :value="urls.bitcoin.electrum.address" auto-width></input-copy>
-        <input-copy :value="urls.bitcoin.electrum.port" auto-width></input-copy>
+        <input-copy class="my-1" :value="urls.bitcoin.electrum.address" auto-width></input-copy>
+        <input-copy class="my-1" :value="urls.bitcoin.electrum.port" auto-width></input-copy>
       </step>
       <step>
         Disable <span class="font-weight-bold">"Use SSL"</span>.
