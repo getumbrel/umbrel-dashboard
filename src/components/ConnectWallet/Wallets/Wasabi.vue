@@ -2,10 +2,6 @@
   <connection-details name="Wasabi">
     <step-list>
       <step>
-        Make sure Tor is up and running on your system.
-        <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.
-      </step>
-      <step>
         Open Wasabi, go to <span class="font-weight-bold">Tools > Settings</span>.
       </step>
       <step>
@@ -13,11 +9,7 @@
         <input-copy class="my-1" :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`" auto-width></input-copy>
       </step>
       <step>
-        In the <span class="font-weight-bold">"Tor SOCKS5 Endpoint"</span>, enter
-        <input-copy class="my-1" value="127.0.0.1:9050" auto-width></input-copy>
-      </step>
-      <step>
-        Restart Wasabi and wait for ~2 minutes. The blue bar on the bottom should display "Tor is running - Backend is connected".
+        Restart Wasabi
       </step>
       <step>
         Congratulations! You have successfully connected Wasabi to your Umbrel.
