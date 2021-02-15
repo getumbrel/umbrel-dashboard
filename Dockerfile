@@ -20,14 +20,15 @@ COPY . .
 # build app for production
 RUN yarn build
 
-# copy index.html to 404.html as http-server serves 404.html on all non "/" routes
-RUN cp ./dist/index.html ./dist/404.html
 
 FROM node:12-buster-slim AS umbrel-dashboard
 
-RUN yarn global add http-server
+RUN yarn global add serve
 
 COPY --from=umbrel-dashboard-builder /app/dist/ /dist
 
 EXPOSE 3004
-CMD [ "http-server", "-p 3004", "/dist" ]
+
+# -s rewrite all not-found requests to index.html
+# -l listen on 3004
+CMD [ "serve", "-s", "-l 3004", "/dist" ]
