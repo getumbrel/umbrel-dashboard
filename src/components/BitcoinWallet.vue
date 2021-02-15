@@ -499,7 +499,7 @@
 
             <!-- Deposit Address QR Code -->
             <qr-code
-              class="mb-3"
+              class="mb-3 mx-auto"
               :value="depositAddress"
               :size="190"
               showLogo

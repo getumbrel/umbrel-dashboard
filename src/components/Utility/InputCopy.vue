@@ -1,6 +1,20 @@
 <template>
-  <b-input-group class="copy-input-container d-flex align-items-center" :size="size">
-    <b-form-input ref="copy-input-field" type="text" class="copy-input" readonly v-model="value"></b-form-input>
+  <b-input-group
+    class="copy-input-container align-items-center"
+    :class="autoWidth ? 'd-inline-flex auto-width mx-1' : 'd-flex'"
+    :style="{
+      width: autoWidth ? `${(10 + value.toString().length) * 8}px` : 'auto',
+      maxWidth: '100%',
+    }"
+    :size="size ? size : 'sm'"
+  >
+    <b-form-input
+      ref="copy-input-field"
+      type="text"
+      class="copy-input"
+      readonly
+      v-model="value"
+    ></b-form-input>
 
     <b-input-group-append class="copy-icon-btn" @click="copyText">
       <svg
@@ -33,9 +47,13 @@ export default {
   props: {
     size: {
       type: String,
-      default: "sm"
+      default: "sm",
     },
-    value: String
+    value: String,
+    autoWidth: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -50,6 +68,12 @@ export default {
       copyText.select();
       copyText.setSelectionRange(0, 99999); /*For mobile devices*/
       document.execCommand("copy");
+
+      window.setTimeout(() => {
+        copyText.blur();
+        window.getSelection().removeAllRanges();
+        this.isCopied = false;
+      }, 1000);
 
       return (this.isCopied = true);
     }
