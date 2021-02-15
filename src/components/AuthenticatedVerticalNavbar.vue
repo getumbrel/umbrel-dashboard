@@ -4,7 +4,7 @@
       <div class="balance-container w-100 px-3 pt-4 pb-3 mb-3">
         <p class="text-muted">
           Balance
-          <span style="cursor: pointer;" @click="toggleBalance">
+          <span style="cursor: pointer" @click="toggleBalance">
             <!-- <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon> -->
           </span>
         </p>
@@ -15,7 +15,7 @@
               <CountUp
                 :value="{
                   endVal: walletBalance,
-                  decimalPlaces: unit === 'sats' ? 0 : 5
+                  decimalPlaces: unit === 'sats' ? 0 : 5,
                 }"
               />
             </h3>
@@ -162,7 +162,7 @@
           to="/settings"
           class="my-1"
           v-if="isMobileMenu"
-          exact-active-class="active"
+          active-class="active"
         >
           <svg
             width="24"
@@ -208,8 +208,7 @@
           </svg>
           Log out
         </b-nav-item>
-
-        <b-nav-item v-else to="/settings" class="my-1" active-class="active">
+        <b-nav-item to="/settings" class="my-1" v-else active-class="active">
           <svg
             width="24"
             height="24"
@@ -249,8 +248,8 @@ export default {
   data() {
     return {
       state: {
-        showBalance: true
-      }
+        showBalance: true,
+      },
     };
   },
   props: {
@@ -258,10 +257,10 @@ export default {
   },
   computed: {
     ...mapState({
-      btcBalance: state => state.bitcoin.balance.total,
-      lightningBalance: state => state.lightning.balance.total,
-      unit: state => state.system.unit,
-      appStore: state => state.apps.store,
+      btcBalance: (state) => state.bitcoin.balance.total,
+      lightningBalance: (state) => state.lightning.balance.total,
+      unit: (state) => state.system.unit,
+      appStore: (state) => state.apps.store,
     }),
     walletBalance() {
       return this.unit === "sats"
@@ -270,7 +269,7 @@ export default {
     },
     balanceLoaded() {
       return this.btcBalance >= 0 && this.lightningBalance >= 0;
-    }
+    },
   },
   methods: {
     logout() {
@@ -278,7 +277,7 @@ export default {
     },
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);
-    }
+    },
   },
   created() {
     this.$store.dispatch("apps/getInstalledApps");
@@ -286,8 +285,8 @@ export default {
   },
   components: {
     CountUp,
-    SatsBtcSwitch
-  }
+    SatsBtcSwitch,
+  },
 };
 </script>
 
@@ -299,6 +298,7 @@ export default {
   // width: 280px;
   height: calc(var(--vh100, 100vh) - 82px);
   top: 82px;
+  overflow-y: auto;
   .nav-item {
     .nav-link {
       color: #141821;

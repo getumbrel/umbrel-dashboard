@@ -3,7 +3,7 @@
     <div class="channel-list">
       <div
         class="d-flex align-items-center justify-content-center flex-column"
-        style="height: 100%;"
+        style="height: 100%"
         v-if="channels.length === 0"
       >
         <p class="text-muted w-75 text-center">
@@ -16,7 +16,7 @@
 
       <div
         class="d-flex align-items-center justify-content-center"
-        style="height: 100%;"
+        style="height: 100%"
         v-else-if="channels[0]['type'] === 'loading'"
       >
         <b-spinner class="mb-4" variant="dark"></b-spinner>
@@ -43,18 +43,18 @@ export default {
   props: {},
   computed: {
     ...mapState({
-      channels: state => state.lightning.channels,
+      channels: (state) => state.lightning.channels,
     }),
   },
   data() {
     return {
-      state: {}
+      state: {},
     };
   },
   methods: {},
   components: {
-    Channel
-  }
+    Channel,
+  },
 };
 </script>
 

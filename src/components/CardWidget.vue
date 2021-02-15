@@ -3,7 +3,7 @@
     <div class="card-custom-loading-bar" v-if="loading"></div>
     <!-- <template v-slot:header></template> -->
     <div>
-      <div class="card-custom-header py-4 px-3 px-lg-4">
+      <div class="card-custom-header py-4 px-3 px-lg-4" v-if="header">
         <div class="d-flex w-100 justify-content-between align-items-center">
           <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
           <status
