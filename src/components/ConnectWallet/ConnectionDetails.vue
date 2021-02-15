@@ -1,5 +1,5 @@
 <template>
-<b-alert variant="warning" v-if="percent < 99 && (requires === 'electrum' || requires === 'bitcoind')" show>
+<b-alert variant="warning" v-if="percent < 100.1 && (requires === 'electrum' || requires === 'bitcoind')" show>
     <svg
       class="icon-clock icon-clock-warning mr-1"
       viewBox="0 0 40 40"
@@ -26,7 +26,10 @@ export default {
   },
   props: {
     name: String,
-    requires: String //electrum, bitcoin-core, or lnd
+    requires: {
+      type: String,
+      default: "" //electrum, bitcoin-core, lnd, or empty if no specific protocol required
+    } 
   },
   computed: {
     ...mapState({
