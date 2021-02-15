@@ -51,7 +51,6 @@
 import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
 import StepList from "@/components/ConnectWallet/StepList";
 import Step from "@/components/ConnectWallet/Step";
-import InputCopy from "@/components/Utility/InputCopy";
 import QrCode from "@/components/Utility/QrCode";
 
 export default {
@@ -62,7 +61,6 @@ export default {
     ConnectionDetails,
     StepList,
     Step,
-    InputCopy,
     QrCode
   }
 };
