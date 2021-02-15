@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Electrum Wallet (Android)">
+  <connection-details name="Electrum Wallet (Android)" requires="electrum">
     <step-list>
       <step>
         Download

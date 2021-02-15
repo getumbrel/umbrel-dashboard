@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Zeus (Android)">
+  <connection-details name="Zeus (Android)" requires="lnd">
     <step-list>
       <step>
         Download

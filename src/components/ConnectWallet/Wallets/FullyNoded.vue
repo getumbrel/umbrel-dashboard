@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Fully Noded (iOS)">
+  <connection-details name="Fully Noded (iOS)" requires="bitcoind">
     <step-list>
       <step>
         Open the Fully Noded app on your iPhone.

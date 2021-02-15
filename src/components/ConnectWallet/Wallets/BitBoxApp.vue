@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="BitBoxApp">
+  <connection-details name="BitBoxApp" requires="electrum">
     <step-list>
       <step>
         Make sure Tor is up and running on your system. <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.

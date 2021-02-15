@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Blockstream Green">
+  <connection-details name="Blockstream Green" requires="bitcoind">
     <step-list>
       <step>
         Download

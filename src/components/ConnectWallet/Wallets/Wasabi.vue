@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Wasabi">
+  <connection-details name="Wasabi" requires="bitcoind">
     <step-list>
       <step>
         Open Wasabi, go to <span class="font-weight-bold">Tools > Settings</span>.

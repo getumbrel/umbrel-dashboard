@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Zeus (iOS)">
+  <connection-details name="Zeus (iOS)" requires="lnd">
     <step-list>
       <step>
         Open Zeus on your iPhone.

@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="BlueWallet (Android)">
+  <connection-details name="BlueWallet (Android)" requires="electrum">
     <step-list>
       <step>
         Download

@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Specter Desktop">
+  <connection-details name="Specter Desktop" requires="bitcoind">
     <b-alert class="mb-3" variant="info" show>Follow these instructions only if you are using the <b-link target="_blank" href="https://github.com/cryptoadvance/specter-desktop/releases/latest">native Specter Desktop application</b-link>. If you're using the <b-link to="/app-store/specter-desktop"> Specter Desktop app</b-link> on Umbrel, you do not need to follow these instructions as Specter automatically connects to Bitcoin Core on Umbrel.</b-alert>
     <step-list>
       <step>

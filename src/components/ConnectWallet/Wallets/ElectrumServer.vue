@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="any other wallet that supports Electrum Server">
+  <connection-details name="any other wallet that supports Electrum Server" requires="electrum">
     <div class="d-lg-flex align-items-center justify-content-center pb-3">
       <qr-code
         :value="urls.bitcoin.electrum.connectionString"
