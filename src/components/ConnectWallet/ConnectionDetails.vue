@@ -1,5 +1,5 @@
 <template>
-<b-alert variant="warning" v-if="percent < 100.1 && (requires === 'electrum' || requires === 'bitcoind')" show>
+<b-alert variant="warning" v-if="percent < 99 && (requires === 'electrum' || requires === 'bitcoind')" show>
     <svg
       class="icon-clock icon-clock-warning mr-1"
       viewBox="0 0 40 40"
