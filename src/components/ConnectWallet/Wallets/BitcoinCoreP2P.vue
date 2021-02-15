@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="any other wallet that supports Bitcoin Core's P2P">
+  <connection-details name="any other wallet that supports Bitcoin Core's P2P" requires="bitcoind">
     <div class="d-lg-flex align-items-center justify-content-center pb-3">
       <qr-code
         :value="urls.bitcoin.p2p.connectionString"

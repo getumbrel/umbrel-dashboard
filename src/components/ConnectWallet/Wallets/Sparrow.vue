@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Sparrow">
+  <connection-details name="Sparrow" requires="electrum">
     <step-list>
       <step>
         If you're setting up Sparrow from scratch, click <span class="font-weight-bold">"Configure Server"</span> on the welcome screen.

@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Zap (Desktop)">
+  <connection-details name="Zap (Desktop)" requires="lnd">
     <step-list>
       <step>
         Open Zap Desktop and click <span class="font-weight-bold">"Connect"</span> on the welcome screen.

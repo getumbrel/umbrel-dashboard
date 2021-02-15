@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Zap (iOS)">
+  <connection-details name="Zap (iOS)" requires="lnd">
     <step-list>
       <step>
         Open the Zap app on your iPhone.

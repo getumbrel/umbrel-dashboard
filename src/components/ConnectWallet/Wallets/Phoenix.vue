@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Phoenix Wallet">
+  <connection-details name="Phoenix Wallet" requires="electrum">
     <step-list>
       <step>
         Open Phoenix Wallet on your phone.

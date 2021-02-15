@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Electrum Wallet (Desktop)">
+  <connection-details name="Electrum Wallet (Desktop)" requires="electrum">
     <step-list>
       <step>
         Make sure Tor is up and running on your system.

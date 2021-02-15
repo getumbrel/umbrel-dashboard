@@ -313,6 +313,11 @@ svg.icon-clock {
     --start-seconds: 57;
     --start-minutes: 45;
     --start-hours: 11;
+
+    &.icon-clock-warning {
+        stroke: #8a6c10;
+    }
+
     circle {
       fill: none;
     }

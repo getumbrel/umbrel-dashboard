@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="any other wallet that supports Bitcoin Core's RPC">
+  <connection-details name="any other wallet that supports Bitcoin Core's RPC" requires="bitcoind">
     <div class="d-lg-flex align-items-center justify-content-center pb-3">
       <qr-code
         :value="urls.bitcoin.rpc.connectionString"

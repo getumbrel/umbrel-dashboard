@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="Zap (Android)">
+  <connection-details name="Zap (Android)" requires="lnd">
     <step-list>
       <step>
         Download

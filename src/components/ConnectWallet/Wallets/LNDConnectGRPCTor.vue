@@ -1,5 +1,5 @@
 <template>
-  <connection-details name="any other wallet that supports lndconnect gRPC on Tor">
+  <connection-details name="any other wallet that supports lndconnect gRPC on Tor" requires="lnd">
     <div class="d-lg-flex align-items-center justify-content-center pb-3">
       <qr-code
         :value="urls.lnd.grpcTor"
