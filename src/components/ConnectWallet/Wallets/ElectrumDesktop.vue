@@ -22,7 +22,7 @@
         Check <span class="font-weight-bold">"Use Tor proxy at port 9050"</span>
       </step>
       <step>
-        Click <span class="font-weight-bold">"Close"</span>. The dot on the bottom right should now turn blue.
+        Click <span class="font-weight-bold">"Close"</span>. Wait for a few seconds and the dot at the bottom right should turn blue.
       </step>
       <step>
         Congratulations! You've successfully connected Electrum Wallet to your Umbrel.
