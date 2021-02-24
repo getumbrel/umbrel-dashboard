@@ -23,10 +23,33 @@
       </shutdown>
       <loading v-else-if="loading" :progress="loadingProgress">
         <small class="text-muted w-75 text-center">{{ loadingText }}</small>
+        <div v-if="showDebugOption">
+          <small class="text-muted w-75 text-center">If the loading is stuck, click here to debug : </small>
+          <b-button variant="outline-warning" size="sm" @click="debugPrompt">Debug</b-button>
+        </div>
       </loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
     </transition>
+
+    <b-modal
+        ref="debug-modal"
+        title="Results"
+        no-close-on-backdrop
+        no-close-on-esc
+        cancel-title="Run again"
+        @cancel="debugPrompt"
+        @ok="clearDebugInterval"
+      >
+        <div v-if="this.loadingDebug">
+          <p>Processing...</p>
+        </div>
+        <div v-else>
+            <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
+            <input-copy class="mb-1" size="sm" auto-width :value="this.debugResult.linkDebug"></input-copy>
+            <input-copy size="sm" auto-width :value="this.debugResult.linkDmesg"></input-copy>
+          </div>
+      </b-modal>
   </div>
 </template>
 
@@ -39,6 +62,7 @@ import { mapState } from "vuex";
 import delay from "@/helpers/delay";
 import Shutdown from "@/components/Shutdown";
 import Loading from "@/components/Loading";
+import InputCopy from "@/components/Utility/InputCopy";
 
 const SECONDS_IN_MS = 1000;
 
@@ -50,7 +74,10 @@ export default {
       loadingText: "",
       loadingProgress: 0,
       bitcoinPollStarted: 0,
-      loadingPollInProgress: false
+      lndPollStarted: 0,
+      loadingPollInProgress: false,
+      loadingDebug: false,
+      showDebugOption: false
     };
   },
   computed: {
@@ -63,7 +90,8 @@ export default {
       isBitcoinOperational: state => state.bitcoin.operational,
       isLndOperational: state => state.lightning.operational,
       jwt: state => state.user.jwt,
-      updateStatus: state => state.system.updateStatus
+      updateStatus: state => state.system.updateStatus,
+      debugResult: state => state.system.debugResult
     }),
     updating() {
       return this.updateStatus.state === "installing";
@@ -115,10 +143,15 @@ export default {
 
         // Warn users against pulling power if Core is taking a while
         const bitcoinSlowDelay = 10 * SECONDS_IN_MS;
+        const bitcoinErrorDelay = 15 * SECONDS_IN_MS;
         if (!this.bitcoinPollStarted) {
           this.bitcoinPollStarted = Date.now();
         } else if (Date.now() - this.bitcoinPollStarted > bitcoinSlowDelay) {
-           this.loadingText += " This can take a while, please don't turn off your Umbrel!";
+          this.loadingText += " This can take a while, please don't turn off your Umbrel!";
+
+          if (Date.now() - this.bitcoinPollStarted > bitcoinErrorDelay) {
+            this.showDebugOption = true;
+          }
         }
 
         this.loadingProgress = 60;
@@ -130,10 +163,20 @@ export default {
         }
       }
       this.bitcoinPollStarted = 0;
+      this.showDebugOption = false;
 
       // Then check if lnd is operational
       if (this.loadingProgress <= 80) {
         this.loadingText = "Loading LND...";
+
+        // Warn users against pulling power if LND is taking a while
+        const lndSlowDelay = 15 * SECONDS_IN_MS;
+        if (!this.lndPollStarted) {
+          this.lndPollStarted = Date.now();
+        } else if (Date.now() - this.lndPollStarted > lndSlowDelay) {
+           this.showDebugOption = true;
+        }
+
         this.loadingProgress = 80;
         await this.$store.dispatch("lightning/getStatus");
         if (!this.isLndOperational) {
@@ -142,6 +185,8 @@ export default {
           return;
         }
       }
+      this.lndPollStarted = 0;
+      this.showDebugOption = false;
 
       // Then trigger auth check
       if (this.loadingProgress <= 95 && this.jwt) {
@@ -160,6 +205,39 @@ export default {
       // Add slight delay so the progress bar makes
       // it to 100% before disappearing
       setTimeout(() => (this.loading = false), 300);
+    },
+    async getDebugLoadingStatus() {
+      await this.$store.dispatch("system/getDebugResult");
+
+      if(this.debugResult.status != "success") {
+        this.loadingDebug = true;
+      } else {
+        this.loadingDebug = false;
+      }
+    },
+    clearDebugInterval() {
+      window.clearInterval(this.loadingDebugInterval);
+    },
+    async debugPrompt() {
+      let toastText = "";
+      let toastOptions = {
+        autoHideDelay: 3000,
+        solid: true,
+        toaster: "b-toaster-bottom-right"
+      };
+
+      try {
+        await this.$store.dispatch("system/debug");
+      } catch (e) {
+        toastText = "Debug request failed";
+        toastOptions.title =
+          "Something went wrong and Umbrel was not able to run the debug script";
+        toastOptions.variant = "danger";
+      }
+
+      this.$bvToast.toast(toastText, toastOptions);
+      this.loadingDebug = true;
+      this.$refs["debug-modal"].show();
     }
   },
   created() {
@@ -229,6 +307,19 @@ export default {
         }
       },
       immediate: true
+    },
+    loadingDebug: {
+      handler: function(isLoading) {
+        window.clearInterval(this.loadingDebugInterval);
+
+        if (isLoading) {
+          this.loadingDebugInterval = window.setInterval(
+            this.getDebugLoadingStatus,
+            2000
+          );
+        }
+      },
+      immediate: true
     }
   },
   beforeDestroy() {
@@ -238,7 +329,8 @@ export default {
   },
   components: {
     Loading,
-    Shutdown
+    Shutdown,
+    InputCopy
   }
 };
 </script>
