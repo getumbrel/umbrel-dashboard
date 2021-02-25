@@ -17,11 +17,11 @@
       <step>
         Disable <span class="font-weight-bold">"Use SSL"</span>.
       </step>
-      <b-alert class="mb-3" variant="info" show>
-        On Sparrow v1.1.0 and newer: if Tor is already running on your system, enable <span class="font-weight-bold">"Use Proxy"</span> and for <span class="font-weight-bold">"Proxy URL"</span>, enter
+      <step>
+        If Tor is already running on your system, enable <span class="font-weight-bold">"Use Proxy"</span> and for <span class="font-weight-bold">"Proxy URL"</span>, enter
         <input-copy class="my-1" value="127.0.0.1" auto-width></input-copy>
-        <input-copy class="my-1" value="9050" auto-width></input-copy>.
-      </b-alert>
+        <input-copy class="my-1" value="9050" auto-width></input-copy>. If you don't have Tor running, skip this step.
+      </step>
       <step>
         Click <span class="font-weight-bold">"Test Connection"</span> to verify
         Sparrow is able to connect to your Umbrel.
