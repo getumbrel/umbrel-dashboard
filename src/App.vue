@@ -24,7 +24,7 @@
       <loading v-else-if="loading" :progress="loadingProgress">
         <small class="text-muted w-75 text-center">{{ loadingText }}</small>
         <div v-if="showDebugOption">
-          <small class="text-muted w-75 text-center">If the loading is stuck, click here to debug : </small>
+          <small class="text-muted w-75 text-center">If the loading is stuck, click here to debug: </small>
           <b-button variant="outline-warning" size="sm" @click="debugPrompt">Debug</b-button>
         </div>
       </loading>
