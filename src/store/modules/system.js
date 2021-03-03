@@ -20,7 +20,6 @@ const state = () => ({
   debugResult: {
     status: "", //success, processing
     linkDebug: "",
-    linkDmesg: "",
     output: ""
   },
   showUpdateConfirmationModal: false,

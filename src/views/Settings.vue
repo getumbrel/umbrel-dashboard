@@ -302,8 +302,7 @@
                 <div v-else>
                     <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
                     <input-copy class="mb-1" size="sm" auto-width :value="this.debugResult.linkDebug"></input-copy>
-                    <input-copy size="sm" auto-width :value="this.debugResult.linkDmesg"></input-copy>
-                  </div>
+                </div>
               </b-modal>
             </div>
           </div>
