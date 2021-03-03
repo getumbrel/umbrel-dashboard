@@ -1,7 +1,9 @@
 <template>
   <div class="p-sm-2">
     <div class="my-3 pb-2">
-      <h1 class="text-lowercase">{{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}</h1>
+      <h1 class="text-lowercase">
+        {{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}
+      </h1>
       <!-- <p class="text-muted">Here's an overview of your Umbrel</p> -->
     </div>
     <b-row>
@@ -32,7 +34,11 @@
               suffix="%"
               v-if="syncPercent !== -1"
             />
-            <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
+            <span
+              class="loading-placeholder loading-placeholder-lg"
+              style="width: 140px;"
+              v-else
+            ></span>
           </template>
           <div class>
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
@@ -52,7 +58,11 @@
           <b-col col cols="12" md="6" xl="12">
             <card-widget
               header="Bitcoin Wallet"
-              :status="{ text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active', variant: 'success', blink: false }"
+              :status="{
+                text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active',
+                variant: 'success',
+                blink: false
+              }"
               :sub-title="unit | formatUnit"
               icon="icon-app-bitcoin.svg"
               :loading="lightningSyncPercent < 100"
@@ -78,7 +88,9 @@
                 ></span>
               </template>
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link">Manage</router-link>
+                <router-link to="/bitcoin" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>
@@ -91,7 +103,9 @@
               icon="icon-app-tor.svg"
             >
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/settings" class="card-link">Manage</router-link>
+                <router-link to="/settings" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>

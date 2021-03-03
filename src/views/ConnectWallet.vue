@@ -22,22 +22,17 @@
       <router-view :urls="urls" @showQrModal="showQrModal"></router-view>
     </div>
 
-      <b-modal
-        id="qr-modal"
-        ref="qr-modal"
-        hide-footer
-        size="lg"
-      >
-        <div class="d-flex w-100 align-items-center justify-content-center">
-          <qr-code
-            :value="this.qrModalData.value"
-            :size="this.qrModalData.size"
-            class="qr-image mb-5"
-            showLogo
-          ></qr-code>
-        </div>
-      </b-modal>
-    </div>
+    <b-modal id="qr-modal" ref="qr-modal" hide-footer size="lg">
+      <div class="d-flex w-100 align-items-center justify-content-center">
+        <qr-code
+          :value="this.qrModalData.value"
+          :size="this.qrModalData.size"
+          class="qr-image mb-5"
+          showLogo
+        ></qr-code>
+      </div>
+    </b-modal>
+  </div>
 </template>
 
 <script>
@@ -81,7 +76,7 @@ export default {
       qrModalData: {
         value: "",
         size: window.innerWidth < 600 ? window.innerWidth - 60 : 500
-      },
+      }
     };
   },
   computed: {
@@ -93,13 +88,13 @@ export default {
             electrum: state.bitcoin.electrum,
             rpc: state.bitcoin.rpc
           },
-          lnd: state.lightning.lndConnectUrls,
+          lnd: state.lightning.lndConnectUrls
         };
-      },
+      }
     }),
     wallet() {
       return this.$route.meta.wallet || null;
-    },
+    }
   },
   methods: {
     fetchConnectionDetails() {
@@ -114,7 +109,7 @@ export default {
       this.$router.push(`/connect/${wallet}`);
     },
     showQrModal(value) {
-      this.qrModalData.value = value
+      this.qrModalData.value = value;
       this.$refs["qr-modal"].show();
     }
   },
@@ -123,7 +118,7 @@ export default {
   },
   components: {
     QrCode
-  },
+  }
 };
 </script>
 

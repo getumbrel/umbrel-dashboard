@@ -37,27 +37,27 @@ export default {
     path: String,
     showUninstallButton: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isUninstalling: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {};
   },
   computed: {
     ...mapState({
-      installedApps: (state) => state.apps.installed,
+      installedApps: state => state.apps.installed
     }),
-    url: function () {
+    url: function() {
       if (window.location.origin.indexOf(".onion") > 0) {
         return `http://${this.hiddenService}${this.path}`;
       } else {
         return `http://${window.location.hostname}:${this.port}${this.path}`;
       }
-    },
+    }
   },
   methods: {
     uninstall(name, appId) {
@@ -69,9 +69,9 @@ export default {
         return;
       }
       this.$store.dispatch("apps/uninstall", appId);
-    },
+    }
   },
-  components: {},
+  components: {}
 };
 </script>
 

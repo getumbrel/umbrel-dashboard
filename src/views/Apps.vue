@@ -50,14 +50,14 @@ import InstalledApp from "@/components/InstalledApp";
 export default {
   data() {
     return {
-      isEditing: false,
+      isEditing: false
     };
   },
   computed: {
     ...mapState({
-      installedApps: (state) => state.apps.installed,
-      uninstallingApps: (state) => state.apps.uninstalling,
-    }),
+      installedApps: state => state.apps.installed,
+      uninstallingApps: state => state.apps.uninstalling
+    })
   },
   created() {
     this.$store.dispatch("apps/getInstalledApps");
@@ -65,11 +65,11 @@ export default {
   methods: {
     toggleEdit() {
       this.isEditing = !this.isEditing;
-    },
+    }
   },
   components: {
-    InstalledApp,
-  },
+    InstalledApp
+  }
 };
 </script>
 

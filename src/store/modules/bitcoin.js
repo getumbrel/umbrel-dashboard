@@ -119,7 +119,9 @@ const mutations = {
   setBlocks(state, blocks) {
     const mergedBlocks = [...blocks, ...state.blocks];
     // remove duplicate blocks
-    const uniqueBlocks = mergedBlocks.filter((v, i, a) => a.findIndex(t => (t.height === v.height)) === i);
+    const uniqueBlocks = mergedBlocks.filter(
+      (v, i, a) => a.findIndex(t => t.height === v.height) === i
+    );
     // limit to latest 6 blocks
     state.blocks = [...uniqueBlocks.slice(0, 6)];
   },
@@ -268,7 +270,7 @@ const actions = {
     const electrumInfo = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/electrum-connection-details`
     );
-    
+
     if (electrumInfo) {
       commit("setElectrumInfo", electrumInfo);
     }
@@ -316,7 +318,8 @@ const actions = {
 
       //TODO: Fetch only new blocks
       const latestThreeBlocks = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL
+        `${
+          process.env.VUE_APP_MIDDLEWARE_API_URL
         }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
       );
 
@@ -497,7 +500,7 @@ const getters = {
       });
 
       // Sort txs by date
-      txs.sort(function (tx1, tx2) {
+      txs.sort(function(tx1, tx2) {
         return tx2.timestamp - tx1.timestamp;
       });
     }

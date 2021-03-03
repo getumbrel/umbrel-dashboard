@@ -6,10 +6,13 @@
         <b-link
           href="https://play.google.com/store/apps/details?id=org.torproject.android"
           target="_blank"
-        >Orbot</b-link> on your phone.
+          >Orbot</b-link
+        >
+        on your phone.
       </step>
       <step>
-        Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span>
+        Open Orbot, tap the gear icon under
+        <span class="font-weight-bold">"Tor-Enabled apps"</span>
         and add BlueWallet.
       </step>
       <step>
@@ -29,19 +32,27 @@
       <step>
         Scan this QR Code (click to enlarge)
         <qr-code
-          :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
+          :value="
+            `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`
+          "
           :size="300"
           class="qr-image mt-2"
           showLogo
-          @click="$emit('showQrModal', `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`)"
+          @click="
+            $emit(
+              'showQrModal',
+              `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`
+            )
+          "
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
       <step>
-          Tap <span class="font-weight-bold">"Save"</span> and restart BlueWallet.
+        Tap <span class="font-weight-bold">"Save"</span> and restart BlueWallet.
       </step>
       <step>
-        Congratulations! You have successfully connected BlueWallet to your Umbrel.
+        Congratulations! You have successfully connected BlueWallet to your
+        Umbrel.
       </step>
     </step-list>
   </connection-details>

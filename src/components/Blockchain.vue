@@ -3,7 +3,12 @@
     <div class="blockchain-container">
       <div v-if="blocks.length">
         <!-- transitions for blocks -->
-        <transition-group name="blockchain" mode="out-in" tag="ul" :duration="5000">
+        <transition-group
+          name="blockchain"
+          mode="out-in"
+          tag="ul"
+          :duration="5000"
+        >
           <li
             href="#"
             class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
@@ -38,11 +43,11 @@
                   <div class="blockchain-block-icon-bg"></div>
                 </div>
                 <div class="align-self-center">
-                  <h6 class="mb-1 font-weight-normal">Block {{ block.height.toLocaleString() }}</h6>
+                  <h6 class="mb-1 font-weight-normal">
+                    Block {{ block.height.toLocaleString() }}
+                  </h6>
                   <small class="text-muted" v-if="block.numTransactions">
-                    {{
-                    block.numTransactions.toLocaleString()
-                    }}
+                    {{ block.numTransactions.toLocaleString() }}
                     transactions
                   </small>
                   <!-- <small class="text-muted" v-if="block.size">
@@ -54,7 +59,8 @@
                 class="text-muted align-self-center text-right blockchain-block-timestamp"
                 v-if="block.time"
                 :title="blockReadableTime(block.time)"
-              >{{ blockTime(block.time) }}</small>
+                >{{ blockTime(block.time) }}</small
+              >
             </div>
           </li>
         </transition-group>
@@ -69,7 +75,9 @@
           >
             <div class="d-flex w-100 justify-content-between">
               <div class="d-flex">
-                <div class="blockchain-block-icon blockchain-block-icon-loading">
+                <div
+                  class="blockchain-block-icon blockchain-block-icon-loading"
+                >
                   <svg
                     width="28"
                     height="30"
@@ -95,7 +103,10 @@
                   <div class="blockchain-block-icon-bg"></div>
                 </div>
                 <div class="align-self-center">
-                  <span class="d-block loading-placeholder mb-1" style="width: 140px;"></span>
+                  <span
+                    class="d-block loading-placeholder mb-1"
+                    style="width: 140px;"
+                  ></span>
                   <span
                     class="d-block loading-placeholder loading-placeholder-sm"
                     style="width: 80px"

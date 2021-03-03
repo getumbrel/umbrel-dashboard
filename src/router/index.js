@@ -324,7 +324,7 @@ const routes = [
                 meta: {
                   wallet: "lndconnect-rest-tor"
                 }
-              },
+              }
             ]
           }
         ]
@@ -352,16 +352,16 @@ const router = new VueRouter({
   scrollBehavior: (to, from, savedPosition) => {
     // Exists when Browser's back/forward pressed
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
       // For anchors
     } else if (to.hash) {
-      return { selector: to.hash, behavior: 'smooth' }
+      return { selector: to.hash, behavior: "smooth" };
       // By changing queries we are still in the same component, so "from.path" === "to.path" (new query changes just "to.fullPath", but not "to.path").
     } else if (from.path === to.path) {
-      return {}
+      return {};
     }
     // Scroll to top
-    return { x: 0, y: 0 }
+    return { x: 0, y: 0 };
   }
 });
 

@@ -10,12 +10,12 @@ const responsePending = {};
 // Interceptor to refresh JWT or logout user based on 401 requests
 // and to logout user if lnd is locked
 axios.interceptors.response.use(
-  function (response) {
+  function(response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response;
   },
-  async function (error) {
+  async function(error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
 
     //logout user if lnd is locked
@@ -181,29 +181,31 @@ const API = {
 
         // Download file
         const blob = new Blob([response]);
-        const blobURL = (window.URL && window.URL.createObjectURL) ? window.URL.createObjectURL(blob) : window.webkitURL.createObjectURL(blob);
-        const tempLink = document.createElement('a');
-        tempLink.style.display = 'none';
+        const blobURL =
+          window.URL && window.URL.createObjectURL
+            ? window.URL.createObjectURL(blob)
+            : window.webkitURL.createObjectURL(blob);
+        const tempLink = document.createElement("a");
+        tempLink.style.display = "none";
         tempLink.href = blobURL;
-        tempLink.setAttribute('download', filename);
+        tempLink.setAttribute("download", filename);
 
         // Safari thinks _blank anchor are pop ups. We only want to set _blank
         // target if the browser does not support the HTML5 download attribute.
         // This allows us to download files in desktop safari if pop up blocking
         // is enabled.
-        if (typeof tempLink.download === 'undefined') {
-          tempLink.setAttribute('target', '_blank');
+        if (typeof tempLink.download === "undefined") {
+          tempLink.setAttribute("target", "_blank");
         }
 
         document.body.appendChild(tempLink);
         tempLink.click();
 
         // Fixes "webkit blob resource error 1"
-        setTimeout(function () {
+        setTimeout(function() {
           document.body.removeChild(tempLink);
           window.URL.revokeObjectURL(blobURL);
-        }, 200)
-
+        }, 200);
       } catch (error) {
         // Only display error messages in the browser console
         if (process.browser) {

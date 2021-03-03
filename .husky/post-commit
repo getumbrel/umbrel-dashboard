@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if [ -e .commit ]; then
+    rm .commit
+    git add .
+    git commit --amend -C HEAD --no-verify --no-edit
+fi

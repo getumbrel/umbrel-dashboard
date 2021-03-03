@@ -26,7 +26,9 @@
           <div class="d-block">
             <img
               class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
-              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+              :src="
+                `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`
+              "
             />
           </div>
           <div>
@@ -109,7 +111,9 @@
         v-for="image in app.gallery"
         class="app-gallery-screen mr-3"
         :key="image"
-        :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
+        :src="
+          `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
+        "
       />
       <div class="d-block" style="padding: 1px"></div>
     </div>
@@ -203,40 +207,38 @@ export default {
   },
   computed: {
     ...mapState({
-      installedApps: (state) => state.apps.installed,
-      appStore: (state) => state.apps.store,
-      installing: (state) => state.apps.installing,
-      uninstalling: (state) => state.apps.uninstalling,
+      installedApps: state => state.apps.installed,
+      appStore: state => state.apps.store,
+      installing: state => state.apps.installing,
+      uninstalling: state => state.apps.uninstalling
     }),
-    app: function () {
-      return this.appStore.find((app) => app.id === this.$route.params.id);
+    app: function() {
+      return this.appStore.find(app => app.id === this.$route.params.id);
     },
-    isInstalled: function () {
+    isInstalled: function() {
       const installedAppIndex = this.installedApps.findIndex(
-        (app) => app.id === this.app.id
+        app => app.id === this.app.id
       );
       return installedAppIndex !== -1;
     },
-    isInstalling: function () {
-      const index = this.installing.findIndex((appId) => appId === this.app.id);
+    isInstalling: function() {
+      const index = this.installing.findIndex(appId => appId === this.app.id);
       return index !== -1;
     },
-    isUninstalling: function () {
-      const index = this.uninstalling.findIndex(
-        (appId) => appId === this.app.id
-      );
+    isUninstalling: function() {
+      const index = this.uninstalling.findIndex(appId => appId === this.app.id);
       return index !== -1;
     },
-    url: function () {
+    url: function() {
       if (window.location.origin.indexOf(".onion") > 0) {
         const installedApp = this.installedApps.find(
-          (app) => app.id === this.app.id
+          app => app.id === this.app.id
         );
         return `http://${installedApp.hiddenService}${this.app.path}`;
       } else {
         return `http://${window.location.hostname}:${this.app.port}${this.app.path}`;
       }
-    },
+    }
   },
   methods: {
     formatDependency(dependency) {
@@ -252,17 +254,16 @@ export default {
     },
     installApp() {
       this.$store.dispatch("apps/install", this.app.id);
-    },
+    }
   },
   async created() {
     await this.$store.dispatch("apps/getAppStore");
   },
   components: {
     CardWidget,
-    InputCopy,
-  },
+    InputCopy
+  }
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

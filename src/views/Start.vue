@@ -1,11 +1,15 @@
 <template>
   <div>
-    <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+    <div
+      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
+    >
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">{{ heading }}</h1>
       <p class="text-muted w-75 text-center">{{ text }}</p>
 
-      <div class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center">
+      <div
+        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+      >
         <b-form-input
           v-model="name"
           ref="name"
@@ -43,33 +47,55 @@
           <b-spinner v-show="!seed.length || isRegistering"></b-spinner>
         </div>
 
-        <input-copy v-if="currentStep === 6" class="w-100" size="sm" :value="onionAddress"></input-copy>
+        <input-copy
+          v-if="currentStep === 6"
+          class="w-100"
+          size="sm"
+          :value="onionAddress"
+        ></input-copy>
 
         <div v-show="currentStep === 7">
           <div class="text-center bg-white p-3 rounded">
-            <small
-              class="d-block text-muted text-small text-center mb-3"
-            >By clicking next, I agree that:</small>
+            <small class="d-block text-muted text-small text-center mb-3"
+              >By clicking next, I agree that:</small
+            >
             <span class="d-block text-muted text-small mb-1">
-              <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>Umbrel is in beta and should not be considered secure
+              <b-icon
+                icon="exclamation-circle-fill"
+                variant="warning"
+                class="mr-1"
+              ></b-icon
+              >Umbrel is in beta and should not be considered secure
             </span>
             <span class="d-block text-muted text-small mb-1">
-              <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>I should not put more funds on my Umbrel than I'm prepared to lose
+              <b-icon
+                icon="exclamation-circle-fill"
+                variant="warning"
+                class="mr-1"
+              ></b-icon
+              >I should not put more funds on my Umbrel than I'm prepared to
+              lose
             </span>
           </div>
         </div>
 
         <div class="text-center" v-show="currentStep === 8">
-          <p
-            class="text-muted"
-          >But you don't have to wait for the sync to complete... You can start using Umbrel right away!</p>
+          <p class="text-muted">
+            But you don't have to wait for the sync to complete... You can start
+            using Umbrel right away!
+          </p>
           <a
             href="#"
             v-b-tooltip.hover.bottom
             title="Umbrel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synced"
           >
             <small>
-              <b-icon icon="exclamation-circle-fill" variant="primary" class="mr-1"></b-icon>How?
+              <b-icon
+                icon="exclamation-circle-fill"
+                variant="primary"
+                class="mr-1"
+              ></b-icon
+              >How?
             </small>
           </a>
         </div>
@@ -84,8 +110,12 @@
           @click="nextStep"
           :disabled="!isStepValid || isRegistering"
           class="mt-3 mx-auto d-block px-4"
-          :class="{ 'loading-fade-blink': currentStep === 8 && !unlocked, 'invisible': currentStep === 5 && recover && !isStepValid }"
-        >{{ nextButtonText }}</b-button>
+          :class="{
+            'loading-fade-blink': currentStep === 8 && !unlocked,
+            invisible: currentStep === 5 && recover && !isStepValid
+          }"
+          >{{ nextButtonText }}</b-button
+        >
         <b-button
           variant="link"
           size="sm"
@@ -93,23 +123,30 @@
           v-if="currentStep === 4 || (currentStep === 5 && !recover)"
           @click="skipSeed"
           :disabled="isRegistering"
-        >Note Down Later</b-button>
+          >Note Down Later</b-button
+        >
         <b-button
           variant="link"
           size="sm"
           @click="recoverFromSeed"
           v-if="currentStep === 4"
           class="mt-2 mx-auto d-block"
-        >Recover</b-button>
+          >Recover</b-button
+        >
         <b-button
           variant="link"
           size="sm"
           @click="prevStep"
           v-if="currentStep > 0 && currentStep !== 6 && currentStep !== 8"
           class="mt-2 mx-auto d-block text-dark"
-        >Back</b-button>
+          >Back</b-button
+        >
       </div>
-      <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
+      <b-progress
+        :value="progress"
+        height="1rem"
+        class="onboarding-progress"
+      ></b-progress>
     </div>
   </div>
 </template>

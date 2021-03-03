@@ -4,7 +4,7 @@
     :class="autoWidth ? 'd-inline-flex auto-width mx-1' : 'd-flex'"
     :style="{
       width: autoWidth ? `${(10 + value.toString().length) * 8}px` : 'auto',
-      maxWidth: '100%',
+      maxWidth: '100%'
     }"
     :size="size ? size : 'sm'"
   >
@@ -47,13 +47,13 @@ export default {
   props: {
     size: {
       type: String,
-      default: "sm",
+      default: "sm"
     },
     value: String,
     autoWidth: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
