@@ -44,11 +44,6 @@ export default {
   props: {
     urls: Object
   },
-  computed: {
-    macaroonHex() {
-      return Buffer.from(Array.from(this.urls.lnd.restLocal.matchAll(/macaroon=(.*)/gm), m => m[1])[0], 'base64').toString('hex');
-    }
-  },
   components: {
     ConnectionDetails,
     StepList,
