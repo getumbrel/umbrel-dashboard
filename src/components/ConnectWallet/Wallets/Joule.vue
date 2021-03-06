@@ -2,41 +2,40 @@
   <connection-details name="Joule (Chrome Extension)" requires="lnd">
     <step-list>
       <step>
-        Install the <a href="https://chrome.google.com/webstore/detail/joule/aejmoogjdllanidlpfjmmmmimfaficio">Joule Chrome Extension</a>
+        Install the <a href="https://chrome.google.com/webstore/detail/joule/aejmoogjdllanidlpfjmmmmimfaficio">Joule Chrome Extension</a>.
       </step>
       <step>
-        Click the extension icon
+        Open the extension by clicking its icon.
       </step>
       <step>
-        Click <span class="font-weight-bold">Get started</span>
+        Click <span class="font-weight-bold">"Get started"</span>.
       </step>
       <step>
-        Click <span class="font-weight-bold">Remote node</span>
+        Click <span class="font-weight-bold">"Remote node"</span>.
       </step>
       <step>
-         In the <span class="font-weight-bold">"Node URL"</span>, enter the following and click <span class="font-weight-bold">Connect</span>
-         <input-copy class="my-1" :value="https://umbrel.local:8080" auto-width ></input-copy>
+         In the <span class="font-weight-bold">"Node URL"</span>, enter <input-copy class="my-1" value="https://umbrel.local:8080" auto-width></input-copy> and click <span class="font-weight-bold">"Connect"</span>.
       </step>
       <step>
-        Chrome will ask to allow access to send requests. Click <span class="font-weight-bold">Allow</span>
+        Chrome will ask to allow access to send requests. Click <span class="font-weight-bold">"Allow"</span>.
       </step>
       <step>
-        It will say "Failed to connect to node," and give you a link. Click the link that says <span class="font-weight-bold">"clicking this link"</span>.
+        It will say "Failed to connect to node", and give you a link. Open this link.
       </step>
       <step>
-        A new tab will open. Click advanced, and ignore the certificate warning. A broken JSON response should show up in the tab after ignoring the cert warning.
+        A new tab will open. Click <span class="font-weight-bold">"Advanced"</span>, and ignore the certificate warning. A broken JSON response should show up in the tab.
       </step>
       <step>
-        Return to the Joule tab and click <span class="font-weight-bold">Connect</span> once more. (Click allow for the Chrome permissions again, too)
+        Return to the Joule tab and click <span class="font-weight-bold">"Connect"</span> once more.
       </step>
       <step>
-        Click the link where it says <span class="font-weight-bold">"Have hex strings instead? Click here to switch."</span>
+        Click <span class="font-weight-bold">"Have hex strings instead? Click here to switch."</span>
       </step>
       <step>
         <ul class="connect-wallet-substeps">
           <li class="connect-wallet-substep">
             In the <span class="font-weight-bold">"Admin macaroon"</span>, enter
-            <input-copy class="my-1" :value="urls.lnd.adminMacaroonHex" auto-width ></input-copy>
+            <input-copy class="my-1" :value="urls.lnd.adminMacaroonHex" auto-width></input-copy>
           </li>
           <li class="connect-wallet-substep">
             In the <span class="font-weight-bold">"Readonly macaroon"</span>, enter
@@ -48,10 +47,10 @@
         </ul>
       </step>
       <step>
-        Confirm the information of your node and click <span class="font-weight-bold">Confirm</span>
+        Click <span class="font-weight-bold">"Confirm"</span>.
       </step>
       <step>
-        Enter the same strong password (for use during payment operations only) in both fields and click <span class="font-weight-bold">"Continue"</span>
+        Choose a strong password (used to validate payments) and click <span class="font-weight-bold">"Continue"</span>.
       </step>
       <step>
         Congratulations! You have successfully connected Joule to your Umbrel.
