@@ -32,4 +32,4 @@ EXPOSE 3004
 
 # -s rewrite all not-found requests to index.html
 # -l listen on 3004
-CMD [ "serve", "-s", "/dist" ]
+CMD [ "serve", "--single", "/dist" ]
