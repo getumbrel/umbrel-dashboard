@@ -30,6 +30,4 @@ COPY --from=umbrel-dashboard-builder /app/dist/ /dist
 ENV PORT=3004
 EXPOSE 3004
 
-# -s rewrite all not-found requests to index.html
-# -l listen on 3004
 CMD [ "serve", "--single", "/dist" ]
