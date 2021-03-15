@@ -27,8 +27,9 @@ RUN yarn global add serve
 
 COPY --from=umbrel-dashboard-builder /app/dist/ /dist
 
+ENV PORT=3004
 EXPOSE 3004
 
 # -s rewrite all not-found requests to index.html
 # -l listen on 3004
-CMD [ "serve", "-s", "-l", "3004", "/dist" ]
+CMD [ "serve", "-s", "/dist" ]
