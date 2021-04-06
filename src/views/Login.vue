@@ -104,28 +104,9 @@ export default {
         }
       }
 
-      //unlock lnd wallet if it's locked
+      // Fetch lnd status
       await this.$store.dispatch("lightning/getStatus");
-
       if (!this.unlocked) {
-        try {
-          await this.$store.dispatch("lightning/unlockWallet", this.password);
-        } catch (error) {
-          if (error.response && error.response.data) {
-            this.$bvToast.toast(`${error.response.data}`, {
-              title: "Error",
-              autoHideDelay: 3000,
-              variant: "danger",
-              solid: true,
-              toaster: "b-toaster-top-center"
-            });
-          }
-          this.isLoggingIn = false;
-          //logout user for safety
-          this.$store.dispatch("user/logout");
-          return;
-        }
-
         //redirect to dashboard once lnd is unlocked
         this.lndUnlockInterval = window.setInterval(async () => {
           await this.$store.dispatch("lightning/getStatus");
