@@ -59,8 +59,6 @@ export default {
       rebooting: state => state.system.rebooting,
       isManagerApiOperational: state => state.system.managerApi.operational,
       isApiOperational: state => state.system.api.operational,
-      isBitcoinOperational: state => state.bitcoin.operational,
-      isLndOperational: state => state.lightning.operational,
       jwt: state => state.user.jwt,
       updateStatus: state => state.system.updateStatus
     }),
