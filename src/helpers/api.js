@@ -18,18 +18,6 @@ axios.interceptors.response.use(
   async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
 
-    //logout user if lnd is locked
-    if (
-      error.response.status === 403 &&
-      error.config.url.startsWith(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd`
-      ) &&
-      error.response.data === "Must unlock wallet"
-    ) {
-      store.dispatch("user/logout");
-      return Promise.reject(error);
-    }
-
     // Return any error which is not related to auth
     if (!error.response || error.response.status !== 401) {
       return Promise.reject(error);
