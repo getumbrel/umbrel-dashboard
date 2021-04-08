@@ -131,18 +131,6 @@ export default {
       }
       this.bitcoinPollStarted = 0;
 
-      // Then check if lnd is operational
-      if (this.loadingProgress <= 80) {
-        this.loadingText = "Loading LND...";
-        this.loadingProgress = 80;
-        await this.$store.dispatch("lightning/getStatus");
-        if (!this.isLndOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }
-
       // Then trigger auth check
       if (this.loadingProgress <= 95 && this.jwt) {
         this.loadingProgress = 95;
