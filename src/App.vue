@@ -49,7 +49,6 @@ export default {
       loading: true,
       loadingText: "",
       loadingProgress: 0,
-      bitcoinPollStarted: 0,
       loadingPollInProgress: false
     };
   },
@@ -108,28 +107,6 @@ export default {
           return;
         }
       }
-
-      // Then check if btc is operational
-      if (this.loadingProgress <= 60) {
-        this.loadingText = "Loading Bitcoin Core...";
-
-        // Warn users against pulling power if Core is taking a while
-        const bitcoinSlowDelay = 10 * SECONDS_IN_MS;
-        if (!this.bitcoinPollStarted) {
-          this.bitcoinPollStarted = Date.now();
-        } else if (Date.now() - this.bitcoinPollStarted > bitcoinSlowDelay) {
-           this.loadingText += " This can take a while, please don't turn off your Umbrel!";
-        }
-
-        this.loadingProgress = 60;
-        await this.$store.dispatch("bitcoin/getStatus");
-        if (!this.isBitcoinOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }
-      this.bitcoinPollStarted = 0;
 
       // Then trigger auth check
       if (this.loadingProgress <= 95 && this.jwt) {
