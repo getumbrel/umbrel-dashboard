@@ -232,7 +232,7 @@ const actions = {
     }
   },
 
-  async getAddresses({ commit, state }) {
+  async getAddresses({ commit }) {
     const addresses = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/addresses`
     );
@@ -281,7 +281,7 @@ const actions = {
     }
   },
 
-  async getSync({ commit, state }) {
+  async getSync({ commit }) {
     const sync = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/sync`
     );
@@ -322,7 +322,7 @@ const actions = {
     commit("setBlocks", latestThreeBlocks.blocks);
   },
 
-  async getVersion({ commit, state }) {
+  async getVersion({ commit }) {
     const version = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/version`
     );
@@ -332,7 +332,7 @@ const actions = {
     }
   },
 
-  async getPeers({ commit, state }) {
+  async getPeers({ commit }) {
     const peers = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/connections`
     );
@@ -342,7 +342,7 @@ const actions = {
     }
   },
 
-  async getStats({ commit, state }) {
+  async getStats({ commit }) {
     const stats = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/stats`
     );
@@ -362,7 +362,7 @@ const actions = {
     }
   },
 
-  async getBalance({ commit, state }) {
+  async getBalance({ commit }) {
     const balance = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/btc`
     );
@@ -372,7 +372,7 @@ const actions = {
     }
   },
 
-  async getTransactions({ commit, state }) {
+  async getTransactions({ commit }) {
     const transactions = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`
     );
@@ -389,7 +389,7 @@ const actions = {
     }
   },
 
-  async getDepositAddress({ commit, state }) {
+  async getDepositAddress({ commit }) {
     const { address } = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/address`
     );
@@ -399,7 +399,7 @@ const actions = {
     }
   },
 
-  async getFees({ commit, state }, { address, confTarget, amt, sweep }) {
+  async getFees({ commit }, { address, confTarget, amt, sweep }) {
     const fees = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
     );

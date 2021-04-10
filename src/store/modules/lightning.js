@@ -217,7 +217,7 @@ const actions = {
   // Deprecated, this endpoint returns balance data minus estimated channel closing fees
   // These estimates have caused many customers to be confused by the numbers displayed in the dashboard (leaky sats)
   // Instead we can calculate our total balance by getting the sum of each channel's localBalance
-  async getBalance({ commit, state }) {
+  async getBalance({ commit }) {
     const balance = await API.get(
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/lightning`
     );
@@ -227,7 +227,7 @@ const actions = {
     }
   },
 
-  async getChannels({ commit, state }, preFetchedChannels = []) {
+  async getChannels({ commit }, preFetchedChannels = []) {
     let rawChannels;
 
     if (preFetchedChannels.length) {
