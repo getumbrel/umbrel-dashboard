@@ -71,8 +71,7 @@ export default {
   computed: {
     ...mapState({
       jwt: state => state.user.jwt,
-      registered: state => state.user.registered,
-      unlocked: state => state.lightning.unlocked
+      registered: state => state.user.registered
     })
   },
   async created() {
@@ -104,31 +103,11 @@ export default {
         }
       }
 
-      // Fetch lnd status
-      await this.$store.dispatch("lightning/getStatus");
-      if (!this.unlocked) {
-        //redirect to dashboard once lnd is unlocked
-        this.lndUnlockInterval = window.setInterval(async () => {
-          await this.$store.dispatch("lightning/getStatus");
-          if (this.unlocked) {
-            window.clearInterval(this.lndUnlockInterval);
-
-            //redirect to dashboard
-            return this.$router.push(
-              this.$router.history.current.query.redirect || "/dashboard"
-            );
-          }
-        }, 1000);
-      } else {
-        //redirect to dashboard
-        return this.$router.push(
-          this.$router.history.current.query.redirect || "/dashboard"
-        );
-      }
+      //redirect to dashboard
+      return this.$router.push(
+        this.$router.history.current.query.redirect || "/dashboard"
+      );
     }
-  },
-  beforeDestroy() {
-    window.clearInterval(this.lndUnlockInterval);
   },
   components: {
     InputPassword
