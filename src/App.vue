@@ -40,8 +40,6 @@ import delay from "@/helpers/delay";
 import Shutdown from "@/components/Shutdown";
 import Loading from "@/components/Loading";
 
-const SECONDS_IN_MS = 1000;
-
 export default {
   name: "App",
   data() {
