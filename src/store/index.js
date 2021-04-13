@@ -6,6 +6,7 @@ import user from "./modules/user";
 import system from "./modules/system";
 import bitcoin from "./modules/bitcoin";
 import lightning from "./modules/lightning";
+import apps from "./modules/apps";
 
 Vue.use(Vuex);
 
@@ -51,6 +52,7 @@ export default new Vuex.Store({
     user,
     system,
     bitcoin,
-    lightning
+    lightning,
+    apps
   }
 });

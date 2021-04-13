@@ -406,7 +406,7 @@
           </p>
 
           <!-- QR Code -->
-          <qr-code class="mb-3" :showLogo="!receive.isGeneratingInvoice" :value="receive.invoiceQR"></qr-code>
+          <qr-code class="mb-3 mx-auto" :showLogo="!receive.isGeneratingInvoice" :value="receive.invoiceQR"></qr-code>
 
           <!-- Copy Invoice Input Field -->
           <transition name="slide-up" appear>

@@ -54,9 +54,12 @@ a {
     &.btn-danger,&.btn-warning {
         color: #fff;
     }
-    &.btn-outline-danger:hover {
-        color: #fff;
+    &.btn-outline-danger {
+        &:hover,&:active {
+            color: #fff !important;
+        }
     }
+    
 }
 
 .card {
@@ -310,6 +313,11 @@ svg.icon-clock {
     --start-seconds: 57;
     --start-minutes: 45;
     --start-hours: 11;
+
+    &.icon-clock-warning {
+        stroke: #8a6c10;
+    }
+
     circle {
       fill: none;
     }
@@ -457,4 +465,66 @@ body {
 // Helper class to support text with "\n" newline characters
 .text-newlines {
     white-space: pre-line; 
+}
+
+.connect-wallet-steps {
+    .connect-wallet-step {
+        margin-bottom: 1.2rem;
+    }   
+}
+.connect-wallet-substeps {
+    list-style-type: lower-roman;
+    padding: 0 0 0 20px;
+    .connect-wallet-substep {
+        margin-bottom: 1.2rem;
+    }
+}
+
+// Helper class to truncate text with "..."
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+// Helper class for fade in and out animation
+.fade-in-out {
+    animation: fadeInOut 1s infinite linear;
+}
+
+@keyframes fadeInOut {
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.app-icon {
+  height: 100px;
+  width: 100px;
+  border-radius: 20px;
+  object-fit: contain;
+  align-items: flex-start;
+}
+
+.app-gallery {
+    display: flex;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    margin-left: calc(-15px - 1.5rem);
+    margin-right: calc(-15px - 1.5rem);
+    padding-left: calc(30px + 0.75rem);
+    padding-right: calc(30px + 0.75rem);
+    .app-gallery-screen {
+      height: 350px;
+      width: auto;
+      display: block;
+      box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.8);
+      border-radius: 5px;
+      object-fit: contain;
+    }
 }
