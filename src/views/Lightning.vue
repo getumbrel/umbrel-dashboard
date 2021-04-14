@@ -67,9 +67,6 @@
             <b-dropdown-item href="#" v-b-modal.lightning-address-modal
               >Lightning Address</b-dropdown-item
             >
-            <b-dropdown-item href="/logs/?filter=umbrel+lnd" target="_blank"
-              >View logs</b-dropdown-item
-            >
             <!-- <b-dropdown-divider /> -->
             <!-- <b-dropdown-item variant="danger" href="#" disabled>Stop LND</b-dropdown-item> -->
           </b-dropdown>
