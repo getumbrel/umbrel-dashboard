@@ -54,11 +54,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    value: String,
-    autoWidth: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
