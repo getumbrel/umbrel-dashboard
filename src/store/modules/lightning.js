@@ -177,7 +177,7 @@ const actions = {
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/sync`
     );
     if (sync && sync.percent) {
-      commit("setSync", sync)
+      commit("setSync", sync);
     }
   },
 
@@ -248,6 +248,16 @@ const actions = {
     if (rawChannels) {
       // Loop through channels to determine pending balance, max payment amount, and sort channels by type
       rawChannels.forEach(channel => {
+        channel.localBalance = parseInt(
+          channel.initiator
+            ? channel.localBalance - channel.commitFee
+            : channel.localBalance
+          );
+        channel.remoteBalance = parseInt(
+          channel.initiator
+            ? channel.remoteBalance
+            : channel.remoteBalance - channel.commitFee
+          );
         const localBalance = parseInt(channel.localBalance) || 0;
         const remoteBalance = parseInt(channel.remoteBalance) || 0;
 
