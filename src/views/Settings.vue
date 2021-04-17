@@ -259,19 +259,38 @@
               <b-modal
                 ref="debug-modal"
                 title="Results"
+                size="lg"
                 no-close-on-backdrop
                 no-close-on-esc
-                cancel-title="Run again"
-                @cancel="debugPrompt"
-                @ok="clearDebugInterval"
+                scrollable
               >
-                <div v-if="this.loadingDebug">
-                  <p>Processing...</p>
+                <div v-if="this.loadingDebug" class="d-flex justify-content-center">
+                  <b-spinner></b-spinner>
                 </div>
                 <div v-else>
-                    <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
-                    <input-copy class="mb-1" size="sm" auto-width :value="this.debugResult.linkDebug"></input-copy>
+                    {{ debugText }}
                 </div>
+
+                <template #modal-footer="{}">
+                  <b-button size="sm" variant="outline-secondary" @click="getDebugLink">
+                    Show link
+                  </b-button>
+                  <b-button size="sm" variant="success" @click="closeDebugModal">
+                    OK
+                  </b-button>
+                </template>
+              </b-modal>
+              <b-modal
+                ref="debug-link-modal"
+                title="Umbrel Paste link"
+                centered
+                ok-only
+              >
+                <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
+                <div v-if="this.loadingDebug" class="d-flex justify-content-center">
+                  <b-spinner></b-spinner>
+                </div>
+                <input-copy v-else class="mb-1" size="sm" auto-width :value="this.debugResult.linkDebug"></input-copy>
               </b-modal>
             </div>
           </div>
@@ -366,6 +385,9 @@ export default {
         return false;
       }
       return true;
+    },
+    debugText() {
+      return atob(this.debugResult.output)
     }
   },
   created() {
@@ -454,8 +476,9 @@ export default {
         this.loadingDebug = false;
       }
     },
-    clearDebugInterval() {
+    closeDebugModal() {
       window.clearInterval(this.loadingDebugInterval);
+      this.$refs["debug-modal"].hide();
     },
     async debugPrompt() {
       let toastText = "";
@@ -477,6 +500,9 @@ export default {
       this.$bvToast.toast(toastText, toastOptions);
       this.loadingDebug = true;
       this.$refs["debug-modal"].show();
+    },
+    async getDebugLink() {
+      this.$refs["debug-link-modal"].show();
     },
     async shutdownPrompt() {
       // disable on testnet
@@ -551,6 +577,9 @@ export default {
   beforeDestroy() {
     if (this.pollUpdateStatus) {
       window.clearInterval(this.pollUpdateStatus);
+    }
+    if (this.loadingDebugInterval) {
+      window.clearInterval(this.loadingDebugInterval);
     }
   },
   watch: {
