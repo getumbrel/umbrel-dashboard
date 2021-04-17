@@ -474,10 +474,13 @@ export default {
         this.loadingDebug = true;
       } else {
         this.loadingDebug = false;
+        window.clearInterval(this.loadingDebugInterval);
       }
     },
     closeDebugModal() {
-      window.clearInterval(this.loadingDebugInterval);
+      if (this.loadingDebugInterval) {
+        window.clearInterval(this.loadingDebugInterval);
+      }
       this.$refs["debug-modal"].hide();
     },
     async debugPrompt() {
