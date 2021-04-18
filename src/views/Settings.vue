@@ -267,8 +267,8 @@
                 <div v-if="this.loadingDebug" class="d-flex justify-content-center">
                   <b-spinner></b-spinner>
                 </div>
-                <div v-else>
-                    {{ debugText }}
+                <div v-else style="white-space: pre;">
+                  {{ this.debugResult.result }}
                 </div>
 
                 <template #modal-footer="{}">
@@ -385,9 +385,6 @@ export default {
         return false;
       }
       return true;
-    },
-    debugText() {
-      return atob(this.debugResult.output)
     }
   },
   created() {
