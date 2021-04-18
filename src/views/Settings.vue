@@ -263,12 +263,16 @@
                 no-close-on-backdrop
                 no-close-on-esc
                 scrollable
+                body-bg-variant="dark"
+                body-text-variant="light"
                 @close="closeDebugModal"
               >
                 <div v-if="this.loadingDebug" class="d-flex justify-content-center">
                   <b-spinner></b-spinner>
                 </div>
-                <pre v-else class="p-2" style="background: #333; color: #ccc;">{{ this.debugResult.result }}</pre>
+                <pre v-else class="p-2" style="color: #fff;">{{
+                  (!this.showDmesg) ? this.debugResult.debug : this.debugResult.dmesg
+                }}</pre>
 
                 <template v-if="this.loadingDebug" #modal-footer="{}">
                   <b-button size="sm" variant="success" @click="closeDebugModal">
@@ -276,6 +280,9 @@
                   </b-button>
                 </template>
                 <template v-else #modal-footer="{}">
+                  <b-button size="sm" variant="outline-secondary" @click="showDmesg=!showDmesg">
+                    Switch to {{ (!showDmesg) ? "dmesg output" : "debug output" }}
+                  </b-button>
                   <b-button size="sm" variant="outline-secondary" @click="getDebugLink">
                     Generate link
                   </b-button>
@@ -363,7 +370,8 @@ export default {
       isChangingPassword: false,
       isCheckingForUpdate: false,
       isUpdating: false,
-      loadingDebug: false
+      loadingDebug: false,
+      showDmesg: false
     };
   },
   computed: {
