@@ -19,9 +19,9 @@ const state = () => ({
   },
   debugResult: {
     status: "", //success, processing
-    linkDebug: "",
-    output: ""
+    result: ""
   },
+  debugLink: "",
   showUpdateConfirmationModal: false,
   loading: true,
   rebooting: false,
@@ -83,6 +83,9 @@ const mutations = {
   },
   setDebugResult(state, result) {
     state.debugResult = result;
+  },
+  setDebugLink(state, result) {
+    state.debugLink = result;
   },
   setShowUpdateConfirmationModal(state, show) {
     state.showUpdateConfirmationModal = show;
@@ -160,6 +163,12 @@ const actions = {
     const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-result`);
     if (result && result.status) {
       commit("setDebugResult", result);
+    }
+  },
+  async getDebugLink({ commit }) {
+    const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-link`);
+    if (result) {
+      commit("setDebugLink", result);
     }
   },
   async debug({ commit }) {

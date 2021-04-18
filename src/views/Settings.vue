@@ -263,17 +263,21 @@
                 no-close-on-backdrop
                 no-close-on-esc
                 scrollable
+                @close="closeDebugModal"
               >
                 <div v-if="this.loadingDebug" class="d-flex justify-content-center">
                   <b-spinner></b-spinner>
                 </div>
-                <div v-else style="white-space: pre;">
-                  {{ this.debugResult.result }}
-                </div>
+                <div v-else style="white-space: pre;">{{ this.debugResult.result }}</div>
 
-                <template #modal-footer="{}">
+                <template v-if="this.loadingDebug" #modal-footer="{}">
+                  <b-button size="sm" variant="success" @click="closeDebugModal">
+                    OK
+                  </b-button>
+                </template>
+                <template v-else #modal-footer="{}">
                   <b-button size="sm" variant="outline-secondary" @click="getDebugLink">
-                    Show link
+                    Generate link
                   </b-button>
                   <b-button size="sm" variant="success" @click="closeDebugModal">
                     OK
@@ -287,10 +291,10 @@
                 ok-only
               >
                 <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
-                <div v-if="this.loadingDebug" class="d-flex justify-content-center">
+                <div v-if="this.loadingDebug || !this.debugLink" class="d-flex justify-content-center">
                   <b-spinner></b-spinner>
                 </div>
-                <input-copy v-else class="mb-1" size="sm" auto-width :value="this.debugResult.linkDebug"></input-copy>
+                <input-copy v-else class="mb-1" size="sm" auto-width :value="this.debugLink"></input-copy>
               </b-modal>
             </div>
           </div>
@@ -369,7 +373,8 @@ export default {
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
       backupStatus: state => state.system.backupStatus,
-      debugResult: state => state.system.debugResult
+      debugResult: state => state.system.debugResult,
+      debugLink: state => state.system.debugLink
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -502,6 +507,7 @@ export default {
       this.$refs["debug-modal"].show();
     },
     async getDebugLink() {
+      await this.$store.dispatch("system/getDebugLink");
       this.$refs["debug-link-modal"].show();
     },
     async shutdownPrompt() {
