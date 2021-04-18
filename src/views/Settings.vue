@@ -268,7 +268,7 @@
                 <div v-if="this.loadingDebug" class="d-flex justify-content-center">
                   <b-spinner></b-spinner>
                 </div>
-                <div v-else style="white-space: pre;">{{ this.debugResult.result }}</div>
+                <pre v-else class="p-2" style="background: #333; color: #ccc;">{{ this.debugResult.result }}</pre>
 
                 <template v-if="this.loadingDebug" #modal-footer="{}">
                   <b-button size="sm" variant="success" @click="closeDebugModal">
