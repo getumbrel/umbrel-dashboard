@@ -299,7 +299,7 @@
               >
                 <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
                 <div class="d-flex justify-content-center align-items-center mt-4">
-                  <b-spinner v-if="this.loadingDebug || !this.debugLink"></b-spinner>
+                  <b-spinner v-if="this.loadingDebug || this.loadingDebugLink || !this.debugLink"></b-spinner>
                   <input-copy v-else size="sm" auto-width :value="this.debugLink"></input-copy>
                 </div>
               </b-modal>
@@ -371,6 +371,7 @@ export default {
       isCheckingForUpdate: false,
       isUpdating: false,
       loadingDebug: false,
+      loadingDebugLink: false,
       showDmesg: false
     };
   },
@@ -515,8 +516,10 @@ export default {
       this.$refs["debug-modal"].show();
     },
     async getDebugLink() {
+      this.loadingDebugLink = true;
       this.$refs["debug-link-modal"].show();
       await this.$store.dispatch("system/getDebugLink");
+      this.loadingDebugLink = false;
     },
     async shutdownPrompt() {
       // disable on testnet
