@@ -259,7 +259,7 @@
               <b-modal
                 ref="debug-modal"
                 title="Results"
-                size="lg"
+                size="xl"
                 no-close-on-backdrop
                 no-close-on-esc
                 scrollable
