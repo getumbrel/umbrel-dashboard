@@ -298,10 +298,10 @@
                 ok-only
               >
                 <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
-                <div v-if="this.loadingDebug || !this.debugLink" class="d-flex justify-content-center">
-                  <b-spinner></b-spinner>
+                <div class="d-flex justify-content-center align-items-center mt-4">
+                  <b-spinner v-if="this.loadingDebug || !this.debugLink"></b-spinner>
+                  <input-copy v-else size="sm" auto-width :value="this.debugLink"></input-copy>
                 </div>
-                <input-copy v-else class="mb-1" size="sm" auto-width :value="this.debugLink"></input-copy>
               </b-modal>
             </div>
           </div>
@@ -515,8 +515,8 @@ export default {
       this.$refs["debug-modal"].show();
     },
     async getDebugLink() {
-      await this.$store.dispatch("system/getDebugLink");
       this.$refs["debug-link-modal"].show();
+      await this.$store.dispatch("system/getDebugLink");
     },
     async shutdownPrompt() {
       // disable on testnet
