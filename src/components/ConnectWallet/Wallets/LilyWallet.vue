@@ -20,7 +20,7 @@
         In the <span class="font-weight-bold">"Host"</span>, enter
         <input-copy
           class="my-1"
-          :value="`http://${urls.bitcoin.rpc.address}`"
+          :value="`http://${urls.bitcoin.rpc.address}:${urls.bitcoin.rpc.port}`"
           auto-width
         ></input-copy>
       </step>
