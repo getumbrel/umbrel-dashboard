@@ -255,7 +255,7 @@
                 <span class="d-block">Debug</span>
                 <small class="d-block" style="opacity: 0.4">Get Umbrel logs</small>
               </div>
-              <b-button variant="outline-warning" size="sm" @click="debugPrompt">Debug</b-button>
+              <b-button variant="outline-primary" size="sm" @click="debugPrompt">Debug</b-button>
               <b-modal
                 ref="debug-modal"
                 title="Results"
