@@ -52,7 +52,7 @@ export default {
   name: "App",
   data() {
     return {
-      isIframe: (self !== top),
+      isIframe: (window.self !== window.top),
       loading: true,
       loadingText: "",
       loadingProgress: 0,
