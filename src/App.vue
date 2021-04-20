@@ -1,7 +1,15 @@
 <template>
   <div id="app">
     <transition name="loading" mode>
-      <loading v-if="updating" :progress="updateStatus.progress">
+      <div v-if="isIframe">
+        <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+          <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
+          <span class="text-muted w-75 text-center">
+            <small>For security reasons Umbrel cannot be embedded in an iframe.</small>
+          </span>
+        </div>
+      </div>
+      <loading v-else-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
           <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
           <b-alert class="system-alert" variant="warning" show>
@@ -44,6 +52,7 @@ export default {
   name: "App",
   data() {
     return {
+      isIframe: (window.self !== window.top),
       loading: true,
       loadingText: "",
       loadingProgress: 0,
