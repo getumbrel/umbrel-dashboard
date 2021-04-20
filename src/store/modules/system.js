@@ -157,9 +157,12 @@ const actions = {
   },
   async getDebugResult({ commit }) {
     const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-result`);
-    if (result && result.status) {
-      commit("setDebugResult", result);
+
+    if (!result) {
+      throw new Error('Get debug request failed');
     }
+
+    commit("setDebugResult", result);
   },
   async debug({ commit }) {
     const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug`);

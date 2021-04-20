@@ -255,37 +255,33 @@
                 <span class="d-block">Debug</span>
                 <small class="d-block" style="opacity: 0.4">Get Umbrel logs</small>
               </div>
-              <b-button variant="outline-primary" size="sm" @click="debugPrompt">Debug</b-button>
+              <b-button variant="outline-primary" size="sm" @click="openDebugModal">Debug</b-button>
               <b-modal
                 ref="debug-modal"
                 title="Results"
                 size="xl"
-                no-close-on-backdrop
-                no-close-on-esc
                 scrollable
                 body-bg-variant="dark"
                 body-text-variant="light"
                 @close="closeDebugModal"
               >
-                <div v-if="this.loadingDebug" class="d-flex justify-content-center">
+                <div v-if="this.debugFailed" class="d-flex justify-content-center">
+                  Error: Failed to fetch debug data.
+                </div>
+                <div v-else-if="this.loadingDebug" class="d-flex justify-content-center">
                   <b-spinner></b-spinner>
                 </div>
                 <pre v-else class="p-2" style="color: #fff;">{{
                   (!this.showDmesg) ? this.debugResult.debug : this.debugResult.dmesg
                 }}</pre>
 
-                <template v-if="this.loadingDebug" #modal-footer="{}">
-                  <b-button size="sm" variant="success" @click="closeDebugModal">
-                    OK
-                  </b-button>
-                </template>
-                <template v-else #modal-footer="{}">
-                  <b-button size="sm" variant="outline-secondary" @click="showDmesg=!showDmesg">
-                    Switch to {{ (!showDmesg) ? "dmesg output" : "debug output" }}
-                  </b-button>
-                  <b-button size="sm" variant="success" @click="closeDebugModal">
-                    OK
-                  </b-button>
+                <template #modal-footer="{}">
+                  <div v-if="loadingDebug"></div>
+                  <div v-else>
+                    <b-button size="sm" variant="primary" @click="showDmesg=!showDmesg">
+                      Switch to {{ (!showDmesg) ? "dmesg output" : "debug output" }}
+                    </b-button>
+                  </div>
                 </template>
               </b-modal>
             </div>
@@ -338,6 +334,7 @@ import { mapState } from "vuex";
 import moment from "moment";
 
 import API from "@/helpers/api";
+import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
@@ -356,6 +353,7 @@ export default {
       isCheckingForUpdate: false,
       isUpdating: false,
       loadingDebug: false,
+      debugFailed: false,
       showDmesg: false
     };
   },
@@ -461,42 +459,26 @@ export default {
       await this.$store.dispatch("system/getAvailableUpdate");
       this.isCheckingForUpdate = false;
     },
-    async getDebugLoadingStatus() {
-      await this.$store.dispatch("system/getDebugResult");
-
-      if(this.debugResult.status != "success") {
-        this.loadingDebug = true;
-      } else {
-        this.loadingDebug = false;
-        window.clearInterval(this.loadingDebugInterval);
+    async openDebugModal() {
+      this.debugFailed = false;
+      this.loadingDebug = true;
+      this.$refs["debug-modal"].show();
+      try {
+        await this.$store.dispatch("system/debug");
+        while(this.loadingDebug) {
+          await delay(1000);
+          await this.$store.dispatch("system/getDebugResult");
+          if (this.debugResult.status == "success") {
+            this.loadingDebug = false;
+          }
+        }
+      } catch (e) {
+          this.debugFailed = true;
       }
     },
     closeDebugModal() {
-      if (this.loadingDebugInterval) {
-        window.clearInterval(this.loadingDebugInterval);
-      }
+      this.loadingDebug = false;
       this.$refs["debug-modal"].hide();
-    },
-    async debugPrompt() {
-      let toastText = "";
-      let toastOptions = {
-        autoHideDelay: 3000,
-        solid: true,
-        toaster: "b-toaster-bottom-right"
-      };
-
-      try {
-        await this.$store.dispatch("system/debug");
-      } catch (e) {
-        toastText = "Debug request failed";
-        toastOptions.title =
-          "Something went wrong and Umbrel was not able to run the debug script";
-        toastOptions.variant = "danger";
-      }
-
-      this.$bvToast.toast(toastText, toastOptions);
-      this.loadingDebug = true;
-      this.$refs["debug-modal"].show();
     },
     async shutdownPrompt() {
       // disable on testnet
@@ -572,26 +554,10 @@ export default {
     if (this.pollUpdateStatus) {
       window.clearInterval(this.pollUpdateStatus);
     }
-    if (this.loadingDebugInterval) {
-      window.clearInterval(this.loadingDebugInterval);
-    }
   },
   watch: {
     currentPassword: function() {
       this.isIncorrectPassword = false;
-    },
-    loadingDebug: {
-      handler: function(isLoading) {
-        window.clearInterval(this.loadingDebugInterval);
-
-        if (isLoading) {
-          this.loadingDebugInterval = window.setInterval(
-            this.getDebugLoadingStatus,
-            2000
-          );
-        }
-      },
-      immediate: true
     }
   },
   components: {
