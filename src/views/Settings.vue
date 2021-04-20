@@ -283,25 +283,10 @@
                   <b-button size="sm" variant="outline-secondary" @click="showDmesg=!showDmesg">
                     Switch to {{ (!showDmesg) ? "dmesg output" : "debug output" }}
                   </b-button>
-                  <b-button size="sm" variant="outline-secondary" @click="getDebugLink">
-                    Generate link
-                  </b-button>
                   <b-button size="sm" variant="success" @click="closeDebugModal">
                     OK
                   </b-button>
                 </template>
-              </b-modal>
-              <b-modal
-                ref="debug-link-modal"
-                title="Umbrel Paste link"
-                centered
-                ok-only
-              >
-                <p>Please share the following links with a description of your problem in the <a href="https://t.me/getumbrel">Umbrel Telegram group</a> so we can help you.</p>
-                <div class="d-flex justify-content-center align-items-center mt-4">
-                  <b-spinner v-if="this.loadingDebug || this.loadingDebugLink || !this.debugLink"></b-spinner>
-                  <input-copy v-else size="sm" auto-width :value="this.debugLink"></input-copy>
-                </div>
               </b-modal>
             </div>
           </div>
@@ -371,7 +356,6 @@ export default {
       isCheckingForUpdate: false,
       isUpdating: false,
       loadingDebug: false,
-      loadingDebugLink: false,
       showDmesg: false
     };
   },
@@ -382,8 +366,7 @@ export default {
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
       backupStatus: state => state.system.backupStatus,
-      debugResult: state => state.system.debugResult,
-      debugLink: state => state.system.debugLink
+      debugResult: state => state.system.debugResult
     }),
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -514,12 +497,6 @@ export default {
       this.$bvToast.toast(toastText, toastOptions);
       this.loadingDebug = true;
       this.$refs["debug-modal"].show();
-    },
-    async getDebugLink() {
-      this.loadingDebugLink = true;
-      this.$refs["debug-link-modal"].show();
-      await this.$store.dispatch("system/getDebugLink");
-      this.loadingDebugLink = false;
     },
     async shutdownPrompt() {
       // disable on testnet
