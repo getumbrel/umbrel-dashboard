@@ -52,7 +52,7 @@
       </step>
       <step>
         In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter
-        <input-copy class="my-1" :value="macaroonHex"></input-copy>
+        <input-copy class="my-1" :value="urls.lnd.adminMacaroonHex"></input-copy>
       </step>
       <step>
         Tap <span class="font-weight-bold">"Save Node Config"</span>.
@@ -77,11 +77,6 @@ import QrCode from "@/components/Utility/QrCode";
 export default {
   props: {
     urls: Object
-  },
-  computed: {
-    macaroonHex() {
-      return Buffer.from(Array.from(this.urls.lnd.restTor.matchAll(/macaroon=(.*)/gm), m => m[1])[0], 'base64').toString('hex');
-    }
   },
   components: {
     ConnectionDetails,

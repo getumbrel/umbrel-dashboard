@@ -55,6 +55,7 @@ export default {
         { value: "electrum-android", text: "Electrum Wallet (Android)" },
         { value: "electrum-desktop", text: "Electrum Wallet (Desktop)" },
         { value: "fully-noded", text: "Fully Noded (iOS)" },
+        { value: "joule", text: "Joule (Chrome Extension)" },
         { value: "phoenix", text: "Phoenix Wallet" },
         { value: "samourai-wallet", text: "Samourai Wallet" },
         { value: "sparrow", text: "Sparrow" },
