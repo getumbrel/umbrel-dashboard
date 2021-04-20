@@ -9,7 +9,7 @@
           </span>
         </div>
       </div>
-      <loading v-if="updating" :progress="updateStatus.progress">
+      <loading v-else-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
           <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
           <b-alert class="system-alert" variant="warning" show>
