@@ -271,9 +271,7 @@
                 <div v-else-if="this.loadingDebug" class="d-flex justify-content-center">
                   <b-spinner></b-spinner>
                 </div>
-                <pre v-else class="p-2" style="color: #fff;">{{
-                  (!this.showDmesg) ? this.debugResult.debug : this.debugResult.dmesg
-                }}</pre>
+                <pre v-else class="p-2" style="color: #fff;">{{debugContents}}</pre>
 
                 <template #modal-footer="{}">
                   <div v-if="loadingDebug"></div>
@@ -281,7 +279,7 @@
                     <b-button size="sm" class="mr-2" variant="primary" @click="showDmesg=!showDmesg">
                       Switch to {{ (!showDmesg) ? "dmesg output" : "debug output" }}
                     </b-button>
-                    <b-button size="sm" variant="secondary" @click="downloadTextFile((!showDmesg) ? debugResult.debug : debugResult.dmesg, 'umbrel.log')">
+                    <b-button size="sm" variant="secondary" @click="downloadTextFile(debugContents, debugFilename)">
                       <b-icon icon="download" class="mr-2"></b-icon>Download
                     </b-button>
                   </div>
@@ -369,6 +367,13 @@ export default {
       backupStatus: state => state.system.backupStatus,
       debugResult: state => state.system.debugResult
     }),
+    debugContents() {
+      return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;
+    },
+    debugFilename() {
+      const type = this.showDmesg ? 'dmesg' : 'debug';
+      return `umbrel-${Date.now()}-${type}.log`;
+    },
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
         return false;
