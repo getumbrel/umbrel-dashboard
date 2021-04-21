@@ -277,7 +277,7 @@
                   <div v-if="loadingDebug"></div>
                   <div v-else>
                     <b-button size="sm" class="mr-2" variant="primary" @click="showDmesg=!showDmesg">
-                      Switch to {{ (!showDmesg) ? "dmesg output" : "debug output" }}
+                      View {{ (!showDmesg) ? "dmesg output" : "debug output" }}
                     </b-button>
                     <b-button size="sm" variant="secondary" @click="downloadTextFile(debugContents, debugFilename)">
                       <b-icon icon="download" class="mr-2"></b-icon>Download
