@@ -249,6 +249,44 @@
               </b-modal>
             </div>
           </div>
+          <div class="pt-0">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Debug</span>
+                <small class="d-block" style="opacity: 0.4">View Umbrel logs</small>
+              </div>
+              <b-button variant="outline-primary" size="sm" @click="openDebugModal">Debug</b-button>
+              <b-modal
+                ref="debug-modal"
+                title="Debug"
+                size="xl"
+                scrollable
+                body-bg-variant="dark"
+                body-text-variant="light"
+                @close="closeDebugModal"
+              >
+                <div v-if="this.debugFailed" class="d-flex justify-content-center">
+                  Error: Failed to fetch debug data.
+                </div>
+                <div v-else-if="this.loadingDebug" class="d-flex justify-content-center">
+                  <b-spinner></b-spinner>
+                </div>
+                <pre v-else class="p-2" style="color: #fff;">{{debugContents}}</pre>
+
+                <template #modal-footer="{}">
+                  <div v-if="loadingDebug"></div>
+                  <div v-else>
+                    <b-button size="sm" class="mr-2" variant="primary" @click="showDmesg=!showDmesg">
+                      View {{ (!showDmesg) ? "dmesg output" : "debug output" }}
+                    </b-button>
+                    <b-button size="sm" variant="secondary" @click="downloadTextFile(debugContents, debugFilename)">
+                      <b-icon icon="download" class="mr-2"></b-icon>Download
+                    </b-button>
+                  </div>
+                </template>
+              </b-modal>
+            </div>
+          </div>
           <div class="px-3 px-lg-4 pb-4">
             <div class="w-100 d-flex justify-content-between mb-1">
               <span class="align-self-end">Umbrel Version</span>
@@ -297,6 +335,7 @@ import { mapState } from "vuex";
 import moment from "moment";
 
 import API from "@/helpers/api";
+import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
@@ -313,7 +352,10 @@ export default {
       confirmNewPassword: "",
       isChangingPassword: false,
       isCheckingForUpdate: false,
-      isUpdating: false
+      isUpdating: false,
+      loadingDebug: false,
+      debugFailed: false,
+      showDmesg: false
     };
   },
   computed: {
@@ -322,8 +364,16 @@ export default {
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
-      backupStatus: state => state.system.backupStatus
+      backupStatus: state => state.system.backupStatus,
+      debugResult: state => state.system.debugResult
     }),
+    debugContents() {
+      return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;
+    },
+    debugFilename() {
+      const type = this.showDmesg ? 'dmesg' : 'debug';
+      return `umbrel-${Date.now()}-${type}.log`;
+    },
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
         return false;
@@ -416,6 +466,39 @@ export default {
       this.isCheckingForUpdate = true;
       await this.$store.dispatch("system/getAvailableUpdate");
       this.isCheckingForUpdate = false;
+    },
+    async openDebugModal() {
+      this.showDmesg = false;
+      this.debugFailed = false;
+      this.loadingDebug = true;
+      this.$refs["debug-modal"].show();
+      try {
+        await this.$store.dispatch("system/debug");
+        while(this.loadingDebug) {
+          await delay(1000);
+          await this.$store.dispatch("system/getDebugResult");
+          if (this.debugResult.status == "success") {
+            this.loadingDebug = false;
+          }
+        }
+      } catch (e) {
+          this.debugFailed = true;
+      }
+    },
+    closeDebugModal() {
+      this.loadingDebug = false;
+      this.$refs["debug-modal"].hide();
+    },
+    downloadTextFile(contents, fileName) {
+      const blob = new Blob([contents], {
+        type: 'text/plain;charset=utf-8;'
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
     },
     async shutdownPrompt() {
       // disable on testnet
