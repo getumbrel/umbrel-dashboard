@@ -460,6 +460,7 @@ export default {
       this.isCheckingForUpdate = false;
     },
     async openDebugModal() {
+      this.showDmesg = false;
       this.debugFailed = false;
       this.loadingDebug = true;
       this.$refs["debug-modal"].show();
