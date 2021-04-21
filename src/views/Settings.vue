@@ -258,7 +258,7 @@
               <b-button variant="outline-primary" size="sm" @click="openDebugModal">Debug</b-button>
               <b-modal
                 ref="debug-modal"
-                title="Results"
+                title="Debug"
                 size="xl"
                 scrollable
                 body-bg-variant="dark"
