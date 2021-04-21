@@ -253,7 +253,7 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Debug</span>
-                <small class="d-block" style="opacity: 0.4">Get Umbrel logs</small>
+                <small class="d-block" style="opacity: 0.4">View Umbrel logs</small>
               </div>
               <b-button variant="outline-primary" size="sm" @click="openDebugModal">Debug</b-button>
               <b-modal
