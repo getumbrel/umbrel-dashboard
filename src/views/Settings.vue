@@ -278,8 +278,11 @@
                 <template #modal-footer="{}">
                   <div v-if="loadingDebug"></div>
                   <div v-else>
-                    <b-button size="sm" variant="primary" @click="showDmesg=!showDmesg">
+                    <b-button size="sm" class="mr-2" variant="primary" @click="showDmesg=!showDmesg">
                       Switch to {{ (!showDmesg) ? "dmesg output" : "debug output" }}
+                    </b-button>
+                    <b-button size="sm" variant="secondary" @click="downloadTextFile((!showDmesg) ? debugResult.debug : debugResult.dmesg, 'umbrel.log')">
+                      <b-icon icon="download" class="mr-2"></b-icon>Download
                     </b-button>
                   </div>
                 </template>
@@ -480,6 +483,17 @@ export default {
     closeDebugModal() {
       this.loadingDebug = false;
       this.$refs["debug-modal"].hide();
+    },
+    downloadTextFile(contents, fileName) {
+      const blob = new Blob([contents], {
+        type: 'text/plain;charset=utf-8;'
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
     },
     async shutdownPrompt() {
       // disable on testnet
