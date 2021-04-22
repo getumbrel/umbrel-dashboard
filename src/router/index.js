@@ -29,6 +29,7 @@ import ElectrumAndroid from "../components/ConnectWallet/Wallets/ElectrumAndroid
 import ElectrumDesktop from "../components/ConnectWallet/Wallets/ElectrumDesktop.vue";
 import ElectrumServer from "../components/ConnectWallet/Wallets/ElectrumServer.vue";
 import FullyNoded from "../components/ConnectWallet/Wallets/FullyNoded.vue";
+import LilyWallet from "../components/ConnectWallet/Wallets/LilyWallet.vue";
 import Phoenix from "../components/ConnectWallet/Wallets/Phoenix.vue";
 import SamouraiWallet from "../components/ConnectWallet/Wallets/SamouraiWallet.vue";
 import Sparrow from "../components/ConnectWallet/Wallets/Sparrow.vue";
@@ -204,6 +205,13 @@ const routes = [
                 component: FullyNoded,
                 meta: {
                   wallet: "fully-noded"
+                }
+              },
+              {
+                path: "lily-wallet",
+                component: LilyWallet,
+                meta: {
+                  wallet: "lily-wallet"
                 }
               },
               {
