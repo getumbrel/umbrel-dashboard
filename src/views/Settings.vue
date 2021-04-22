@@ -546,7 +546,7 @@ export default {
 
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
-        "Your lightning wallet will not be able to receive any payments while your Umbrel is offline. Also, don't forget to login to your dashboard after you restart (required only once after a restart for your Umbrel to be online).",
+        "Your lightning wallet will not be able to receive any payments while your Umbrel is offline.",
         { title: "Are you sure?" }
       );
       if (!approved) {
