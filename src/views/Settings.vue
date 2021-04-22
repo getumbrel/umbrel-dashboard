@@ -244,7 +244,7 @@
                 @ok="reboot($event)"
               >
                 <div>
-                  <p>Don't forget to login to your dashboard after the restart is complete (required only once after a restart for your Umbrel to be online).</p>
+                  <p>Your Lightning wallet will not be able to receive any payments while your Umbrel is restarting.</p>
                 </div>
               </b-modal>
             </div>
@@ -546,7 +546,7 @@ export default {
 
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
-        "Your lightning wallet will not be able to receive any payments while your Umbrel is offline.",
+        "Your Lightning wallet will not be able to receive any payments while your Umbrel is offline.",
         { title: "Are you sure?" }
       );
       if (!approved) {
