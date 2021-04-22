@@ -30,7 +30,6 @@
         </div>
       </shutdown>
       <loading v-else-if="loading" :progress="loadingProgress">
-        <small class="text-muted w-75 text-center">{{ loadingText }}</small>
       </loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
@@ -54,7 +53,6 @@ export default {
     return {
       isIframe: (window.self !== window.top),
       loading: true,
-      loadingText: "",
       loadingProgress: 0,
       loadingPollInProgress: false
     };
@@ -91,7 +89,6 @@ export default {
 
       // First check if manager api is up
       if (this.loadingProgress <= 20) {
-        this.loadingText = "Loading Manager...";
         this.loadingProgress = 20;
         await this.$store.dispatch("system/getManagerApi");
         if (!this.isManagerApiOperational) {
@@ -103,7 +100,6 @@ export default {
 
       // Then check if middleware api is up
       if (this.loadingProgress <= 40) {
-        this.loadingText = "Loading Middleware...";
         this.loadingProgress = 40;
         await this.$store.dispatch("system/getApi");
         if (!this.isApiOperational) {
