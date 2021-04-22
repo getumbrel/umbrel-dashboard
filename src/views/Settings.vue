@@ -252,35 +252,67 @@
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
-                <span class="d-block">Debug</span>
-                <small class="d-block" style="opacity: 0.4">View Umbrel logs</small>
+                <span class="d-block">Troubleshoot</span>
+                <small class="d-block" style="opacity: 0.4">View logs for troubleshooting</small>
               </div>
-              <b-button variant="outline-primary" size="sm" @click="openDebugModal">Debug</b-button>
+              <b-button variant="outline-primary" size="sm" @click="openDebugModal">Start</b-button>
               <b-modal
                 ref="debug-modal"
-                title="Debug"
                 size="xl"
                 scrollable
+                header-bg-variant="dark"
+                header-text-variant="light"
+                footer-bg-variant="dark"
+                footer-text-variant="light"
                 body-bg-variant="dark"
                 body-text-variant="light"
                 @close="closeDebugModal"
               >
-                <div v-if="this.debugFailed" class="d-flex justify-content-center">
+              <template v-slot:modal-header="{ close }">
+                <div
+                  class="px-2 pt-2 d-flex justify-content-between w-100"
+                >
+                  <h4 v-if="loadingDebug">Generating logs...</h4> 
+                  <h4 v-else>{{ showDmesg ? 'DMESG logs' : 'Umbrel logs' }}</h4>
+                  <!-- Emulate built in modal header close button action -->
+                  <a
+                    href="#"
+                    class="align-self-center"
+                    v-on:click.stop.prevent="close"
+                  >
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                        fill="#ffffff"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </template>
+                <div v-if="debugFailed" class="d-flex justify-content-center">
                   Error: Failed to fetch debug data.
                 </div>
-                <div v-else-if="this.loadingDebug" class="d-flex justify-content-center">
+                <div v-else-if="loadingDebug" class="d-flex justify-content-center">
                   <b-spinner></b-spinner>
                 </div>
-                <pre v-else class="p-2" style="color: #fff;">{{debugContents}}</pre>
+                <pre class="px-2 text-light">{{debugContents}}</pre>
 
                 <template #modal-footer="{}">
                   <div v-if="loadingDebug"></div>
-                  <div v-else>
-                    <b-button size="sm" class="mr-2" variant="primary" @click="showDmesg=!showDmesg">
-                      View {{ (!showDmesg) ? "dmesg output" : "debug output" }}
+                  <div class="d-flex w-100 justify-content-between px-2" v-else>
+                    <b-button size="sm" variant="outline-success" @click="showDmesg=!showDmesg">
+                      <b-icon icon="arrow-left-right" class="mr-1"></b-icon> View {{ (!showDmesg) ? "DMESG logs" : "Umbrel logs" }}
                     </b-button>
-                    <b-button size="sm" variant="secondary" @click="downloadTextFile(debugContents, debugFilename)">
-                      <b-icon icon="download" class="mr-2"></b-icon>Download
+                    <b-button size="sm" variant="outline-success" @click="downloadTextFile(debugContents, debugFilename)">
+                      <b-icon icon="download" class="mr-2"></b-icon>Download {{ showDmesg ? "DMESG logs" : "Umbrel logs" }}
                     </b-button>
                   </div>
                 </template>
