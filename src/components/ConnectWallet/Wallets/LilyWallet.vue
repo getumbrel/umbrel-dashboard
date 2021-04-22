@@ -17,7 +17,7 @@
         bring up the connection modal.
       </step>
       <step>
-        In the <span class="font-weight-bold">"Host"</span>, enter
+        For <span class="font-weight-bold">"Host"</span> enter
         <input-copy
           class="my-1"
           :value="`http://${urls.bitcoin.rpc.address}:${urls.bitcoin.rpc.port}`"
@@ -25,7 +25,7 @@
         ></input-copy>
       </step>
       <step>
-        In the <span class="font-weight-bold">"Username"</span>, enter
+        For <span class="font-weight-bold">"Username"</span> enter
         <input-copy
           class="my-1"
           :value="urls.bitcoin.rpc.rpcuser"
@@ -33,7 +33,7 @@
         ></input-copy>
       </step>
       <step>
-        In the <span class="font-weight-bold">"Password"</span>, enter
+        For <span class="font-weight-bold">"Password"</span> enter
         <input-copy
           class="my-1"
           :value="urls.bitcoin.rpc.rpcpassword"
