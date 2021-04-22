@@ -244,8 +244,78 @@
                 @ok="reboot($event)"
               >
                 <div>
-                  <p>Don't forget to login to your dashboard after the restart is complete (required only once after a restart for your Umbrel to be online).</p>
+                  <p>Your Lightning wallet will not be able to receive any payments while your Umbrel is restarting.</p>
                 </div>
+              </b-modal>
+            </div>
+          </div>
+          <div class="pt-0">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Troubleshoot</span>
+                <small class="d-block" style="opacity: 0.4">View logs for troubleshooting</small>
+              </div>
+              <b-button variant="outline-primary" size="sm" @click="openDebugModal">Start</b-button>
+              <b-modal
+                ref="debug-modal"
+                size="xl"
+                scrollable
+                header-bg-variant="dark"
+                header-text-variant="light"
+                footer-bg-variant="dark"
+                footer-text-variant="light"
+                body-bg-variant="dark"
+                body-text-variant="light"
+                @close="closeDebugModal"
+              >
+              <template v-slot:modal-header="{ close }">
+                <div
+                  class="px-2 pt-2 d-flex justify-content-between w-100"
+                >
+                  <h4 v-if="loadingDebug">Generating logs...</h4> 
+                  <h4 v-else>{{ showDmesg ? 'DMESG logs' : 'Umbrel logs' }}</h4>
+                  <!-- Emulate built in modal header close button action -->
+                  <a
+                    href="#"
+                    class="align-self-center"
+                    v-on:click.stop.prevent="close"
+                  >
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                        fill="#ffffff"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </template>
+                <div v-if="debugFailed" class="d-flex justify-content-center">
+                  Error: Failed to fetch debug data.
+                </div>
+                <div v-else-if="loadingDebug" class="d-flex justify-content-center">
+                  <b-spinner></b-spinner>
+                </div>
+                <pre class="px-2 text-light">{{debugContents}}</pre>
+
+                <template #modal-footer="{}">
+                  <div v-if="loadingDebug"></div>
+                  <div class="d-flex w-100 justify-content-between px-2" v-else>
+                    <b-button size="sm" variant="outline-success" @click="showDmesg=!showDmesg">
+                      <b-icon icon="arrow-left-right" class="mr-1"></b-icon> View {{ (!showDmesg) ? "DMESG logs" : "Umbrel logs" }}
+                    </b-button>
+                    <b-button size="sm" variant="outline-success" @click="downloadTextFile(debugContents, debugFilename)">
+                      <b-icon icon="download" class="mr-2"></b-icon>Download {{ showDmesg ? "DMESG logs" : "Umbrel logs" }}
+                    </b-button>
+                  </div>
+                </template>
               </b-modal>
             </div>
           </div>
@@ -297,6 +367,7 @@ import { mapState } from "vuex";
 import moment from "moment";
 
 import API from "@/helpers/api";
+import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
@@ -313,7 +384,10 @@ export default {
       confirmNewPassword: "",
       isChangingPassword: false,
       isCheckingForUpdate: false,
-      isUpdating: false
+      isUpdating: false,
+      loadingDebug: false,
+      debugFailed: false,
+      showDmesg: false
     };
   },
   computed: {
@@ -322,8 +396,16 @@ export default {
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
-      backupStatus: state => state.system.backupStatus
+      backupStatus: state => state.system.backupStatus,
+      debugResult: state => state.system.debugResult
     }),
+    debugContents() {
+      return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;
+    },
+    debugFilename() {
+      const type = this.showDmesg ? 'dmesg' : 'debug';
+      return `umbrel-${Date.now()}-${type}.log`;
+    },
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
         return false;
@@ -417,6 +499,39 @@ export default {
       await this.$store.dispatch("system/getAvailableUpdate");
       this.isCheckingForUpdate = false;
     },
+    async openDebugModal() {
+      this.showDmesg = false;
+      this.debugFailed = false;
+      this.loadingDebug = true;
+      this.$refs["debug-modal"].show();
+      try {
+        await this.$store.dispatch("system/debug");
+        while(this.loadingDebug) {
+          await delay(1000);
+          await this.$store.dispatch("system/getDebugResult");
+          if (this.debugResult.status == "success") {
+            this.loadingDebug = false;
+          }
+        }
+      } catch (e) {
+          this.debugFailed = true;
+      }
+    },
+    closeDebugModal() {
+      this.loadingDebug = false;
+      this.$refs["debug-modal"].hide();
+    },
+    downloadTextFile(contents, fileName) {
+      const blob = new Blob([contents], {
+        type: 'text/plain;charset=utf-8;'
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
     async shutdownPrompt() {
       // disable on testnet
       if (window.location.hostname === "testnet.getumbrel.com") {
@@ -431,7 +546,7 @@ export default {
 
       // Get user consent first
       const approved = await this.$bvModal.msgBoxConfirm(
-        "Your lightning wallet will not be able to receive any payments while your Umbrel is offline. Also, don't forget to login to your dashboard after you restart (required only once after a restart for your Umbrel to be online).",
+        "Your Lightning wallet will not be able to receive any payments while your Umbrel is offline.",
         { title: "Are you sure?" }
       );
       if (!approved) {
