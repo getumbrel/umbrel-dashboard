@@ -82,7 +82,7 @@
           variant="success"
           size="lg"
           @click="nextStep"
-          :disabled="!isStepValid || isRegistering"
+          :disabled="!isStepValid || isRegistering || !isLndOperational"
           class="mt-3 mx-auto d-block px-4"
           :class="{ 'loading-fade-blink': !isLndOperational || (currentStep === 8 && !unlocked), 'invisible': currentStep === 5 && recover && !isStepValid }"
         >{{ !isLndOperational ? "Loading" : nextButtonText }}</b-button>
