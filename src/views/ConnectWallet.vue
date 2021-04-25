@@ -63,7 +63,6 @@ export default {
         { value: "wasabi", text: "Wasabi" },
         { value: "zap-android", text: "Zap (Android)" },
         { value: "zap-desktop", text: "Zap (Desktop)" },
-        { value: "zap-ios", text: "Zap (iOS)" },
         { value: "zeus-android", text: "Zeus (Android)" },
         { value: "zeus-ios", text: "Zeus (iOS)" },
         {
