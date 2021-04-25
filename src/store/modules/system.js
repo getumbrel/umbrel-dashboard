@@ -93,7 +93,11 @@ const actions = {
   async getVersion({ commit }) {
     const data = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/info`);
     if (data && data.version) {
-      commit("setVersion", data.version);
+      let {version} = data;
+      if (data.build) {
+        version += `-build-${data.build}`;
+      }
+      commit("setVersion", version);
     }
   },
   async getUnit({ commit }) {
