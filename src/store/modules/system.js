@@ -17,6 +17,7 @@ const state = () => ({
     status: "", //success, failed
     timestamp: null
   },
+  highMemoryUsage: false,
   debugResult: {
     status: "", //success, processing
     result: ""
@@ -79,6 +80,9 @@ const mutations = {
   },
   setBackupStatus(state, status) {
     state.backupStatus = status;
+  },
+  setHighMemoryUsage(state, highMemoryUsage) {
+    state.highMemoryUsage = highMemoryUsage;
   },
   setDebugResult(state, result) {
     state.debugResult = result;
@@ -158,6 +162,16 @@ const actions = {
     if (status && status.timestamp) {
       commit("setBackupStatus", status);
     }
+  },
+  async getSystemStatus({ commit }) {
+    const systemStatus = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/status`);
+    if (systemStatus) {
+      commit("setHighMemoryUsage", systemStatus.highMemoryUsage);
+    }
+  },
+  async clearMemoryWarning({ commit }) {
+    const systemStatus = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/clear-memory-warning`);
+    commit("setHighMemoryUsage", false);
   },
   async getDebugResult({ commit }) {
     const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-result`);
