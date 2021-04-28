@@ -172,6 +172,7 @@ const actions = {
   async getSystemStatus({ commit }) {
     const systemStatus = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/status`);
     if (systemStatus) {
+      // Don't set high memory state if we cleared the warning in the last 10 minutes
       if (Date.now() - memoryWarningLastCleared > 10 * MINUTES) {
         commit("setHighMemoryUsage", systemStatus.highMemoryUsage);
       }
