@@ -1,5 +1,11 @@
 import API from "@/helpers/api";
 
+const SECONDS = 1000;
+const MINUTES = 60 * SECONDS;
+
+// Cache the time we last cleared memory warning
+let memoryWarningLastCleared = 0;
+
 // Initial state
 const state = () => ({
   version: "",
@@ -166,11 +172,14 @@ const actions = {
   async getSystemStatus({ commit }) {
     const systemStatus = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/status`);
     if (systemStatus) {
-      commit("setHighMemoryUsage", systemStatus.highMemoryUsage);
+      if (Date.now() - memoryWarningLastCleared > 10 * MINUTES) {
+        commit("setHighMemoryUsage", systemStatus.highMemoryUsage);
+      }
     }
   },
   async clearMemoryWarning({ commit }) {
     const systemStatus = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/clear-memory-warning`);
+    memoryWarningLastCleared = Date.now();
     commit("setHighMemoryUsage", false);
   },
   async getDebugResult({ commit }) {
