@@ -26,6 +26,8 @@
         Congratulations! You have successfully connected BlueWallet to your Umbrel.
       </step>
     </step-list>
+    <hr/>
+    <p class="text-muted">For the Lightning wallets please install the <b-link to="/app-store/bluewallet">BlueWallet Lightning</b-link> app</p>
   </connection-details>
 </template>
 
