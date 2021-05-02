@@ -51,7 +51,7 @@ export default {
         { value: null, text: "Select your wallet", disabled: true },
         { value: "bitboxapp", text: "BitBoxApp" },
         { value: "blockstream-green", text: "Blockstream Green (Android)" },
-        { value: "bluewallet-android", text: "BlueWallet (Android)" },
+        { value: "bluewallet", text: "BlueWallet" },
         { value: "electrum-android", text: "Electrum Wallet (Android)" },
         { value: "electrum-desktop", text: "Electrum Wallet (Desktop)" },
         { value: "fully-noded", text: "Fully Noded (iOS)" },
