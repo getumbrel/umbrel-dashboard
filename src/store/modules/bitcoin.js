@@ -8,11 +8,21 @@ const state = () => ({
   version: "",
   ipAddress: "",
   onionAddress: "",
-  electrumAddress: "",
+  p2p: {
+    address: "",
+    port: "",
+    connectionString: ""
+  },
+  electrum: {
+    address: "",
+    port: "",
+    connectionString: ""
+  },
   rpc: {
     rpcuser: "",
     rpcpassword: "",
     address: "",
+    port: "",
     connectionString: ""
   },
   currentBlock: 0,
@@ -93,14 +103,6 @@ const mutations = {
     state.ipAddress = address;
   },
 
-  onionAddress(state, address) {
-    state.onionAddress = address;
-  },
-
-  electrumAddress(state, address) {
-    state.electrumAddress = address;
-  },
-
   syncStatus(state, sync) {
     state.percent = Number(toPrecision(parseFloat(sync.percent) * 100, 2));
     state.currentBlock = sync.currentBlock;
@@ -133,10 +135,23 @@ const mutations = {
     state.stats.hashrate = stats.hashrate;
   },
 
+  setP2PInfo(state, p2pInfo) {
+    state.p2p.address = p2pInfo.address;
+    state.p2p.port = p2pInfo.port;
+    state.p2p.connectionString = p2pInfo.connectionString;
+  },
+
+  setElectrumInfo(state, electrumInfo) {
+    state.electrum.address = electrumInfo.address;
+    state.electrum.port = electrumInfo.port;
+    state.electrum.connectionString = electrumInfo.connectionString;
+  },
+
   setRpcInfo(state, rpcInfo) {
     state.rpc.rpcuser = rpcInfo.rpcuser;
     state.rpc.rpcpassword = rpcInfo.rpcpassword;
     state.rpc.address = rpcInfo.address;
+    state.rpc.port = rpcInfo.port;
     state.rpc.connectionString = rpcInfo.connectionString;
   },
 
@@ -217,47 +232,42 @@ const actions = {
     }
   },
 
-  async getAddresses({ commit, state }) {
-    // We can only make this request when bitcoind is operational
-    if (state.operational) {
-      const addresses = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/addresses`
-      );
+  async getAddresses({ commit }) {
+    const addresses = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/addresses`
+    );
 
-      // Default onion address to not found.
-      commit("onionAddress", "Could not determine bitcoin onion address");
+    // Default onion address to not found.
+    commit("onionAddress", "Could not determine bitcoin onion address");
 
-      if (addresses) {
-        addresses.forEach(address => {
-          if (address.includes(".onion")) {
-            commit("onionAddress", address);
-          } else {
-            commit("ipAddress", address);
-          }
-        });
-      }
+    if (addresses) {
+      addresses.forEach(address => {
+        if (address.includes(".onion")) {
+          commit("onionAddress", address);
+        } else {
+          commit("ipAddress", address);
+        }
+      });
     }
   },
 
-  async getHiddenServiceUrl({ commit }) {
-    const address = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-p2p-hidden-service`
+  async getP2PInfo({ commit }) {
+    const p2pInfo = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/bitcoin-p2p-connection-details`
     );
-    if (address) {
-      commit("onionAddress", address);
-    } else {
-      commit("onionAddress", "Couldn't get P2P address")
+
+    if (p2pInfo) {
+      commit("setP2PInfo", p2pInfo);
     }
   },
 
-  async getElectrumUrl({ commit }) {
-    const address = await API.get(
-      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/electrum-hidden-service`
+  async getElectrumInfo({ commit }) {
+    const electrumInfo = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/system/electrum-connection-details`
     );
-    if (address) {
-      commit("electrumAddress", address);
-    } else {
-      commit("electrumAddress", "Couldn't get Electrum address")
+
+    if (electrumInfo) {
+      commit("setElectrumInfo", electrumInfo);
     }
   },
 
@@ -271,116 +281,102 @@ const actions = {
     }
   },
 
-  async getSync({ commit, state }) {
-    if (state.operational) {
-      const sync = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/sync`
-      );
+  async getSync({ commit }) {
+    const sync = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/sync`
+    );
 
-      if (sync) {
-        commit("syncStatus", sync);
-      }
+    if (sync) {
+      commit("syncStatus", sync);
     }
   },
 
   async getBlocks({ commit, state, dispatch }) {
-    if (state.operational) {
-      await dispatch("getSync");
+    await dispatch("getSync");
 
-      // Cache block height array of latest 3 blocks for loading view
-      const currentBlock = state.currentBlock;
+    // Cache block height array of latest 3 blocks for loading view
+    const currentBlock = state.currentBlock;
 
-      // Don't fetch blocks if no new block has been found
-      if (state.blocks.length && currentBlock === state.blocks[0]["height"]) {
-        return;
-      }
+    // Don't fetch blocks if no new block has been found
+    if (state.blocks.length && currentBlock === state.blocks[0]["height"]) {
+      return;
+    }
 
-      // Don't fetch blocks if < 3 blocks primarily because we don't have a UI
-      // ready for a blockchain with < 3 blocks
-      if (currentBlock < 3) {
-        return;
-      }
+    // Don't fetch blocks if < 3 blocks primarily because we don't have a UI
+    // ready for a blockchain with < 3 blocks
+    if (currentBlock < 3) {
+      return;
+    }
 
-      //TODO: Fetch only new blocks
-      const latestThreeBlocks = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL
-        }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
-      );
+    //TODO: Fetch only new blocks
+    const latestThreeBlocks = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL
+      }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
+    );
 
-      if (!latestThreeBlocks.blocks) {
-        return;
-      }
+    if (!latestThreeBlocks.blocks) {
+      return;
+    }
 
-      // Update blocks
-      commit("setBlocks", latestThreeBlocks.blocks);
+    // Update blocks
+    commit("setBlocks", latestThreeBlocks.blocks);
+  },
+
+  async getVersion({ commit }) {
+    const version = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/version`
+    );
+
+    if (version) {
+      commit("setVersion", version);
     }
   },
 
-  async getVersion({ commit, state }) {
-    if (state.operational) {
-      const version = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/version`
-      );
+  async getPeers({ commit }) {
+    const peers = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/connections`
+    );
 
-      if (version) {
-        commit("setVersion", version);
-      }
+    if (peers) {
+      commit("peers", peers);
     }
   },
 
-  async getPeers({ commit, state }) {
-    if (state.operational) {
-      const peers = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/connections`
-      );
+  async getStats({ commit }) {
+    const stats = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/stats`
+    );
 
-      if (peers) {
-        commit("peers", peers);
-      }
+    if (stats) {
+      const peers = stats.connections;
+      const mempool = stats.mempool;
+      const hashrate = stats.networkhashps;
+      const blockchainSize = stats.size;
+
+      commit("setStats", {
+        peers,
+        mempool,
+        hashrate,
+        blockchainSize
+      });
     }
   },
 
-  async getStats({ commit, state }) {
-    if (state.operational) {
-      const stats = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/stats`
-      );
+  async getBalance({ commit }) {
+    const balance = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/btc`
+    );
 
-      if (stats) {
-        const peers = stats.connections;
-        const mempool = stats.mempool;
-        const hashrate = stats.networkhashps;
-        const blockchainSize = stats.size;
-
-        commit("setStats", {
-          peers,
-          mempool,
-          hashrate,
-          blockchainSize
-        });
-      }
+    if (balance) {
+      commit("balance", balance);
     }
   },
 
-  async getBalance({ commit, state }) {
-    if (state.operational) {
-      const balance = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/btc`
-      );
-
-      if (balance) {
-        commit("balance", balance);
-      }
-    }
-  },
-
-  async getTransactions({ commit, state }) {
-    if (state.operational) {
-      const transactions = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`
-      );
-      commit("transactions", transactions);
-    }
+  async getTransactions({ commit }) {
+    const transactions = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`
+    );
+    commit("transactions", transactions);
   },
 
   async getPrice({ commit }) {
@@ -393,27 +389,23 @@ const actions = {
     }
   },
 
-  async getDepositAddress({ commit, state }) {
-    if (state.operational) {
-      const { address } = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/address`
-      );
+  async getDepositAddress({ commit }) {
+    const { address } = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/address`
+    );
 
-      if (address) {
-        commit("depositAddress", address);
-      }
+    if (address) {
+      commit("depositAddress", address);
     }
   },
 
-  async getFees({ commit, state }, { address, confTarget, amt, sweep }) {
-    if (state.operational) {
-      const fees = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
-      );
+  async getFees({ commit }, { address, confTarget, amt, sweep }) {
+    const fees = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
+    );
 
-      if (fees) {
-        commit("fees", fees);
-      }
+    if (fees) {
+      commit("fees", fees);
     }
   }
 };

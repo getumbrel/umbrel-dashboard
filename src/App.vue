@@ -1,7 +1,15 @@
 <template>
   <div id="app">
     <transition name="loading" mode>
-      <loading v-if="updating" :progress="updateStatus.progress">
+      <div v-if="isIframe">
+        <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+          <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
+          <span class="text-muted w-75 text-center">
+            <small>For security reasons Umbrel cannot be embedded in an iframe.</small>
+          </span>
+        </div>
+      </div>
+      <loading v-else-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
           <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
           <b-alert class="system-alert" variant="warning" show>
@@ -22,7 +30,6 @@
         </div>
       </shutdown>
       <loading v-else-if="loading" :progress="loadingProgress">
-        <small class="text-muted w-75 text-center">{{ loadingText }}</small>
       </loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
@@ -40,16 +47,13 @@ import delay from "@/helpers/delay";
 import Shutdown from "@/components/Shutdown";
 import Loading from "@/components/Loading";
 
-const SECONDS_IN_MS = 1000;
-
 export default {
   name: "App",
   data() {
     return {
+      isIframe: (window.self !== window.top),
       loading: true,
-      loadingText: "",
       loadingProgress: 0,
-      bitcoinPollStarted: 0,
       loadingPollInProgress: false
     };
   },
@@ -60,8 +64,6 @@ export default {
       rebooting: state => state.system.rebooting,
       isManagerApiOperational: state => state.system.managerApi.operational,
       isApiOperational: state => state.system.api.operational,
-      isBitcoinOperational: state => state.bitcoin.operational,
-      isLndOperational: state => state.lightning.operational,
       jwt: state => state.user.jwt,
       updateStatus: state => state.system.updateStatus
     }),
@@ -87,7 +89,6 @@ export default {
 
       // First check if manager api is up
       if (this.loadingProgress <= 20) {
-        this.loadingText = "Loading Manager...";
         this.loadingProgress = 20;
         await this.$store.dispatch("system/getManagerApi");
         if (!this.isManagerApiOperational) {
@@ -99,44 +100,9 @@ export default {
 
       // Then check if middleware api is up
       if (this.loadingProgress <= 40) {
-        this.loadingText = "Loading Middleware...";
         this.loadingProgress = 40;
         await this.$store.dispatch("system/getApi");
         if (!this.isApiOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }
-
-      // Then check if btc is operational
-      if (this.loadingProgress <= 60) {
-        this.loadingText = "Loading Bitcoin Core...";
-
-        // Warn users against pulling power if Core is taking a while
-        const bitcoinSlowDelay = 10 * SECONDS_IN_MS;
-        if (!this.bitcoinPollStarted) {
-          this.bitcoinPollStarted = Date.now();
-        } else if (Date.now() - this.bitcoinPollStarted > bitcoinSlowDelay) {
-           this.loadingText += " This can take a while, please don't turn off your Umbrel!";
-        }
-
-        this.loadingProgress = 60;
-        await this.$store.dispatch("bitcoin/getStatus");
-        if (!this.isBitcoinOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }
-      this.bitcoinPollStarted = 0;
-
-      // Then check if lnd is operational
-      if (this.loadingProgress <= 80) {
-        this.loadingText = "Loading LND...";
-        this.loadingProgress = 80;
-        await this.$store.dispatch("lightning/getStatus");
-        if (!this.isLndOperational) {
           this.loading = true;
           this.loadingPollInProgress = false;
           return;

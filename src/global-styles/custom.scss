@@ -313,6 +313,11 @@ svg.icon-clock {
     --start-seconds: 57;
     --start-minutes: 45;
     --start-hours: 11;
+
+    &.icon-clock-warning {
+        stroke: #8a6c10;
+    }
+
     circle {
       fill: none;
     }
@@ -462,6 +467,19 @@ body {
     white-space: pre-line; 
 }
 
+.connect-wallet-steps {
+    .connect-wallet-step {
+        margin-bottom: 1.2rem;
+    }   
+}
+.connect-wallet-substeps {
+    list-style-type: lower-roman;
+    padding: 0 0 0 20px;
+    .connect-wallet-substep {
+        margin-bottom: 1.2rem;
+    }
+}
+
 // Helper class to truncate text with "..."
 .text-truncate {
     white-space: nowrap;
@@ -509,4 +527,4 @@ body {
       border-radius: 5px;
       object-fit: contain;
     }
-  }
+}
