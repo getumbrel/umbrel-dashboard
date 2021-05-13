@@ -59,8 +59,8 @@ Vue.filter("localize", n =>
 
 Vue.config.productionTip = false;
 
-new Vue({
+Vue.createApp({
   router,
   store,
-  render: h => h(App)
-}).$mount("#app");
+  render: () => h(App),
+}).mount("#app");

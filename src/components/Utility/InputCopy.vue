@@ -13,7 +13,7 @@
       type="text"
       class="copy-input"
       readonly
-      v-model="value"
+      v-bind:value="value"
     ></b-form-input>
 
     <b-input-group-append class="copy-icon-btn" @click="copyText">

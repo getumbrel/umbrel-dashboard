@@ -58,11 +58,10 @@
 import InputCopy from "@/components/Utility/InputCopy.vue";
 
 export default {
-  props: {
-    selectedOS: {
-      type: String,
-      default: null
-    }
+  data() {
+    return {
+      selectedOS: null
+    };
   },
   data() {
     return {};

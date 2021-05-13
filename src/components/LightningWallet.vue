@@ -267,7 +267,7 @@
         </div>
 
         <!-- SCREEN/MODE: Successfully paid invoice -->
-        <div class="px-3 px-lg-4 mode-sent wallet-mode" v-else-if="mode === 'sent'" key="mode-sent">
+        <div class="px-3 px-lg-4 mode-sent wallet-mode" v-else-if="mode === 'sent'">
           <!-- Back Button -->
           <div class="pb-3">
             <a href="#" class="card-link text-muted" v-on:click.stop.prevent="reset">
@@ -424,7 +424,6 @@
         <div
           class="px-3 px-lg-4 mode-sent wallet-mode"
           v-else-if="mode === 'received'"
-          key="mode-sent"
         >
           <!-- Back Button -->
           <div class="pb-3">
@@ -603,6 +602,8 @@
         </b-button>
       </b-button-group>
 
+      <!-- False negative -->
+      <!-- eslint-disable vue/no-dupe-v-else-if -->
       <b-button
         class="w-100"
         variant="success"
@@ -610,6 +611,7 @@
         @click="changeMode('receive')"
         v-else-if="this.mode === 'transactions' && walletBalance === 0"
       >
+      <!-- eslint-enable vue/no-dupe-v-else-if -->
         <svg
           width="18"
           height="18"
