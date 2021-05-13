@@ -602,7 +602,7 @@
         </b-button>
       </b-button-group>
 
-      <!-- False negative -->
+      <!-- False positive -->
       <!-- eslint-disable vue/no-dupe-v-else-if -->
       <b-button
         class="w-100"
