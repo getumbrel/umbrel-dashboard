@@ -8,16 +8,17 @@
         placeholder="Password"
         inputGroupClass="neu-input-group"
         :inputClass="[
-                    isIncorrectPassword ? 'incorrect-password' : '',
-                    'form-control form-control-lg neu-input w-100'
-                  ]"
+          isIncorrectPassword ? 'incorrect-password' : '',
+          'form-control form-control-lg neu-input w-100'
+        ]"
         :disabled="isLoadingSeed"
       />
 
       <small
         class="mt-2 text-danger error float-right"
         v-show="isIncorrectPassword"
-      >Incorrect password</small>
+        >Incorrect password</small
+      >
 
       <b-button
         variant="success"
@@ -25,9 +26,7 @@
         :disabled="password && isLoadingSeed"
         @click="fetchSeed"
       >
-        {{
-        isLoadingSeed ? "Decrypting Secret Words..." : "View Secret Words"
-        }}
+        {{ isLoadingSeed ? "Decrypting Secret Words..." : "View Secret Words" }}
       </b-button>
     </div>
 
@@ -86,5 +85,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

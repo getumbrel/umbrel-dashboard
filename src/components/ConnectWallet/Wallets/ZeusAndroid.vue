@@ -6,14 +6,17 @@
         <b-link
           href="https://play.google.com/store/apps/details?id=org.torproject.android"
           target="_blank"
-        >Orbot</b-link> on your phone.
+          >Orbot</b-link
+        >
+        on your phone.
       </step>
       <step>
-        Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add Zeus.
+        Open Orbot, tap the gear icon under
+        <span class="font-weight-bold">"Tor-Enabled apps"</span> and add Zeus.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on
-        the <span class="font-weight-bold">"VPN Mode"</span>.
+        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn
+        on the <span class="font-weight-bold">"VPN Mode"</span>.
       </step>
       <step>
         Start Tor by tapping the big onion icon.
@@ -27,11 +30,13 @@
       <step>
         Scan this QR Code (click to enlarge)
         <qr-code
-          :value="urls.lnd.restTor.replace(/cert=(.*)&/gm,'')"
+          :value="urls.lnd.restTor.replace(/cert=(.*)&/gm, '')"
           :size="300"
           class="qr-image mt-2"
           showLogo
-          @click="$emit('showQrModal', urls.lnd.restTor.replace(/cert=(.*)&/gm,''))"
+          @click="
+            $emit('showQrModal', urls.lnd.restTor.replace(/cert=(.*)&/gm, ''))
+          "
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
@@ -42,7 +47,12 @@
       <step>
         In the <span class="font-weight-bold">"Host"</span>, enter
         <input-copy
-          :value="Array.from(urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm), m => m[1])[0]"
+          :value="
+            Array.from(
+              urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm),
+              m => m[1]
+            )[0]
+          "
           auto-width
         ></input-copy>
       </step>
@@ -51,17 +61,21 @@
         <input-copy class="my-1" value="8080" auto-width></input-copy>
       </step>
       <step>
-        In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>, enter
+        In the <span class="font-weight-bold">"Macaroon (Hex format)"</span>,
+        enter
         <input-copy class="my-1" :value="macaroonHex"></input-copy>
       </step>
       <step>
         Tap <span class="font-weight-bold">"Save Node Config"</span>.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"I understand, save my node config"</span>.
+        Tap
+        <span class="font-weight-bold">"I understand, save my node config"</span
+        >.
       </step>
       <step>
-        Congratulations! You have successfully connected Zeus (Android) to your Umbrel.
+        Congratulations! You have successfully connected Zeus (Android) to your
+        Umbrel.
       </step>
     </step-list>
   </connection-details>
@@ -80,7 +94,13 @@ export default {
   },
   computed: {
     macaroonHex() {
-      return Buffer.from(Array.from(this.urls.lnd.restTor.matchAll(/macaroon=(.*)/gm), m => m[1])[0], 'base64').toString('hex');
+      return Buffer.from(
+        Array.from(
+          this.urls.lnd.restTor.matchAll(/macaroon=(.*)/gm),
+          m => m[1]
+        )[0],
+        "base64"
+      ).toString("hex");
     }
   },
   components: {

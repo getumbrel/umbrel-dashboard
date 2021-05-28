@@ -25,7 +25,9 @@
             <div class="d-block">
               <img
                 class="app-icon mr-2 mr-lg-3"
-                :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+                :src="
+                  `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`
+                "
               />
             </div>
             <div class="d-flex justify-content-center flex-column">
@@ -56,22 +58,29 @@
               v-for="image in app.gallery"
               class="d-none"
               :key="app.id + image"
-              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
+              :src="
+                `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
+              "
             />
           </div>
         </router-link>
       </card-widget>
-      <card-widget
-        class="pb-2 card-app-list umbrel-dev-note mt-2"
-      >
-      <div class="px-3 px-lg-4 py-3">
-        <span class="rocket ml-3 ml-lg-4">🚀</span>
-        <h4 class="font-weight-normal mt-4">Get your app on the Umbrel App Store</h4>
-        <p class="text-muted mb-3">
-          Use any programming language, database or framework to build your app for Umbrel.
-        </p>
-        <b-link href="https://github.com/getumbrel/umbrel/blob/master/apps/README.md" target="_blank">Learn more</b-link>
-      </div>
+      <card-widget class="pb-2 card-app-list umbrel-dev-note mt-2">
+        <div class="px-3 px-lg-4 py-3">
+          <span class="rocket ml-3 ml-lg-4">🚀</span>
+          <h4 class="font-weight-normal mt-4">
+            Get your app on the Umbrel App Store
+          </h4>
+          <p class="text-muted mb-3">
+            Use any programming language, database or framework to build your
+            app for Umbrel.
+          </p>
+          <b-link
+            href="https://github.com/getumbrel/umbrel/blob/master/apps/README.md"
+            target="_blank"
+            >Learn more</b-link
+          >
+        </div>
       </card-widget>
     </div>
   </div>
@@ -88,22 +97,22 @@ export default {
   },
   computed: {
     ...mapState({
-      store: (state) => state.apps.store,
+      store: state => state.apps.store
     }),
-    categorizedAppStore: function () {
+    categorizedAppStore: function() {
       let group = this.store.reduce((r, a) => {
         r[a.category] = [...(r[a.category] || []), a];
         return r;
       }, {});
       return group;
-    },
+    }
   },
   created() {
     this.$store.dispatch("apps/getAppStore");
   },
   components: {
-    CardWidget,
-  },
+    CardWidget
+  }
 };
 </script>
 

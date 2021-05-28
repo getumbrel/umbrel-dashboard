@@ -10,25 +10,28 @@
       <step>
         Scan this QR Code (click to enlarge)
         <qr-code
-          :value="urls.lnd.restTor.replace(/cert=(.*)&/gm,'')"
+          :value="urls.lnd.restTor.replace(/cert=(.*)&/gm, '')"
           :size="300"
           class="qr-image mt-2"
           showLogo
-          @click="$emit('showQrModal', urls.lnd.restTor.replace(/cert=(.*)&/gm,''))"
+          @click="
+            $emit('showQrModal', urls.lnd.restTor.replace(/cert=(.*)&/gm, ''))
+          "
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
-      <step>
-        Check <span class="font-weight-bold">"Use Tor"</span>.
-      </step>
+      <step> Check <span class="font-weight-bold">"Use Tor"</span>. </step>
       <step>
         Tap <span class="font-weight-bold">"Save Node Config"</span>.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"I understand, save my node config"</span>.
+        Tap
+        <span class="font-weight-bold">"I understand, save my node config"</span
+        >.
       </step>
       <step>
-        Congratulations! You have successfully connected Zeus (iOS) to your Umbrel.
+        Congratulations! You have successfully connected Zeus (iOS) to your
+        Umbrel.
       </step>
     </step-list>
   </connection-details>
@@ -46,7 +49,13 @@ export default {
   },
   computed: {
     macaroonHex() {
-      return Buffer.from(Array.from(this.urls.lnd.restLocal.matchAll(/macaroon=(.*)/gm), m => m[1])[0], 'base64').toString('hex');
+      return Buffer.from(
+        Array.from(
+          this.urls.lnd.restLocal.matchAll(/macaroon=(.*)/gm),
+          m => m[1]
+        )[0],
+        "base64"
+      ).toString("hex");
     }
   },
   components: {

@@ -12,7 +12,9 @@ const state = () => ({
 // Functions to update the state directly
 const mutations = {
   setInstalledApps(state, apps) {
-    const alphabeticallySortedApps = apps.sort((a, b) => a.name.localeCompare(b.name));
+    const alphabeticallySortedApps = apps.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
     state.installed = alphabeticallySortedApps;
   },
   setAppStore(state, appStore) {
@@ -24,7 +26,7 @@ const mutations = {
     }
   },
   removeInstallingApp(state, appId) {
-    const index = state.installing.findIndex((id) => id === appId);
+    const index = state.installing.findIndex(id => id === appId);
     if (index !== -1) {
       state.installing.splice(index, 1);
     }
@@ -35,7 +37,7 @@ const mutations = {
     }
   },
   removeUninstallingApp(state, appId) {
-    const index = state.uninstalling.findIndex((id) => id === appId);
+    const index = state.uninstalling.findIndex(id => id === appId);
     if (index !== -1) {
       state.uninstalling.splice(index, 1);
     }
@@ -45,14 +47,18 @@ const mutations = {
 // Functions to get data from the API
 const actions = {
   async getInstalledApps({ commit }) {
-    const installedApps = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/apps?installed=1`);
+    const installedApps = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps?installed=1`
+    );
     if (installedApps) {
       commit("setInstalledApps", installedApps);
     }
   },
   async getAppStore({ commit, dispatch }) {
     dispatch("getInstalledApps");
-    const appStore = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/apps`);
+    const appStore = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps`
+    );
     if (appStore) {
       commit("setAppStore", appStore);
     }
@@ -71,14 +77,14 @@ const actions = {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right",
+          toaster: "b-toaster-bottom-right"
         });
       }
     }
 
     const poll = window.setInterval(async () => {
       await dispatch("getInstalledApps");
-      const index = state.installed.findIndex((app) => app.id === appId);
+      const index = state.installed.findIndex(app => app.id === appId);
       if (index === -1) {
         commit("removeUninstallingApp", appId);
         window.clearInterval(poll);
@@ -99,14 +105,14 @@ const actions = {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right",
+          toaster: "b-toaster-bottom-right"
         });
       }
     }
 
     const poll = window.setInterval(async () => {
       await dispatch("getInstalledApps");
-      const index = state.installed.findIndex((app) => app.id === appId);
+      const index = state.installed.findIndex(app => app.id === appId);
       if (index !== -1) {
         commit("removeInstallingApp", appId);
         window.clearInterval(poll);

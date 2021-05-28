@@ -9,12 +9,10 @@ module.exports = {
   //     }
   // }
   devServer: {
-    allowedHosts: [
-      'umbrel-dev.local',
-    ],
+    allowedHosts: ["umbrel-dev.local"],
     watchOptions: {
-      poll: true,
-    },
+      poll: true
+    }
   },
   chainWebpack: config => {
     config.plugin("html").tap(args => {

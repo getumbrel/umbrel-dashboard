@@ -177,7 +177,7 @@ const actions = {
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/sync`
     );
     if (sync && sync.percent) {
-      commit("setSync", sync)
+      commit("setSync", sync);
     }
   },
 

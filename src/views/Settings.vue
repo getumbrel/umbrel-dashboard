@@ -19,7 +19,9 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Bitcoin</span>
-                <small class="d-block" style="opacity: 0.4">Run Bitcoin Core on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Run Bitcoin Core on Tor</small
+                >
               </div>
               <toggle-switch
                 class="align-self-center"
@@ -30,7 +32,9 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Lightning Network</span>
-                <small class="d-block" style="opacity: 0.4">Run Lightning on Tor</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Run Lightning on Tor</small
+                >
               </div>
               <toggle-switch
                 class="align-self-center"
@@ -42,10 +46,10 @@
               <div class="d-flex justify-content-between w-100 mb-3">
                 <div class="w-75">
                   <span class="d-block">Remote access</span>
-                  <small
-                    class="d-block"
-                    style="opacity: 0.4"
-                  >Remotely access your Umbrel via Tor Browser on the following URL</small>
+                  <small class="d-block" style="opacity: 0.4"
+                    >Remotely access your Umbrel via Tor Browser on the
+                    following URL</small
+                  >
                 </div>
                 <toggle-switch
                   class="align-self-center"
@@ -53,7 +57,11 @@
                   tooltip="Sorry, Tor cannot be disabled for now"
                 ></toggle-switch>
               </div>
-              <input-copy class="w-100" size="sm" :value="onionAddress"></input-copy>
+              <input-copy
+                class="w-100"
+                size="sm"
+                :value="onionAddress"
+              ></input-copy>
             </div>
             <div class="px-3 px-lg-4 py-2"></div>
           </div>
@@ -66,12 +74,16 @@
               <div class="w-75">
                 <span class="d-block">Backup</span>
                 <small class="d-block">
-                  <span style="opacity: 0.4">Automatically encrypt and backup your payment channels.</span>
+                  <span style="opacity: 0.4"
+                    >Automatically encrypt and backup your payment
+                    channels.</span
+                  >
                   &nbsp;
                   <a
                     href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
                     target="blank"
-                  >Learn more</a>
+                    >Learn more</a
+                  >
                 </small>
               </div>
               <toggle-switch
@@ -99,17 +111,27 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Secret words</span>
-                <small class="d-block" style="opacity: 0.4">Note down your 24 secret words</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Note down your 24 secret words</small
+                >
               </div>
 
-              <b-button variant="outline-primary" size="sm" v-b-modal.seed-modal>View</b-button>
+              <b-button variant="outline-primary" size="sm" v-b-modal.seed-modal
+                >View</b-button
+              >
 
               <b-modal id="seed-modal" centered hide-footer>
                 <template v-slot:modal-header="{ close }">
-                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                  <div
+                    class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+                  >
                     <h3>secret words</h3>
                     <!-- Emulate built in modal header close button action -->
-                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                    <a
+                      href="#"
+                      class="align-self-center"
+                      v-on:click.stop.prevent="close"
+                    >
                       <svg
                         width="18"
                         height="18"
@@ -135,7 +157,9 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Password</span>
-                <small class="d-block" style="opacity: 0.4">Change the password of your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Change the password of your Umbrel</small
+                >
               </div>
 
               <b-button
@@ -143,14 +167,21 @@
                 size="sm"
                 v-b-modal.change-password-modal
                 :disabled="isChangingPassword"
-              >Change</b-button>
+                >Change</b-button
+              >
 
               <b-modal id="change-password-modal" centered hide-footer>
                 <template v-slot:modal-header="{ close }">
-                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                  <div
+                    class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
+                  >
                     <h3>change password</h3>
                     <!-- Emulate built in modal header close button action -->
-                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                    <a
+                      href="#"
+                      class="align-self-center"
+                      v-on:click.stop.prevent="close"
+                    >
                       <svg
                         width="18"
                         height="18"
@@ -169,16 +200,23 @@
                   </div>
                 </template>
                 <div class="px-4 pb-2">
-                  <label class="sr-onlsy" for="input-withdrawal-amount">Current password</label>
+                  <label class="sr-onlsy" for="input-withdrawal-amount"
+                    >Current password</label
+                  >
                   <input-password
                     v-model="currentPassword"
                     ref="password"
                     inputGroupClass="neu-input-group"
-                    :inputClass="[ isIncorrectPassword ? 'incorrect-password' : '', 'form-control form-control-lg neu-input w-100']"
+                    :inputClass="[
+                      isIncorrectPassword ? 'incorrect-password' : '',
+                      'form-control form-control-lg neu-input w-100'
+                    ]"
                     :disabled="isChangingPassword"
                   />
                   <div class="py-2"></div>
-                  <label class="sr-onlsy" for="input-withdrawal-amount">New password</label>
+                  <label class="sr-onlsy" for="input-withdrawal-amount"
+                    >New password</label
+                  >
                   <input-password
                     v-model="newPassword"
                     ref="password"
@@ -187,7 +225,9 @@
                     :disabled="isChangingPassword"
                   />
                   <div class="py-2"></div>
-                  <label class="sr-onlsy" for="input-withdrawal-amount">Confirm new password</label>
+                  <label class="sr-onlsy" for="input-withdrawal-amount"
+                    >Confirm new password</label
+                  >
                   <input-password
                     v-model="confirmNewPassword"
                     ref="password"
@@ -198,9 +238,9 @@
                   <div class="py-2"></div>
                   <b-alert variant="warning" show>
                     <small>
-                      ⚠ Remember, there is no "Forgot Password" button. If you lose
-                      your password, you will have to recover your Umbrel using your 24
-                      secret words and channel backup.
+                      ⚠ Remember, there is no "Forgot Password" button. If you
+                      lose your password, you will have to recover your Umbrel
+                      using your 24 secret words and channel backup.
                     </small>
                   </b-alert>
                   <b-button
@@ -209,7 +249,12 @@
                     size="lg"
                     :disabled="isChangingPassword || !isAllowedToChangePassword"
                     @click="changePassword"
-                  >{{ isChangingPassword ? 'Changing password...' : 'Change password'}}</b-button>
+                    >{{
+                      isChangingPassword
+                        ? "Changing password..."
+                        : "Change password"
+                    }}</b-button
+                  >
                 </div>
               </b-modal>
             </div>
@@ -218,24 +263,38 @@
         </card-widget>
       </b-col>
       <b-col col cols="12" md="6" xl="4">
-        <card-widget header="System" :loading="isCheckingForUpdate || isUpdating">
+        <card-widget
+          header="System"
+          :loading="isCheckingForUpdate || isUpdating"
+        >
           <div class="pt-2">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Shutdown</span>
-                <small class="d-block" style="opacity: 0.4">Power off your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Power off your Umbrel</small
+                >
               </div>
-              <b-button variant="outline-danger" size="sm" @click="shutdownPrompt">Shutdown</b-button>
+              <b-button
+                variant="outline-danger"
+                size="sm"
+                @click="shutdownPrompt"
+                >Shutdown</b-button
+              >
             </div>
           </div>
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Restart</span>
-                <small class="d-block" style="opacity: 0.4">Restart your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >Restart your Umbrel</small
+                >
               </div>
 
-              <b-button variant="outline-danger" size="sm" @click="rebootPrompt">Restart</b-button>
+              <b-button variant="outline-danger" size="sm" @click="rebootPrompt"
+                >Restart</b-button
+              >
               <b-modal
                 ref="reboot-modal"
                 title="Are you sure?"
@@ -244,7 +303,10 @@
                 @ok="reboot($event)"
               >
                 <div>
-                  <p>Your Lightning wallet will not be able to receive any payments while your Umbrel is restarting.</p>
+                  <p>
+                    Your Lightning wallet will not be able to receive any
+                    payments while your Umbrel is restarting.
+                  </p>
                 </div>
               </b-modal>
             </div>
@@ -253,9 +315,16 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Troubleshoot</span>
-                <small class="d-block" style="opacity: 0.4">View logs for troubleshooting</small>
+                <small class="d-block" style="opacity: 0.4"
+                  >View logs for troubleshooting</small
+                >
               </div>
-              <b-button variant="outline-primary" size="sm" @click="openDebugModal">Start</b-button>
+              <b-button
+                variant="outline-primary"
+                size="sm"
+                @click="openDebugModal"
+                >Start</b-button
+              >
               <b-modal
                 ref="debug-modal"
                 size="xl"
@@ -268,51 +337,64 @@
                 body-text-variant="light"
                 @close="closeDebugModal"
               >
-              <template v-slot:modal-header="{ close }">
-                <div
-                  class="px-2 pt-2 d-flex justify-content-between w-100"
-                >
-                  <h4 v-if="loadingDebug">Generating logs...</h4> 
-                  <h4 v-else>{{ showDmesg ? 'DMESG logs' : 'Umbrel logs' }}</h4>
-                  <!-- Emulate built in modal header close button action -->
-                  <a
-                    href="#"
-                    class="align-self-center"
-                    v-on:click.stop.prevent="close"
-                  >
-                    <svg
-                      width="22"
-                      height="22"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                <template v-slot:modal-header="{ close }">
+                  <div class="px-2 pt-2 d-flex justify-content-between w-100">
+                    <h4 v-if="loadingDebug">Generating logs...</h4>
+                    <h4 v-else>
+                      {{ showDmesg ? "DMESG logs" : "Umbrel logs" }}
+                    </h4>
+                    <!-- Emulate built in modal header close button action -->
+                    <a
+                      href="#"
+                      class="align-self-center"
+                      v-on:click.stop.prevent="close"
                     >
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
-                        fill="#ffffff"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </template>
+                      <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                          fill="#ffffff"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </template>
                 <div v-if="debugFailed" class="d-flex justify-content-center">
                   Error: Failed to fetch debug data.
                 </div>
-                <div v-else-if="loadingDebug" class="d-flex justify-content-center">
+                <div
+                  v-else-if="loadingDebug"
+                  class="d-flex justify-content-center"
+                >
                   <b-spinner></b-spinner>
                 </div>
-                <pre class="px-2 text-light">{{debugContents}}</pre>
+                <pre class="px-2 text-light">{{ debugContents }}</pre>
 
                 <template #modal-footer="{}">
                   <div v-if="loadingDebug"></div>
                   <div class="d-flex w-100 justify-content-between px-2" v-else>
-                    <b-button size="sm" variant="outline-success" @click="showDmesg=!showDmesg">
-                      <b-icon icon="arrow-left-right" class="mr-1"></b-icon> View {{ (!showDmesg) ? "DMESG logs" : "Umbrel logs" }}
+                    <b-button
+                      size="sm"
+                      variant="outline-success"
+                      @click="showDmesg = !showDmesg"
+                    >
+                      <b-icon icon="arrow-left-right" class="mr-1"></b-icon>
+                      View {{ !showDmesg ? "DMESG logs" : "Umbrel logs" }}
                     </b-button>
-                    <b-button size="sm" variant="outline-success" @click="downloadTextFile(debugContents, debugFilename)">
-                      <b-icon icon="download" class="mr-2"></b-icon>Download {{ showDmesg ? "DMESG logs" : "Umbrel logs" }}
+                    <b-button
+                      size="sm"
+                      variant="outline-success"
+                      @click="downloadTextFile(debugContents, debugFilename)"
+                    >
+                      <b-icon icon="download" class="mr-2"></b-icon>Download
+                      {{ showDmesg ? "DMESG logs" : "Umbrel logs" }}
                     </b-button>
                   </div>
                 </template>
@@ -327,14 +409,17 @@
             <div v-show="!isCheckingForUpdate">
               <span v-show="!availableUpdate.version">
                 <b-icon icon="check-circle-fill" variant="success"></b-icon>
-                <small class="ml-1" style="opacity: 0.4">Your Umbrel is on the latest version</small>
+                <small class="ml-1" style="opacity: 0.4"
+                  >Your Umbrel is on the latest version</small
+                >
               </span>
               <div v-show="availableUpdate.version">
                 <span class="d-block">
                   <b-icon icon="bell-fill" variant="success"></b-icon>
-                  <small
-                    class="text-muted ml-1"
-                  >Umbrel v{{availableUpdate.version}} is now available to install</small>
+                  <small class="text-muted ml-1"
+                    >Umbrel v{{ availableUpdate.version }} is now available to
+                    install</small
+                  >
                 </span>
                 <b-button
                   class="mt-2"
@@ -342,7 +427,8 @@
                   size="sm"
                   @click.prevent="confirmUpdate"
                   :disabled="isUpdating"
-                >Install now</b-button>
+                  >Install now</b-button
+                >
               </div>
             </div>
           </div>
@@ -353,8 +439,14 @@
             :disabled="isCheckingForUpdate || isUpdating"
             @click="checkForUpdate"
           >
-            <b-icon icon="arrow-repeat" class="mr-2" :animation="isCheckingForUpdate ? 'spin' : ''"></b-icon>
-            {{ isCheckingForUpdate ? "Checking for update" : "Check for update"}}
+            <b-icon
+              icon="arrow-repeat"
+              class="mr-2"
+              :animation="isCheckingForUpdate ? 'spin' : ''"
+            ></b-icon>
+            {{
+              isCheckingForUpdate ? "Checking for update" : "Check for update"
+            }}
           </b-button>
         </card-widget>
       </b-col>
@@ -403,7 +495,7 @@ export default {
       return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;
     },
     debugFilename() {
-      const type = this.showDmesg ? 'dmesg' : 'debug';
+      const type = this.showDmesg ? "dmesg" : "debug";
       return `umbrel-${Date.now()}-${type}.log`;
     },
     isAllowedToChangePassword() {
@@ -506,7 +598,7 @@ export default {
       this.$refs["debug-modal"].show();
       try {
         await this.$store.dispatch("system/debug");
-        while(this.loadingDebug) {
+        while (this.loadingDebug) {
           await delay(1000);
           await this.$store.dispatch("system/getDebugResult");
           if (this.debugResult.status == "success") {
@@ -514,7 +606,7 @@ export default {
           }
         }
       } catch (e) {
-          this.debugFailed = true;
+        this.debugFailed = true;
       }
     },
     closeDebugModal() {
@@ -523,10 +615,10 @@ export default {
     },
     downloadTextFile(contents, fileName) {
       const blob = new Blob([contents], {
-        type: 'text/plain;charset=utf-8;'
+        type: "text/plain;charset=utf-8;"
       });
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = fileName;
       a.click();

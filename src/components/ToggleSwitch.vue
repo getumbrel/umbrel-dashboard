@@ -2,7 +2,11 @@
   <div
     @click="toggle"
     class="toggle"
-    :class="{ 'toggle-off': !state.isOn, 'toggle-on': state.isOn, 'toggle-disabled': disabled }"
+    :class="{
+      'toggle-off': !state.isOn,
+      'toggle-on': state.isOn,
+      'toggle-disabled': disabled
+    }"
     v-b-tooltip.hover.left
     :title="tooltip"
   >

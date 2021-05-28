@@ -6,7 +6,11 @@
   >
     <!-- Popup umbrel logo in the middle of QR code -->
     <transition name="qr-logo-popup" appear>
-      <img v-show="showLogo" src="@/assets/umbrel-qr-icon.svg" class="qr-logo" />
+      <img
+        v-show="showLogo"
+        src="@/assets/umbrel-qr-icon.svg"
+        class="qr-logo"
+      />
     </transition>
 
     <!-- QR Code element -->

@@ -673,15 +673,21 @@ export default {
       chain: state => state.bitcoin.chain,
       localExplorerTxUrl: state => {
         // Check for mempool app
-        const mempool = state.apps.installed.find(({id}) => id === 'mempool');
+        const mempool = state.apps.installed.find(({ id }) => id === "mempool");
         if (mempool) {
-          return window.location.origin.indexOf(".onion") > 0 ? `http://${mempool.hiddenService}${mempool.path}/tx/` : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
+          return window.location.origin.indexOf(".onion") > 0
+            ? `http://${mempool.hiddenService}${mempool.path}/tx/`
+            : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
         }
 
         // Check for btc-rpc-explorer app
-        const btcRpcExplorer = state.apps.installed.find(({id}) => id === 'btc-rpc-explorer');
+        const btcRpcExplorer = state.apps.installed.find(
+          ({ id }) => id === "btc-rpc-explorer"
+        );
         if (btcRpcExplorer) {
-          return window.location.origin.indexOf(".onion") > 0 ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/` : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
+          return window.location.origin.indexOf(".onion") > 0
+            ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/`
+            : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
         }
 
         // Else return empty string
@@ -723,16 +729,24 @@ export default {
     getTxExplorerUrl(txHash) {
       if (this.localExplorerTxUrl) {
         return `${this.localExplorerTxUrl}${txHash}`;
-      }
-      else {
+      } else {
         if (window.location.origin.indexOf(".onion") > 0) {
-          return this.chain === "test" ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}` : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
+          return this.chain === "test"
+            ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}`
+            : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
         }
-        return this.chain === "test" ? `https://mempool.space/testnet/tx/${txHash}` : `https://mempool.space/tx/${txHash}`;
+        return this.chain === "test"
+          ? `https://mempool.space/testnet/tx/${txHash}`
+          : `https://mempool.space/tx/${txHash}`;
       }
     },
     openTxInExplorer(event) {
-      if (!this.localExplorerTxUrl && !window.confirm('This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?')) {
+      if (
+        !this.localExplorerTxUrl &&
+        !window.confirm(
+          "This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?"
+        )
+      ) {
         event.preventDefault();
       }
     },

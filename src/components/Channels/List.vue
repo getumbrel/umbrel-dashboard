@@ -43,18 +43,18 @@ export default {
   props: {},
   computed: {
     ...mapState({
-      channels: (state) => state.lightning.channels,
-    }),
+      channels: state => state.lightning.channels
+    })
   },
   data() {
     return {
-      state: {},
+      state: {}
     };
   },
   methods: {},
   components: {
-    Channel,
-  },
+    Channel
+  }
 };
 </script>
 

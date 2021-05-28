@@ -45,7 +45,9 @@
     <ol class="pl-3" v-else-if="selectedOS == 'Windows'">
       <li class="mb-3">
         Download Tor "Windows Expert Bundle" from
-        <a target="_blank" href="https://www.torproject.org/download/tor/">here</a>.
+        <a target="_blank" href="https://www.torproject.org/download/tor/"
+          >here</a
+        >.
       </li>
       <li class="mb-3">
         Unzip the file, open the "Tor" folder inside it and install "tor.exe"
