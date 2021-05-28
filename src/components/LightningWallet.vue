@@ -468,7 +468,7 @@
 
           <!-- QR Code -->
           <qr-code
-            class="mb-3"
+            class="mb-3 mx-auto"
             :showLogo="!receive.isGeneratingInvoice"
             :value="receive.invoiceQR"
           ></qr-code>

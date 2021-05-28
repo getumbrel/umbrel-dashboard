@@ -48,7 +48,7 @@
                   </h6>
                   <small class="text-muted" v-if="block.numTransactions">
                     {{ block.numTransactions.toLocaleString() }}
-                    transactions
+                    transaction{{ block.numTransactions !== 1 ? "s" : "" }}
                   </small>
                   <!-- <small class="text-muted" v-if="block.size">
                     <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>

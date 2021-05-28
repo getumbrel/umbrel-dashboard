@@ -234,25 +234,22 @@ const actions = {
     }
   },
 
-  async getAddresses({ commit, state }) {
-    // We can only make this request when bitcoind is operational
-    if (state.operational) {
-      const addresses = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/addresses`
-      );
+  async getAddresses({ commit }) {
+    const addresses = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/addresses`
+    );
 
-      // Default onion address to not found.
-      commit("onionAddress", "Could not determine bitcoin onion address");
+    // Default onion address to not found.
+    commit("onionAddress", "Could not determine bitcoin onion address");
 
-      if (addresses) {
-        addresses.forEach(address => {
-          if (address.includes(".onion")) {
-            commit("onionAddress", address);
-          } else {
-            commit("ipAddress", address);
-          }
-        });
-      }
+    if (addresses) {
+      addresses.forEach(address => {
+        if (address.includes(".onion")) {
+          commit("onionAddress", address);
+        } else {
+          commit("ipAddress", address);
+        }
+      });
     }
   },
 
@@ -286,117 +283,103 @@ const actions = {
     }
   },
 
-  async getSync({ commit, state }) {
-    if (state.operational) {
-      const sync = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/sync`
-      );
+  async getSync({ commit }) {
+    const sync = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/sync`
+    );
 
-      if (sync) {
-        commit("syncStatus", sync);
-      }
+    if (sync) {
+      commit("syncStatus", sync);
     }
   },
 
   async getBlocks({ commit, state, dispatch }) {
-    if (state.operational) {
-      await dispatch("getSync");
+    await dispatch("getSync");
 
-      // Cache block height array of latest 3 blocks for loading view
-      const currentBlock = state.currentBlock;
+    // Cache block height array of latest 3 blocks for loading view
+    const currentBlock = state.currentBlock;
 
-      // Don't fetch blocks if no new block has been found
-      if (state.blocks.length && currentBlock === state.blocks[0]["height"]) {
-        return;
-      }
+    // Don't fetch blocks if no new block has been found
+    if (state.blocks.length && currentBlock === state.blocks[0]["height"]) {
+      return;
+    }
 
-      // Don't fetch blocks if < 3 blocks primarily because we don't have a UI
-      // ready for a blockchain with < 3 blocks
-      if (currentBlock < 3) {
-        return;
-      }
+    // Don't fetch blocks if < 3 blocks primarily because we don't have a UI
+    // ready for a blockchain with < 3 blocks
+    if (currentBlock < 3) {
+      return;
+    }
 
-      //TODO: Fetch only new blocks
-      const latestThreeBlocks = await API.get(
-        `${
-          process.env.VUE_APP_MIDDLEWARE_API_URL
-        }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
-      );
+    //TODO: Fetch only new blocks
+    const latestThreeBlocks = await API.get(
+      `${
+        process.env.VUE_APP_MIDDLEWARE_API_URL
+      }/v1/bitcoind/info/blocks?from=${currentBlock - 2}&to=${currentBlock}`
+    );
 
-      if (!latestThreeBlocks.blocks) {
-        return;
-      }
+    if (!latestThreeBlocks.blocks) {
+      return;
+    }
 
-      // Update blocks
-      commit("setBlocks", latestThreeBlocks.blocks);
+    // Update blocks
+    commit("setBlocks", latestThreeBlocks.blocks);
+  },
+
+  async getVersion({ commit }) {
+    const version = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/version`
+    );
+
+    if (version) {
+      commit("setVersion", version);
     }
   },
 
-  async getVersion({ commit, state }) {
-    if (state.operational) {
-      const version = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/version`
-      );
+  async getPeers({ commit }) {
+    const peers = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/connections`
+    );
 
-      if (version) {
-        commit("setVersion", version);
-      }
+    if (peers) {
+      commit("peers", peers);
     }
   },
 
-  async getPeers({ commit, state }) {
-    if (state.operational) {
-      const peers = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/connections`
-      );
+  async getStats({ commit }) {
+    const stats = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/stats`
+    );
 
-      if (peers) {
-        commit("peers", peers);
-      }
+    if (stats) {
+      const peers = stats.connections;
+      const mempool = stats.mempool;
+      const hashrate = stats.networkhashps;
+      const blockchainSize = stats.size;
+
+      commit("setStats", {
+        peers,
+        mempool,
+        hashrate,
+        blockchainSize
+      });
     }
   },
 
-  async getStats({ commit, state }) {
-    if (state.operational) {
-      const stats = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/bitcoind/info/stats`
-      );
+  async getBalance({ commit }) {
+    const balance = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/btc`
+    );
 
-      if (stats) {
-        const peers = stats.connections;
-        const mempool = stats.mempool;
-        const hashrate = stats.networkhashps;
-        const blockchainSize = stats.size;
-
-        commit("setStats", {
-          peers,
-          mempool,
-          hashrate,
-          blockchainSize
-        });
-      }
+    if (balance) {
+      commit("balance", balance);
     }
   },
 
-  async getBalance({ commit, state }) {
-    if (state.operational) {
-      const balance = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/wallet/btc`
-      );
-
-      if (balance) {
-        commit("balance", balance);
-      }
-    }
-  },
-
-  async getTransactions({ commit, state }) {
-    if (state.operational) {
-      const transactions = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`
-      );
-      commit("transactions", transactions);
-    }
+  async getTransactions({ commit }) {
+    const transactions = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction`
+    );
+    commit("transactions", transactions);
   },
 
   async getPrice({ commit }) {
@@ -409,27 +392,23 @@ const actions = {
     }
   },
 
-  async getDepositAddress({ commit, state }) {
-    if (state.operational) {
-      const { address } = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/address`
-      );
+  async getDepositAddress({ commit }) {
+    const { address } = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/address`
+    );
 
-      if (address) {
-        commit("depositAddress", address);
-      }
+    if (address) {
+      commit("depositAddress", address);
     }
   },
 
-  async getFees({ commit, state }, { address, confTarget, amt, sweep }) {
-    if (state.operational) {
-      const fees = await API.get(
-        `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
-      );
+  async getFees({ commit }, { address, confTarget, amt, sweep }) {
+    const fees = await API.get(
+      `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/transaction/estimateFee?address=${address}&confTarget=${confTarget}&amt=${amt}&sweep=${sweep}`
+    );
 
-      if (fees) {
-        commit("fees", fees);
-      }
+    if (fees) {
+      commit("fees", fees);
     }
   }
 };

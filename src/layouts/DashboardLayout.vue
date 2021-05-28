@@ -192,7 +192,9 @@
             <small>
               <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
               |
-              <a href="https://t.me/getumbrel" target="_blank">chat</a>
+              <a href="https://community.getumbrel.com" target="_blank"
+                >community</a
+              >
             </small>
           </p>
         </footer>

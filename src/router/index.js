@@ -24,11 +24,12 @@ import BitBoxApp from "../components/ConnectWallet/Wallets/BitBoxApp.vue";
 import BitcoinCoreP2P from "../components/ConnectWallet/Wallets/BitcoinCoreP2P.vue";
 import BitcoinCoreRPC from "../components/ConnectWallet/Wallets/BitcoinCoreRPC.vue";
 import BlockstreamGreen from "../components/ConnectWallet/Wallets/BlockstreamGreen.vue";
-import BlueWalletAndroid from "../components/ConnectWallet/Wallets/BlueWalletAndroid.vue";
+import BlueWallet from "../components/ConnectWallet/Wallets/BlueWallet.vue";
 import ElectrumAndroid from "../components/ConnectWallet/Wallets/ElectrumAndroid.vue";
 import ElectrumDesktop from "../components/ConnectWallet/Wallets/ElectrumDesktop.vue";
 import ElectrumServer from "../components/ConnectWallet/Wallets/ElectrumServer.vue";
 import FullyNoded from "../components/ConnectWallet/Wallets/FullyNoded.vue";
+import LilyWallet from "../components/ConnectWallet/Wallets/LilyWallet.vue";
 import Phoenix from "../components/ConnectWallet/Wallets/Phoenix.vue";
 import SamouraiWallet from "../components/ConnectWallet/Wallets/SamouraiWallet.vue";
 import Sparrow from "../components/ConnectWallet/Wallets/Sparrow.vue";
@@ -179,10 +180,10 @@ const routes = [
                 }
               },
               {
-                path: "bluewallet-android",
-                component: BlueWalletAndroid,
+                path: "bluewallet",
+                component: BlueWallet,
                 meta: {
-                  wallet: "bluewallet-android"
+                  wallet: "bluewallet"
                 }
               },
               {
@@ -204,6 +205,13 @@ const routes = [
                 component: FullyNoded,
                 meta: {
                   wallet: "fully-noded"
+                }
+              },
+              {
+                path: "lily-wallet",
+                component: LilyWallet,
+                meta: {
+                  wallet: "lily-wallet"
                 }
               },
               {

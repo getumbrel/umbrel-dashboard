@@ -1,29 +1,27 @@
 <template>
-  <connection-details name="BlueWallet (Android)" requires="electrum">
+  <connection-details name="BlueWallet" requires="electrum">
     <step-list>
       <step>
-        Download
-        <b-link
-          href="https://play.google.com/store/apps/details?id=org.torproject.android"
-          target="_blank"
-          >Orbot</b-link
-        >
-        on your phone.
+        Install the
+        <b-link to="/app-store/bluewallet">BlueWallet Lightning</b-link> app on
+        your Umbrel.
       </step>
       <step>
-        Open Orbot, tap the gear icon under
-        <span class="font-weight-bold">"Tor-Enabled apps"</span>
-        and add BlueWallet.
+        Open BlueWallet on your phone, tap the three dots to access the settings
+        and go to
+        <span class="font-weight-bold">Network > Lightning Settings</span>.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn
-        on <span class="font-weight-bold">"VPN Mode"</span>.
+        Tap <span class="font-weight-bold">"Scan or import a file"</span>.
       </step>
       <step>
-        Start Tor by tapping the big onion icon.
+        Scan the QR code displayed in the
+        <b-link to="/app-store/bluewallet">BlueWallet Lightning</b-link> app on
+        your Umbrel.
       </step>
+      <step> Tap <span class="font-weight-bold">"Save"</span>. </step>
       <step>
-        Open BlueWallet, tap the three dots to access the settings and go to
+        Now go to
         <span class="font-weight-bold">Network > Electrum Server</span>.
       </step>
       <step>
