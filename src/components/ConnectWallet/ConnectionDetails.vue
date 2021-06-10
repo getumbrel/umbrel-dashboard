@@ -12,6 +12,9 @@
   <card-widget v-else :header="`Here's how to connect ${name} to your Umbrel`">
     <div class="px-3 px-lg-4 pb-3">
       <slot></slot>
+      <b-alert variant="info" v-if="requires === 'electrum'" show>
+        Unable to connect to  {{ name }}? If Bitcoin Core has only recently finished syncing, please try connecting again in ~24 hours.
+      </b-alert>
     </div>
   </card-widget>
 </template>
@@ -29,7 +32,7 @@ export default {
     requires: {
       type: String,
       default: "" //electrum, bitcoin-core, lnd, or empty if no specific protocol required
-    } 
+    }
   },
   computed: {
     ...mapState({
