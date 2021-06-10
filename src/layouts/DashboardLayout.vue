@@ -178,6 +178,17 @@
               class="float-right mt-1"
             ></b-spinner>
           </b-alert>
+          <b-alert
+            class="mt-4 mb-0"
+            variant="warning"
+            :show="highMemoryUsage"
+            dismissible
+            @dismissed="clearMemoryWarning()"
+          >
+            <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
+            <b>Low RAM:</b> Umbrel is having trouble running all of your apps.
+            Consider uninstalling some apps or upgrading your Umbrel's hardware.
+          </b-alert>
           <transition name="change-page" mode="out-in">
             <!-- Content -->
             <router-view></router-view>
@@ -214,6 +225,7 @@ export default {
     ...mapState({
       name: (state) => state.user.name,
       chain: (state) => state.bitcoin.chain,
+      highMemoryUsage: (state) => state.system.highMemoryUsage,
       availableUpdate: (state) => state.system.availableUpdate,
       updateStatus: (state) => state.system.updateStatus,
       showUpdateConfirmationModal: (state) =>
@@ -241,6 +253,7 @@ export default {
       this.$store.dispatch("lightning/getChannels");
       this.$store.dispatch("bitcoin/getPrice");
       this.$store.dispatch("system/getAvailableUpdate");
+      this.$store.dispatch("system/getSystemStatus");
     },
     toggleMobileMenu() {
       this.$store.commit("toggleMobileMenu");
@@ -284,6 +297,9 @@ export default {
         });
       }
     },
+    clearMemoryWarning() {
+      this.$store.dispatch("system/clearMemoryWarning");
+    }
   },
   created() {
     //load this data once:
