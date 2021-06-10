@@ -186,8 +186,8 @@
             @dismissed="clearMemoryWarning()"
           >
             <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
-            Your Umbrel is struggling to run all of your apps. Consider
-            uninstalling some apps or upgrading your Umbrel.
+            <b>Low RAM:</b> Umbrel is having trouble running all of your apps.
+            Consider uninstalling some apps or upgrading your Umbrel's hardware.
           </b-alert>
           <transition name="change-page" mode="out-in">
             <!-- Content -->
