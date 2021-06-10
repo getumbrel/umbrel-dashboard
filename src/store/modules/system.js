@@ -12,7 +12,7 @@ const state = () => ({
   availableUpdate: {
     version: "", //update version available to download
     name: "",
-    notes: "",
+    notes: ""
   },
   updateStatus: {
     state: "", //available, unavailable, installing, successful, failed
@@ -179,7 +179,7 @@ const actions = {
     }
   },
   async clearMemoryWarning({ commit }) {
-    const systemStatus = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/clear-memory-warning`);
+    await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/clear-memory-warning`);
     memoryWarningLastCleared = Date.now();
     commit("setHighMemoryUsage", false);
   },
