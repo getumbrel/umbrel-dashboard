@@ -101,15 +101,15 @@
               </div>
             </template>
             <div class="px-2 px-sm-3 pb-2 pb-sm-3">
-              <div class="d-flex align-items-center">
+              <div class="d-lg-flex align-items-center">
                 <!-- Pubkey QR Code -->
                 <qr-code
                   :value="uris.length ? uris[0] : pubkey"
                   :size="180"
-                  class="qr-image mx-auto"
+                  class="qr-image mx-auto mb-3 mb-lg-0"
                   showLogo
                 ></qr-code>
-                <div class="w-100 align-self-center ml-3 ml-sm-4">
+                <div class="w-100 align-self-center ml-0 ml-lg-4">
                   <p>
                     Other Lightning nodes can open payment channels to your node
                     on the following address
