@@ -1,5 +1,10 @@
 <template>
   <div class="p-sm-2">
+    <app-store-image-zoomed
+      v-if="selectedImage"
+      :image="selectedImage"
+      @close-modal="closeModal"
+    />
     <div class="mt-3 mb-1 mb-sm-3 pb-lg-2">
       <router-link
         to="/app-store"
@@ -110,6 +115,11 @@
         class="app-gallery-screen mr-3"
         :key="image"
         :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
+        @click="
+          zoom(
+            `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
+          )
+        "
       />
       <div class="d-block" style="padding: 1px"></div>
     </div>
@@ -195,11 +205,14 @@
 import { mapState } from "vuex";
 
 import CardWidget from "@/components/CardWidget";
+import AppStoreImageZoomed from "@/components/AppStoreImageZoomed";
 import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   data() {
-    return {};
+    return {
+      selectedImage: null
+    };
   },
   computed: {
     ...mapState({
@@ -239,6 +252,12 @@ export default {
     },
   },
   methods: {
+    closeModal() {
+      this.selectedImage = null;
+    },
+    zoom(url) {
+      this.selectedImage = url;
+    },
     formatDependency(dependency) {
       let name;
       if (dependency === "bitcoind") {
@@ -260,6 +279,7 @@ export default {
   components: {
     CardWidget,
     InputCopy,
+    AppStoreImageZoomed
   },
 };
 </script>
