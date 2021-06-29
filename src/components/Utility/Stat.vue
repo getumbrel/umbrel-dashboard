@@ -85,6 +85,7 @@ export default {
     title: String,
     value: Number,
     suffix: String,
+    rawValue: Number,
     abbreviateValue: {
       type: Boolean,
       default: false
@@ -128,7 +129,7 @@ export default {
   },
   methods: {},
   watch: {
-    value(newValue, oldValue) {
+    rawValue(newValue, oldValue) {
       if (this.showNumericChange) {
         if (oldValue <= 0) {
           this.change = {
