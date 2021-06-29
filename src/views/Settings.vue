@@ -134,6 +134,66 @@
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
+                <span class="d-block">Username</span>
+                <small class="d-block" style="opacity: 0.4">Change the username of your Umbrel</small>
+              </div>
+
+              <b-button
+                variant="outline-primary"
+                size="sm"
+                v-b-modal.username-modal
+                :disabled="isChangingUsername"
+              >Change</b-button>
+
+              <b-modal id="username-modal" centered hide-footer>
+                <template v-slot:modal-header="{ close }">
+                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                    <h3>Username</h3>
+                    <!-- Emulate built in modal header close button action -->
+                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                          fill="#6c757d"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </template>
+                <div class="px-4 pb-2">
+                  <p class="text-center text-muted mb-3">
+                    <span>Your current username is <b>{{ this.username }}</b></span>
+                  </p>
+                  <label class="sr-onlsy" for="input-withdrawal-amount">New username</label>
+                  <b-form-input
+                    v-model="newUsername"
+                    ref="name"
+                    inputGroupClass="neu-input-group"
+                    class="form-control form-control-lg neu-input w-100"
+                  ></b-form-input>
+                  <div class="py-2"></div>
+                  <b-button
+                    class="w-100"
+                    variant="success"
+                    size="lg"
+                    :disabled="isChangingUsername"
+                    @click="changeUsername"
+                  >{{ isChangingUsername ? "Changing username..." : "Change username"}}</b-button>
+                </div>
+              </b-modal>
+            </div>
+          </div>
+          <div class="pt-0">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
                 <span class="d-block">Password</span>
                 <small class="d-block" style="opacity: 0.4">Change the password of your Umbrel</small>
               </div>
@@ -384,6 +444,8 @@ export default {
       confirmNewPassword: "",
       isChangingPassword: false,
       isCheckingForUpdate: false,
+      newUsername: "",
+      isChangingUsername: false,
       isUpdating: false,
       loadingDebug: false,
       debugFailed: false,
@@ -392,6 +454,7 @@ export default {
   },
   computed: {
     ...mapState({
+      username: state => state.user.name,
       version: state => state.system.version,
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
@@ -490,6 +553,61 @@ export default {
       this.currentPassword = "";
       this.newPassword = "";
       this.confirmNewPassword = "";
+    },
+    async changeUsername() {
+      // disable on testnet
+      if (window.location.hostname === "testnet.getumbrel.com") {
+        return this.$bvToast.toast('y u try to do dis on testnet :"(', {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
+
+      const payload = {
+        currentUsername: this.username,
+        newUsername: this.newUsername
+      };
+
+      this.isChangingUsername = true;
+
+      try {
+        await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/change-username`,
+          payload,
+          false
+        );
+      } catch (error) {
+        if (error.response && error.response.data) {
+          this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
+        this.isChangingUsername = false;
+        return;
+      }
+
+      this.$bvToast.toast(
+        `You've successfully changed your Umbrel's username`,
+        {
+          title: "Username Changed",
+          autoHideDelay: 3000,
+          variant: "success",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        }
+      );
+
+      await this.$store.dispatch("user/refreshName");
+      this.isChangingUsername = false;
+      // Remove username from view
+      this.newUsername = "";
     },
     confirmUpdate() {
       this.$store.dispatch("system/confirmUpdate");

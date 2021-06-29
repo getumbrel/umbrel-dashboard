@@ -61,6 +61,13 @@ const actions = {
     }
   },
 
+  async refreshName({ commit }) {
+    const { name } = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`
+    );
+    commit("setName", name);
+  },
+
   async registered({ commit }) {
     const { registered } = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/registered`
