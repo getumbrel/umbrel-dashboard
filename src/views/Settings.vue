@@ -134,6 +134,62 @@
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
+                <span class="d-block">Name</span>
+                <small class="d-block" style="opacity: 0.4">Change your name</small>
+              </div>
+
+              <b-button
+                  variant="outline-primary"
+                  size="sm"
+                  v-b-modal.change-name-modal
+                  :disabled="isChangingName"
+              >Rename</b-button>
+
+              <b-modal id="change-name-modal" centered hide-footer>
+                <template v-slot:modal-header="{ close }">
+                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                    <h3>Change Name</h3>
+                    <!-- Emulate built in modal header close button action -->
+                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                      <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                            fill="#6c757d"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </template>
+                <div class="px-4 pb-2">
+                  <b-form-input
+                      v-model="newName"
+                      ref="name"
+                      :placeholder="name"
+                      class="card-input w-100"
+                      autofocus/>
+                  <div class="py-2"></div>
+                  <b-button
+                      class="w-100"
+                      variant="success"
+                      size="lg"
+                      :disabled="isChangingName || newName.length === 0"
+                      @click="changeName"
+                  >{{ isChangingName ? 'Changing name...' : 'Change name'}}</b-button>
+                </div>
+              </b-modal>
+            </div>
+          </div>
+          <div class="pt-0">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
                 <span class="d-block">Password</span>
                 <small class="d-block" style="opacity: 0.4">Change the password of your Umbrel</small>
               </div>
@@ -169,7 +225,7 @@
                   </div>
                 </template>
                 <div class="px-4 pb-2">
-                  <label class="sr-onlsy" for="input-withdrawal-amount">Current password</label>
+                  <label class="sr-onlsy">Current password</label>
                   <input-password
                     v-model="currentPassword"
                     ref="password"
@@ -178,7 +234,7 @@
                     :disabled="isChangingPassword"
                   />
                   <div class="py-2"></div>
-                  <label class="sr-onlsy" for="input-withdrawal-amount">New password</label>
+                  <label class="sr-onlsy">New password</label>
                   <input-password
                     v-model="newPassword"
                     ref="password"
@@ -187,7 +243,7 @@
                     :disabled="isChangingPassword"
                   />
                   <div class="py-2"></div>
-                  <label class="sr-onlsy" for="input-withdrawal-amount">Confirm new password</label>
+                  <label class="sr-onlsy">Confirm new password</label>
                   <input-password
                     v-model="confirmNewPassword"
                     ref="password"
@@ -380,8 +436,10 @@ export default {
     return {
       currentPassword: "",
       isIncorrectPassword: false,
+      newName: "",
       newPassword: "",
       confirmNewPassword: "",
+      isChangingName: false,
       isChangingPassword: false,
       isCheckingForUpdate: false,
       isUpdating: false,
@@ -397,6 +455,7 @@ export default {
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
       backupStatus: state => state.system.backupStatus,
+      name: state => state.user.name,
       debugResult: state => state.system.debugResult
     }),
     debugContents() {
@@ -430,6 +489,56 @@ export default {
   methods: {
     getReadableTime(timestamp) {
       return moment(timestamp).format("MMM D, h:mm:ss a");
+    },
+    async changeName() {
+      if (this.newName.length === 0) {
+        return this.$bvToast.toast("Your name must not be empty!", {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
+      const payload = {
+        newName: this.newName
+      };
+
+      this.isChangingName = true;
+
+      try {
+        await API.post(
+            `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/change-name`,
+            payload
+        ).then(() => this.$store.dispatch("user/getInfo"));
+      } catch (error) {
+        if (error.response && error.response.data) {
+          this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
+        this.isChangingName = false;
+        return;
+      }
+
+      this.$bvToast.toast(
+          `You've successfully changed your name`,
+          {
+            title: "Name Changed",
+            autoHideDelay: 3000,
+            variant: "success",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          }
+      );
+
+      this.isChangingName = false;
+
+      this.newName = "";
     },
     async changePassword() {
       // disable on testnet
