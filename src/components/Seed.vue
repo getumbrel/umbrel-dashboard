@@ -6,11 +6,8 @@
         v-model="password"
         ref="password"
         placeholder="Password"
-        inputGroupClass="neu-input-group"
-        :inputClass="[
-                    isIncorrectPassword ? 'incorrect-password' : '',
-                    'form-control form-control-lg neu-input w-100'
-                  ]"
+        displayStyle="FormStyle"
+        :displayInvalidAttempt="isIncorrectPassword"
         :disabled="isLoadingSeed"
       />
 
