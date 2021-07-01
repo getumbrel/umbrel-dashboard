@@ -20,7 +20,7 @@
           ref="password"
           v-show="currentStep === 2"
           placeholder="Your password"
-          inputClass="card-input w-100"
+          displayStyle="CardInput"
         />
 
         <input-password
@@ -28,7 +28,7 @@
           ref="confirmPassword"
           placeholder="Re-enter your password"
           v-show="currentStep === 3"
-          inputClass="card-input w-100"
+          displayStyle="CardInput"
         />
 
         <div v-show="currentStep === 5">
