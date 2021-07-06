@@ -305,7 +305,8 @@ export default {
         this.$confetti.start({
           particles: [
             {
-              type: "rect"
+              type: "rect",
+              dropRate: 10 * (window.innerHeight / 1000)
             }
           ]
         });
