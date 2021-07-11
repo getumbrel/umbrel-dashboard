@@ -1,25 +1,8 @@
 <template>
-  <connection-details name="Zeus (Android)" requires="lnd">
+  <connection-details name="Zeus" requires="lnd">
     <step-list>
       <step>
-        Download
-        <b-link
-          href="https://play.google.com/store/apps/details?id=org.torproject.android"
-          target="_blank"
-        >Orbot</b-link> on your phone.
-      </step>
-      <step>
-        Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add Zeus.
-      </step>
-      <step>
-        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on
-        the <span class="font-weight-bold">"VPN Mode"</span>.
-      </step>
-      <step>
-        Start Tor by tapping the big onion icon.
-      </step>
-      <step>
-        Open the Zeus app on your Android.
+        Open the Zeus app on your phone.
       </step>
       <step>
         Tap <span class="font-weight-bold">"Scan lndconnect config"</span>.
@@ -35,6 +18,18 @@
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
       </step>
+      <step>
+        Check <span class="font-weight-bold">"Use Tor"</span>.
+      </step>
+      <step>
+        Tap <span class="font-weight-bold">"Save Node Config"</span>.
+      </step>
+      <step>
+        Tap <span class="font-weight-bold">"I understand, save my node config"</span>.
+      </step>
+      <step>
+        Congratulations! You have successfully connected Zeus to your Umbrel.
+      </step>
     </step-list>
     <hr />
     <p class="text-muted">Or manually enter the following details</p>
@@ -42,7 +37,7 @@
       <step>
         In the <span class="font-weight-bold">"Host"</span>, enter
         <input-copy
-          :value="Array.from(urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm), m => m[1])[0]"
+          :value="'https://' + Array.from(urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm), m => m[1])[0]"
           auto-width
         ></input-copy>
       </step>
@@ -55,13 +50,16 @@
         <input-copy class="my-1" :value="macaroonHex"></input-copy>
       </step>
       <step>
+        Check <span class="font-weight-bold">"Use Tor"</span>.
+      </step>
+      <step>
         Tap <span class="font-weight-bold">"Save Node Config"</span>.
       </step>
       <step>
         Tap <span class="font-weight-bold">"I understand, save my node config"</span>.
       </step>
       <step>
-        Congratulations! You have successfully connected Zeus (Android) to your Umbrel.
+        Congratulations! You have successfully connected Zeus to your Umbrel.
       </step>
     </step-list>
   </connection-details>
