@@ -39,8 +39,7 @@ import Wasabi from "../components/ConnectWallet/Wallets/Wasabi.vue";
 import ZapAndroid from "../components/ConnectWallet/Wallets/ZapAndroid.vue";
 import ZapDesktop from "../components/ConnectWallet/Wallets/ZapDesktop.vue";
 import ZapiOS from "../components/ConnectWallet/Wallets/ZapiOS.vue";
-import ZeusAndroid from "../components/ConnectWallet/Wallets/ZeusAndroid.vue";
-import ZeusiOS from "../components/ConnectWallet/Wallets/ZeusiOS.vue";
+import Zeus from "../components/ConnectWallet/Wallets/Zeus.vue";
 
 import LNDConnectGRPCLocal from "../components/ConnectWallet/Wallets/LNDConnectGRPCLocal.vue";
 import LNDConnectGRPCTor from "../components/ConnectWallet/Wallets/LNDConnectGRPCTor.vue";
@@ -292,17 +291,10 @@ const routes = [
                 }
               },
               {
-                path: "zeus-android",
-                component: ZeusAndroid,
+                path: "zeus",
+                component: Zeus,
                 meta: {
-                  wallet: "zeus-android"
-                }
-              },
-              {
-                path: "zeus-ios",
-                component: ZeusiOS,
-                meta: {
-                  wallet: "zeus-ios"
+                  wallet: "zeus"
                 }
               },
               {
