@@ -79,7 +79,7 @@ export default {
       this.$store.dispatch("apps/uninstall", appId);
     },
     openApp(event) {
-      if (this.torOnly) {
+      if (this.torOnly && window.location.origin.indexOf(".onion") < 0) {
         event.preventDefault();
         alert(`${this.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`);
       }
