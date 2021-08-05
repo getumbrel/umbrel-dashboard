@@ -1,11 +1,5 @@
 import API from "@/helpers/api";
 
-const SECONDS = 1000;
-const MINUTES = 60 * SECONDS;
-
-// Cache the time we last cleared memory warning
-let memoryWarningLastCleared = 0;
-
 // Initial state
 const state = () => ({
   version: "",
@@ -23,7 +17,6 @@ const state = () => ({
     status: "", //success, failed
     timestamp: null
   },
-  highMemoryUsage: false,
   debugResult: {
     status: "", //success, processing
     result: ""
@@ -43,7 +36,20 @@ const state = () => ({
     operational: false,
     version: ""
   },
-  onionAddress: ""
+  onionAddress: "",
+  storage: {
+    total: 0,
+    used: 0,
+    breakdown: []
+  },
+  ram: {
+    total: 0,
+    used: 0,
+    breakdown: []
+  },
+  isUmbrelOS: false,
+  cpuTemperature: 0,
+  uptime: null
 });
 
 // Functions to update the state directly
@@ -87,14 +93,26 @@ const mutations = {
   setBackupStatus(state, status) {
     state.backupStatus = status;
   },
-  setHighMemoryUsage(state, highMemoryUsage) {
-    state.highMemoryUsage = highMemoryUsage;
-  },
   setDebugResult(state, result) {
     state.debugResult = result;
   },
   setShowUpdateConfirmationModal(state, show) {
     state.showUpdateConfirmationModal = show;
+  },
+  setStorage(state, storage) {
+    state.storage = storage;
+  },
+  setRam(state, ram) {
+    state.ram = ram;
+  },
+  setIsUmbrelOS(state, isUmbrelOS) {
+    state.isUmbrelOS = isUmbrelOS;
+  },
+  setCpuTemperature(state, cpuTemperature) {
+    state.cpuTemperature = cpuTemperature;
+  },
+  setUptime(state, uptime) {
+    state.uptime = uptime;
   }
 };
 
@@ -168,20 +186,6 @@ const actions = {
     if (status && status.timestamp) {
       commit("setBackupStatus", status);
     }
-  },
-  async getSystemStatus({ commit }) {
-    const systemStatus = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/status`);
-    if (systemStatus) {
-      // Don't set high memory state if we cleared the warning in the last 10 minutes
-      if (Date.now() - memoryWarningLastCleared > 10 * MINUTES) {
-        commit("setHighMemoryUsage", systemStatus.highMemoryUsage);
-      }
-    }
-  },
-  async clearMemoryWarning({ commit }) {
-    await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/clear-memory-warning`);
-    memoryWarningLastCleared = Date.now();
-    commit("setHighMemoryUsage", false);
   },
   async getDebugResult({ commit }) {
     const result = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/debug-result`);
@@ -263,7 +267,37 @@ const actions = {
         return;
       }
     }, 2000);
-  }
+  },
+  async getStorage({ commit }) {
+    const storage = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/storage`);
+    if (storage && storage.total) {
+      storage.breakdown.sort((app1, app2) => app2.used - app1.used);
+      commit("setStorage", storage);
+    }
+  },
+  async getRam({ commit }) {
+    const ram = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/memory`);
+    if (ram && ram.total) {
+      ram.breakdown.sort((app1, app2) => app2.used - app1.used);
+      commit("setRam", ram);
+    }
+  },
+  async getIsUmbrelOS({ commit }) {
+    const isUmbrelOS = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/is-umbrel-os`);
+    commit("setIsUmbrelOS", !!isUmbrelOS);
+  },
+  async getCpuTemperature({ commit }) {
+    const cpuTemperature = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/temperature`);
+    if (cpuTemperature) {
+      commit("setCpuTemperature", cpuTemperature);
+    }
+  },
+  async getUptime({ commit }) {
+    const uptime = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/uptime`);
+    if (uptime) {
+      commit("setUptime", uptime);
+    }
+  },
 };
 
 const getters = {};

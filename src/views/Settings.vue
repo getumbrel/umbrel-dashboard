@@ -6,14 +6,20 @@
       </div>
     </div>
 
-    <b-row>
-      <b-col col cols="12" md="6" xl="4">
+    <div class="settings-card-columns">
+        <storage-widget id="storage" class="card-app-list"></storage-widget>
+
+        <ram-widget id="ram" class="card-app-list"></ram-widget>
+
+        <temperature-widget id="temperature" class="card-app-list" v-if="isUmbrelOS"></temperature-widget>
+
         <card-widget
           header="Tor"
           :status="{ text: 'Running', variant: 'success', blink: false }"
           title="100%"
           sub-title="Traffic relayed through Tor"
           icon="icon-app-tor.svg"
+          class="card-app-list"
         >
           <div class="pt-2">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
@@ -29,8 +35,8 @@
             </div>
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
-                <span class="d-block">Lightning Network</span>
-                <small class="d-block" style="opacity: 0.4">Run Lightning on Tor</small>
+                <span class="d-block">Lightning</span>
+                <small class="d-block" style="opacity: 0.4">Run Lightning Network on Tor</small>
               </div>
               <toggle-switch
                 class="align-self-center"
@@ -45,7 +51,7 @@
                   <small
                     class="d-block"
                     style="opacity: 0.4"
-                  >Remotely access your Umbrel via Tor Browser on the following URL</small>
+                  >Remotely access your Umbrel from anywhere using a Tor browser on this URL</small>
                 </div>
                 <toggle-switch
                   class="align-self-center"
@@ -55,47 +61,16 @@
               </div>
               <input-copy class="w-100" size="sm" :value="onionAddress"></input-copy>
             </div>
-            <div class="px-3 px-lg-4 py-2"></div>
+            <div class="px-3 px-lg-4 py-1"></div>
           </div>
         </card-widget>
-      </b-col>
-      <b-col col cols="12" md="6" xl="4">
-        <card-widget header="Account" :loading="isChangingPassword">
+      
+        <card-widget
+          header="Account"
+          class="card-app-list"
+          :loading="isChangingPassword"
+        >
           <div class="pt-2">
-            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-1">
-              <div class="w-75">
-                <span class="d-block">Backup</span>
-                <small class="d-block">
-                  <span style="opacity: 0.4">Automatically encrypt and backup your payment channels.</span>
-                  &nbsp;
-                  <a
-                    href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
-                    target="blank"
-                  >Learn more</a>
-                </small>
-              </div>
-              <toggle-switch
-                class="align-self-center"
-                disabled
-                tooltip="Sorry, backup cannot be disabled for now"
-              ></toggle-switch>
-            </div>
-            <div class="px-3 px-lg-4 mb-4" v-if="backupStatus.status">
-              <b-icon
-                icon="x-circle-fill"
-                variant="danger"
-                class="mr-1"
-                v-if="backupStatus.status === 'failed'"
-              ></b-icon>
-              <small style="opacity: 0.4">
-                Last backup
-                <span v-if="backupStatus.status === 'failed'">failed</span>
-                at {{ getReadableTime(backupStatus.timestamp) }}
-              </small>
-            </div>
-            <div class="mb-4" v-else></div>
-          </div>
-          <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Secret words</span>
@@ -135,7 +110,7 @@
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Password</span>
-                <small class="d-block" style="opacity: 0.4">Change the password of your Umbrel</small>
+                <small class="d-block" style="opacity: 0.4">Change your Umbrel's password</small>
               </div>
 
               <b-button
@@ -214,12 +189,29 @@
               </b-modal>
             </div>
           </div>
-          <div class="px-3 px-lg-4 py-2"></div>
+          <div class="px-3 px-lg-4 py-1"></div>
         </card-widget>
-      </b-col>
-      <b-col col cols="12" md="6" xl="4">
-        <card-widget header="System" :loading="isCheckingForUpdate || isUpdating">
-          <div class="pt-2">
+
+        <card-widget
+          header="System"
+          class="card-app-list"
+          :loading="isCheckingForUpdate || isUpdating"
+        >
+          <div class="d-block pt-2"></div>
+          
+          <!-- Uptime monitoring is only available on Umbrel OS -->
+          <div class="pt-0" v-if="isUmbrelOS">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Uptime</span>
+                <small class="d-block" style="opacity: 0.4">Time since last restart</small>
+              </div>
+              <div class="text-right">
+                <span class="d-block">{{ getUptime }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
                 <span class="d-block">Shutdown</span>
@@ -357,19 +349,21 @@
             {{ isCheckingForUpdate ? "Checking for update" : "Check for update"}}
           </b-button>
         </card-widget>
-      </b-col>
-    </b-row>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
 import moment from "moment";
+import { mapState } from "vuex";
 
 import API from "@/helpers/api";
 import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
+import StorageWidget from "@/components/Widgets/StorageWidget";
+import RamWidget from "@/components/Widgets/RamWidget";
+import TemperatureWidget from "@/components/Widgets/TemperatureWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
 import Seed from "@/components/Seed";
 import InputPassword from "@/components/Utility/InputPassword";
@@ -396,9 +390,13 @@ export default {
       onionAddress: state => state.system.onionAddress,
       availableUpdate: state => state.system.availableUpdate,
       updateStatus: state => state.system.updateStatus,
-      backupStatus: state => state.system.backupStatus,
-      debugResult: state => state.system.debugResult
+      debugResult: state => state.system.debugResult,
+      isUmbrelOS: state => state.system.isUmbrelOS,
+      uptime: state => state.system.uptime
     }),
+    getUptime() {
+      return moment.duration(this.uptime, "seconds").humanize();
+    },
     debugContents() {
       return this.showDmesg ? this.debugResult.dmesg : this.debugResult.debug;
     },
@@ -425,12 +423,9 @@ export default {
   created() {
     this.$store.dispatch("system/getOnionAddress");
     this.$store.dispatch("system/getVersion");
-    this.$store.dispatch("system/getBackupStatus");
+    this.$store.dispatch("system/getUptime");
   },
   methods: {
-    getReadableTime(timestamp) {
-      return moment(timestamp).format("MMM D, h:mm:ss a");
-    },
     async changePassword() {
       // disable on testnet
       if (window.location.hostname === "testnet.getumbrel.com") {
@@ -614,6 +609,9 @@ export default {
   },
   components: {
     CardWidget,
+    StorageWidget,
+    RamWidget,
+    TemperatureWidget,
     ToggleSwitch,
     InputPassword,
     InputCopy,

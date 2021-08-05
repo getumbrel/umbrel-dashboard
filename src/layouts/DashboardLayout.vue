@@ -178,16 +178,21 @@
               class="float-right mt-1"
             ></b-spinner>
           </b-alert>
-          <b-alert
-            class="mt-4 mb-0"
-            variant="warning"
-            :show="highMemoryUsage"
-            dismissible
-            @dismissed="clearMemoryWarning()"
-          >
+          <b-alert class="mt-4 mb-0" variant="warning" v-if="isRunningLowOnRam" show dismissible>
             <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
-            <b>Low RAM:</b> Umbrel is having trouble running all of your apps.
+            <b>Low RAM:</b> Your Umbrel is running low on RAM.
             Consider uninstalling some apps or upgrading your Umbrel's hardware.
+            <router-link to="/settings#ram" class="alert-link float-right">View usage</router-link>
+          </b-alert>
+          <b-alert class="mt-4 mb-0" variant="warning" v-if="isRunningLowOnStorage" show dismissible>
+            <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
+            <b>Low storage:</b> Your Umbrel only has {{ readableSize(storage.total - storage.used) }} of storage left.
+            Consider uninstalling some apps or upgrading to a larger drive.
+            <router-link to="/settings#storage" class="alert-link float-right">View usage</router-link>
+          </b-alert>
+          <b-alert class="mt-4 mb-0" variant="warning" v-if="isUmbrelOS && isRunningHot" show dismissible>
+            <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
+            <b>High temperature:</b> Your Raspberry Pi is running hot. Consider using a heatsink, fan or a cooling case.
           </b-alert>
           <transition name="change-page" mode="out-in">
             <!-- Content -->
@@ -212,27 +217,51 @@
 
 <script>
 import { mapState } from "vuex";
+import { readableSize } from "@/helpers/size";
 import API from "@/helpers/api";
 import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavbar";
 
 export default {
   data() {
     return {
-      isUpdating: false,
+      isUpdating: false
     };
   },
   computed: {
     ...mapState({
       name: (state) => state.user.name,
       chain: (state) => state.bitcoin.chain,
-      highMemoryUsage: (state) => state.system.highMemoryUsage,
       availableUpdate: (state) => state.system.availableUpdate,
       updateStatus: (state) => state.system.updateStatus,
-      showUpdateConfirmationModal: (state) =>
-        state.system.showUpdateConfirmationModal,
+      showUpdateConfirmationModal: (state) => state.system.showUpdateConfirmationModal,
+      ram: (state) => state.system.ram,
+      storage: (state) => state.system.storage,
+      isUmbrelOS: (state) => state.system.isUmbrelOS,
+      cpuTemperature: (state) => state.system.cpuTemperature,
     }),
+    isRunningLowOnRam() {
+      // over 95% RAM used
+      if (this.ram && this.ram.total) {
+        return this.ram.used / this.ram.total > 0.95
+      }
+      return false;
+    },
+    isRunningLowOnStorage() {
+      // less than 1GB remaining
+      if (this.storage && this.storage.total) {
+        return this.storage.total - this.storage.used < 1000000000;
+      }
+      return false;
+    },
+    isRunningHot() {
+      // over 80'C
+      if (this.cpuTemperature) {
+        return this.cpuTemperature > 80;
+      }
+      return false;
+    },
     isMobileMenuOpen() {
-      return this.$store.getters.isMobileMenuOpen;
+       return this.$store.getters.isMobileMenuOpen;
     },
   },
   methods: {
@@ -252,8 +281,11 @@ export default {
       this.$store.dispatch("lightning/getTransactions");
       this.$store.dispatch("lightning/getChannels");
       this.$store.dispatch("bitcoin/getPrice");
+      this.$store.dispatch("system/getIsUmbrelOS");
       this.$store.dispatch("system/getAvailableUpdate");
-      this.$store.dispatch("system/getSystemStatus");
+      this.$store.dispatch("system/getRam");
+      this.$store.dispatch("system/getStorage");
+      this.$store.dispatch("system/getCpuTemperature");
     },
     toggleMobileMenu() {
       this.$store.commit("toggleMobileMenu");
@@ -297,9 +329,9 @@ export default {
         });
       }
     },
-    clearMemoryWarning() {
-      this.$store.dispatch("system/clearMemoryWarning");
-    }
+    readableSize(n) {
+      return readableSize(n);
+    },
   },
   created() {
     //load this data once:

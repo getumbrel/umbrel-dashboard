@@ -20,6 +20,7 @@
           :port="app.port"
           :path="app.path"
           :hiddenService="app.hiddenService"
+          :torOnly="app.torOnly"
           :showUninstallButton="isEditing"
           :isUninstalling="uninstallingApps.includes(app.id)"
         >

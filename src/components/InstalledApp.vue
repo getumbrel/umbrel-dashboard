@@ -6,6 +6,7 @@
       target="_blank"
       :class="isUninstalling ? 'fade-in-out' : ''"
       :disabled="isUninstalling"
+      v-on:click="openApp($event)"
       ><img
         class="installed-app-icon app-icon"
         :alt="name"
@@ -43,6 +44,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    torOnly: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {};
@@ -55,6 +60,9 @@ export default {
       if (window.location.origin.indexOf(".onion") > 0) {
         return `http://${this.hiddenService}${this.path}`;
       } else {
+        if (this.torOnly) {
+          return "#";
+        }
         return `http://${window.location.hostname}:${this.port}${this.path}`;
       }
     },
@@ -70,6 +78,13 @@ export default {
       }
       this.$store.dispatch("apps/uninstall", appId);
     },
+    openApp(event) {
+      if (this.torOnly) {
+        event.preventDefault();
+        alert(`${this.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`);
+      }
+      return;
+    }
   },
   components: {},
 };

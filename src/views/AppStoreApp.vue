@@ -49,6 +49,7 @@
             class="px-4"
             :href="url"
             target="_blank"
+            v-on:click="openApp($event)"
             >Open</b-button
           >
           <div class="mt-2 text-center" v-if="app.defaultPassword">
@@ -128,9 +129,9 @@
               <span>Version</span>
               <span>{{ app.version }}</span>
             </div>
-            <div class="d-flex justify-content-between mb-3">
+            <div class="d-flex justify-content-between mb-3" v-if="app.repo">
               <span>Source Code</span>
-              <a :href="app.repo" target="_blank">Open Source</a>
+              <a :href="app.repo" target="_blank">Public</a>
             </div>
             <div class="d-flex justify-content-between mb-3">
               <span>Developer</span>
@@ -140,7 +141,7 @@
               <span>Compatibility</span>
               <span>Compatible</span>
             </div>
-            <div class="mb-4">
+            <div class="mb-4" v-if="app.dependencies.length">
               <span class="d-block mb-3">Requires</span>
               <div
                 class="d-flex align-items-center justify-content-between mb-3"
@@ -234,6 +235,9 @@ export default {
         );
         return `http://${installedApp.hiddenService}${this.app.path}`;
       } else {
+        if (this.app.torOnly) {
+          return "#";
+        }
         return `http://${window.location.hostname}:${this.app.port}${this.app.path}`;
       }
     },
@@ -252,6 +256,13 @@ export default {
     },
     installApp() {
       this.$store.dispatch("apps/install", this.app.id);
+    },
+    openApp(event) {
+      if (this.app.torOnly) {
+        event.preventDefault();
+        alert(`${this.app.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`);
+      }
+      return;
     },
   },
   async created() {

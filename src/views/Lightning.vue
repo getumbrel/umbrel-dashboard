@@ -153,8 +153,34 @@
             <b-dropdown-item
               href="#"
               @click.stop.prevent="downloadChannelBackup"
-              >Download Channel Backup</b-dropdown-item
+              >Download channel backup file</b-dropdown-item
             >
+            <b-dropdown-divider></b-dropdown-divider>
+            <b-dropdown-group>
+              <div class="dropdown-group">
+                <div class="d-flex w-100 justify-content-between">
+                <div>
+                  <span class="d-block">Automatic backups</span>
+                  <small class="d-block">
+                    <a
+                      href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
+                      target="blank"
+                    >Learn more</a>
+                  </small>
+                </div>
+                <toggle-switch
+                  class="align-self-center"
+                  disabled
+                  tooltip="Sorry, automatic backups cannot be disabled for now"
+                ></toggle-switch>
+              </div>
+              <small v-if="backupStatus.status" class="d-block mt-2" style="opacity: 0.4">
+                  Last backup
+                <span v-if="backupStatus.status === 'failed'">failed</span>
+                at {{ getReadableTime(backupStatus.timestamp) }}
+              </small>
+              </div>
+            </b-dropdown-group>
           </template>
           <div class>
             <div class="px-3 px-lg-4">
@@ -290,6 +316,7 @@
 
 <script>
 import { mapState } from "vuex";
+import moment from "moment";
 
 import API from "@/helpers/api";
 
@@ -298,6 +325,7 @@ import Stat from "@/components/Utility/Stat";
 import LightningWallet from "@/components/LightningWallet";
 import QrCode from "@/components/Utility/QrCode";
 import InputCopy from "@/components/Utility/InputCopy";
+import ToggleSwitch from "@/components/ToggleSwitch";
 import ChannelList from "@/components/Channels/List";
 import ChannelOpen from "@/components/Channels/Open";
 import ChannelManage from "@/components/Channels/Manage";
@@ -321,10 +349,14 @@ export default {
       uris: state => state.lightning.uris,
       lndConnectUrls: state => state.lightning.lndConnectUrls,
       channels: state => state.lightning.channels,
-      unit: state => state.system.unit
+      unit: state => state.system.unit,
+      backupStatus: state => state.system.backupStatus,
     })
   },
   methods: {
+    getReadableTime(timestamp) {
+      return moment(timestamp).format("MMM D, h:mm:ss a");
+    },
     async downloadChannelBackup() {
       await API.download(
         `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/util/download-channel-backup`,
@@ -364,6 +396,7 @@ export default {
   created() {
     this.fetchPageData();
     this.$store.dispatch("lightning/getLndConnectUrls");
+    this.$store.dispatch("system/getBackupStatus");
     this.interval = window.setInterval(this.fetchPageData, 10000);
   },
   beforeDestroy() {
@@ -380,6 +413,7 @@ export default {
     Stat,
     QrCode,
     InputCopy,
+    ToggleSwitch,
     ChannelList,
     ChannelOpen,
     ChannelManage
