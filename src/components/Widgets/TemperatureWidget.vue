@@ -10,7 +10,7 @@
         <div>
           <div>
             <h3 class="mb-1">{{ cpuTemperature }}&#176;</h3>
-            <p class="text-muted mb-0">Celcius</p>
+            <p class="text-muted mb-0">Celsius</p>
           </div>
         </div>
         <svg :class="cpuTemperature > 85 ? 'shake' : ''" width="66" height="66" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
