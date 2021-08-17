@@ -1,20 +1,21 @@
 <template>
   <div class="pb-3 mb-2 installed-app d-flex flex-column align-items-center">
     <a
-      class="d-block mb-3 installed-app-link"
       :href="url"
       target="_blank"
-      :class="isUninstalling ? 'fade-in-out' : ''"
-      :disabled="isUninstalling"
+      class="d-block mb-3 installed-app-link"
+      :class="isUninstalling || isOffline ? 'fade-in-out cursor-wait' : ''"
+      :disabled="isUninstalling || isOffline"
       v-on:click="openApp($event)"
       ><img
         class="installed-app-icon app-icon"
         :alt="name"
         :src="`https://getumbrel.github.io/umbrel-apps-gallery/${id}/icon.svg`"
-    /></a>
-    <span class="text-center text-truncate mb-1">{{
-      isUninstalling ? "Uninstalling..." : name
-    }}</span>
+    />
+    </a>
+    <span v-if="isUninstalling" class="text-center text-small text-muted text-truncate mb-1">Uninstalling...</span>
+    <span v-else-if="isOffline" class="text-center text-small text-muted text-truncate mb-1">Starting...</span>
+    <span v-else class="text-center text-truncate mb-1">{{ name }}</span>
     <b-button
       class="uninstall-btn"
       v-if="showUninstallButton && !isUninstalling"
@@ -50,7 +51,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isOffline: false,
+    };
   },
   computed: {
     ...mapState({
@@ -65,7 +68,7 @@ export default {
         }
         return `http://${window.location.hostname}:${this.port}${this.path}`;
       }
-    },
+    }
   },
   methods: {
     uninstall(name, appId) {
@@ -82,9 +85,30 @@ export default {
       if (this.torOnly && window.location.origin.indexOf(".onion") < 0) {
         event.preventDefault();
         alert(`${this.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`);
+        return;
+      }
+      if (this.isUninstalling || this.isOffline) {
+        event.preventDefault();
+        return;
       }
       return;
     }
+  },
+  created() {
+    const checkIfAppIsOffline = async () => {
+      try {
+        await window.fetch(this.url, { mode: "no-cors" });
+        this.isOffline = false;
+        window.clearInterval(this.pollIfAppIsOffline);
+      } catch (error) {
+        this.isOffline = true;
+      }
+    };
+    this.pollIfAppIsOffline = window.setInterval(checkIfAppIsOffline, 3000);
+    checkIfAppIsOffline();
+  },
+  beforeDestroy() {
+    window.clearInterval(this.pollIfAppIsOffline);
   },
   components: {},
 };

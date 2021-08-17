@@ -44,6 +44,15 @@
           v-if="isInstalled && !isUninstalling"
         >
           <b-button
+            v-if="isOffline"
+            variant="success"
+            size="lg"
+            class="px-4 fade-in-out cursor-wait"
+            disabled
+            >Starting...</b-button
+          >
+          <b-button
+            v-else
             variant="primary"
             size="lg"
             class="px-4"
@@ -66,7 +75,7 @@
             v-if="isInstalling"
             variant="success"
             size="lg"
-            class="px-4 fade-in-out"
+            class="px-4 fade-in-out cursor-wait"
             disabled
             >Installing...</b-button
           >
@@ -74,7 +83,7 @@
             v-else-if="isUninstalling"
             variant="warning"
             size="lg"
-            class="px-4 fade-in-out"
+            class="px-4 fade-in-out cursor-wait"
             disabled
             >Uninstalling...</b-button
           >
@@ -200,7 +209,9 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   data() {
-    return {};
+    return {
+      isOffline: false
+    };
   },
   computed: {
     ...mapState({
@@ -256,6 +267,7 @@ export default {
     },
     installApp() {
       this.$store.dispatch("apps/install", this.app.id);
+      this.isOffline = true;
     },
     openApp(event) {
       if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
@@ -267,6 +279,25 @@ export default {
   },
   async created() {
     await this.$store.dispatch("apps/getAppStore");
+    const checkIfAppIsOffline = async () => {
+      if (!this.isInstalled) {
+        return;
+      }
+      try {
+        await window.fetch(this.url, { mode: "no-cors" });
+        this.isOffline = false;
+        window.clearInterval(this.pollIfAppIsOffline);
+      } catch (error) {
+        this.isOffline = true;
+      }
+    };
+    this.pollIfAppIsOffline = window.setInterval(checkIfAppIsOffline, 3000);
+    checkIfAppIsOffline();
+  },
+  beforeDestroy() {
+    if (this.pollIfAppIsOffline) {
+      window.clearInterval(this.pollIfAppIsOffline);
+    }
   },
   components: {
     CardWidget,
