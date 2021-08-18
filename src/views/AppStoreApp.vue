@@ -204,13 +204,16 @@
 <script>
 import { mapState } from "vuex";
 
+import delay from "@/helpers/delay";
+
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   data() {
     return {
-      isOffline: false
+      isOffline: false,
+      checkIfAppIsOffline: true
     };
   },
   computed: {
@@ -268,6 +271,7 @@ export default {
     installApp() {
       this.$store.dispatch("apps/install", this.app.id);
       this.isOffline = true;
+      this.pollOfflineApp();
     },
     openApp(event) {
       if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
@@ -276,32 +280,28 @@ export default {
       }
       return;
     },
+    async pollOfflineApp() {
+      this.checkIfAppIsOffline = true;
+      while (this.checkIfAppIsOffline) {
+        try {
+          await window.fetch(this.url, {mode: "no-cors" });
+          this.isOffline = false;
+          this.checkIfAppIsOffline = false;
+        } catch (error) {
+          this.isOffline = true;
+        }
+        await delay(1000);
+      }
+    }
   },
   async created() {
     await this.$store.dispatch("apps/getAppStore");
-
-    let requestInFlight = false;
-    const checkIfAppIsOffline = async () => {
-      if (!this.isInstalled || requestInFlight) {
-        return;
-      }
-      requestInFlight = true;
-      try {
-        await window.fetch(this.url, { mode: "no-cors" });
-        this.isOffline = false;
-        window.clearInterval(this.pollIfAppIsOffline);
-      } catch (error) {
-        this.isOffline = true;
-      }
-      requestInFlight = false;
-    };
-    this.pollIfAppIsOffline = window.setInterval(checkIfAppIsOffline, 1000);
-    checkIfAppIsOffline();
+    if (this.isInstalled) {
+      this.pollOfflineApp();
+    }
   },
   beforeDestroy() {
-    if (this.pollIfAppIsOffline) {
-      window.clearInterval(this.pollIfAppIsOffline);
-    }
+    this.checkIfAppIsOffline = false;
   },
   components: {
     CardWidget,

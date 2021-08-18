@@ -30,6 +30,8 @@
 <script>
 import { mapState } from "vuex";
 
+import delay from "@/helpers/delay";
+
 export default {
   props: {
     id: String,
@@ -53,6 +55,7 @@ export default {
   data() {
     return {
       isOffline: false,
+      checkIfAppIsOffline: true
     };
   },
   computed: {
@@ -92,29 +95,26 @@ export default {
         return;
       }
       return;
+    },
+    async pollOfflineApp() {
+      this.checkIfAppIsOffline = true;
+      while (this.checkIfAppIsOffline) {
+        try {
+          await window.fetch(this.url, {mode: "no-cors" });
+          this.isOffline = false;
+          this.checkIfAppIsOffline = false;
+        } catch (error) {
+          this.isOffline = true;
+        }
+        await delay(1000);
+      }
     }
   },
   created() {
-    let requestInFlight = false;
-    const checkIfAppIsOffline = async () => {
-      if (requestInFlight) {
-        return;
-      }
-      requestInFlight = true;
-      try {
-        await window.fetch(this.url, { mode: "no-cors" });
-        this.isOffline = false;
-        window.clearInterval(this.pollIfAppIsOffline);
-      } catch (error) {
-        this.isOffline = true;
-      }
-      requestInFlight = false;
-    };
-    this.pollIfAppIsOffline = window.setInterval(checkIfAppIsOffline, 1000);
-    checkIfAppIsOffline();
+    this.pollOfflineApp();
   },
   beforeDestroy() {
-    window.clearInterval(this.pollIfAppIsOffline);
+    this.checkIfAppIsOffline = false;
   },
   components: {},
 };
