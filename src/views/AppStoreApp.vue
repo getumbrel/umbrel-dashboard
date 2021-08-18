@@ -279,10 +279,13 @@ export default {
   },
   async created() {
     await this.$store.dispatch("apps/getAppStore");
+
+    let requestInFlight = false;
     const checkIfAppIsOffline = async () => {
-      if (!this.isInstalled) {
+      if (!this.isInstalled || requestInFlight) {
         return;
       }
+      requestInFlight = true;
       try {
         await window.fetch(this.url, { mode: "no-cors" });
         this.isOffline = false;
@@ -290,8 +293,9 @@ export default {
       } catch (error) {
         this.isOffline = true;
       }
+      requestInFlight = false;
     };
-    this.pollIfAppIsOffline = window.setInterval(checkIfAppIsOffline, 3000);
+    this.pollIfAppIsOffline = window.setInterval(checkIfAppIsOffline, 1000);
     checkIfAppIsOffline();
   },
   beforeDestroy() {
