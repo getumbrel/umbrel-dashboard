@@ -9,8 +9,32 @@
       <div class="d-flex w-100 justify-content-between mb-4">
         <div>
           <div>
-            <h3 class="mb-1">{{ cpuTemperature }}&#176;</h3>
-            <p class="text-muted mb-0">Celsius</p>
+            <h3 class="mb-1">
+              <CountUp
+                :value="{
+                  endVal: cpuTemperatureInUnit,
+                  decimalPlaces: 0,
+                }"
+              />
+            </h3>
+            <div @click="toggleUnit" class="toggle toggle-sm mt-2">
+              <div
+                class="toggle-bg-text justify-content-center d-flex align-items-center"
+              >
+                <span class="text-center">&#176;C</span>
+                <span class="text-center">&#176;F</span>
+              </div>
+              <div
+                class="toggle-switch justify-content-center d-flex align-items-center"
+                :class="{
+                  'toggle-left': cpuTemperatureUnit === 'celsius',
+                  'toggle-right': cpuTemperatureUnit === 'fahrenheit'
+                }"
+              >
+                <span class="text-muted" v-if="cpuTemperatureUnit === 'celsius'">&#176;C</span>
+                <span class="text-muted" v-else-if="cpuTemperatureUnit === 'fahrenheit'">&#176;F</span>
+              </div>
+            </div>
           </div>
         </div>
         <svg :class="cpuTemperature > 85 ? 'shake' : ''" width="66" height="66" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,6 +54,7 @@
 <script>
 import { mapState } from "vuex";
 
+import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
 
 export default {
@@ -42,8 +67,15 @@ export default {
   },
   computed: {
     ...mapState({
-      cpuTemperature: state => state.system.cpuTemperature
+      cpuTemperature: state => state.system.cpuTemperature, // in celsius
+      cpuTemperatureUnit: state => state.system.cpuTemperatureUnit
     }),
+    cpuTemperatureInUnit() {
+      if (this.cpuTemperatureUnit === "fahrenheit") {
+        return Math.round((this.cpuTemperature * 1.8) + 32);
+      }
+      return this.cpuTemperature;
+    },
     cardStatus() {
       if (this.cpuTemperature > 85) {
         return {
@@ -127,10 +159,20 @@ export default {
     //   }
     //  }, 250);
     // }, 2000);
+    this.$store.dispatch("system/getCpuTemperatureUnit");
   },
-  methods: {},
+  methods: {
+    toggleUnit() {
+      if (this.cpuTemperatureUnit === "celsius") {
+        this.$store.dispatch("system/changeCpuTemperatureUnit", "fahrenheit");
+      } else if (this.cpuTemperatureUnit === "fahrenheit") {
+        this.$store.dispatch("system/changeCpuTemperatureUnit", "celsius");
+      }
+    }
+  },
   components: {
     CardWidget,
+    CountUp
   }
 };
 </script>

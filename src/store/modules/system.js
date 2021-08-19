@@ -48,7 +48,8 @@ const state = () => ({
     breakdown: []
   },
   isUmbrelOS: false,
-  cpuTemperature: 0,
+  cpuTemperature: 0, //in celsius
+  cpuTemperatureUnit: "celsius",
   uptime: null
 });
 
@@ -110,6 +111,9 @@ const mutations = {
   },
   setCpuTemperature(state, cpuTemperature) {
     state.cpuTemperature = cpuTemperature;
+  },
+  setCpuTemperatureUnit(state, cpuTemperatureUnit) {
+    state.cpuTemperatureUnit = cpuTemperatureUnit;
   },
   setUptime(state, uptime) {
     state.uptime = uptime;
@@ -290,6 +294,17 @@ const actions = {
     const cpuTemperature = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/temperature`);
     if (cpuTemperature) {
       commit("setCpuTemperature", cpuTemperature);
+    }
+  },
+  async getCpuTemperatureUnit({ commit }) {
+    if (window.localStorage && window.localStorage.getItem("cpuTemperatureUnit")) {
+      commit("setCpuTemperatureUnit", window.localStorage.getItem("cpuTemperatureUnit"));
+    }
+  },
+  changeCpuTemperatureUnit({ commit }, unit) {
+    if (unit === "celsius" || unit === "fahrenheit") {
+      window.localStorage.setItem("cpuTemperatureUnit", unit);
+      commit("setCpuTemperatureUnit", unit);
     }
   },
   async getUptime({ commit }) {
