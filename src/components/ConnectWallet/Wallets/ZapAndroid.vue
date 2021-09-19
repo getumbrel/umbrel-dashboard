@@ -17,9 +17,6 @@
           @click="$emit('showQrModal', urls.lnd.grpcTor )"
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
-        <step>
-          Tap <span class="font-weight-bold">"OK"</span> to validate your Umbrel hostname.
-        </step>
         <hr/>
         <p class="text-muted">Or manually enter the following details</p>
         <ul class="connect-wallet-substeps">
@@ -28,9 +25,12 @@
             <input-copy class="my-1" :value="urls.lnd.grpcTor"></input-copy>
           </li>
           <li class="connect-wallet-substep">
-            Tap <span class="font-weight-bold">"Paste"</span> and <span class="font-weight-bold">"Save"</span>.
+            Tap <span class="font-weight-bold">"Paste"</span>.
           </li>
         </ul>
+      </step>
+      <step>
+        Tap <span class="font-weight-bold">"OK"</span> to validate your Umbrel hostname.
       </step>
       <step>
         Congratulations! You have successfully connected Zap (Android) to your Umbrel.
