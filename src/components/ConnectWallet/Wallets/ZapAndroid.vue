@@ -2,44 +2,30 @@
   <connection-details name="Zap (Android)" requires="lnd">
     <step-list>
       <step>
-        Download
-        <b-link
-          href="https://play.google.com/store/apps/details?id=org.torproject.android"
-          target="_blank"
-        >Orbot</b-link> on your phone.
-      </step>
-      <step>
-        Open Orbot, tap the gear icon under <span class="font-weight-bold">"Tor-Enabled apps"</span> and add Zap.
-      </step>
-      <step>
-        Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn on
-        the <span class="font-weight-bold">"VPN Mode"</span>.
-      </step>
-      <step>
-        Start Tor by tapping the big onion icon.
-      </step>
-      <step>
         Open the Zap app on your phone.
       </step>
       <step>
-        Tap <span class="font-weight-bold">"Connect"</span> on the welcome screen.
+        Tap <span class="font-weight-bold">"Setup Wallet"</span> on the home screen. If you're already using Zap, go to <span class="font-weight-bold">Menu > Wallets</span> and tap <span class="font-weight-bold">+</span>.
       </step>
       <step>
         Scan this QR Code (click to enlarge)
         <qr-code
-          :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')"
+          :value="urls.lnd.grpcTor"
           :size="300"
           class="qr-image mt-2"
           showLogo
-          @click="$emit('showQrModal', urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'') )"
+          @click="$emit('showQrModal', urls.lnd.grpcTor )"
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
+        <step>
+          Tap <span class="font-weight-bold">"OK"</span> to validate your Umbrel hostname.
+        </step>
         <hr/>
         <p class="text-muted">Or manually enter the following details</p>
         <ul class="connect-wallet-substeps">
           <li class="connect-wallet-substep">
             Copy
-            <input-copy class="my-1" :value="urls.lnd.grpcTor.replace(/cert=(.*)&/gm,'')"></input-copy>
+            <input-copy class="my-1" :value="urls.lnd.grpcTor"></input-copy>
           </li>
           <li class="connect-wallet-substep">
             Tap <span class="font-weight-bold">"Paste"</span> and <span class="font-weight-bold">"Save"</span>.
