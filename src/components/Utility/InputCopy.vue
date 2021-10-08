@@ -3,7 +3,7 @@
     class="copy-input-container align-items-center"
     :class="autoWidth ? 'd-inline-flex auto-width mx-1' : 'd-flex'"
     :style="{
-      width: autoWidth ? `${(10 + value.toString().length) * 8}px` : 'auto',
+      width: autoWidth ? `${(10 + value.toString().length) * 8}px` : width,
       maxWidth: '100%',
     }"
     :size="size ? size : 'sm'"
@@ -50,6 +50,10 @@ export default {
       default: "sm",
     },
     value: String,
+    width: {
+      type: String,
+      default: "auto"
+    },
     autoWidth: {
       type: Boolean,
       default: false,
