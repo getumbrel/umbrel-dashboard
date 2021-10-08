@@ -61,13 +61,25 @@
             v-on:click="openApp($event)"
             >Open</b-button
           >
-          <div class="mt-2 text-center" v-if="app.defaultPassword">
-            <small class="">The default password of this app is</small>
-            <input-copy
-              size="sm"
-              :value="app.defaultPassword"
-              class="mt-1"
-            ></input-copy>
+          <div class="mt-2 text-center d-flex justify-content-center" v-if="app.defaultPassword">
+            <div class="text-left mr-2" v-if="app.defaultUsername">
+              <small class="">Default app username</small>
+              <input-copy
+                width="140px"
+                size="sm"
+                :value="app.defaultUsername"
+                class="mt-1"
+              ></input-copy>
+            </div>
+            <div :class="app.defaultUsername ? 'text-left': ''">
+              <small class="">Default app password</small>
+              <input-copy
+                :width="app.defaultUsername ? '140px' : 'auto'"
+                size="sm"
+                :value="app.defaultPassword"
+                class="mt-1"
+              ></input-copy>
+            </div>
           </div>
         </div>
         <div class="d-flex flex-column align-items-sm-center w-xs-100" v-else>
@@ -100,16 +112,25 @@
             class="mt-1 d-block text-muted text-center"
             >This may take a few minutes</small
           >
-          <div
-            class="mt-2 text-center"
-            v-if="isInstalling && app.defaultPassword"
-          >
-            <small class="">The default password of this app is</small>
-            <input-copy
-              size="sm"
-              :value="app.defaultPassword"
-              class="mt-1"
-            ></input-copy>
+          <div class="mt-2 text-center d-flex justify-content-center" v-if="isInstalling && app.defaultPassword">
+            <div class="text-left mr-2" v-if="app.defaultUsername">
+              <small class="">Default app username</small>
+              <input-copy
+                width="140px"
+                size="sm"
+                :value="app.defaultUsername"
+                class="mt-1"
+              ></input-copy>
+            </div>
+            <div :class="app.defaultUsername ? 'text-left': ''">
+              <small class="">Default app password</small>
+              <input-copy
+                :width="app.defaultUsername ? '140px' : 'auto'"
+                size="sm"
+                :value="app.defaultPassword"
+                class="mt-1"
+              ></input-copy>
+            </div>
           </div>
         </div>
       </div>
