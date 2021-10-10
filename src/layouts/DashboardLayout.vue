@@ -336,6 +336,7 @@ export default {
   created() {
     //load this data once:
     this.$store.dispatch("user/getInfo");
+    this.$store.dispatch("user/getSettings");
 
     //refresh this data every 20s:
     this.fetchData();
