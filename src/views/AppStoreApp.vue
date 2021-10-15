@@ -44,20 +44,42 @@
           v-if="isInstalled && !isUninstalling"
         >
           <b-button
+            v-if="isOffline"
+            variant="success"
+            size="lg"
+            class="px-4 fade-in-out cursor-wait"
+            disabled
+            >Starting...</b-button
+          >
+          <b-button
+            v-else
             variant="primary"
             size="lg"
             class="px-4"
             :href="url"
             target="_blank"
+            v-on:click="openApp($event)"
             >Open</b-button
           >
-          <div class="mt-2 text-center" v-if="app.defaultPassword">
-            <small class="">The default password of this app is</small>
-            <input-copy
-              size="sm"
-              :value="app.defaultPassword"
-              class="mt-1"
-            ></input-copy>
+          <div class="mt-2 text-center d-flex justify-content-center" v-if="app.defaultPassword">
+            <div class="text-left mr-2" v-if="app.defaultUsername">
+              <small class="">Default app username</small>
+              <input-copy
+                width="140px"
+                size="sm"
+                :value="app.defaultUsername"
+                class="mt-1"
+              ></input-copy>
+            </div>
+            <div :class="app.defaultUsername ? 'text-left': ''">
+              <small class="">Default app password</small>
+              <input-copy
+                :width="app.defaultUsername ? '140px' : 'auto'"
+                size="sm"
+                :value="app.defaultPassword"
+                class="mt-1"
+              ></input-copy>
+            </div>
           </div>
         </div>
         <div class="d-flex flex-column align-items-sm-center w-xs-100" v-else>
@@ -65,7 +87,7 @@
             v-if="isInstalling"
             variant="success"
             size="lg"
-            class="px-4 fade-in-out"
+            class="px-4 fade-in-out cursor-wait"
             disabled
             >Installing...</b-button
           >
@@ -73,7 +95,7 @@
             v-else-if="isUninstalling"
             variant="warning"
             size="lg"
-            class="px-4 fade-in-out"
+            class="px-4 fade-in-out cursor-wait"
             disabled
             >Uninstalling...</b-button
           >
@@ -90,16 +112,25 @@
             class="mt-1 d-block text-muted text-center"
             >This may take a few minutes</small
           >
-          <div
-            class="mt-2 text-center"
-            v-if="isInstalling && app.defaultPassword"
-          >
-            <small class="">The default password of this app is</small>
-            <input-copy
-              size="sm"
-              :value="app.defaultPassword"
-              class="mt-1"
-            ></input-copy>
+          <div class="mt-2 text-center d-flex justify-content-center" v-if="isInstalling && app.defaultPassword">
+            <div class="text-left mr-2" v-if="app.defaultUsername">
+              <small class="">Default app username</small>
+              <input-copy
+                width="140px"
+                size="sm"
+                :value="app.defaultUsername"
+                class="mt-1"
+              ></input-copy>
+            </div>
+            <div :class="app.defaultUsername ? 'text-left': ''">
+              <small class="">Default app password</small>
+              <input-copy
+                :width="app.defaultUsername ? '140px' : 'auto'"
+                size="sm"
+                :value="app.defaultPassword"
+                class="mt-1"
+              ></input-copy>
+            </div>
           </div>
         </div>
       </div>
@@ -128,9 +159,9 @@
               <span>Version</span>
               <span>{{ app.version }}</span>
             </div>
-            <div class="d-flex justify-content-between mb-3">
+            <div class="d-flex justify-content-between mb-3" v-if="app.repo">
               <span>Source Code</span>
-              <a :href="app.repo" target="_blank">Open Source</a>
+              <a :href="app.repo" target="_blank">Public</a>
             </div>
             <div class="d-flex justify-content-between mb-3">
               <span>Developer</span>
@@ -140,7 +171,7 @@
               <span>Compatibility</span>
               <span>Compatible</span>
             </div>
-            <div class="mb-4">
+            <div class="mb-4" v-if="app.dependencies.length">
               <span class="d-block mb-3">Requires</span>
               <div
                 class="d-flex align-items-center justify-content-between mb-3"
@@ -194,12 +225,17 @@
 <script>
 import { mapState } from "vuex";
 
+import delay from "@/helpers/delay";
+
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   data() {
-    return {};
+    return {
+      isOffline: false,
+      checkIfAppIsOffline: true
+    };
   },
   computed: {
     ...mapState({
@@ -234,6 +270,9 @@ export default {
         );
         return `http://${installedApp.hiddenService}${this.app.path}`;
       } else {
+        if (this.app.torOnly) {
+          return "#";
+        }
         return `http://${window.location.hostname}:${this.app.port}${this.app.path}`;
       }
     },
@@ -252,10 +291,38 @@ export default {
     },
     installApp() {
       this.$store.dispatch("apps/install", this.app.id);
+      this.isOffline = true;
+      this.pollOfflineApp();
     },
+    openApp(event) {
+      if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
+        event.preventDefault();
+        alert(`${this.app.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`);
+      }
+      return;
+    },
+    async pollOfflineApp() {
+      this.checkIfAppIsOffline = true;
+      while (this.checkIfAppIsOffline) {
+        try {
+          await window.fetch(this.url, {mode: "no-cors" });
+          this.isOffline = false;
+          this.checkIfAppIsOffline = false;
+        } catch (error) {
+          this.isOffline = true;
+        }
+        await delay(1000);
+      }
+    }
   },
   async created() {
     await this.$store.dispatch("apps/getAppStore");
+    if (this.isInstalled) {
+      this.pollOfflineApp();
+    }
+  },
+  beforeDestroy() {
+    this.checkIfAppIsOffline = false;
   },
   components: {
     CardWidget,

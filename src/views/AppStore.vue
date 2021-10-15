@@ -8,7 +8,7 @@
         </p>
       </div>
     </div>
-    <div class="card-columns">
+    <div class="app-store-card-columns">
       <card-widget
         v-for="categorizedApps in categorizedAppStore"
         :key="categorizedApps[0].category"
@@ -126,15 +126,6 @@ export default {
       transform: translate3d(6px, 0, 0);
     }
   }
-}
-.card-app-list {
-  // https://stackoverflow.com/a/34115300
-  box-shadow: 0 1px 10px rgba(209, 213, 223, 0.5),
-    0 1px 2px rgba(209, 213, 223, 0) !important;
-  margin-top: 16px !important;
-  margin-bottom: 16px !important;
-  display: inline-block;
-  width: 100%;
 }
 
 .umbrel-dev-note {

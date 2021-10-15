@@ -70,8 +70,10 @@ If you're a developer looking to help but not sure where to begin, check out [th
 
 If you're looking for a bigger challenge, before opening a pull request please [create an issue](https://github.com/getumbrel/umbrel-dashboard/issues/new/choose) or [join our community chat](https://t.me/getumbrel) to get feedback, discuss the best way to tackle the challenge, and to ensure that there's no duplication of work.
 
----
+## 📜 License
 
-[![License](https://img.shields.io/badge/license-CC%20BY--NC--ND%204.0-%235351FB)](https://github.com/getumbrel/umbrel-dashboard/blob/master/LICENSE.md)
+Umbrel (and Umbrel Dashboard) is licensed under the PolyForm Noncommercial 1.0.0 license. TL;DR — You're free to use, fork, modify, and redestribute Umbrel for personal and nonprofit use under the same license. If you're interested to use Umbrel for commercial purposes, such as selling plug-and-play home servers with Umbrel, etc — please reach out to us at partner@getumbrel.com.
+
+[![License](https://img.shields.io/badge/license-PolyForm%20Noncommercial%201.0.0-%235351FB)](https://github.com/getumbrel/umbrel/blob/master/LICENSE.md)
 
 [getumbrel.com](https://getumbrel.com)
