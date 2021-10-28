@@ -88,6 +88,9 @@ export default {
     }
 
     this.loading = false;
+    
+    // Auto focus input
+    this.$refs.password.$el.querySelector('.card-input').focus();
   },
   methods: {
     async authenticateUser() {
