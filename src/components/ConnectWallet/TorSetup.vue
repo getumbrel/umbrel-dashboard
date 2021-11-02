@@ -29,6 +29,15 @@
           size="sm"
         ></input-copy>
       </li>
+
+      <li class="mb-3">
+        Start Tor by running:
+        <input-copy
+          class="mt-2"
+          value="tor"
+          size="sm"
+        ></input-copy>
+      </li>
     </ol>
 
     <ol class="pl-3" v-else-if="selectedOS == 'Linux'">
@@ -37,6 +46,15 @@
         <input-copy
           class="mt-2"
           value="sudo apt-get install tor"
+          size="sm"
+        ></input-copy>
+      </li>
+
+      <li class="mb-3">
+        Start Tor by running:
+        <input-copy
+          class="mt-2"
+          value="tor"
           size="sm"
         ></input-copy>
       </li>
