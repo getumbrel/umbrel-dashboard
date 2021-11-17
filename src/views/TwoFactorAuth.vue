@@ -11,7 +11,7 @@
     <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">welcome back</h1>
-      <p class="text-muted w-75 text-center">Enter the password to login to your Umbrel</p>
+      <p class="text-muted w-75 text-center">Enter your 2FA token</p>
 
       <form
         v-on:submit.prevent="authenticateUser"
@@ -20,16 +20,17 @@
         <input-password
           v-model="password"
           ref="password"
-          placeholder="Password"
+          placeholder="2FA token"
           :inputClass="[
-            isIncorrectPassword ? 'incorrect-password' : '',
+            isIncorrectToken ? 'incorrect-token' : '',
             'card-input w-100'
           ]"
           :disabled="isLoggingIn"
         />
         <div class="login-button-container">
           <transition name="fade">
-            <small class="mt-2 text-danger error" v-show="isIncorrectPassword">Incorrect password</small>
+            <small class="mt-2 text-danger error" v-show="isIncorrectPassword">
+                Incorrect token</small>
           </transition>
           <transition name="slide-up">
             <b-button
@@ -58,14 +59,14 @@ export default {
     return {
       loading: true,
       password: "",
-      isIncorrectPassword: false,
+      isIncorrectToken: false,
       isLoggingIn: false
     };
   },
   watch: {
     password: function() {
       //bring up log in button after user retries new password after failed attempt
-      this.isIncorrectPassword = false;
+      this.isIncorrectToken = false;
     }
   },
   computed: {
@@ -77,7 +78,7 @@ export default {
   async created() {
     //redirect to dashboard if already logged in
     if (this.jwt) {
-      this.$router.push("/twofactorauth");
+//      this.$router.push("/dashboard");
     }
 
     //redirect to onboarding if the user is not registered

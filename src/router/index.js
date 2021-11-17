@@ -9,6 +9,8 @@ import DashboardLayout from "../layouts/DashboardLayout.vue";
 
 import Start from "../views/Start.vue";
 import Login from "../views/Login.vue";
+import TwoFactorAuth from "../views/TwoFactorAuth.vue";
+
 import Dashboard from "../views/Dashboard.vue";
 import Bitcoin from "../views/Bitcoin.vue";
 import Lightning from "../views/Lightning.vue";
@@ -61,6 +63,18 @@ const routes = [
             path: "",
             name: "login",
             component: Login,
+            meta: { requiresAuth: false }
+          }
+        ]
+      },
+      {
+        path: "/two-factor-auth",
+        component: SimpleLayout,
+        children: [
+          {
+            path: "",
+            name: "two-factor-auth",
+            component: TwoFactorAuth,
             meta: { requiresAuth: false }
           }
         ]

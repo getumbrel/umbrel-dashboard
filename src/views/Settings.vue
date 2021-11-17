@@ -189,6 +189,91 @@
               </b-modal>
             </div>
           </div>
+          <div class="pt-0">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Two-factor authentication</span>
+                <small class="d-block" style="opacity: 0.4">Manage enhanced security measure.</small>
+              </div>
+              
+              <b-button
+                variant="outline-primary"
+                size="sm"
+                v-b-modal.two-factor-auth-modal
+                :disabled="isEnablingTwoFactorAuth"
+              >Configure</b-button>
+
+              <b-modal id="two-factor-auth-modal" centered hide-footer>
+                <template v-slot:modal-header="{ close }">
+                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                    <h3>Two-factor authentication</h3>
+                   
+                    <!-- Emulate built in modal header close button action -->
+                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                          fill="#6c757d"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </template>
+                <div class="px-4 pb-2">
+                  <div v-if="!twoFactorAuthEnabled">
+                  <p>Scan the code below with your authenticator app or copy the code.</p>
+                   <qr-code
+                      class="mb-3 mx-auto"
+                      :value="authenticatorSecretUri"
+                      :size="190"
+                      showLogo
+                    ></qr-code>
+                    <input-copy class="w-100 mx-auto" size="sm" :value="authenticatorSecret"></input-copy>
+
+                    <br />
+                    </div>
+                    <label class="sr-onlsy" for="input-token" v-if="!twoFactorAuthEnabled"> 
+                      Enter the code from your authenticator app to verify and enable 2FA.
+                    </label>
+                    <label class="sr-onlsy" for="input-token" v-if="twoFactorAuthEnabled"> 
+                      Enter the code from your authenticator app to verify and disable 2FA.
+                    </label>
+                    <b-input
+                      id="input-token"
+                      class="mb-4 neu-input"
+                      size="lg"
+                      v-model="authenticatorToken"
+                    ></b-input>
+                  <b-button
+                    class="w-100"
+                    variant="success"
+                    size="lg"
+                    :disabled="isEnablingTwoFactorAuth || !isAllowedToEnableTwoFactorAuth"
+                    @click="enableTwoFactorAuth"
+                    v-if="!twoFactorAuthEnabled"
+                  >{{ isEnablingTwoFactorAuth ? 'Enabling 2FA...' : 'Enable 2FA'}}</b-button>
+
+                  <b-button
+                    class="w-100"
+                    variant="danger"
+                    size="lg"
+                    :disabled="isDisablingTwoFactorAuth || !isAllowedToDisableTwoFactorAuth"
+                    @click="disableTwoFactorAuth"
+                    v-if="twoFactorAuthEnabled"
+                  >{{ isDisablingTwoFactorAuth ? 'Disabling 2FA...' : 'Disable 2FA'}}</b-button>
+                </div>
+              </b-modal>
+
+              </div>
+          </div>
           <div class="px-3 px-lg-4 py-1"></div>
         </card-widget>
 
@@ -368,6 +453,7 @@ import ToggleSwitch from "@/components/ToggleSwitch";
 import Seed from "@/components/Seed";
 import InputPassword from "@/components/Utility/InputPassword";
 import InputCopy from "@/components/Utility/InputCopy";
+import QrCode from "@/components/Utility/QrCode.vue";
 
 export default {
   data() {
@@ -378,10 +464,16 @@ export default {
       confirmNewPassword: "",
       isChangingPassword: false,
       isCheckingForUpdate: false,
+      twoFactorAuthEnabled: true,
+      isEnablingTwoFactorAuth: false,
+      isDisablingTwoFactorAuth: false,
       isUpdating: false,
       loadingDebug: false,
       debugFailed: false,
-      showDmesg: false
+      showDmesg: false,
+      authenticatorToken: "",
+      authenticatorSecret: "MNQWIYRVGIYWMYRSGM4TSMJUMM3DGMZS",
+      authenticatorSecretUri: "otpauth://totp/umbrel@umbrel?secret=MNQWIYRVGIYWMYRSGM4TSMJUMM3DGMZS&period=30"
     };
   },
   computed: {
@@ -403,6 +495,20 @@ export default {
     debugFilename() {
       const type = this.showDmesg ? 'dmesg' : 'debug';
       return `umbrel-${Date.now()}-${type}.log`;
+    },
+    isAllowedToEnableTwoFactorAuth() {
+      if (this.authenticatorToken.length < 6) {
+        return false;
+      }
+
+      return true;
+    },
+    isAllowedToDisableTwoFactorAuth() {
+      if (this.authenticatorToken.length < 6) {
+        return false;
+      }
+
+      return true;
     },
     isAllowedToChangePassword() {
       if (!this.currentPassword) {
@@ -426,6 +532,60 @@ export default {
     this.$store.dispatch("system/getUptime");
   },
   methods: {
+    async enableTwoFactorAuth() {
+      this.isEnablingTwoFactorAuth = true;
+
+      const payload = {
+        authenticatorToken: this.authenticatorToken,
+      };
+
+      try {
+        await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp-enable`,
+          payload,
+          false
+        );
+      } catch (error) {
+        if (error.response && error.response.data) {
+          this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
+        this.isEnablingTwoFactorAuth = false;
+        return;
+      }
+
+      this.$bvToast.toast(
+        `You've successfully enabled two-factor authentication`,
+        {
+          title: "2FA enabled",
+          autoHideDelay: 3000,
+          variant: "success",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        }
+      );
+
+      this.twoFactorAuthEnabled = true;
+    },
+    async disableTwoFactorAuth() {
+      this.$bvToast.toast(
+        `You've successfully disabled two-factor authentication`,
+        {
+          title: "2FA disabled",
+          autoHideDelay: 3000,
+          variant: "success",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        }
+      );
+
+      this.twoFactorAuthEnabled = false;
+    },
     async changePassword() {
       // disable on testnet
       if (window.location.hostname === "testnet.getumbrel.com") {
@@ -615,7 +775,8 @@ export default {
     ToggleSwitch,
     InputPassword,
     InputCopy,
-    Seed
+    Seed,
+    QrCode
   }
 };
 </script>
