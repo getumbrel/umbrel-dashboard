@@ -113,7 +113,10 @@ export default {
       this.isLoggingIn = true;
 
       try {
-        await this.$store.dispatch("user/login", { password: this.password, totpToken: this.totpToken });
+        await this.$store.dispatch("user/login", { 
+          password: this.password,
+          totpToken: this.totpToken
+        });
 
       } catch (error) {
         if (error.response && error.response.data === "Incorrect password") {
