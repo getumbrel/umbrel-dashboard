@@ -27,9 +27,25 @@
           ]"
           :disabled="isLoggingIn"
         />
+         <input-password
+          v-model="totpToken"
+          ref="totpToken"
+          placeholder="2FA token"
+          :inputClass="[
+            isIncorrectToken ? 'incorrect-token' : '',
+            'card-input w-100'
+          ]"
+          :inputGroupClass="['mt-2 card-input-group']"
+          :disabled="isLoggingIn"
+          v-if="totpEnabled"
+        />
         <div class="login-button-container">
           <transition name="fade">
             <small class="mt-2 text-danger error" v-show="isIncorrectPassword">Incorrect password</small>
+          </transition>
+          <transition name="fade">
+                <small class="mt-2 text-danger error" v-show="isIncorrectToken">
+                Incorrect token</small>
           </transition>
           <transition name="slide-up">
             <b-button
@@ -58,7 +74,9 @@ export default {
     return {
       loading: true,
       password: "",
+      totpToken: "",
       isIncorrectPassword: false,
+      isIncorrectToken: false,
       isLoggingIn: false
     };
   },
@@ -71,22 +89,23 @@ export default {
   computed: {
     ...mapState({
       jwt: state => state.user.jwt,
-      registered: state => state.user.registered
+      registered: state => state.user.registered,
+      totpEnabled: state => state.user.totpEnabled
     })
   },
   async created() {
     //redirect to dashboard if already logged in
     if (this.jwt) {
-      this.$router.push("/twofactorauth");
+      this.$router.push("/dashboard");
     }
 
     //redirect to onboarding if the user is not registered
     await this.$store.dispatch("user/registered");
+    await this.$store.dispatch("user/getTotpEnabledStatus");
 
     if (!this.registered) {
       return this.$router.push("/start");
     }
-
     this.loading = false;
   },
   methods: {
@@ -94,10 +113,15 @@ export default {
       this.isLoggingIn = true;
 
       try {
-        await this.$store.dispatch("user/login", this.password);
+        await this.$store.dispatch("user/login", { password: this.password, totpToken: this.totpToken });
+
       } catch (error) {
         if (error.response && error.response.data === "Incorrect password") {
           this.isIncorrectPassword = true;
+          this.isLoggingIn = false;
+          return;
+        } else if (error.response && error.response.data === "Unable to authenticate") {
+          this.isIncorrectToken = true;
           this.isLoggingIn = false;
           return;
         }

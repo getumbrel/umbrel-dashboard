@@ -201,9 +201,13 @@
                 size="sm"
                 v-b-modal.two-factor-auth-modal
                 :disabled="isEnablingTwoFactorAuth"
-              >Configure</b-button>
+              >
+              <span v-if="!totpEnabled">Enable</span>
+              <span v-if="totpEnabled">Disable</span>
 
-              <b-modal id="two-factor-auth-modal" centered hide-footer>
+              </b-button>
+
+              <b-modal id="two-factor-auth-modal" centered hide-footer ref="two-factor-auth-modal">
                 <template v-slot:modal-header="{ close }">
                   <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
                     <h3>Two-factor authentication</h3>
@@ -228,7 +232,7 @@
                   </div>
                 </template>
                 <div class="px-4 pb-2">
-                  <div v-if="!twoFactorAuthEnabled">
+                  <div v-if="!totpEnabled">
                   <p>Scan the code below with your authenticator app or copy the code.</p>
                    <qr-code
                       class="mb-3 mx-auto"
@@ -240,10 +244,10 @@
 
                     <br />
                     </div>
-                    <label class="sr-onlsy" for="input-token" v-if="!twoFactorAuthEnabled"> 
+                    <label class="sr-onlsy" for="input-token" v-if="!totpEnabled"> 
                       Enter the code from your authenticator app to verify and enable 2FA.
                     </label>
-                    <label class="sr-onlsy" for="input-token" v-if="twoFactorAuthEnabled"> 
+                    <label class="sr-onlsy" for="input-token" v-if="totpEnabled"> 
                       Enter the code from your authenticator app to verify and disable 2FA.
                     </label>
                     <b-input
@@ -258,7 +262,7 @@
                     size="lg"
                     :disabled="isEnablingTwoFactorAuth || !isAllowedToEnableTwoFactorAuth"
                     @click="enableTwoFactorAuth"
-                    v-if="!twoFactorAuthEnabled"
+                    v-if="!totpEnabled"
                   >{{ isEnablingTwoFactorAuth ? 'Enabling 2FA...' : 'Enable 2FA'}}</b-button>
 
                   <b-button
@@ -267,7 +271,7 @@
                     size="lg"
                     :disabled="isDisablingTwoFactorAuth || !isAllowedToDisableTwoFactorAuth"
                     @click="disableTwoFactorAuth"
-                    v-if="twoFactorAuthEnabled"
+                    v-if="totpEnabled"
                   >{{ isDisablingTwoFactorAuth ? 'Disabling 2FA...' : 'Disable 2FA'}}</b-button>
                 </div>
               </b-modal>
@@ -464,7 +468,6 @@ export default {
       confirmNewPassword: "",
       isChangingPassword: false,
       isCheckingForUpdate: false,
-      twoFactorAuthEnabled: true,
       isEnablingTwoFactorAuth: false,
       isDisablingTwoFactorAuth: false,
       isUpdating: false,
@@ -472,8 +475,6 @@ export default {
       debugFailed: false,
       showDmesg: false,
       authenticatorToken: "",
-      authenticatorSecret: "MNQWIYRVGIYWMYRSGM4TSMJUMM3DGMZS",
-      authenticatorSecretUri: "otpauth://totp/umbrel@umbrel?secret=MNQWIYRVGIYWMYRSGM4TSMJUMM3DGMZS&period=30"
     };
   },
   computed: {
@@ -484,7 +485,10 @@ export default {
       updateStatus: state => state.system.updateStatus,
       debugResult: state => state.system.debugResult,
       isUmbrelOS: state => state.system.isUmbrelOS,
-      uptime: state => state.system.uptime
+      uptime: state => state.system.uptime,
+      totpEnabled: state => state.user.totpEnabled,
+      authenticatorSecret: state => state.user.totpKey,
+      authenticatorSecretUri: state => `otpauth://totp/umbrel@umbrel?secret=${state.user.totpKey}&period=30"`
     }),
     getUptime() {
       return moment.duration(this.uptime, "seconds").humanize();
@@ -524,12 +528,20 @@ export default {
         return false;
       }
       return true;
-    }
+    },
+    
   },
   created() {
     this.$store.dispatch("system/getOnionAddress");
     this.$store.dispatch("system/getVersion");
     this.$store.dispatch("system/getUptime");
+    this.$store.dispatch("user/getTotpEnabledStatus");
+
+    this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
+      if (modalId == 'two-factor-auth-modal') {
+        this.$store.dispatch("user/getTotpKey");
+      }
+    });
   },
   methods: {
     async enableTwoFactorAuth() {
@@ -541,10 +553,11 @@ export default {
 
       try {
         await API.post(
-          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp-enable`,
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/enable`,
           payload,
           false
         );
+        this.isEnablingTwoFactorAuth = false;
       } catch (error) {
         if (error.response && error.response.data) {
           this.$bvToast.toast(error.response.data, {
@@ -570,9 +583,38 @@ export default {
         }
       );
 
-      this.twoFactorAuthEnabled = true;
+      this.$store.dispatch("user/getTotpEnabledStatus");
+      this.$bvModal.hide("two-factor-auth-modal");
     },
     async disableTwoFactorAuth() {
+
+      this.isDisablingTwoFactorAuth = true;
+
+      const payload = {
+        authenticatorToken: this.authenticatorToken,
+      };
+
+      try {
+        await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/totp/disable`,
+          payload,
+          false
+        );
+        this.isDisablingTwoFactorAuth = false;
+      } catch (error) {
+        if (error.response && error.response.data) {
+          this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
+        this.isDisablingTwoFactorAuth = false;
+        return;
+      }
+
       this.$bvToast.toast(
         `You've successfully disabled two-factor authentication`,
         {
@@ -584,7 +626,8 @@ export default {
         }
       );
 
-      this.twoFactorAuthEnabled = false;
+      this.$store.dispatch("user/getTotpEnabledStatus");
+      this.$bvModal.hide("two-factor-auth-modal");
     },
     async changePassword() {
       // disable on testnet
