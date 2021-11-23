@@ -645,3 +645,41 @@ body {
       }
     }
   }
+
+  /* Simple Dark Mode implementation https://ar.al/2021/08/24/implementing-dark-mode-in-a-handful-of-lines-of-css-with-css-filters/ */
+
+  @media (prefers-color-scheme: dark) {
+    /* Invert all elements on the body while attempting to not alter the hue substantially. */
+    body {
+      filter: invert(100%) hue-rotate(180deg);
+    }
+  
+    /* Workarounds and optical adjustments. */
+  
+    /* Firefox workaround: Set the background colour for the html
+       element separately because, unlike other browsers, Firefox
+       doesn’t apply the filter to the root element’s background. */
+    html {
+      background-color: #111;
+    }
+  
+    /* Do not invert media (revert the invert). */
+    img, video, iframe {
+      filter: invert(100%) hue-rotate(180deg);
+    }
+  
+    /* Improve contrast on icons. */
+    .icon {
+      filter: invert(15%) hue-rotate(180deg);
+    }
+  
+    /* Re-enable code block backgrounds. */
+    pre {
+      filter: invert(6%);
+    }
+  
+    /* Improve contrast on list item markers. */
+    li::marker {
+      color: #666;
+    }
+  }
