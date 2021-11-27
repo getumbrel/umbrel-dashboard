@@ -7,7 +7,8 @@ const state = () => ({
   jwt: window.localStorage.getItem("jwt") || "",
   registered: true,
   seed: [],
-  installedApps: []
+  installedApps: [],
+  otpEnabled: false
 });
 
 // Functions to update the state directly
@@ -27,17 +28,20 @@ const mutations = {
   },
   setSeed(state, seed) {
     state.seed = seed;
+  },
+  setOtpEnabled(state, otpEnabled) {
+    state.otpEnabled = otpEnabled;
   }
 };
 
 // Functions to get data from the API
 const actions = {
-  async login({ commit }, password) {
+  async login({ commit }, { password, otpToken }) {
     const {
       data
     } = await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`,
-      { password }
+      { password, otpToken }
     );
 
     if (data && data.jwt) {
@@ -69,10 +73,11 @@ const actions = {
   },
 
   async getInfo({ commit }) {
-    const { name, installedApps } = await API.get(
+    const { name, otpEnabled, installedApps } = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`
     );
     commit("setName", name);
+    commit("setOtpEnabled", otpEnabled);
     commit("setInstalledApps", installedApps);
   },
 
@@ -124,6 +129,27 @@ const actions = {
         commit("setSeed", []); //remove seed from store
       }
     }
+  },
+  async enableOtpAuth({ commit }, { otpToken, otpUri }) {
+    await API.post(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/otp/enable`,
+      {
+        otpToken,
+        otpUri
+      },
+      false
+    );
+    return commit("setOtpEnabled", true);
+  },
+  async disableOtpAuth({ commit }, { otpToken }) {
+    await API.post(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/otp/disable`,
+      {
+        otpToken
+      },
+      false
+    );
+    return commit("setOtpEnabled", false);
   }
 };
 
