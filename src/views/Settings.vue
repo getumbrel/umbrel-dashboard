@@ -189,7 +189,7 @@
                 :disabled="isChangingPassword"
               >Change</b-button>
 
-              <b-modal id="change-password-modal" centered hide-footer>
+              <b-modal id="change-password-modal" ref="change-password-modal" centered hide-footer>
                 <template v-slot:modal-header="{ close }">
                   <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
                     <h3>change password</h3>
@@ -239,6 +239,17 @@
                     inputClass="form-control form-control-lg neu-input w-100"
                     :disabled="isChangingPassword"
                   />
+                  <div v-if="otpEnabled" class="py-2">
+                    <label> 
+                      Enter your two-factor authentication (2FA) code
+                    </label>
+                    <input-otp-token
+                      :success="isCorrectOtp"
+                      :error="isIncorrectOtp"
+                      :disabled="isTogglingOtpAuth"
+                      @otpToken="setOtpToken"
+                    />
+                  </div>
                   <div class="py-2"></div>
                   <b-alert variant="warning" show>
                     <small>
@@ -483,6 +494,7 @@ export default {
       isIncorrectPassword: false,
       newPassword: "",
       confirmNewPassword: "",
+      otpToken: "", // set by OTP input field in change password modal
       isChangingPassword: false,
       isCheckingForUpdate: false,
       isUpdating: false,
@@ -547,6 +559,9 @@ export default {
     this.$store.dispatch("system/getUptime");
   },
   methods: {
+    setOtpToken(otpToken) {
+      this.otpToken = otpToken;
+    },
     async toggleOtpAuthSwitch() {
 
       // show disable OTP modal
@@ -668,7 +683,8 @@ export default {
 
       const payload = {
         password: this.currentPassword,
-        newPassword: this.newPassword
+        newPassword: this.newPassword,
+        otpToken: this.otpToken
       };
 
       this.isChangingPassword = true;
@@ -679,18 +695,35 @@ export default {
           payload,
           false
         );
+        if (this.otpEnabled) {
+          this.isCorrectOtp = true;
+          // delay for ripple animation to complete
+          await delay(1000);
+          this.isCorrectOtp = false;
+        }
       } catch (error) {
         if (error.response && error.response.data) {
-          this.$bvToast.toast(error.response.data, {
+          let errorText = error.response.data;
+
+          if (error.response.data === "Incorrect password") {
+            this.isIncorrectPassword = true;
+          }
+          if (error.response.data === "Invalid OTP Token") {
+            errorText = "Incorrect 2FA code";
+            this.isIncorrectOtp = true;
+
+            // delay for ripple animation to complete
+            await delay(1000);
+            this.isIncorrectOtp = false;
+          }
+
+          this.$bvToast.toast(errorText, {
             title: "Error",
             autoHideDelay: 3000,
             variant: "danger",
             solid: true,
             toaster: "b-toaster-bottom-right"
           });
-          if (error.response.data === "Incorrect password") {
-            this.isIncorrectPassword = true;
-          }
         }
         this.isChangingPassword = false;
         return;
@@ -713,6 +746,8 @@ export default {
       this.currentPassword = "";
       this.newPassword = "";
       this.confirmNewPassword = "";
+
+      this.$bvModal.hide('change-password-modal');
     },
     confirmUpdate() {
       this.$store.dispatch("system/confirmUpdate");

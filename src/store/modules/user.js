@@ -81,18 +81,19 @@ const actions = {
     commit("setInstalledApps", installedApps);
   },
 
-  async getSeed({ commit, state, dispatch }, plainTextPassword) {
+  async getSeed({ commit, state, dispatch }, { password, otpToken }) {
     let rawSeed;
 
     //first check if user is registered or not
     await dispatch("registered");
 
     //get user's stored seed if already registered
-    if (state.registered && plainTextPassword) {
+    if (state.registered && password) {
       rawSeed = await API.post(
         `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/seed`,
         {
-          password: plainTextPassword
+          password,
+          otpToken
         },
         false
       );
