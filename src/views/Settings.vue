@@ -68,21 +68,27 @@
         <card-widget
           header="Account"
           class="card-app-list"
-          :loading="isChangingPassword"
+          :loading="isChangingPassword || isFetchingOtpUri"
         >
           <div class="pt-2">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
               <div>
-                <span class="d-block">Secret words</span>
-                <small class="d-block" style="opacity: 0.4">Note down your 24 secret words</small>
+                <span class="d-block">Two-factor auth (2FA)</span>
+                <small class="d-block" style="opacity: 0.4">An extra layer of security to login</small>
               </div>
+              <toggle-switch
+                class="align-self-center"
+                @turnOn="toggleOtpAuthSwitch"
+                @turnOff="toggleOtpAuthSwitch"
+                :on="otpEnabled"
+                :loading="isFetchingOtpUri"
+              ></toggle-switch>
 
-              <b-button variant="outline-primary" size="sm" v-b-modal.seed-modal>View</b-button>
-
-              <b-modal id="seed-modal" centered hide-footer>
+              <b-modal id="enable-otp-auth-modal" centered hide-footer ref="enable-otp-auth-modal">
                 <template v-slot:modal-header="{ close }">
                   <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-                    <h3>secret words</h3>
+                    <h3>Enable 2FA</h3>
+                   
                     <!-- Emulate built in modal header close button action -->
                     <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
                       <svg
@@ -102,9 +108,72 @@
                     </a>
                   </div>
                 </template>
-                <seed></seed>
+                <div class="px-1 px-sm-4 pb-3 text-center">
+                  <div class="mb-4">
+                    <p>Scan this QR code using an authenticator app like Google Authenticator or Authy</p>
+                    <qr-code
+                      class="mb-3 mx-auto"
+                      :value="otpUri"
+                      :size="200"
+                      level="Q"
+                      showLogo
+                    ></qr-code>
+                    <p>Or paste the following code in the app</p>
+                    <input-copy class="w-100 mx-auto" size="sm" :value="otpSecretKey"></input-copy>
+                  </div>
+
+                  <label> 
+                    Enter the code displayed in your authenticator app to enable 2FA
+                  </label>
+                  <input-otp-token
+                    autofocus
+                    :success="isCorrectOtp"
+                    :error="isIncorrectOtp"
+                    :disabled="isTogglingOtpAuth"
+                    @otpToken="enableOtpAuth"
+                  />
+                </div> 
               </b-modal>
-            </div>
+
+               <b-modal id="disable-otp-auth-modal" centered hide-footer ref="disable-otp-auth-modal">
+                <template v-slot:modal-header="{ close }">
+                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                    <h3>Disable 2FA</h3>
+                   
+                    <!-- Emulate built in modal header close button action -->
+                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                          fill="#6c757d"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </template>
+                <div class="px-1 px-sm-4 pb-3">
+                  <label> 
+                    Enter the code displayed in your authenticator app to disable 2FA
+                  </label>
+                  <input-otp-token
+                    autofocus
+                    :success="isCorrectOtp"
+                    :error="isIncorrectOtp"
+                    :disabled="isTogglingOtpAuth"
+                    @otpToken="disableOtpAuth"
+                  />
+                </div> 
+              </b-modal>
+
+              </div>
           </div>
           <div class="pt-0">
             <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
@@ -186,6 +255,42 @@
                     @click="changePassword"
                   >{{ isChangingPassword ? 'Changing password...' : 'Change password'}}</b-button>
                 </div>
+              </b-modal>
+            </div>
+          </div>
+          <div class="pt-0">
+            <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+              <div>
+                <span class="d-block">Secret words</span>
+                <small class="d-block" style="opacity: 0.4">Note down your 24 secret words</small>
+              </div>
+
+              <b-button variant="outline-primary" size="sm" v-b-modal.seed-modal>View</b-button>
+
+              <b-modal id="seed-modal" centered hide-footer>
+                <template v-slot:modal-header="{ close }">
+                  <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+                    <h3>secret words</h3>
+                    <!-- Emulate built in modal header close button action -->
+                    <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                          fill="#6c757d"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                </template>
+                <seed></seed>
               </b-modal>
             </div>
           </div>
@@ -366,8 +471,10 @@ import RamWidget from "@/components/Widgets/RamWidget";
 import TemperatureWidget from "@/components/Widgets/TemperatureWidget";
 import ToggleSwitch from "@/components/ToggleSwitch";
 import Seed from "@/components/Seed";
+import QrCode from "@/components/Utility/QrCode";
 import InputPassword from "@/components/Utility/InputPassword";
 import InputCopy from "@/components/Utility/InputCopy";
+import InputOtpToken from "@/components/Utility/InputOtpToken";
 
 export default {
   data() {
@@ -381,7 +488,12 @@ export default {
       isUpdating: false,
       loadingDebug: false,
       debugFailed: false,
-      showDmesg: false
+      showDmesg: false,
+      otpUri: "",
+      isCorrectOtp: false,
+      isIncorrectOtp: false,
+      isFetchingOtpUri: false,
+      isTogglingOtpAuth: false
     };
   },
   computed: {
@@ -392,8 +504,17 @@ export default {
       updateStatus: state => state.system.updateStatus,
       debugResult: state => state.system.debugResult,
       isUmbrelOS: state => state.system.isUmbrelOS,
-      uptime: state => state.system.uptime
+      uptime: state => state.system.uptime,
+      otpEnabled: state => state.user.otpEnabled
     }),
+    otpSecretKey() {
+      if (!this.otpUri) {
+        return "";
+      }
+      const parsedUri = new URL(this.otpUri);
+      const secret = parsedUri.searchParams.get('secret');
+      return secret;
+    },
     getUptime() {
       return moment.duration(this.uptime, "seconds").humanize();
     },
@@ -426,6 +547,113 @@ export default {
     this.$store.dispatch("system/getUptime");
   },
   methods: {
+    async toggleOtpAuthSwitch() {
+
+      // show disable OTP modal
+      if (this.otpEnabled) {
+        return this.$bvModal.show('disable-otp-auth-modal');
+      }
+
+      // show enable OTP modal
+      try {
+        this.isFetchingOtpUri = true;
+        const otpUri = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/otpUri`);
+        this.otpUri = otpUri;
+        this.isFetchingOtpUri = false;
+        this.$bvModal.show('enable-otp-auth-modal');
+      } catch (error) {
+        if (error.response && error.response.data) {
+          this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
+      }
+    },
+    async enableOtpAuth(otpToken) {
+      this.isTogglingOtpAuth = true;
+      try {
+        await this.$store.dispatch("user/enableOtpAuth", { otpToken, otpUri: this.otpUri });
+        this.isCorrectOtp = true;
+
+        // add delay before closing modal
+        // to complete ripple animation
+        await delay(1000);
+
+        this.$bvToast.toast("You've successfully enabled two-factor authentication", {
+          title: "2FA Enabled",
+          autoHideDelay: 3000,
+          variant: "success",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+        this.$bvModal.hide('enable-otp-auth-modal');
+      } catch (error) {
+        if (error.response && error.response.data) {
+          let errorText = error.response.data;
+          if (error.response.data === "Invalid OTP Token") {
+            this.isIncorrectOtp = true;
+            errorText = "Incorrect code. Please try again."
+          }
+          this.$bvToast.toast(errorText, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
+      }
+      this.isTogglingOtpAuth = false;
+
+      // reset state variables for ripple animation
+      await delay(1000);
+      this.isIncorrectOtp = false;
+      this.isCorrectOtp = false;
+    },
+    async disableOtpAuth(otpToken) {
+      this.isTogglingOtpAuth = true;
+      try {
+        await this.$store.dispatch("user/disableOtpAuth", { otpToken });
+        this.isCorrectOtp = true;
+
+        // add delay before closing modal
+        // to complete ripple animation
+        await delay(1000);
+        this.$bvToast.toast("You've successfully disabled two-factor authentication", {
+          title: "2FA Disabled",
+          autoHideDelay: 3000,
+          variant: "success",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+        this.$bvModal.hide('disable-otp-auth-modal');
+      } catch (error) {
+        if (error.response && error.response.data) {
+          let errorText = error.response.data;
+          if (error.response.data === "Invalid OTP Token") {
+            this.isIncorrectOtp = true;
+            errorText = "Incorrect code. Please try again."
+          }
+          this.$bvToast.toast(errorText, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
+      }
+      this.isTogglingOtpAuth = false;
+
+      // reset state variables for ripple animation
+      await delay(1000);
+      this.isIncorrectOtp = false;
+      this.isCorrectOtp = false;
+    },
     async changePassword() {
       // disable on testnet
       if (window.location.hostname === "testnet.getumbrel.com") {
@@ -613,8 +841,10 @@ export default {
     RamWidget,
     TemperatureWidget,
     ToggleSwitch,
+    QrCode,
     InputPassword,
     InputCopy,
+    InputOtpToken,
     Seed
   }
 };
