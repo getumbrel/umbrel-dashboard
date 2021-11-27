@@ -11,9 +11,11 @@
     <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">welcome back</h1>
-      <p class="text-muted w-75 text-center">Enter the password to login to your Umbrel</p>
+      <p v-if="!showOtpInput" class="text-muted w-75 text-center">Enter the password to login to your Umbrel</p>
+      <p v-else class="text-muted w-75 text-center">Enter your two-factor authentication code</p>
 
       <form
+        v-if="!showOtpInput"
         v-on:submit.prevent="authenticateUser"
         class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
       >
@@ -44,6 +46,26 @@
           </transition>
         </div>
       </form>
+
+      <form
+        v-else
+        v-on:submit.prevent
+        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+      >
+        <input-otp-token
+          autofocus
+          :disabled="isLoggingIn"
+          :success="isCorrectOtp"
+          :error="isIncorrectOtp"
+          @otpToken="authenticateUserWithOtp"
+          @keyup="hideOtpError"
+        />
+        <div class="login-button-container">
+          <transition name="fade">
+            <small class="mt-2 text-danger error" v-show="isIncorrectOtp">Incorrect code</small>
+          </transition>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -51,7 +73,10 @@
 <script>
 import { mapState } from "vuex";
 
+import delay from "@/helpers/delay";
+
 import InputPassword from "@/components/Utility/InputPassword";
+import InputOtpToken from "@/components/Utility/InputOtpToken";
 
 export default {
   data() {
@@ -59,7 +84,11 @@ export default {
       loading: true,
       password: "",
       isIncorrectPassword: false,
-      isLoggingIn: false
+      isLoggingIn: false,
+      otpToken: "",
+      showOtpInput: false,
+      isCorrectOtp: false,
+      isIncorrectOtp: false
     };
   },
   watch: {
@@ -94,23 +123,54 @@ export default {
       this.isLoggingIn = true;
 
       try {
-        await this.$store.dispatch("user/login", this.password);
+        await this.$store.dispatch("user/login", { password: this.password, otpToken: this.otpToken });
       } catch (error) {
+        this.isLoggingIn = false;
         if (error.response && error.response.data === "Incorrect password") {
           this.isIncorrectPassword = true;
-          this.isLoggingIn = false;
           return;
         }
+        if (error.response && error.response.data === "Missing OTP token") {
+          return this.showOtpInput = true;
+        }
+        if (error.response && error.response.data === "Invalid OTP token") {
+          return this.isIncorrectOtp = true;
+        }
+        if (error.response && error.response.data) {
+          this.showOtpInput = true;
+          return this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right"
+          });
+        }
+        return;
       }
 
-      //redirect to dashboard
+      if (this.otpToken) {
+        // show ripple animation
+        this.isCorrectOtp = true;
+        await delay(1000);
+      }
+
+      // redirect to dashboard
       return this.$router.push(
         this.$router.history.current.query.redirect || "/dashboard"
       );
+    },
+    authenticateUserWithOtp(otpToken) {
+      this.otpToken = otpToken;
+      this.authenticateUser();
+    },
+    hideOtpError() {
+      this.isIncorrectOtp = false;
     }
   },
   components: {
-    InputPassword
+    InputPassword,
+    InputOtpToken
   }
 };
 </script>
