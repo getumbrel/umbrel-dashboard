@@ -123,7 +123,7 @@ export default {
 .otp-input-container {
   display: block;
   width: 100%;
-  margin: 10px auto 20px;
+  margin: auto;
   padding: 0;
   .otp-input {
     display: inline-block;
