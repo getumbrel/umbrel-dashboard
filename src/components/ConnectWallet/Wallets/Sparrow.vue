@@ -7,7 +7,7 @@
         <span class="font-weight-bold">Preferences > Server</span>.
       </step>
       <step>
-        In the <span class="font-weight-bold">"Type"</span>, select <span class="font-weight-bold">"Private Electrum Server"</span>
+        In the <span class="font-weight-bold">"Type"</span>, select <span class="font-weight-bold">"Private Electrum"</span>
       </step>
       <step>
         For <span class="font-weight-bold">"URL"</span>, enter
