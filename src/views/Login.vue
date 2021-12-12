@@ -137,7 +137,6 @@ export default {
           return this.isIncorrectOtp = true;
         }
         if (error.response && error.response.data) {
-          this.showOtpInput = true;
           return this.$bvToast.toast(error.response.data, {
             title: "Error",
             autoHideDelay: 3000,
