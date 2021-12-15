@@ -364,7 +364,7 @@ export default {
     }
 
     //generate a new seed on load
-    this.$store.dispatch("user/getSeed");
+    this.$store.dispatch("user/getSeed", { password: "", otpToken: "" });
   },
   beforeDestroy() {
     window.clearInterval(this.lndUnlockInterval);
