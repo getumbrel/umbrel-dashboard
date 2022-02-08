@@ -5,14 +5,14 @@
         Open Nunchuk Wallet on your phone or your desktop.
       </step>
       <step>
-        Go to <span class="font-weight-bold">"Settings"</span>.
+        Go to <span class="font-weight-bold">"Account > Settings"</span>.
       </step>
       <step>
         Under <span class="font-weight-bold">"Network Settings"</span>, select
         <span class="font-weight-bold">"Connect to Electrum server"</span>.
       </step>
       <step>
-        Select <span class="font-weight-bold">"Mainnet Server"</span> and enter
+        Select <span class="font-weight-bold">"Mainnet server"</span> and enter
         <input-copy
           :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
           auto-width
@@ -25,10 +25,7 @@
         Disable <span class="font-weight-bold">"Enable TOR Proxy"</span>.
       </step>
       <step>
-        Close <span class="font-weight-bold">"Settings"</span>
-      </step>
-      <step>
-        Apply changes and reboot the app.
+        Click <span class="font-weight-bold">"Save network settings"</span>
       </step>
       <step>
         Congratulations! You have successfully connected Nunchuk Wallet to your Umbrel.
