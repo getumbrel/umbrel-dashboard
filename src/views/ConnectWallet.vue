@@ -56,6 +56,7 @@ export default {
         { value: "electrum-desktop", text: "Electrum Wallet (Desktop)" },
         { value: "fully-noded", text: "Fully Noded (iOS)" },
         { value: "lily-wallet", text: "Lily Wallet" },
+        { value: "nunchuk-desktop", text: "Nunchuk Wallet (Desktop)" },
         { value: "phoenix", text: "Phoenix Wallet" },
         { value: "samourai-wallet", text: "Samourai Wallet" },
         { value: "sparrow", text: "Sparrow" },
