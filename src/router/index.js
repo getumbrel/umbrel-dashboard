@@ -30,7 +30,7 @@ import ElectrumDesktop from "../components/ConnectWallet/Wallets/ElectrumDesktop
 import ElectrumServer from "../components/ConnectWallet/Wallets/ElectrumServer.vue";
 import FullyNoded from "../components/ConnectWallet/Wallets/FullyNoded.vue";
 import LilyWallet from "../components/ConnectWallet/Wallets/LilyWallet.vue";
-import Nunchuk from "../components/ConnectWallet/Wallets/Nunchuk.vue";
+import NunchukDesktop from "../components/ConnectWallet/Wallets/NunchukDesktop.vue";
 import Phoenix from "../components/ConnectWallet/Wallets/Phoenix.vue";
 import SamouraiWallet from "../components/ConnectWallet/Wallets/SamouraiWallet.vue";
 import Sparrow from "../components/ConnectWallet/Wallets/Sparrow.vue";
@@ -215,10 +215,10 @@ const routes = [
                 }
               },
               {
-                path: "nunchuk",
-                component: Nunchuk,
+                path: "nunchuk-desktop",
+                component: NunchukDesktop,
                 meta: {
-                  wallet: "nunchuk"
+                  wallet: "nunchuk-desktop"
                 }
               },
               {
