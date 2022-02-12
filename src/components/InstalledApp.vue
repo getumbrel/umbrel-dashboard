@@ -13,6 +13,14 @@
         :src="`https://getumbrel.github.io/umbrel-apps-gallery/${id}/icon.svg`"
     />
     </a>
+    <b-button
+      class="uninstall-btn"
+      v-if="updateAvailable"
+      variant="outline-warning"
+      size="sm"
+      @click="update(name, id)"
+      ><small><b-icon icon="exclamation-circle"></b-icon> Install Update</small></b-button
+    >
     <span v-if="isUninstalling" class="text-center text-small text-muted text-truncate mb-1">Uninstalling...</span>
     <span v-else-if="isOffline" class="text-center text-small text-muted text-truncate mb-1">Starting...</span>
     <span v-else class="text-center text-truncate mb-1">{{ name }}</span>
@@ -39,6 +47,8 @@ export default {
     hiddenService: String,
     port: Number,
     path: String,
+    updateAvailable: Boolean,
+    updateVersion: String,
     showUninstallButton: {
       type: Boolean,
       default: false,
@@ -83,6 +93,16 @@ export default {
         return;
       }
       this.$store.dispatch("apps/uninstall", appId);
+    },
+    update(name, appId) {
+      if (
+        !window.confirm(
+          `Are you sure you want to update ${name}?`
+        )
+      ) {
+        return;
+      }
+      this.$store.dispatch("apps/update", appId);
     },
     openApp(event) {
       if (this.torOnly && window.location.origin.indexOf(".onion") < 0) {
