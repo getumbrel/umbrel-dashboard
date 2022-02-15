@@ -89,9 +89,9 @@ const actions = {
     }
 
     const poll = window.setInterval(async () => {
-      await dispatch("getInstalledApps");
-      const index = state.installed.findIndex((app) => app.id === appId);
-      if (index === -1) {
+      await dispatch("getAppStore");
+      const index = state.store.findIndex((app) => app.id === appId);
+      if (index === -1 || !state.store[index].updateAvailable) {
         commit("removeUpdatingApp", appId);
         window.clearInterval(poll);
       }

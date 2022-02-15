@@ -1,8 +1,15 @@
 <template>
   <div class="p-sm-2">
     <div class="mt-3 mb-4">
-      <div class="">
+      <div class="d-flex justify-content-between align-items-center">
         <h1>app store</h1>
+        <div v-if="appsWithUpdate.length">
+          <b-button variant="outline-primary" size="sm" v-b-modal.app-updates-modal>{{
+            `${appsWithUpdate.length} update${(appsWithUpdate.length > 1) ? `s` : ``} available`
+          }}</b-button>
+        </div>
+      </div>
+      <div>
         <p class="text-muted">
           Add super powers to your Umbrel with amazing self-hosted applications
         </p>
@@ -74,6 +81,45 @@
       </div>
       </card-widget>
     </div>
+    <b-modal v-if="appsWithUpdate.length" id="app-updates-modal" centered hide-footer>
+      <template v-slot:modal-header="{ close }">
+        <div class="px-2 px-sm-3 pt-2 d-flex align-items-center justify-content-between w-100">
+          <h2 class="mr-auto">updates</h2>
+          <div class="mr-2 update-all-container">
+            <b-button variant="outline-primary" size="sm" @click="updateAll" v-if="!updatingAll">Update all</b-button>
+          </div>
+          <a
+            href="#"
+            class="align-self-center"
+            v-on:click.stop.prevent="close"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                fill="#6c757d"
+              />
+            </svg>
+          </a>
+        </div>
+      </template>
+      <div class="px-3 pb-2">
+        <div>
+          <update-apps-app
+            v-for="app in appsWithUpdate"
+            :ref="app.id"
+            :app="app">
+          </update-apps-app>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -81,15 +127,21 @@
 import { mapState } from "vuex";
 
 import CardWidget from "@/components/CardWidget";
+import UpdateAppsApp from "@/components/UpdateAppsApp";
 
 export default {
   data() {
-    return {};
+    return {
+      updatingAll: false
+    };
   },
   computed: {
     ...mapState({
       store: (state) => state.apps.store,
     }),
+    appsWithUpdate: function() {
+      return this.store.filter(app => app.updateAvailable)
+    },
     categorizedAppStore: function () {
       let group = this.store.reduce((r, a) => {
         r[a.category] = [...(r[a.category] || []), a];
@@ -98,11 +150,23 @@ export default {
       return group;
     },
   },
+  methods: {
+    updateAll: function() {
+      this.updatingAll = true;
+
+      const self = this;
+      Object.keys(this.$refs)
+      .forEach(appId => {
+        self.$refs[appId][0].updateApp();
+      });
+    }
+  },
   created() {
     this.$store.dispatch("apps/getAppStore");
   },
   components: {
     CardWidget,
+    UpdateAppsApp
   },
 };
 </script>
@@ -137,5 +201,9 @@ export default {
     top: -30px;
     left: 0;
   }
+}
+
+.update-all-container {
+  margin-top: 4px;
 }
 </style>
