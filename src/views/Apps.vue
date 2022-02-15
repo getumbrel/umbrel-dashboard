@@ -19,8 +19,6 @@
           :name="app.name"
           :port="app.port"
           :path="app.path"
-          :updateAvailable="app.updateAvailable"
-          :updateVersion="app.updateVersion"
           :hiddenService="app.hiddenService"
           :torOnly="app.torOnly"
           :showUninstallButton="isEditing"
