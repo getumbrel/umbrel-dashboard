@@ -111,7 +111,7 @@
         </div>
       </template>
       <div class="px-3 pb-2">
-        <div>
+        <div class="app-list-container">
           <update-apps-app
             v-for="app in appsWithUpdate"
             :ref="app.id"
@@ -203,7 +203,15 @@ export default {
   }
 }
 
-.update-all-container {
-  margin-top: 4px;
+#app-updates-modal {
+  .update-all-container {
+    margin-top: 4px;
+  }
+
+  .app-list-container {
+    max-height: 440px;
+    overflow: auto;
+  }
 }
+
 </style>
