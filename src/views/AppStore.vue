@@ -154,10 +154,10 @@ export default {
     updateAll: function() {
       this.updatingAll = true;
 
-      const self = this;
-      Object.keys(this.$refs)
-      .forEach(appId => {
-        self.$refs[appId][0].updateApp();
+      this.appsWithUpdate
+      .forEach(app => {
+        // Call updateApp() within each UpdateAppsApp component
+        this.$refs[app.id][0].updateApp();
       });
     }
   },
