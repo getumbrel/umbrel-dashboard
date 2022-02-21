@@ -86,7 +86,7 @@
         <div class="px-2 px-sm-3 pt-2 d-flex align-items-center justify-content-between w-100">
           <h2 class="mr-auto">updates</h2>
           <div class="mr-2 update-all-container">
-            <b-button variant="outline-primary" size="sm" @click="updateAll" v-if="!updatingAll">Update all</b-button>
+            <b-button variant="outline-primary" size="sm" @click="updateAll" v-if="canUpdateAll">Update all</b-button>
           </div>
           <a
             href="#"
@@ -115,6 +115,7 @@
           <update-apps-app
             v-for="app in appsWithUpdate"
             :ref="app.id"
+            :key="app.id"
             :app="app">
           </update-apps-app>
         </div>
@@ -131,13 +132,12 @@ import UpdateAppsApp from "@/components/UpdateAppsApp";
 
 export default {
   data() {
-    return {
-      updatingAll: false
-    };
+    return {};
   },
   computed: {
     ...mapState({
       store: (state) => state.apps.store,
+      updating: (state) => state.apps.updating,
     }),
     appsWithUpdate: function() {
       return this.store.filter(app => app.updateAvailable)
@@ -149,14 +149,17 @@ export default {
       }, {});
       return group;
     },
+    canUpdateAll: function() {
+      return this.updating.length != this.appsWithUpdate.length;
+    }
   },
   methods: {
     updateAll: function() {
-      this.updatingAll = true;
-
       this.appsWithUpdate
       .forEach(app => {
         // Call updateApp() within each UpdateAppsApp component
+        // If app is already updating, then updateApp() will return false
+        // To avoid a 'double update'
         this.$refs[app.id][0].updateApp();
       });
     }
