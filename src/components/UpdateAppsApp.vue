@@ -15,9 +15,9 @@
             {{ app.version }}
           </p>
         </div>
-        <div :class="[(isUpdating) ? 'is-updating' : '', 'd-block justify-content-right update-btn-container']">
+        <div class="d-block justify-content-right update-btn-container" :class="{ 'is-updating': isUpdating }">
           <b-button variant="success" size="sm" @click="updateApp()" :disabled="isUpdating">{{
-            isUpdating ? `Updating${".".repeat(updatingDotCount)}` : "Update"
+            isUpdating ? `Updating...` : "Update"
           }}</b-button>
         </div>
       </div>
@@ -32,10 +32,7 @@ export default {
     app: Object
   },
   data() {
-    return {
-      updatingDotInterval: null,
-      updatingDotCount: 3
-    };
+    return {};
   },
   computed: {
     ...mapState({
@@ -49,32 +46,23 @@ export default {
     updateApp: function() {
       if(this.isUpdating) return false;
 
-      this.animateDots();
-
       this.$store.dispatch("apps/update", this.app.id);
-    },
-    animateDots: function() {
-      this.updatingDotInterval = window.setInterval(() => {
-        this.updatingDotCount = ++this.updatingDotCount % 4;
-      }, 500);
-    }
-  },
-  created() {
-    if(this.isUpdating)
-    {
-      this.animateDots();
-    }
-  },
-  unmounted() {
-    if(this.updatingDotInterval != null)
-    {
-      clearInterval(this.updatingDotInterval);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+@keyframes updatingFadeBlink {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
 .app-list {
   .app {
     width: 100%;
@@ -91,7 +79,7 @@ export default {
 
       &.is-updating {
         .btn {
-          width: 100px;
+          animation: updatingFadeBlink 1s infinite linear;
         }
       }
     }
