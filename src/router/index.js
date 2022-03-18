@@ -20,6 +20,7 @@ import ConnectWallet from "../views/ConnectWallet.vue";
 import Logout from "../views/Logout.vue";
 
 // Wallet components for wallet connector
+import Alby from "../components/ConnectWallet/Wallets/Alby.vue";
 import BitBoxApp from "../components/ConnectWallet/Wallets/BitBoxApp.vue";
 import BitcoinCoreP2P from "../components/ConnectWallet/Wallets/BitcoinCoreP2P.vue";
 import BitcoinCoreRPC from "../components/ConnectWallet/Wallets/BitcoinCoreRPC.vue";
@@ -36,7 +37,6 @@ import SamouraiWallet from "../components/ConnectWallet/Wallets/SamouraiWallet.v
 import Sparrow from "../components/ConnectWallet/Wallets/Sparrow.vue";
 import SpecterDesktop from "../components/ConnectWallet/Wallets/SpecterDesktop.vue";
 import Wasabi from "../components/ConnectWallet/Wallets/Wasabi.vue";
-
 import ZapAndroid from "../components/ConnectWallet/Wallets/ZapAndroid.vue";
 import ZapDesktop from "../components/ConnectWallet/Wallets/ZapDesktop.vue";
 import ZapiOS from "../components/ConnectWallet/Wallets/ZapiOS.vue";
@@ -165,6 +165,13 @@ const routes = [
             name: "connect",
             component: ConnectWallet,
             children: [
+			        {
+								path: "alby",
+								component: Alby,
+								meta: {
+									wallet: "alby"
+								}
+							},
               {
                 path: "bitboxapp",
                 component: BitBoxApp,
@@ -364,7 +371,7 @@ const router = new VueRouter({
       // For anchors
     } else if (to.hash) {
 
-      // 500ms timeout allows the page to load or else 
+      // 500ms timeout allows the page to load or else
       // smooth scrolling would not scroll to the correct position
       setTimeout(() => {
         const element = document.getElementById(to.hash.replace(/#/, ''))

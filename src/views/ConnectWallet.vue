@@ -49,6 +49,7 @@ export default {
     return {
       options: [
         { value: null, text: "Select your wallet", disabled: true },
+  			{ value: "alby", text: "Alby" },
         { value: "bitboxapp", text: "BitBoxApp" },
         { value: "blockstream-green", text: "Blockstream Green (Android)" },
         { value: "bluewallet", text: "BlueWallet" },
