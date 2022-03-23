@@ -2,7 +2,7 @@
   <connection-details name="Alby" requires="lnd">
     <step-list>
       <step>
-        Add the Alby extension to your browser and open the app.
+        Add the Alby extension to your browser and open the app. Because you are connecting over Tor, you will also need to install the Alby companion application.
       </step>
       <step>
         Click on <span class="font-weight-bold">"Get Started"</span>.
