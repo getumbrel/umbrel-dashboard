@@ -165,13 +165,13 @@ const routes = [
             name: "connect",
             component: ConnectWallet,
             children: [
-			        {
-								path: "alby",
-								component: Alby,
-								meta: {
-									wallet: "alby"
-								}
-							},
+	      {
+		path: "alby",
+		component: Alby,
+		meta: {
+		wallet: "alby"
+		}
+	      },
               {
                 path: "bitboxapp",
                 component: BitBoxApp,
