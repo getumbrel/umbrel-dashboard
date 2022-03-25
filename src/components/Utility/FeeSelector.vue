@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="d-flex w-100 justify-content-between">
-      <small class="text-muted d-block mb-0">Transaction Fee</small>
+    <div class="flex w-full justify-between">
+      <small class="text-gray-500 block mb-0">Transaction Fee</small>
       <b-form-checkbox
         v-model="useCustomFee"
         class=""
@@ -9,7 +9,7 @@
         switch
         :disabled="isDisabled"
       >
-        <small class="text-muted">Custom</small>
+        <small class="text-gray-500">Custom</small>
       </b-form-checkbox>
     </div>
     <div class="vue-slider-container" v-if="useCustomFee">
@@ -31,13 +31,13 @@
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
-              { focus }
+              { focus },
             ]"
           >
-            <span class="vue-slider-dot-tooltip-text d-block"
+            <span class="vue-slider-dot-tooltip-text block"
               >{{ value }} sat/vB
             </span>
-            <small class="text-muted"
+            <small class="text-gray-500"
               >≈
               {{
                 ((parseInt(fee.fast.total, 10) /
@@ -49,9 +49,9 @@
           </div>
         </template>
       </vue-slider>
-      <div class="d-flex w-100 justify-content-between custom-fee-labels">
-        <small class="text-muted mb-0">Slow</small>
-        <small class="text-muted mb-0">Fast</small>
+      <div class="flex w-full justify-between custom-fee-labels">
+        <small class="text-gray-500 mb-0">Slow</small>
+        <small class="text-gray-500 mb-0">Fast</small>
       </div>
     </div>
     <div class="vue-slider-container" v-else>
@@ -69,20 +69,20 @@
       >
         <template v-slot:label="{ active, value }">
           <div :class="['vue-slider-mark-label', 'text-center', { active }]">
-            <span class="text-muted">~ {{ timeToConfirm(value) }}</span>
+            <span class="text-gray-500">~ {{ timeToConfirm(value) }}</span>
           </div>
         </template>
         <template v-slot:tooltip="{ value, focus }">
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
-              { focus }
+              { focus },
             ]"
           >
-            <span class="vue-slider-dot-tooltip-text d-block mb-0"
+            <span class="vue-slider-dot-tooltip-text block mb-0"
               >{{ fee[value].perByte }} sat/vB
             </span>
-            <small class="text-muted"
+            <small class="text-gray-500"
               >≈ {{ fee[value].total | satsToUSD }}</small
             >
           </div>
@@ -101,22 +101,22 @@ export default {
     fee: Object,
     customMinFee: {
       type: Number,
-      default: 1
+      default: 1,
     },
     customMaxFee: {
       type: Number,
-      default: 350
+      default: 350,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       chosenFee: "normal",
       useCustomFee: false,
-      customFee: 30
+      customFee: 30,
     };
   },
   computed: {
@@ -146,20 +146,20 @@ export default {
         intervals.push("fast");
       }
       return intervals;
-    }
+    },
   },
   methods: {
     emitValue() {
       if (this.useCustomFee) {
         const fee = {
           type: "custom",
-          satPerByte: parseInt(this.customFee, 10)
+          satPerByte: parseInt(this.customFee, 10),
         };
         this.$emit("change", fee);
       } else {
         const fee = {
           type: this.chosenFee,
-          satPerByte: parseInt(this.fee[this.chosenFee].perByte, 10)
+          satPerByte: parseInt(this.fee[this.chosenFee].perByte, 10),
         };
         this.$emit("change", fee);
       }
@@ -177,7 +177,7 @@ export default {
       if (fee === "cheapest") {
         return "24 hrs";
       }
-    }
+    },
   },
   watch: {
     useCustomFee: function() {
@@ -185,11 +185,11 @@ export default {
     },
     "fee.fast.total": function() {
       this.emitValue();
-    }
+    },
   },
   components: {
-    VueSlider
-  }
+    VueSlider,
+  },
 };
 </script>
 

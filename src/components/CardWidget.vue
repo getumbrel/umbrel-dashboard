@@ -1,20 +1,31 @@
 <template>
-  <b-card header-tag="header" footer-tag="footer" no-body class="mb-4 card-custom">
+  <b-card
+    header-tag="header"
+    footer-tag="footer"
+    no-body
+    class="mb-9 card-custom"
+  >
     <div class="card-custom-loading-bar" v-if="loading"></div>
     <!-- <template v-slot:header></template> -->
     <div>
-      <div class="card-custom-header py-4 px-3 px-lg-4" v-if="header">
-        <div class="d-flex w-100 justify-content-between align-items-center">
-          <h6 class="mb-0 font-weight-normal text-muted">{{ header }}</h6>
+      <div class="card-custom-header py-9 px-6 lg:px-9" v-if="header">
+        <div class="flex w-full justify-between items-center">
+          <h6 class="mb-0 font-weight-normal text-gray-500 dark:text-gray-400">
+            {{ header }}
+          </h6>
           <status
             v-if="!!status"
             :variant="status.variant"
             :blink="!!status.blink"
-          >{{ status.text }}</status>
+            >{{ status.text }}</status
+          >
           <!-- Only render this div if either there's a menu or a  -->
           <!-- header on the right, else it causes spacing issues -->
           <div
-            v-if="(!!$slots['header-right'] && !!$slots['header-right'][0]) || (!!$slots['menu'] && !!$slots['menu'][0])"
+            v-if="
+              (!!$slots['header-right'] && !!$slots['header-right'][0]) ||
+                (!!$slots['menu'] && !!$slots['menu'][0])
+            "
           >
             <slot name="header-right"></slot>
             <b-dropdown
@@ -58,15 +69,20 @@
         </div>
       </div>
       <div class="card-custom-body">
-        <div class="card-app-info px-3 px-lg-4" v-if="title || subTitle">
-          <div class="d-flex w-100 justify-content-between mb-4">
+        <div class="card-app-info px-6 lg:px-9" v-if="title || subTitle">
+          <div class="flex w-full justify-between mb-9">
             <div>
               <div>
                 <h3 v-if="title" class="mb-1">{{ title }}</h3>
-                <h3 class="mb-1" v-else>
+                <h3 class="text-3xl font-black mb-1" v-else>
                   <slot name="title"></slot>
                 </h3>
-                <p class="text-muted mb-0" v-if="subTitle">{{ subTitle }}</p>
+                <p
+                  class="text-gray-500 dark:text-gray-400 mb-0"
+                  v-if="subTitle"
+                >
+                  {{ subTitle }}
+                </p>
               </div>
             </div>
             <img :alt="header" :src="require(`@/assets/${icon}`)" v-if="icon" />
@@ -92,13 +108,13 @@ export default {
     title: String,
     subTitle: String,
     icon: String,
-    loading: Boolean
+    loading: Boolean,
   },
   computed: {},
   methods: {},
   components: {
-    Status
-  }
+    Status,
+  },
 };
 </script>
 

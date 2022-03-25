@@ -1,10 +1,10 @@
 <template>
   <div>
     <span
-      class="word-count d-block mx-auto bg-primary text-white text-center mb-2"
+      class="word-count block mx-auto bg-primary text-white text-center mb-2"
       >{{ index + 1 }}</span
     >
-    <div class="d-flex align-items-center">
+    <div class="flex items-center">
       <button
         class="btn-neu-circle btn-neu-circle-previous btn-neu"
         :disabled="index === 0"
@@ -23,7 +23,7 @@
           />
         </svg>
       </button>
-      <div class="d-block word-container">
+      <div class="block word-container">
         <div class="px-3" v-if="recover">
           <b-form-input
             v-model="inputWords[index]"
@@ -70,8 +70,8 @@ export default {
     words: Array,
     recover: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -101,8 +101,8 @@ export default {
         "",
         "",
         "",
-        ""
-      ]
+        "",
+      ],
     };
   },
   computed: {},
@@ -128,7 +128,7 @@ export default {
           this.$emit("complete");
         }
       }
-    }
+    },
   },
   mounted() {},
   watch: {
@@ -145,11 +145,11 @@ export default {
       }
       // Emit entered words
       this.$emit("input", this.inputWords);
-    }
+    },
   },
   components: {
-    ScrambledText
-  }
+    ScrambledText,
+  },
 };
 </script>
 

@@ -1,11 +1,11 @@
 <template>
-  <div class="p-sm-2">
+  <div class="sm:p-2">
     <div class="my-3 pb-2">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex justify-content-start align-items-center">
+      <div class="flex justify-between items-center">
+        <div class="flex justify-content-start items-center">
           <img
             style="height: auto; width: 12vw; max-width: 100px"
-            class="mr-2 mr-sm-3"
+            class="mr-2 sm:mr-4"
             src="@/assets/icon-app-lnd.svg"
           />
           <div>
@@ -19,8 +19,10 @@
               <circle cx="4" cy="4" r="4" fill="#00CD98" />
             </svg>
             <small class="ml-1 text-success">{{ status }}</small>
-            <h3 class="d-block font-weight-bold mb-1">Lightning Network</h3>
-            <span class="d-block text-muted">
+            <h3 class="text-3xl font-black block font-weight-bold mb-1">
+              Lightning Network
+            </h3>
+            <span class="block text-gray-500">
               {{
                 this.lndVersion
                   ? `v${this.lndVersion.split(" commit")[0]}`
@@ -73,10 +75,10 @@
 
           <b-modal id="lightning-address-modal" size="lg" centered hide-footer>
             <template v-slot:modal-header="{ close }">
-              <div
-                class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
-              >
-                <h3 class="text-lowercase">Lightning Address</h3>
+              <div class="px-2 sm:px-4 pt-2 flex justify-between w-full">
+                <h3 class="text-3xl font-black text-lowercase">
+                  Lightning Address
+                </h3>
                 <!-- Emulate built in modal header close button action -->
                 <a
                   href="#"
@@ -100,8 +102,8 @@
                 </a>
               </div>
             </template>
-            <div class="px-2 px-sm-3 pb-2 pb-sm-3">
-              <div class="d-flex align-items-center">
+            <div class="px-2 sm:px-4 pb-2 sm:pb-4">
+              <div class="flex items-center">
                 <!-- Pubkey QR Code -->
                 <qr-code
                   :value="uris.length ? uris[0] : pubkey"
@@ -109,7 +111,7 @@
                   class="qr-image mx-auto"
                   showLogo
                 ></qr-code>
-                <div class="w-100 align-self-center ml-3 ml-sm-4">
+                <div class="w-full align-self-center ml-3 ml-sm-4">
                   <p>
                     Other Lightning nodes can open payment channels to your node
                     on the following address
@@ -158,32 +160,37 @@
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-group>
               <div class="dropdown-group">
-                <div class="d-flex w-100 justify-content-between">
-                <div>
-                  <span class="d-block">Automatic backups</span>
-                  <small class="d-block">
-                    <a
-                      href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
-                      target="blank"
-                    >Learn more</a>
-                  </small>
+                <div class="flex w-full justify-between">
+                  <div>
+                    <span class="block">Automatic backups</span>
+                    <small class="block">
+                      <a
+                        href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
+                        target="blank"
+                        >Learn more</a
+                      >
+                    </small>
+                  </div>
+                  <toggle-switch
+                    class="align-self-center"
+                    disabled
+                    tooltip="Sorry, automatic backups cannot be disabled for now"
+                  ></toggle-switch>
                 </div>
-                <toggle-switch
-                  class="align-self-center"
-                  disabled
-                  tooltip="Sorry, automatic backups cannot be disabled for now"
-                ></toggle-switch>
-              </div>
-              <small v-if="backupStatus.status" class="d-block mt-2" style="opacity: 0.4">
+                <small
+                  v-if="backupStatus.status"
+                  class="block mt-2"
+                  style="opacity: 0.4"
+                >
                   Last backup
-                <span v-if="backupStatus.status === 'failed'">failed</span>
-                at {{ getReadableTime(backupStatus.timestamp) }}
-              </small>
+                  <span v-if="backupStatus.status === 'failed'">failed</span>
+                  at {{ getReadableTime(backupStatus.timestamp) }}
+                </small>
               </div>
             </b-dropdown-group>
           </template>
           <div class>
-            <div class="px-3 px-lg-4">
+            <div class="px-3 lg:px-6">
               <b-row>
                 <b-col col cols="6" xl="3">
                   <stat
@@ -230,9 +237,7 @@
               hide-footer
             >
               <template v-slot:modal-header="{ close }">
-                <div
-                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
-                >
+                <div class="px-2 sm:px-4 pt-2 flex justify-between w-full">
                   <h2>open channel</h2>
                   <!-- Emulate built in modal header close button action -->
                   <a
@@ -257,7 +262,7 @@
                   </a>
                 </div>
               </template>
-              <div class="px-2 px-sm-3 py-2">
+              <div class="px-2 sm:px-4 py-2">
                 <channel-open v-on:channelopen="onChannelOpen"></channel-open>
               </div>
             </b-modal>
@@ -271,9 +276,7 @@
               hide-footer
             >
               <template v-slot:modal-header="{ close }">
-                <div
-                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
-                >
+                <div class="px-2 sm:px-4 pt-2 flex justify-between w-full">
                   <h2>channel details</h2>
                   <!-- Emulate built in modal header close button action -->
                   <a
@@ -298,7 +301,7 @@
                   </a>
                 </div>
               </template>
-              <div class="px-2 px-sm-3 py-2">
+              <div class="px-2 sm:px-4 py-2">
                 <channel-manage
                   :channel="selectedChannel"
                   v-on:channelclose="onChannelClose"
@@ -334,24 +337,24 @@ export default {
   data() {
     return {
       status: "Running",
-      selectedChannel: {}
+      selectedChannel: {},
     };
   },
   computed: {
     ...mapState({
-      lndVersion: state => state.lightning.version,
-      numActiveChannels: state => state.lightning.numActiveChannels,
-      maxReceive: state => state.lightning.maxReceive,
-      maxSend: state => state.lightning.maxSend,
-      numPeers: state => state.lightning.numPeers,
-      alias: state => state.lightning.alias,
-      pubkey: state => state.lightning.pubkey,
-      uris: state => state.lightning.uris,
-      lndConnectUrls: state => state.lightning.lndConnectUrls,
-      channels: state => state.lightning.channels,
-      unit: state => state.system.unit,
-      backupStatus: state => state.system.backupStatus,
-    })
+      lndVersion: (state) => state.lightning.version,
+      numActiveChannels: (state) => state.lightning.numActiveChannels,
+      maxReceive: (state) => state.lightning.maxReceive,
+      maxSend: (state) => state.lightning.maxSend,
+      numPeers: (state) => state.lightning.numPeers,
+      alias: (state) => state.lightning.alias,
+      pubkey: (state) => state.lightning.pubkey,
+      uris: (state) => state.lightning.uris,
+      lndConnectUrls: (state) => state.lightning.lndConnectUrls,
+      channels: (state) => state.lightning.channels,
+      unit: (state) => state.system.unit,
+      backupStatus: (state) => state.system.backupStatus,
+    }),
   },
   methods: {
     getReadableTime(timestamp) {
@@ -391,7 +394,7 @@ export default {
     },
     fetchPageData() {
       this.$store.dispatch("lightning/getLndPageData");
-    }
+    },
   },
   created() {
     this.fetchPageData();
@@ -405,7 +408,7 @@ export default {
   watch: {
     password: function() {
       this.isIncorrectPassword = false;
-    }
+    },
   },
   components: {
     LightningWallet,
@@ -416,8 +419,8 @@ export default {
     ToggleSwitch,
     ChannelList,
     ChannelOpen,
-    ChannelManage
-  }
+    ChannelManage,
+  },
 };
 </script>
 

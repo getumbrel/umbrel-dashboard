@@ -4,7 +4,7 @@
     :status="{
       text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active',
       variant: 'success',
-      blink: false
+      blink: false,
     }"
     :sub-title="unit | formatUnit"
     icon="icon-app-bitcoin.svg"
@@ -23,7 +23,7 @@
         <CountUp
           :value="{
             endVal: walletBalance,
-            decimalPlaces: unit === 'sats' ? 0 : 5
+            decimalPlaces: unit === 'sats' ? 0 : 5,
           }"
         />
       </div>
@@ -45,7 +45,7 @@
           <!-- List of transactions -->
           <!-- No transactions -->
           <div
-            class="d-flex flex-column justify-content-center px-3 px-lg-4 zero-wallet-transactions-container"
+            class="flex flex-col justify-center px-3 lg:px-6 zero-wallet-transactions-container"
             v-if="transactions.length === 0"
           >
             <svg
@@ -70,7 +70,7 @@
               />
             </svg>
 
-            <small class="align-self-center mt-3 text-muted"
+            <small class="align-self-center mt-3 text-gray-500"
               >No transactions</small
             >
           </div>
@@ -84,14 +84,14 @@
               <b-list-group-item
                 v-for="tx in transactions"
                 :key="tx.hash"
-                class="flex-column align-items-start px-3 px-lg-4"
+                class="flex-col align-items-start px-3 lg:px-6"
                 :href="getTxExplorerUrl(tx.hash)"
                 target="_blank"
                 @click="openTxInExplorer"
               >
                 <!-- Loading Transactions Placeholder -->
                 <div
-                  class="d-flex w-100 justify-content-between"
+                  class="flex w-full justify-between"
                   v-if="tx.type === 'loading'"
                 >
                   <div class="w-50">
@@ -113,7 +113,7 @@
                   </div>
                 </div>
 
-                <div class="d-flex w-100 justify-content-between" v-else>
+                <div class="flex w-full justify-between" v-else>
                   <div class="transaction-description">
                     <h6
                       class="mb-0 font-weight-normal transaction-description-text"
@@ -166,7 +166,7 @@
                     <!-- Timestamp of tx -->
                     <!-- TODO: Clean this -->
                     <small
-                      class="text-muted mt-0 tx-timestamp"
+                      class="text-gray-500 mt-0 tx-timestamp"
                       :style="
                         tx.confirmations > 0
                           ? 'margin-left: 25px;'
@@ -200,7 +200,7 @@
 
                   <div class="text-right">
                     <span
-                      class="font-weight-bold d-block"
+                      class="font-weight-bold block"
                       v-b-tooltip.hover.left
                       :title="tx.amount | satsToUSD"
                     >
@@ -209,7 +209,7 @@
                       <span v-else-if="tx.type === 'outgoing'">-</span>
                       {{ tx.amount | unit | localize }}
                     </span>
-                    <small class="text-muted">{{ unit | formatUnit }}</small>
+                    <small class="text-gray-500">{{ unit | formatUnit }}</small>
                   </div>
                 </div>
               </b-list-group-item>
@@ -223,12 +223,12 @@
           v-else-if="mode === 'withdraw'"
           key="mode-withdraw"
         >
-          <div class="px-3 px-lg-4">
+          <div class="px-3 lg:px-6">
             <!-- Back Button -->
             <div class="pb-3">
               <a
                 href="#"
-                class="card-link text-muted"
+                class="card-link text-gray-500"
                 v-on:click.stop.prevent="reset"
               >
                 <svg
@@ -247,12 +247,12 @@
               </a>
             </div>
             <div class="mb-0">
-              <div class="w-100 d-flex justify-content-between">
+              <div class="w-full flex justify-between">
                 <label class="sr-onlsy" for="input-withdrawal-amount"
                   >Amount</label
                 >
                 <b-form-checkbox v-model="withdraw.sweep" size="sm" switch>
-                  <small class="text-muted">Max</small>
+                  <small class="text-gray-500">Max</small>
                 </b-form-checkbox>
               </div>
               <b-input-group class="neu-input-group">
@@ -274,10 +274,10 @@
                   ></sats-btc-switch>
                 </b-input-group-append>
               </b-input-group>
-              <div class="w-100 d-flex justify-content-between">
+              <div class="w-full flex justify-between">
                 <div></div>
                 <small
-                  class="text-muted mt-1 d-block text-right mb-0"
+                  class="text-gray-500 mt-1 block text-right mb-0"
                   :style="{ opacity: withdraw.amount > 0 ? 1 : 0 }"
                   >~ {{ withdraw.amount | satsToUSD }}</small
                 >
@@ -297,7 +297,7 @@
               @input="fetchWithdrawalFees"
             ></b-input>
           </div>
-          <div class="px-3 px-lg-4 mt-1" v-show="!error">
+          <div class="px-3 lg:px-6 mt-1" v-show="!error">
             <fee-selector
               :fee="this.fees"
               :disabled="!withdraw.amount || !withdraw.address"
@@ -312,12 +312,12 @@
           v-else-if="mode === 'review-withdraw'"
           key=" ode-review-withdraw"
         >
-          <div class="px-3 px-lg-4">
+          <div class="px-3 lg:px-6">
             <!-- Back Button -->
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted"
+                class="card-link text-gray-500"
                 v-on:click.stop.prevent="reset"
               >
                 <svg
@@ -336,11 +336,13 @@
               </a>
             </div>
             <div class="text-center pb-4">
-              <h3 class="mb-0">{{ withdraw.amount | unit | localize }}</h3>
-              <span class="d-block mb-1 text-muted">
+              <h3 class="text-3xl font-black mb-0">
+                {{ withdraw.amount | unit | localize }}
+              </h3>
+              <span class="block mb-1 text-gray-500">
                 {{ unit | formatUnit }}
               </span>
-              <small class="text-muted d-block mb-3"
+              <small class="text-gray-500 block mb-3"
                 >~ {{ withdraw.amount | satsToUSD }}</small
               >
 
@@ -358,13 +360,13 @@
                 />
               </svg>
 
-              <b class="d-block mt-3">{{ withdraw.address }}</b>
+              <b class="block mt-3">{{ withdraw.address }}</b>
             </div>
             <div
-              class="d-flex justify-content-between pb-3"
+              class="flex justify-between pb-3"
               v-if="withdraw.selectedFee.type === 'custom'"
             >
-              <span class="text-muted">
+              <span class="text-gray-500">
                 <b>
                   {{ withdraw.selectedFee.satPerByte }}
                 </b>
@@ -381,15 +383,15 @@
                   Transaction fee
                 </small>
               </span>
-              <span class="text-right text-muted">
+              <span class="text-right text-gray-500">
                 <b>{{ projectedBalanceInSats | unit | localize }}</b>
                 <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
                 <small>Remaining balance</small>
               </span>
             </div>
-            <div class="d-flex justify-content-between pb-3" v-else>
-              <span class="text-muted">
+            <div class="flex justify-between pb-3" v-else>
+              <span class="text-gray-500">
                 <b>
                   {{
                     fees[withdraw.selectedFee.type]["total"] | unit | localize
@@ -403,7 +405,7 @@
                   Transaction fee
                 </small>
               </span>
-              <span class="text-right text-muted">
+              <span class="text-right text-gray-500">
                 <b>{{ projectedBalanceInSats | unit | localize }}</b>
                 <small>&nbsp;{{ unit | formatUnit }}</small>
                 <br />
@@ -419,12 +421,12 @@
           v-else-if="mode === 'withdrawn'"
           key=" mode-withdrawn"
         >
-          <div class="px-3 px-lg-4">
+          <div class="px-3 lg:px-6">
             <!-- Back Button -->
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted"
+                class="card-link text-gray-500"
                 v-on:click.stop.prevent="reset"
               >
                 <svg
@@ -447,14 +449,14 @@
 
             <!-- Invoice amount + description -->
             <div class="text-center mb-2">
-              <span class="d-block mb-2">
+              <span class="block mb-2">
                 Successfully withdrawn
                 <b>
                   {{ withdraw.amount | unit | localize }}
                   {{ unit | formatUnit }}
                 </b>
               </span>
-              <small class="text-muted d-block">Transaction ID</small>
+              <small class="text-gray-500 block">Transaction ID</small>
             </div>
             <!-- Copy Address Input Field -->
             <input-copy size="sm" :value="withdraw.txHash"></input-copy>
@@ -467,12 +469,12 @@
           v-else-if="this.mode === 'deposit'"
           key="mode-deposit"
         >
-          <div class="px-3 px-lg-4">
+          <div class="px-3 lg:px-6">
             <!-- Back Button -->
             <div class="pt-2 pb-3">
               <a
                 href="#"
-                class="card-link text-muted"
+                class="card-link text-gray-500"
                 v-on:click.stop.prevent="reset"
               >
                 <svg
@@ -490,7 +492,7 @@
                 Back
               </a>
             </div>
-            <p class="text-center text-muted mb-3">
+            <p class="text-center text-gray-500 mb-3">
               <span>
                 Send
                 <b>only Bitcoin</b> to this address
@@ -517,13 +519,13 @@
     </div>
 
     <!-- Error message -->
-    <div class="wallet-error d-block w-100 mb-2">
-      <small class="text-danger error px-3 px-lg-4">{{ error }}</small>
+    <div class="wallet-error block w-full mb-2">
+      <small class="text-danger error px-3 lg:px-6">{{ error }}</small>
     </div>
 
     <!-- Wallet buttons -->
     <div class="wallet-buttons">
-      <b-button-group class="w-100" v-if="mode === 'transactions'">
+      <b-button-group class="w-full" v-if="mode === 'transactions'">
         <b-button
           class="w-50"
           variant="primary"
@@ -566,7 +568,7 @@
         </b-button>
       </b-button-group>
       <b-button
-        class="w-100"
+        class="w-full"
         variant="primary"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="changeMode('review-withdraw')"
@@ -577,7 +579,7 @@
         >Review Withdrawal</b-button
       >
       <b-button
-        class="w-100"
+        class="w-full"
         variant="primary"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         @click="withdrawBtc"
@@ -589,7 +591,7 @@
         }}
       </b-button>
       <b-button
-        class="w-100"
+        class="w-full"
         variant="success"
         style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
         :disabled="withdraw.isWithdrawing"
@@ -645,17 +647,17 @@ export default {
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false, //awaiting api response for withdrawal request?
         txHash: "", //tx hash of withdrawal tx,
-        selectedFee: { type: "normal", satPerByte: 0 } //selected withdrawal fee
+        selectedFee: { type: "normal", satPerByte: 0 }, //selected withdrawal fee
       },
       loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
-      error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
+      error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     };
   },
   props: {},
   computed: {
     ...mapState({
-      lightningSyncPercent: state => state.lightning.percent,
-      walletBalance: state => {
+      lightningSyncPercent: (state) => state.lightning.percent,
+      walletBalance: (state) => {
         //skip if still loading
         if (state.bitcoin.balance.total === -1) {
           return -1;
@@ -665,31 +667,37 @@ export default {
         }
         return state.bitcoin.balance.total;
       },
-      walletBalanceInSats: state => state.bitcoin.balance.total,
-      confirmedBtcBalance: state => state.bitcoin.balance.confirmed,
-      depositAddress: state => state.bitcoin.depositAddress,
-      fees: state => state.bitcoin.fees,
-      unit: state => state.system.unit,
-      chain: state => state.bitcoin.chain,
-      localExplorerTxUrl: state => {
+      walletBalanceInSats: (state) => state.bitcoin.balance.total,
+      confirmedBtcBalance: (state) => state.bitcoin.balance.confirmed,
+      depositAddress: (state) => state.bitcoin.depositAddress,
+      fees: (state) => state.bitcoin.fees,
+      unit: (state) => state.system.unit,
+      chain: (state) => state.bitcoin.chain,
+      localExplorerTxUrl: (state) => {
         // Check for mempool app
-        const mempool = state.apps.installed.find(({id}) => id === 'mempool');
+        const mempool = state.apps.installed.find(({ id }) => id === "mempool");
         if (mempool) {
-          return window.location.origin.indexOf(".onion") > 0 ? `http://${mempool.hiddenService}${mempool.path}/tx/` : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
+          return window.location.origin.indexOf(".onion") > 0
+            ? `http://${mempool.hiddenService}${mempool.path}/tx/`
+            : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
         }
 
         // Check for btc-rpc-explorer app
-        const btcRpcExplorer = state.apps.installed.find(({id}) => id === 'btc-rpc-explorer');
+        const btcRpcExplorer = state.apps.installed.find(
+          ({ id }) => id === "btc-rpc-explorer"
+        );
         if (btcRpcExplorer) {
-          return window.location.origin.indexOf(".onion") > 0 ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/` : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
+          return window.location.origin.indexOf(".onion") > 0
+            ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/`
+            : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
         }
 
         // Else return empty string
         return "";
-      }
+      },
     }),
     ...mapGetters({
-      transactions: "bitcoin/transactions"
+      transactions: "bitcoin/transactions",
     }),
     projectedBalanceInSats() {
       if (this.withdraw.sweep) {
@@ -711,7 +719,7 @@ export default {
             parseInt(this.withdraw.selectedFee.satPerByte, 10);
         return parseInt(Math.round(remainingBalanceInSats), 10);
       }
-    }
+    },
   },
   methods: {
     getTimeFromNow(timestamp) {
@@ -723,16 +731,24 @@ export default {
     getTxExplorerUrl(txHash) {
       if (this.localExplorerTxUrl) {
         return `${this.localExplorerTxUrl}${txHash}`;
-      }
-      else {
+      } else {
         if (window.location.origin.indexOf(".onion") > 0) {
-          return this.chain === "test" ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}` : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
+          return this.chain === "test"
+            ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}`
+            : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
         }
-        return this.chain === "test" ? `https://mempool.space/testnet/tx/${txHash}` : `https://mempool.space/tx/${txHash}`;
+        return this.chain === "test"
+          ? `https://mempool.space/testnet/tx/${txHash}`
+          : `https://mempool.space/tx/${txHash}`;
       }
     },
     openTxInExplorer(event) {
-      if (!this.localExplorerTxUrl && !window.confirm('This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?')) {
+      if (
+        !this.localExplorerTxUrl &&
+        !window.confirm(
+          "This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?"
+        )
+      ) {
         event.preventDefault();
       }
     },
@@ -768,7 +784,7 @@ export default {
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false,
         txHash: "",
-        selectedFee: { type: "normal", satPerByte: 0 }
+        selectedFee: { type: "normal", satPerByte: 0 },
       };
 
       this.loading = false;
@@ -787,7 +803,7 @@ export default {
           const params = {
             address: this.withdraw.address,
             confTarget: 0,
-            sweep: this.withdraw.sweep
+            sweep: this.withdraw.sweep,
           };
 
           if (!this.withdraw.sweep) {
@@ -826,7 +842,7 @@ export default {
         addr: this.withdraw.address,
         amt: this.withdraw.amount,
         satPerByte: parseInt(this.withdraw.selectedFee.satPerByte, 10),
-        sendAll: this.withdraw.sweep
+        sendAll: this.withdraw.sweep,
       };
 
       try {
@@ -846,7 +862,7 @@ export default {
       }
       this.loading = false;
       this.withdraw.isWithdrawing = false;
-    }
+    },
   },
   watch: {
     "withdraw.amountInput": function(val) {
@@ -877,7 +893,7 @@ export default {
         this.withdraw.amount = btcToSats(this.withdraw.amountInput);
       }
       this.fetchWithdrawalFees();
-    }
+    },
   },
   async created() {
     this.$store.dispatch("bitcoin/getStatus");
@@ -893,8 +909,8 @@ export default {
     InputCopy,
     CircularCheckmark,
     SatsBtcSwitch,
-    FeeSelector
-  }
+    FeeSelector,
+  },
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="py-3 px-3 px-lg-4 channel">
+  <div class="py-3 px-3 lg:px-6 channel">
     <b-row>
       <b-col col cols="12" xl="3">
         <!-- on large screens -->
@@ -10,7 +10,7 @@
           <div>
             <span v-if="channel.remoteAlias">{{ channel.remoteAlias }}</span>
             <span
-              class="loading-placeholder loading-placeholder-sm d-block"
+              class="loading-placeholder loading-placeholder-sm block"
               style="width:80%; margin-top: 8px;"
               v-else
             ></span>
@@ -18,9 +18,7 @@
         </div>
 
         <!-- on small screens -->
-        <div
-          class="d-xl-none d-flex justify-content-between align-items-center mb-1"
-        >
+        <div class="d-xl-none flex justify-between items-center mb-1">
           <status :variant="statusVariant" size="sm">{{
             channel.status
           }}</status>
@@ -31,7 +29,7 @@
       </b-col>
       <b-col col cols="12" xl="9">
         <div class>
-          <div class="d-flex justify-content-between">
+          <div class="flex justify-between">
             <span
               class="text-primary font-weight-bold"
               v-b-tooltip.hover.right
@@ -52,9 +50,9 @@
             :remote="Number(channel.remoteBalance)"
             class="my-1"
           ></bar>
-          <div class="d-flex justify-content-between">
-            <small class="text-muted font-weight-bold">Max Send</small>
-            <small class="text-muted font-weight-bold text-right"
+          <div class="flex justify-between">
+            <small class="text-gray-500 font-weight-bold">Max Send</small>
+            <small class="text-gray-500 font-weight-bold text-right"
               >Max Receive</small
             >
           </div>
@@ -90,7 +88,7 @@ export default {
         return "danger";
       }
       return "default";
-    }
+    },
   },
   data() {
     return {};
@@ -100,13 +98,13 @@ export default {
       if (this.channel.type === "OPEN") {
         return {
           text: "Online",
-          variant: "success"
+          variant: "success",
         };
       }
       if (this.channel.type === "PENDING_OPEN_CHANNEL") {
         return {
           text: "Opening",
-          variant: "warning"
+          variant: "warning",
         };
       }
       if (
@@ -115,24 +113,24 @@ export default {
       ) {
         return {
           text: "Closing",
-          variant: "warning"
+          variant: "warning",
         };
       }
       if (this.channel.type === "FORCE_CLOSING_CHANNEL") {
         return {
           text: "Force Closing",
-          variant: "danger"
+          variant: "danger",
         };
       }
-    }
+    },
   },
   props: {
-    channel: Object
+    channel: Object,
   },
   components: {
     Status,
-    Bar
-  }
+    Bar,
+  },
 };
 </script>
 

@@ -1,8 +1,8 @@
 <template>
-  <div class="p-sm-2">
+  <div class="sm:p-2">
     <div class="my-3 pb-2">
       <h1>logout</h1>
-      <p class="text-muted">Not gunna leave you too soon 😉</p>
+      <p class="text-gray-500">Not gunna leave you too soon 😉</p>
     </div>
     <b-row></b-row>
   </div>
@@ -15,7 +15,7 @@ export default {
   },
   computed: {},
   methods: {},
-  components: {}
+  components: {},
 };
 </script>
 

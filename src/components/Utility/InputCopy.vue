@@ -1,7 +1,7 @@
 <template>
   <b-input-group
-    class="copy-input-container align-items-center"
-    :class="autoWidth ? 'd-inline-flex auto-width mx-1' : 'd-flex'"
+    class="py-0.5 px-3.5 border-2 border-dashed border-gray-400 rounded items-center"
+    :class="autoWidth ? 'd-inline-flex auto-width mx-1' : 'flex'"
     :style="{
       width: autoWidth ? `${(10 + value.toString().length) * 8}px` : width,
       maxWidth: '100%',
@@ -11,7 +11,7 @@
     <b-form-input
       ref="copy-input-field"
       type="text"
-      class="copy-input"
+      class="copy-input dark:text-white"
       readonly
       v-model="value"
     ></b-form-input>
@@ -52,7 +52,7 @@ export default {
     value: String,
     width: {
       type: String,
-      default: "auto"
+      default: "auto",
     },
     autoWidth: {
       type: Boolean,
@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      isCopied: false
+      isCopied: false,
     };
   },
   methods: {
@@ -80,13 +80,13 @@ export default {
       }, 1000);
 
       return (this.isCopied = true);
-    }
+    },
   },
   watch: {
     value: function() {
       this.isCopied = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

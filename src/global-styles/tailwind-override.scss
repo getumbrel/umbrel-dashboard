@@ -1,0 +1,91 @@
+.bg-bootstrap-success {
+  background: #00cd98;
+
+  &:hover {
+    background-color: #00a77c;
+  }
+}
+
+@layer base {
+  h1 {
+    @apply text-7xl lg:text-8xl font-black mb-3 dark:text-white;
+  }
+
+  h2 {
+    @apply text-5xl font-black mb-3 dark:text-white;
+  }
+
+  h3 {
+    @apply text-4xl font-black mb-3 dark:text-white;
+  }
+
+  h5 {
+    @apply text-xl font-black mb-3 dark:text-white;
+  }
+}
+
+.text-success {
+  @apply text-green-500;
+}
+
+a {
+  color: #5351fb;
+}
+
+@responsive {
+  .columns-1 {
+    columns: 1;
+  }
+
+  .columns-2 {
+    columns: 2;
+  }
+
+  .columns-3 {
+    columns: 3;
+  }
+}
+
+.form-control {
+  @apply block appearance-none w-full py-1 px-2 mb-1 text-base leading-normal bg-white text-gray-800 dark:text-gray-100 border border-gray-200 rounded;
+}
+
+.input-group {
+  @apply relative;
+}
+
+label {
+  @apply inline-block mb-2;
+}
+
+.alert {
+  @apply relative px-3 py-3 mb-4 border rounded;
+}
+
+.alert-warning {
+  @apply bg-yellow-100 border-yellow-200 text-yellow-700;
+}
+
+.card {
+  @apply bg-white dark:bg-slate-800 shadow hover:shadow-md rounded-2xl dark:ring-slate-900 dark:ring-opacity-5;
+}
+
+.modal-content {
+  @apply dark:bg-slate-800;
+}
+
+.modal-title {
+  @apply dark:text-gray-200;
+}
+
+.modal-body {
+  @apply dark:text-gray-200;
+}
+
+.close {
+  @apply dark:text-gray-200;
+}
+
+p {
+  @apply mb-4;
+}

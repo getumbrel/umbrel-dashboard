@@ -2,11 +2,17 @@
   <connection-details name="Wasabi" requires="bitcoind">
     <step-list>
       <step>
-        Open Wasabi, go to <span class="font-weight-bold">Tools > Settings</span>.
+        Open Wasabi, go to
+        <span class="font-weight-bold">Tools > Settings</span>.
       </step>
       <step>
-        Under <span class="font-weight-bold">"Bitcoin P2P Endpoint"</span>, enter
-        <input-copy class="my-1" :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`" auto-width></input-copy>
+        Under <span class="font-weight-bold">"Bitcoin P2P Endpoint"</span>,
+        enter
+        <input-copy
+          class="my-1"
+          :value="`${urls.bitcoin.p2p.address}:${urls.bitcoin.p2p.port}`"
+          auto-width
+        ></input-copy>
       </step>
       <step>
         Restart Wasabi

@@ -18,7 +18,9 @@
       <step>
         Select <span class="font-weight-bold">"Mainnet server"</span> and enter
         <input-copy
-          :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
+          :value="
+            `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`
+          "
           auto-width
         ></input-copy>
       </step>
@@ -32,7 +34,8 @@
         Click <span class="font-weight-bold">"Save network settings"</span>
       </step>
       <step>
-        Congratulations! You've successfully connected Nunchuk Wallet to your Umbrel.
+        Congratulations! You've successfully connected Nunchuk Wallet to your
+        Umbrel.
       </step>
     </step-list>
 

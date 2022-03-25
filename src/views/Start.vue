@@ -1,17 +1,19 @@
 <template>
   <div>
-    <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+    <div class="flex flex-col items-center justify-center min-vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">{{ heading }}</h1>
-      <p class="text-muted w-75 text-center">{{ text }}</p>
+      <p class="text-gray-500 w-75 text-center">{{ text }}</p>
 
-      <div class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center">
+      <div
+        class="form-container mt-3 flex flex-col form-container w-full items-center"
+      >
         <b-form-input
           v-model="name"
           ref="name"
           placeholder="Your name"
           v-show="currentStep === 1"
-          class="card-input w-100"
+          class="card-input w-full"
           autofocus
         ></b-form-input>
 
@@ -20,7 +22,7 @@
           ref="password"
           v-show="currentStep === 2"
           placeholder="Your password"
-          inputClass="card-input w-100"
+          inputClass="card-input w-full"
         />
 
         <input-password
@@ -28,7 +30,7 @@
           ref="confirmPassword"
           placeholder="Re-enter your password"
           v-show="currentStep === 3"
-          inputClass="card-input w-100"
+          inputClass="card-input w-full"
         />
 
         <div v-show="currentStep === 5">
@@ -43,33 +45,55 @@
           <b-spinner v-show="!seed.length || isRegistering"></b-spinner>
         </div>
 
-        <input-copy v-if="currentStep === 6" class="w-100" size="sm" :value="onionAddress"></input-copy>
+        <input-copy
+          v-if="currentStep === 6"
+          class="w-full"
+          size="sm"
+          :value="onionAddress"
+        ></input-copy>
 
         <div v-show="currentStep === 7">
           <div class="text-center bg-white p-3 rounded">
-            <small
-              class="d-block text-muted text-small text-center mb-3"
-            >By clicking next, I agree that:</small>
-            <span class="d-block text-muted text-small mb-1">
-              <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>Umbrel is in beta and should not be considered secure
+            <small class="block text-gray-500 text-small text-center mb-3"
+              >By clicking next, I agree that:</small
+            >
+            <span class="block text-gray-500 text-small mb-1">
+              <b-icon
+                icon="exclamation-circle-fill"
+                variant="warning"
+                class="mr-1"
+              ></b-icon
+              >Umbrel is in beta and should not be considered secure
             </span>
-            <span class="d-block text-muted text-small mb-1">
-              <b-icon icon="exclamation-circle-fill" variant="warning" class="mr-1"></b-icon>I should not put more funds on my Umbrel than I'm prepared to lose
+            <span class="block text-gray-500 text-small mb-1">
+              <b-icon
+                icon="exclamation-circle-fill"
+                variant="warning"
+                class="mr-1"
+              ></b-icon
+              >I should not put more funds on my Umbrel than I'm prepared to
+              lose
             </span>
           </div>
         </div>
 
         <div class="text-center" v-show="currentStep === 8">
-          <p
-            class="text-muted"
-          >But you don't have to wait for the sync to complete... You can start using Umbrel right away!</p>
+          <p class="text-gray-500">
+            But you don't have to wait for the sync to complete... You can start
+            using Umbrel right away!
+          </p>
           <a
             href="#"
             v-b-tooltip.hover.bottom
             title="Umbrel uses neutrino while the sync is in progress, and automatically switches to Bitcoin Core once it's synced"
           >
             <small>
-              <b-icon icon="exclamation-circle-fill" variant="primary" class="mr-1"></b-icon>How?
+              <b-icon
+                icon="exclamation-circle-fill"
+                variant="primary"
+                class="mr-1"
+              ></b-icon
+              >How?
             </small>
           </a>
         </div>
@@ -83,33 +107,45 @@
           size="lg"
           @click="nextStep"
           :disabled="!isStepValid || isRegistering || !isLndOperational"
-          class="mt-3 mx-auto d-block px-4"
-          :class="{ 'loading-fade-blink': !isLndOperational || (currentStep === 8 && !unlocked), 'invisible': currentStep === 5 && recover && !isStepValid }"
-        >{{ !isLndOperational ? "Loading" : nextButtonText }}</b-button>
+          class="mt-3 mx-auto block px-4"
+          :class="{
+            'loading-fade-blink':
+              !isLndOperational || (currentStep === 8 && !unlocked),
+            invisible: currentStep === 5 && recover && !isStepValid,
+          }"
+          >{{ !isLndOperational ? "Loading" : nextButtonText }}</b-button
+        >
         <b-button
           variant="link"
           size="sm"
-          class="mt-3 mx-auto d-block"
+          class="mt-3 mx-auto block"
           v-if="currentStep === 4 || (currentStep === 5 && !recover)"
           @click="skipSeed"
           :disabled="isRegistering"
-        >Note Down Later</b-button>
+          >Note Down Later</b-button
+        >
         <b-button
           variant="link"
           size="sm"
           @click="recoverFromSeed"
           v-if="currentStep === 4"
-          class="mt-2 mx-auto d-block"
-        >Recover</b-button>
+          class="mt-2 mx-auto block"
+          >Recover</b-button
+        >
         <b-button
           variant="link"
           size="sm"
           @click="prevStep"
           v-if="currentStep > 0 && currentStep !== 6 && currentStep !== 8"
-          class="mt-2 mx-auto d-block text-dark"
-        >Back</b-button>
+          class="mt-2 mx-auto block text-dark"
+          >Back</b-button
+        >
       </div>
-      <b-progress :value="progress" height="1rem" class="onboarding-progress"></b-progress>
+      <b-progress
+        :value="progress"
+        height="1rem"
+        class="onboarding-progress"
+      ></b-progress>
     </div>
   </div>
 </template>
@@ -137,59 +173,59 @@ export default {
       steps: [
         {
           heading: "welcome to umbrel",
-          text: "Your journey to become bitcoin starts now."
+          text: "Your journey to become bitcoin starts now.",
         },
         {
           heading: "what is your name?",
           text:
-            "Your name stays on your Umbrel and is never shared with a 3rd party."
+            "Your name stays on your Umbrel and is never shared with a 3rd party.",
         },
         {
           heading: "set your password",
-          text: "You'll need this password to login to your Umbrel."
+          text: "You'll need this password to login to your Umbrel.",
         },
         {
           heading: "confirm your password",
-          text: "You'll need this password to login to your Umbrel."
+          text: "You'll need this password to login to your Umbrel.",
         },
         {
           heading: "note down your secret words",
           text:
-            "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place."
+            "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place.",
         },
         {
           heading: "note down your secret words",
           text:
-            'Remember, there is no "forgot password" button. You will need these 24 words to recover your Umbrel.'
+            'Remember, there is no "forgot password" button. You will need these 24 words to recover your Umbrel.',
         },
         {
           heading: "access from anywhere",
           text:
-            "Even when you're not on your home network, you can access your Umbrel using Tor Browser on the following URL"
+            "Even when you're not on your home network, you can access your Umbrel using Tor Browser on the following URL",
         },
         {
           heading: "one last thing",
-          text: "Don't be too #reckless."
+          text: "Don't be too #reckless.",
         },
         {
           heading: "🎉 that's it!",
           text:
-            "Congratulations! Your Umbrel is now set up and synchronizing the Bitcoin blockchain."
-        }
+            "Congratulations! Your Umbrel is now set up and synchronizing the Bitcoin blockchain.",
+        },
       ],
       notedSeed: false,
       isRegistering: false,
       recover: false,
-      recoverySeed: []
+      recoverySeed: [],
     };
   },
   computed: {
     ...mapState({
-      isLndOperational: state => state.lightning.operational,
-      registered: state => state.user.registered,
-      seed: state => state.user.seed,
-      unlocked: state => state.lightning.unlocked,
-      onionAddress: state => state.system.onionAddress
+      isLndOperational: (state) => state.lightning.operational,
+      registered: (state) => state.user.registered,
+      seed: (state) => state.user.seed,
+      unlocked: (state) => state.lightning.unlocked,
+      onionAddress: (state) => state.system.onionAddress,
     }),
     heading() {
       if (this.currentStep === 5 && this.recover) {
@@ -247,7 +283,7 @@ export default {
       return this.currentStep === 0
         ? 0
         : Math.round((this.currentStep * 100) / (this.steps.length - 1));
-    }
+    },
   },
   methods: {
     skipSeed() {
@@ -276,7 +312,7 @@ export default {
           await this.$store.dispatch("user/register", {
             name: this.name,
             password: this.password,
-            seed
+            seed,
           });
         } catch (error) {
           this.isRegistering = false;
@@ -287,7 +323,7 @@ export default {
               autoHideDelay: 3000,
               variant: "danger",
               solid: true,
-              toaster: "b-toaster-top-center"
+              toaster: "b-toaster-top-center",
             });
           }
           console.error("Error registering user", error);
@@ -305,9 +341,9 @@ export default {
         this.$confetti.start({
           particles: [
             {
-              type: "rect"
-            }
-          ]
+              type: "rect",
+            },
+          ],
         });
 
         this.lndUnlockInterval = window.setInterval(async () => {
@@ -349,7 +385,7 @@ export default {
     },
     incompleteRecoverySeed() {
       this.notedSeed = false;
-    }
+    },
   },
   async created() {
     //redirect to home if the user is already registered
@@ -372,8 +408,8 @@ export default {
   components: {
     InputPassword,
     Seed,
-    InputCopy
-  }
+    InputCopy,
+  },
 };
 </script>
 

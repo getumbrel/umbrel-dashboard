@@ -1,21 +1,23 @@
 <template>
-  <div class="px-2 px-sm-4 pb-2 pb-sm-3">
+  <div class="px-2 sm:px-6 pb-2 sm:pb-4">
     <!-- <span>Enter your password to view your 24-word seed phrase</span> -->
-    <div class="px-0 px-lg-4" v-if="!showSeed">
-      <label class="mb-2">Enter your password</label>
+    <div class="px-0 lg:px-6" v-if="!showSeed">
+      <label class="mb-2 dark:text-gray-200">Enter your password</label>
       <input-password
         v-model="password"
         ref="password"
         placeholder="Password"
         inputGroupClass="neu-input-group"
         :inputClass="[
-                    isIncorrectPassword ? 'incorrect-password' : '',
-                    'form-control form-control-lg neu-input w-100'
-                  ]"
+          isIncorrectPassword ? 'incorrect-password' : '',
+          'form-control form-control-lg neu-input w-full',
+        ]"
         :disabled="isLoadingSeed"
       />
 
-      <label v-if="otpEnabled" class="mt-3 mb-0">Enter your two-factor authenticator (2FA) code</label>
+      <label v-if="otpEnabled" class="mt-3 mb-0"
+        >Enter your two-factor authenticator (2FA) code</label
+      >
       <div class="seed-input-otp-container">
         <input-otp-token
           v-if="otpEnabled"
@@ -29,12 +31,12 @@
       <small
         class="mt-2 text-danger error float-right"
         v-show="isIncorrectPassword"
-      >Incorrect password</small>
+        >Incorrect password</small
+      >
 
-      <small
-        class="mt-2 text-danger error float-right"
-        v-show="isIncorrectOtp"
-      >Incorrect code</small>
+      <small class="mt-2 text-danger error float-right" v-show="isIncorrectOtp"
+        >Incorrect code</small
+      >
 
       <b-button
         variant="success"
@@ -42,13 +44,11 @@
         :disabled="isLoadingSeed"
         @click="fetchSeed"
       >
-        {{
-        isLoadingSeed ? "Decrypting Secret Words..." : "View Secret Words"
-        }}
+        {{ isLoadingSeed ? "Decrypting Secret Words..." : "View Secret Words" }}
       </b-button>
     </div>
 
-    <div class="d-flex justify-content-center" v-else>
+    <div class="flex justify-center" v-else>
       <!-- Seed phrase -->
       <seed :words="seed" v-if="seed.length"></seed>
       <b-spinner v-else></b-spinner>
@@ -73,14 +73,14 @@ export default {
       isLoadingSeed: false,
       otpToken: "",
       isCorrectOtp: false,
-      isIncorrectOtp: false
+      isIncorrectOtp: false,
     };
   },
   computed: {
     ...mapState({
-      seed: state => state.user.seed,
-      otpEnabled: state => state.user.otpEnabled
-    })
+      seed: (state) => state.user.seed,
+      otpEnabled: (state) => state.user.otpEnabled,
+    }),
   },
   props: { progress: Number },
   created() {},
@@ -91,7 +91,10 @@ export default {
     async fetchSeed() {
       this.isLoadingSeed = true;
       try {
-        await this.$store.dispatch("user/getSeed", { password: this.password, otpToken: this.otpToken });
+        await this.$store.dispatch("user/getSeed", {
+          password: this.password,
+          otpToken: this.otpToken,
+        });
         if (this.otpToken) {
           this.isCorrectOtp = true;
           // delay for ripple animation to complete
@@ -99,8 +102,7 @@ export default {
         }
         this.showSeed = true;
       } catch (error) {
-        if ( error.response && error.response.data ) {
-
+        if (error.response && error.response.data) {
           if (error.response.data === "Incorrect password") {
             this.isIncorrectPassword = true;
           }
@@ -116,15 +118,14 @@ export default {
       this.isIncorrectPassword = false;
       this.isCorrectOtp = false;
       this.isIncorrectOtp = false;
-    }
+    },
   },
   components: {
     InputPassword,
     InputOtpToken,
-    Seed
-  }
+    Seed,
+  },
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

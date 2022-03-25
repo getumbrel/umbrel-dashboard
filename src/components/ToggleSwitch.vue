@@ -2,15 +2,20 @@
   <div
     @click="toggle"
     class="toggle"
-    :class="{ 'toggle-off': !on, 'toggle-on': on, 'toggle-disabled': disabled, 'toggle-loading': loading }"
+    :class="{
+      'toggle-off': !on,
+      'toggle-on': on,
+      'toggle-disabled': disabled,
+      'toggle-loading': loading,
+    }"
     v-b-tooltip.hover.left
     :title="tooltip"
   >
     <div
-      class="toggle-switch justify-content-center"
+      class="toggle-switch justify-center"
       :class="{
         'toggle-switch-off': !on,
-        'toggle-switch-on': on
+        'toggle-switch-on': on,
       }"
     ></div>
   </div>
@@ -26,26 +31,26 @@ export default {
       }
       const emitEvent = !this.on ? "turnOn" : "turnOff";
       return this.$emit(emitEvent, !this.on);
-    }
+    },
   },
   props: {
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     loading: {
       type: Boolean,
-      default: false
+      default: false,
     },
     tooltip: {
       type: String,
-      default: ""
+      default: "",
     },
     on: {
       type: Boolean,
-      default: true
-    }
-  }
+      default: true,
+    },
+  },
 };
 </script>
 

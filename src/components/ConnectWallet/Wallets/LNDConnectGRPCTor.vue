@@ -1,17 +1,22 @@
 <template>
-  <connection-details name="any other wallet that supports lndconnect gRPC on Tor" requires="lnd">
-    <div class="d-lg-flex align-items-center justify-content-center pb-3">
+  <connection-details
+    name="any other wallet that supports lndconnect gRPC on Tor"
+    requires="lnd"
+  >
+    <div class="d-lg-flex items-center justify-center pb-3">
       <qr-code
         :value="urls.lnd.grpcTor"
         :size="260"
         level="M"
         class="qr-image mx-auto mb-3 mb-lg-0"
         showLogo
-        @click="$emit('showQrModal', urls.lnd.grpcTor )"
+        @click="$emit('showQrModal', urls.lnd.grpcTor)"
         v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
-      <div class="w-100 align-self-center ml-lg-3">
-        <label class="mb-1 d-block"><small class="font-weight-bold">lndconnect URL</small></label>
+      <div class="w-full align-self-center ml-lg-3">
+        <label class="mb-1 block"
+          ><small class="font-weight-bold">lndconnect URL</small></label
+        >
         <input-copy class="my-1" :value="urls.lnd.grpcTor"></input-copy>
       </div>
     </div>
@@ -25,12 +30,12 @@ import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     InputCopy,
-    QrCode
-  }
+    QrCode,
+  },
 };
 </script>
