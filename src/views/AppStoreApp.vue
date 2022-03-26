@@ -61,7 +61,10 @@
             v-on:click="openApp($event)"
             >Open</b-button
           >
-          <div class="mt-2 text-center d-flex justify-content-center" v-if="app.defaultPassword">
+          <div
+            class="mt-2 text-center d-flex justify-content-center"
+            v-if="app.defaultPassword"
+          >
             <div class="text-left mr-2" v-if="app.defaultUsername">
               <small class="">Default app username</small>
               <input-copy
@@ -71,7 +74,7 @@
                 class="mt-1"
               ></input-copy>
             </div>
-            <div :class="app.defaultUsername ? 'text-left': ''">
+            <div :class="app.defaultUsername ? 'text-left' : ''">
               <small class="">Default app password</small>
               <input-copy
                 :width="app.defaultUsername ? '140px' : 'auto'"
@@ -112,7 +115,10 @@
             class="mt-1 d-block text-muted text-center"
             >This may take a few minutes</small
           >
-          <div class="mt-2 text-center d-flex justify-content-center" v-if="isInstalling && app.defaultPassword">
+          <div
+            class="mt-2 text-center d-flex justify-content-center"
+            v-if="isInstalling && app.defaultPassword"
+          >
             <div class="text-left mr-2" v-if="app.defaultUsername">
               <small class="">Default app username</small>
               <input-copy
@@ -122,7 +128,7 @@
                 class="mt-1"
               ></input-copy>
             </div>
-            <div :class="app.defaultUsername ? 'text-left': ''">
+            <div :class="app.defaultUsername ? 'text-left' : ''">
               <small class="">Default app password</small>
               <input-copy
                 :width="app.defaultUsername ? '140px' : 'auto'"
@@ -234,7 +240,7 @@ export default {
   data() {
     return {
       isOffline: false,
-      checkIfAppIsOffline: true
+      checkIfAppIsOffline: true,
     };
   },
   computed: {
@@ -297,7 +303,9 @@ export default {
     openApp(event) {
       if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
         event.preventDefault();
-        alert(`${this.app.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`);
+        alert(
+          `${this.app.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Tor > Remote Access URL) to open this app.`
+        );
       }
       return;
     },
@@ -305,7 +313,7 @@ export default {
       this.checkIfAppIsOffline = true;
       while (this.checkIfAppIsOffline) {
         try {
-          await window.fetch(this.url, {mode: "no-cors" });
+          await window.fetch(this.url, { mode: "no-cors" });
           this.isOffline = false;
           this.checkIfAppIsOffline = false;
         } catch (error) {
@@ -313,7 +321,7 @@ export default {
         }
         await delay(1000);
       }
-    }
+    },
   },
   async created() {
     await this.$store.dispatch("apps/getAppStore");
@@ -331,5 +339,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

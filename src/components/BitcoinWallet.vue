@@ -4,14 +4,14 @@
     :status="{
       text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active',
       variant: 'success',
-      blink: false
+      blink: false,
     }"
     :sub-title="unit | formatUnit"
     icon="icon-app-bitcoin.svg"
     :loading="
       loading ||
-        (transactions.length > 0 && transactions[0]['type'] === 'loading') ||
-        lightningSyncPercent < 100
+      (transactions.length > 0 && transactions[0]['type'] === 'loading') ||
+      lightningSyncPercent < 100
     "
   >
     <template v-slot:title>
@@ -23,13 +23,13 @@
         <CountUp
           :value="{
             endVal: walletBalance,
-            decimalPlaces: unit === 'sats' ? 0 : 5
+            decimalPlaces: unit === 'sats' ? 0 : 5,
           }"
         />
       </div>
       <span
         class="loading-placeholder loading-placeholder-lg"
-        style="width: 140px;"
+        style="width: 140px"
         v-else
       ></span>
     </template>
@@ -158,7 +158,7 @@
                       </svg>
 
                       <!-- tx description -->
-                      <span style="margin-left: 6px;" :title="tx.description">{{
+                      <span style="margin-left: 6px" :title="tx.description">{{
                         tx.description
                       }}</span>
                     </h6>
@@ -173,25 +173,23 @@
                           : 'margin-left: 21px;'
                       "
                       v-b-tooltip.hover.bottomright
-                      :title="
-                        `${getReadableTime(tx.timestamp)} | ${
-                          tx.confirmations
-                        } confirmations`
-                      "
+                      :title="`${getReadableTime(tx.timestamp)} | ${
+                        tx.confirmations
+                      } confirmations`"
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                     >
                       {{ getTimeFromNow(tx.timestamp) }}
                       <span
                         v-if="
                           tx.description === 'Lightning Wallet' &&
-                            tx.type === 'outgoing'
+                          tx.type === 'outgoing'
                         "
                         >&bull; Channel open</span
                       >
                       <span
                         v-else-if="
                           tx.description === 'Lightning Wallet' &&
-                            tx.type === 'incoming'
+                          tx.type === 'incoming'
                         "
                         >&bull; Channel close</span
                       >
@@ -527,7 +525,12 @@
         <b-button
           class="w-50"
           variant="primary"
-          style="border-radius: 0; border-bottom-left-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+          style="
+            border-radius: 0;
+            border-bottom-left-radius: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+          "
           @click="changeMode('withdraw')"
         >
           <svg
@@ -547,7 +550,12 @@
         <b-button
           class="w-50"
           variant="success"
-          style="border-radius: 0; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+          style="
+            border-radius: 0;
+            border-bottom-right-radius: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+          "
           @click="changeMode('deposit')"
         >
           <svg
@@ -568,7 +576,13 @@
       <b-button
         class="w-100"
         variant="primary"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         @click="changeMode('review-withdraw')"
         v-else-if="mode === 'withdraw'"
         :disabled="
@@ -579,7 +593,13 @@
       <b-button
         class="w-100"
         variant="primary"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         @click="withdrawBtc"
         :disabled="withdraw.isWithdrawing || !!error"
         v-else-if="mode === 'review-withdraw'"
@@ -591,7 +611,13 @@
       <b-button
         class="w-100"
         variant="success"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         :disabled="withdraw.isWithdrawing"
         v-else-if="mode === 'withdrawn'"
         :href="getTxExplorerUrl(withdraw.txHash)"
@@ -645,17 +671,17 @@ export default {
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false, //awaiting api response for withdrawal request?
         txHash: "", //tx hash of withdrawal tx,
-        selectedFee: { type: "normal", satPerByte: 0 } //selected withdrawal fee
+        selectedFee: { type: "normal", satPerByte: 0 }, //selected withdrawal fee
       },
       loading: false, //overall state of the wallet, used to toggle progress bar on top of the card,
-      error: "" //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
+      error: "", //used to show any error occured, eg. invalid amount, enter more than 0 sats, invoice expired, etc
     };
   },
   props: {},
   computed: {
     ...mapState({
-      lightningSyncPercent: state => state.lightning.percent,
-      walletBalance: state => {
+      lightningSyncPercent: (state) => state.lightning.percent,
+      walletBalance: (state) => {
         //skip if still loading
         if (state.bitcoin.balance.total === -1) {
           return -1;
@@ -665,31 +691,37 @@ export default {
         }
         return state.bitcoin.balance.total;
       },
-      walletBalanceInSats: state => state.bitcoin.balance.total,
-      confirmedBtcBalance: state => state.bitcoin.balance.confirmed,
-      depositAddress: state => state.bitcoin.depositAddress,
-      fees: state => state.bitcoin.fees,
-      unit: state => state.system.unit,
-      chain: state => state.bitcoin.chain,
-      localExplorerTxUrl: state => {
+      walletBalanceInSats: (state) => state.bitcoin.balance.total,
+      confirmedBtcBalance: (state) => state.bitcoin.balance.confirmed,
+      depositAddress: (state) => state.bitcoin.depositAddress,
+      fees: (state) => state.bitcoin.fees,
+      unit: (state) => state.system.unit,
+      chain: (state) => state.bitcoin.chain,
+      localExplorerTxUrl: (state) => {
         // Check for mempool app
-        const mempool = state.apps.installed.find(({id}) => id === 'mempool');
+        const mempool = state.apps.installed.find(({ id }) => id === "mempool");
         if (mempool) {
-          return window.location.origin.indexOf(".onion") > 0 ? `http://${mempool.hiddenService}${mempool.path}/tx/` : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
+          return window.location.origin.indexOf(".onion") > 0
+            ? `http://${mempool.hiddenService}${mempool.path}/tx/`
+            : `http://${window.location.hostname}:${mempool.port}${mempool.path}/tx/`;
         }
 
         // Check for btc-rpc-explorer app
-        const btcRpcExplorer = state.apps.installed.find(({id}) => id === 'btc-rpc-explorer');
+        const btcRpcExplorer = state.apps.installed.find(
+          ({ id }) => id === "btc-rpc-explorer"
+        );
         if (btcRpcExplorer) {
-          return window.location.origin.indexOf(".onion") > 0 ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/` : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
+          return window.location.origin.indexOf(".onion") > 0
+            ? `http://${btcRpcExplorer.hiddenService}${btcRpcExplorer.path}/tx/`
+            : `http://${window.location.hostname}:${btcRpcExplorer.port}${btcRpcExplorer.path}/tx/`;
         }
 
         // Else return empty string
         return "";
-      }
+      },
     }),
     ...mapGetters({
-      transactions: "bitcoin/transactions"
+      transactions: "bitcoin/transactions",
     }),
     projectedBalanceInSats() {
       if (this.withdraw.sweep) {
@@ -711,7 +743,7 @@ export default {
             parseInt(this.withdraw.selectedFee.satPerByte, 10);
         return parseInt(Math.round(remainingBalanceInSats), 10);
       }
-    }
+    },
   },
   methods: {
     getTimeFromNow(timestamp) {
@@ -723,16 +755,24 @@ export default {
     getTxExplorerUrl(txHash) {
       if (this.localExplorerTxUrl) {
         return `${this.localExplorerTxUrl}${txHash}`;
-      }
-      else {
+      } else {
         if (window.location.origin.indexOf(".onion") > 0) {
-          return this.chain === "test" ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}` : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
+          return this.chain === "test"
+            ? `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/testnet/tx/${txHash}`
+            : `http://mempoolhqx4isw62xs7abwphsq7ldayuidyx2v2oethdhhj6mlo2r6ad.onion/tx/${txHash}`;
         }
-        return this.chain === "test" ? `https://mempool.space/testnet/tx/${txHash}` : `https://mempool.space/tx/${txHash}`;
+        return this.chain === "test"
+          ? `https://mempool.space/testnet/tx/${txHash}`
+          : `https://mempool.space/tx/${txHash}`;
       }
     },
     openTxInExplorer(event) {
-      if (!this.localExplorerTxUrl && !window.confirm('This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?')) {
+      if (
+        !this.localExplorerTxUrl &&
+        !window.confirm(
+          "This will open your transaction details in a public explorer (mempool.space). Do you wish to continue?"
+        )
+      ) {
         event.preventDefault();
       }
     },
@@ -768,7 +808,7 @@ export default {
         isTyping: false, //to disable button when the user changes amount/address
         isWithdrawing: false,
         txHash: "",
-        selectedFee: { type: "normal", satPerByte: 0 }
+        selectedFee: { type: "normal", satPerByte: 0 },
       };
 
       this.loading = false;
@@ -787,7 +827,7 @@ export default {
           const params = {
             address: this.withdraw.address,
             confTarget: 0,
-            sweep: this.withdraw.sweep
+            sweep: this.withdraw.sweep,
           };
 
           if (!this.withdraw.sweep) {
@@ -826,7 +866,7 @@ export default {
         addr: this.withdraw.address,
         amt: this.withdraw.amount,
         satPerByte: parseInt(this.withdraw.selectedFee.satPerByte, 10),
-        sendAll: this.withdraw.sweep
+        sendAll: this.withdraw.sweep,
       };
 
       try {
@@ -846,10 +886,10 @@ export default {
       }
       this.loading = false;
       this.withdraw.isWithdrawing = false;
-    }
+    },
   },
   watch: {
-    "withdraw.amountInput": function(val) {
+    "withdraw.amountInput": function (val) {
       if (this.unit === "sats") {
         this.withdraw.amount = Number(val);
       } else if (this.unit === "btc") {
@@ -857,7 +897,7 @@ export default {
       }
       this.fetchWithdrawalFees();
     },
-    "withdraw.sweep": async function(val) {
+    "withdraw.sweep": async function (val) {
       if (val) {
         if (this.unit === "sats") {
           this.withdraw.amountInput = String(this.confirmedBtcBalance);
@@ -870,14 +910,14 @@ export default {
         this.fetchWithdrawalFees();
       }
     },
-    unit: function(val) {
+    unit: function (val) {
       if (val === "sats") {
         this.withdraw.amount = Number(this.withdraw.amountInput);
       } else if (val === "btc") {
         this.withdraw.amount = btcToSats(this.withdraw.amountInput);
       }
       this.fetchWithdrawalFees();
-    }
+    },
   },
   async created() {
     this.$store.dispatch("bitcoin/getStatus");
@@ -893,8 +933,8 @@ export default {
     InputCopy,
     CircularCheckmark,
     SatsBtcSwitch,
-    FeeSelector
-  }
+    FeeSelector,
+  },
 };
 </script>
 

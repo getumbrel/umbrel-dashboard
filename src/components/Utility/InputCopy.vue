@@ -52,7 +52,7 @@ export default {
     value: String,
     width: {
       type: String,
-      default: "auto"
+      default: "auto",
     },
     autoWidth: {
       type: Boolean,
@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      isCopied: false
+      isCopied: false,
     };
   },
   methods: {
@@ -80,13 +80,13 @@ export default {
       }, 1000);
 
       return (this.isCopied = true);
-    }
+    },
   },
   watch: {
-    value: function() {
+    value: function () {
       this.isCopied = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

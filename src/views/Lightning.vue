@@ -125,7 +125,7 @@
                   </div>
                   <span
                     class="loading-placeholder loading-placeholder-lg mt-1"
-                    style="width: 100%;"
+                    style="width: 100%"
                     v-else
                   ></span>
                 </div>
@@ -159,26 +159,31 @@
             <b-dropdown-group>
               <div class="dropdown-group">
                 <div class="d-flex w-100 justify-content-between">
-                <div>
-                  <span class="d-block">Automatic backups</span>
-                  <small class="d-block">
-                    <a
-                      href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
-                      target="blank"
-                    >Learn more</a>
-                  </small>
+                  <div>
+                    <span class="d-block">Automatic backups</span>
+                    <small class="d-block">
+                      <a
+                        href="https://github.com/getumbrel/umbrel/blob/master/scripts/backup/README.md"
+                        target="blank"
+                        >Learn more</a
+                      >
+                    </small>
+                  </div>
+                  <toggle-switch
+                    class="align-self-center"
+                    disabled
+                    tooltip="Sorry, automatic backups cannot be disabled for now"
+                  ></toggle-switch>
                 </div>
-                <toggle-switch
-                  class="align-self-center"
-                  disabled
-                  tooltip="Sorry, automatic backups cannot be disabled for now"
-                ></toggle-switch>
-              </div>
-              <small v-if="backupStatus.status" class="d-block mt-2" style="opacity: 0.4">
+                <small
+                  v-if="backupStatus.status"
+                  class="d-block mt-2"
+                  style="opacity: 0.4"
+                >
                   Last backup
-                <span v-if="backupStatus.status === 'failed'">failed</span>
-                at {{ getReadableTime(backupStatus.timestamp) }}
-              </small>
+                  <span v-if="backupStatus.status === 'failed'">failed</span>
+                  at {{ getReadableTime(backupStatus.timestamp) }}
+                </small>
               </div>
             </b-dropdown-group>
           </template>
@@ -334,24 +339,24 @@ export default {
   data() {
     return {
       status: "Running",
-      selectedChannel: {}
+      selectedChannel: {},
     };
   },
   computed: {
     ...mapState({
-      lndVersion: state => state.lightning.version,
-      numActiveChannels: state => state.lightning.numActiveChannels,
-      maxReceive: state => state.lightning.maxReceive,
-      maxSend: state => state.lightning.maxSend,
-      numPeers: state => state.lightning.numPeers,
-      alias: state => state.lightning.alias,
-      pubkey: state => state.lightning.pubkey,
-      uris: state => state.lightning.uris,
-      lndConnectUrls: state => state.lightning.lndConnectUrls,
-      channels: state => state.lightning.channels,
-      unit: state => state.system.unit,
-      backupStatus: state => state.system.backupStatus,
-    })
+      lndVersion: (state) => state.lightning.version,
+      numActiveChannels: (state) => state.lightning.numActiveChannels,
+      maxReceive: (state) => state.lightning.maxReceive,
+      maxSend: (state) => state.lightning.maxSend,
+      numPeers: (state) => state.lightning.numPeers,
+      alias: (state) => state.lightning.alias,
+      pubkey: (state) => state.lightning.pubkey,
+      uris: (state) => state.lightning.uris,
+      lndConnectUrls: (state) => state.lightning.lndConnectUrls,
+      channels: (state) => state.lightning.channels,
+      unit: (state) => state.system.unit,
+      backupStatus: (state) => state.system.backupStatus,
+    }),
   },
   methods: {
     getReadableTime(timestamp) {
@@ -391,7 +396,7 @@ export default {
     },
     fetchPageData() {
       this.$store.dispatch("lightning/getLndPageData");
-    }
+    },
   },
   created() {
     this.fetchPageData();
@@ -403,9 +408,9 @@ export default {
     window.clearInterval(this.interval);
   },
   watch: {
-    password: function() {
+    password: function () {
       this.isIncorrectPassword = false;
-    }
+    },
   },
   components: {
     LightningWallet,
@@ -416,8 +421,8 @@ export default {
     ToggleSwitch,
     ChannelList,
     ChannelOpen,
-    ChannelManage
-  }
+    ChannelManage,
+  },
 };
 </script>
 

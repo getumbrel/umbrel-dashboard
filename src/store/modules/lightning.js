@@ -27,7 +27,7 @@ const state = () => ({
   balance: {
     total: -1,
     confirmed: -1,
-    pending: -1
+    pending: -1,
   },
   alias: "",
   pubkey: "",
@@ -35,7 +35,7 @@ const state = () => ({
     restTor: "",
     restLocal: "",
     grpcTor: "",
-    grpcLocal: ""
+    grpcLocal: "",
   },
   uris: [],
   numPendingChannels: 0,
@@ -45,7 +45,7 @@ const state = () => ({
     { type: "loading" },
     { type: "loading" },
     { type: "loading" },
-    { type: "loading" }
+    { type: "loading" },
   ],
   connectionCode: "unknown",
   maxSend: -1,
@@ -54,11 +54,11 @@ const state = () => ({
     { type: "loading" },
     { type: "loading" },
     { type: "loading" },
-    { type: "loading" }
+    { type: "loading" },
   ],
   confirmedTransactions: [],
   pendingTransactions: [],
-  pendingChannelEdit: {}
+  pendingChannelEdit: {},
 });
 
 // Functions to update the state directly
@@ -147,7 +147,7 @@ const mutations = {
 
   setLndConnectUrls(state, urls) {
     state.lndConnectUrls = urls;
-  }
+  },
 };
 
 // Functions to get data from the API
@@ -177,7 +177,7 @@ const actions = {
       `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/info/sync`
     );
     if (sync && sync.percent) {
-      commit("setSync", sync)
+      commit("setSync", sync);
     }
   },
 
@@ -247,7 +247,7 @@ const actions = {
 
     if (rawChannels) {
       // Loop through channels to determine pending balance, max payment amount, and sort channels by type
-      rawChannels.forEach(channel => {
+      rawChannels.forEach((channel) => {
         const localBalance = parseInt(channel.localBalance) || 0;
         const remoteBalance = parseInt(channel.remoteBalance) || 0;
 
@@ -280,7 +280,7 @@ const actions = {
           [
             "WAITING_CLOSING_CHANNEL",
             "FORCE_CLOSING_CHANNEL",
-            "PENDING_CLOSING_CHANNEL"
+            "PENDING_CLOSING_CHANNEL",
           ].indexOf(channel.type) > -1
         ) {
           pendingBalance += localBalance;
@@ -309,7 +309,7 @@ const actions = {
       commit("setChannels", channels);
       commit("setBalance", {
         confirmed: confirmedBalance,
-        pending: pendingBalance
+        pending: pendingBalance,
       });
       commit("setMaxReceive", maxReceive);
       commit("setMaxSend", maxSend);
@@ -334,7 +334,7 @@ const actions = {
     let outgoingTransactions = [];
 
     if (invoices) {
-      incomingTransactions = invoices.map(tx => {
+      incomingTransactions = invoices.map((tx) => {
         let type = "incoming";
         if (tx.state === "CANCELED") {
           type = "expired";
@@ -351,17 +351,17 @@ const actions = {
           expiresOn: new Date(
             (Number(tx.creationDate) + Number(tx.expiry)) * 1000
           ),
-          paymentRequest: tx.paymentRequest
+          paymentRequest: tx.paymentRequest,
         };
       });
       transactions = [...transactions, ...incomingTransactions];
     }
 
     if (payments) {
-      outgoingTransactions = payments.map(tx => {
+      outgoingTransactions = payments.map((tx) => {
         //load tx from state to copy description
         const preFetchedTx = state.transactions.find(
-          trx =>
+          (trx) =>
             trx.type === "outgoing" &&
             trx.paymentPreImage === tx.paymentPreimage
         );
@@ -373,7 +373,7 @@ const actions = {
           paymentRequest: tx.paymentRequest,
           paymentPreImage: tx.paymentPreimage,
           fee: Number(tx.feeSat),
-          description: preFetchedTx ? preFetchedTx.description : ""
+          description: preFetchedTx ? preFetchedTx.description : "",
         };
       });
 
@@ -385,9 +385,9 @@ const actions = {
 
     //filter out new outgoing payments
     const newOutgoingTransactions = outgoingTransactions.filter(
-      tx =>
+      (tx) =>
         !state.transactions.some(
-          trx => trx.paymentPreImage === tx.paymentPreImage
+          (trx) => trx.paymentPreImage === tx.paymentPreImage
         )
     );
 
@@ -411,7 +411,7 @@ const actions = {
 
           //find tx to update
           const txIndex = updatedTransactions.findIndex(
-            trx => trx.paymentPreImage === tx.paymentPreImage
+            (trx) => trx.paymentPreImage === tx.paymentPreImage
           );
 
           if (txIndex !== -1) {
@@ -438,14 +438,14 @@ const actions = {
     if (urls) {
       commit("setLndConnectUrls", urls);
     }
-  }
+  },
 };
 
 const getters = {
   status(state) {
     const data = {
       class: "loading",
-      text: "Loading..."
+      text: "Loading...",
     };
 
     if (state.operational) {
@@ -459,7 +459,7 @@ const getters = {
     }
 
     return data;
-  }
+  },
 };
 
 export default {
@@ -467,5 +467,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

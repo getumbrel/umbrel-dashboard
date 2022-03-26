@@ -31,7 +31,7 @@
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
-              { focus }
+              { focus },
             ]"
           >
             <span class="vue-slider-dot-tooltip-text d-block"
@@ -76,7 +76,7 @@
           <div
             :class="[
               'vue-slider-dot-tooltip-inner vue-slider-dot-tooltip-inner-top',
-              { focus }
+              { focus },
             ]"
           >
             <span class="vue-slider-dot-tooltip-text d-block mb-0"
@@ -101,22 +101,22 @@ export default {
     fee: Object,
     customMinFee: {
       type: Number,
-      default: 1
+      default: 1,
     },
     customMaxFee: {
       type: Number,
-      default: 350
+      default: 350,
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       chosenFee: "normal",
       useCustomFee: false,
-      customFee: 30
+      customFee: 30,
     };
   },
   computed: {
@@ -146,20 +146,20 @@ export default {
         intervals.push("fast");
       }
       return intervals;
-    }
+    },
   },
   methods: {
     emitValue() {
       if (this.useCustomFee) {
         const fee = {
           type: "custom",
-          satPerByte: parseInt(this.customFee, 10)
+          satPerByte: parseInt(this.customFee, 10),
         };
         this.$emit("change", fee);
       } else {
         const fee = {
           type: this.chosenFee,
-          satPerByte: parseInt(this.fee[this.chosenFee].perByte, 10)
+          satPerByte: parseInt(this.fee[this.chosenFee].perByte, 10),
         };
         this.$emit("change", fee);
       }
@@ -177,19 +177,19 @@ export default {
       if (fee === "cheapest") {
         return "24 hrs";
       }
-    }
+    },
   },
   watch: {
-    useCustomFee: function() {
+    useCustomFee: function () {
       this.emitValue();
     },
-    "fee.fast.total": function() {
+    "fee.fast.total": function () {
       this.emitValue();
-    }
+    },
   },
   components: {
-    VueSlider
-  }
+    VueSlider,
+  },
 };
 </script>
 

@@ -70,8 +70,8 @@ export default {
     words: Array,
     recover: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -101,8 +101,8 @@ export default {
         "",
         "",
         "",
-        ""
-      ]
+        "",
+      ],
     };
   },
   computed: {},
@@ -128,11 +128,11 @@ export default {
           this.$emit("complete");
         }
       }
-    }
+    },
   },
   mounted() {},
   watch: {
-    inputWords: function() {
+    inputWords: function () {
       // Emit "complete" if user has entered all recovery words
       if (
         this.inputWords.length === 24 &&
@@ -145,11 +145,11 @@ export default {
       }
       // Emit entered words
       this.$emit("input", this.inputWords);
-    }
+    },
   },
   components: {
-    ScrambledText
-  }
+    ScrambledText,
+  },
 };
 </script>
 

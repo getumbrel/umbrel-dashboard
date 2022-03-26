@@ -1,7 +1,9 @@
 <template>
   <div class="p-sm-2">
     <div class="my-3 pb-2">
-      <h1 class="text-lowercase">{{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}</h1>
+      <h1 class="text-lowercase">
+        {{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}
+      </h1>
       <!-- <p class="text-muted">Here's an overview of your Umbrel</p> -->
     </div>
     <b-row>
@@ -17,7 +19,7 @@
           :status="{
             text: syncPercent < 100 ? 'Synchronizing' : 'Running',
             variant: 'success',
-            blink: false
+            blink: false,
           }"
           sub-title="Synchronized"
           icon="icon-app-bitcoin.svg"
@@ -27,12 +29,16 @@
             <CountUp
               :value="{
                 endVal: syncPercent >= 99.99 ? 100 : syncPercent,
-                decimalPlaces: syncPercent >= 99.99 ? 0 : 2
+                decimalPlaces: syncPercent >= 99.99 ? 0 : 2,
               }"
               suffix="%"
               v-if="syncPercent !== -1"
             />
-            <span class="loading-placeholder loading-placeholder-lg" style="width: 140px;" v-else></span>
+            <span
+              class="loading-placeholder loading-placeholder-lg"
+              style="width: 140px"
+              v-else
+            ></span>
           </template>
           <div class>
             <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
@@ -52,7 +58,11 @@
           <b-col col cols="12" md="6" xl="12">
             <card-widget
               header="Bitcoin Wallet"
-              :status="{ text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active', variant: 'success', blink: false }"
+              :status="{
+                text: lightningSyncPercent < 100 ? 'Synchronizing' : 'Active',
+                variant: 'success',
+                blink: false,
+              }"
               :sub-title="unit | formatUnit"
               icon="icon-app-bitcoin.svg"
               :loading="lightningSyncPercent < 100"
@@ -66,19 +76,21 @@
                   <CountUp
                     :value="{
                       endVal: btcBalance,
-                      decimalPlaces: unit === 'sats' ? 0 : 5
+                      decimalPlaces: unit === 'sats' ? 0 : 5,
                     }"
                   />
                 </div>
 
                 <span
                   class="loading-placeholder loading-placeholder-lg"
-                  style="width: 140px;"
+                  style="width: 140px"
                   v-else
                 ></span>
               </template>
               <div class="px-3 px-lg-4 pt-2 pb-3">
-                <router-link to="/bitcoin" class="card-link">Manage</router-link>
+                <router-link to="/bitcoin" class="card-link"
+                  >Manage</router-link
+                >
               </div>
             </card-widget>
           </b-col>
@@ -100,7 +112,7 @@ import CountUp from "@/components/Utility/CountUp";
 import CardWidget from "@/components/CardWidget";
 import Blockchain from "@/components/Blockchain";
 import LightningWallet from "@/components/LightningWallet";
-import StorageWidget from '../components/Widgets/StorageWidget.vue';
+import StorageWidget from "../components/Widgets/StorageWidget.vue";
 
 export default {
   data() {
@@ -108,11 +120,11 @@ export default {
   },
   computed: {
     ...mapState({
-      name: state => state.user.name,
-      lightningSyncPercent: state => state.lightning.percent,
-      syncPercent: state => state.bitcoin.percent,
-      blocks: state => state.bitcoin.blocks,
-      btcBalance: state => {
+      name: (state) => state.user.name,
+      lightningSyncPercent: (state) => state.lightning.percent,
+      syncPercent: (state) => state.bitcoin.percent,
+      blocks: (state) => state.bitcoin.blocks,
+      btcBalance: (state) => {
         //skip if still loading
         if (state.bitcoin.balance.total === -1) {
           return -1;
@@ -122,8 +134,8 @@ export default {
         }
         return state.bitcoin.balance.total;
       },
-      btcBalanceInSats: state => state.bitcoin.balance.total,
-      unit: state => state.system.unit
+      btcBalanceInSats: (state) => state.bitcoin.balance.total,
+      unit: (state) => state.system.unit,
     }),
     greeting: () => {
       const currentHour = new Date().getHours();
@@ -138,7 +150,7 @@ export default {
           : "Welcome back"; // if for some reason the calculation didn't work
 
       return greetingMessage;
-    }
+    },
   },
   methods: {},
   components: {
@@ -146,8 +158,8 @@ export default {
     CardWidget,
     Blockchain,
     LightningWallet,
-    StorageWidget
-  }
+    StorageWidget,
+  },
 };
 </script>
 

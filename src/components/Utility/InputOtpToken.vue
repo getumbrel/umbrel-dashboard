@@ -2,15 +2,66 @@
   <div
     class="otp-input-container"
     :class="{
-      'error': error,
-      'success': success
-  }">
-    <b-input v-model="digit1" ref="digitOneInput" class="neu-input otp-input" type="text" inputmode="numeric" placeholder="•" @keyup="keyup" :disabled="disabled" :autofocus="autofocus" />
-    <b-input v-model="digit2" class="neu-input otp-input" type="text" inputmode="numeric" placeholder="•" @keyup="keyup" :disabled="disabled" />
-    <b-input v-model="digit3" class="neu-input otp-input" type="text" inputmode="numeric" placeholder="•" @keyup="keyup" :disabled="disabled" />
-    <b-input v-model="digit4" class="neu-input otp-input" type="text" inputmode="numeric" placeholder="•" @keyup="keyup" :disabled="disabled" />
-    <b-input v-model="digit5" class="neu-input otp-input" type="text" inputmode="numeric" placeholder="•" @keyup="keyup" :disabled="disabled" />
-    <b-input v-model="digit6" class="neu-input otp-input" type="text" inputmode="numeric" placeholder="•" @keyup="keyup" :disabled="disabled" />
+      error: error,
+      success: success,
+    }"
+  >
+    <b-input
+      v-model="digit1"
+      ref="digitOneInput"
+      class="neu-input otp-input"
+      type="text"
+      inputmode="numeric"
+      placeholder="•"
+      @keyup="keyup"
+      :disabled="disabled"
+      :autofocus="autofocus"
+    />
+    <b-input
+      v-model="digit2"
+      class="neu-input otp-input"
+      type="text"
+      inputmode="numeric"
+      placeholder="•"
+      @keyup="keyup"
+      :disabled="disabled"
+    />
+    <b-input
+      v-model="digit3"
+      class="neu-input otp-input"
+      type="text"
+      inputmode="numeric"
+      placeholder="•"
+      @keyup="keyup"
+      :disabled="disabled"
+    />
+    <b-input
+      v-model="digit4"
+      class="neu-input otp-input"
+      type="text"
+      inputmode="numeric"
+      placeholder="•"
+      @keyup="keyup"
+      :disabled="disabled"
+    />
+    <b-input
+      v-model="digit5"
+      class="neu-input otp-input"
+      type="text"
+      inputmode="numeric"
+      placeholder="•"
+      @keyup="keyup"
+      :disabled="disabled"
+    />
+    <b-input
+      v-model="digit6"
+      class="neu-input otp-input"
+      type="text"
+      inputmode="numeric"
+      placeholder="•"
+      @keyup="keyup"
+      :disabled="disabled"
+    />
   </div>
 </template>
 
@@ -31,25 +82,25 @@ export default {
   props: {
     error: {
       type: Boolean,
-      default: false
+      default: false,
     },
     success: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autofocus: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     otpToken() {
       return `${this.digit1}${this.digit2}${this.digit3}${this.digit4}${this.digit5}${this.digit6}`;
-    }
+    },
   },
   methods: {
     keyup(event) {
@@ -62,20 +113,28 @@ export default {
           event.target.previousElementSibling.focus();
         }
         return;
-      } 
+      }
 
       // reset input on everything except a single digit
       if (!event.target.value.match(/^[0-9]$/)) {
-        return event.target.value = "";
+        return (event.target.value = "");
       }
 
       // let browser hand logic for control keys
-      if (event.key === "Tab" || event.key === "Control" || event.key === "Meta" || event.key === "Alt") {
+      if (
+        event.key === "Tab" ||
+        event.key === "Control" ||
+        event.key === "Meta" ||
+        event.key === "Alt"
+      ) {
         return;
       }
 
       // shift focus to next input if it exists and isn't empty
-      if (event.target.nextElementSibling && !event.target.nextElementSibling.value) {
+      if (
+        event.target.nextElementSibling &&
+        !event.target.nextElementSibling.value
+      ) {
         return event.target.nextElementSibling.focus();
       }
 
@@ -83,15 +142,29 @@ export default {
       return this.emitOtpToken();
     },
     emitOtpToken() {
-      if (this.digit1 && this.digit2 && this.digit3 && this.digit4 && this.digit5 && this.digit6) {
+      if (
+        this.digit1 &&
+        this.digit2 &&
+        this.digit3 &&
+        this.digit4 &&
+        this.digit5 &&
+        this.digit6
+      ) {
         return this.$emit("otpToken", this.otpToken);
       }
-    }
+    },
   },
   watch: {
     digit1(value) {
       // copy-paste logic
-      if (value.length === 6 && !this.digit2 && !this.digit3 && !this.digit4 && !this.digit5 && !this.digit6) {
+      if (
+        value.length === 6 &&
+        !this.digit2 &&
+        !this.digit3 &&
+        !this.digit4 &&
+        !this.digit5 &&
+        !this.digit6
+      ) {
         this.digit1 = value[0];
         this.digit2 = value[1];
         this.digit3 = value[2];
@@ -114,8 +187,8 @@ export default {
         this.digit6 = "";
         this.$refs.digitOneInput.focus();
       }
-    }
-  }    
+    },
+  },
 };
 </script>
 
@@ -160,7 +233,8 @@ export default {
       animation: two-factor-error 0.6s ease;
     }
   }
-  &.error, &.success {
+  &.error,
+  &.success {
     :nth-child(1) {
       animation-delay: 80ms;
     }
@@ -228,5 +302,4 @@ export default {
     color: rgba(255, 255, 255, 0.75);
   }
 }
-
 </style>

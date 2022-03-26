@@ -2,18 +2,28 @@
   <div id="app">
     <transition name="loading" mode>
       <div v-if="isIframe">
-        <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+        <div
+          class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
+        >
           <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
           <span class="text-muted w-75 text-center">
-            <small>For security reasons Umbrel cannot be embedded in an iframe.</small>
+            <small
+              >For security reasons Umbrel cannot be embedded in an
+              iframe.</small
+            >
           </span>
         </div>
       </div>
       <loading v-else-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
-          <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
+          <small class="text-muted d-block">{{
+            `${updateStatus.description}...`
+          }}</small>
           <b-alert class="system-alert" variant="warning" show>
-            <small>Please do not refresh this page or turn off your Umbrel while the update is in progress</small>
+            <small
+              >Please do not refresh this page or turn off your Umbrel while the
+              update is in progress</small
+            >
           </b-alert>
         </div>
       </loading>
@@ -25,12 +35,14 @@
       >
         <div class="text-center" v-if="shuttingDown || rebooting">
           <b-alert class="system-alert" variant="warning" show>
-            <small>Please do not refresh this page or turn off your Umbrel while it is {{ shuttingDown ? 'shutting down' : 'rebooting'}}</small>
+            <small
+              >Please do not refresh this page or turn off your Umbrel while it
+              is {{ shuttingDown ? "shutting down" : "rebooting" }}</small
+            >
           </b-alert>
         </div>
       </shutdown>
-      <loading v-else-if="loading" :progress="loadingProgress">
-      </loading>
+      <loading v-else-if="loading" :progress="loadingProgress"> </loading>
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
     </transition>
@@ -51,25 +63,25 @@ export default {
   name: "App",
   data() {
     return {
-      isIframe: (window.self !== window.top),
+      isIframe: window.self !== window.top,
       loading: true,
       loadingProgress: 0,
-      loadingPollInProgress: false
+      loadingPollInProgress: false,
     };
   },
   computed: {
     ...mapState({
-      hasShutdown: state => state.system.hasShutdown,
-      shuttingDown: state => state.system.shuttingDown,
-      rebooting: state => state.system.rebooting,
-      isManagerApiOperational: state => state.system.managerApi.operational,
-      isApiOperational: state => state.system.api.operational,
-      jwt: state => state.user.jwt,
-      updateStatus: state => state.system.updateStatus
+      hasShutdown: (state) => state.system.hasShutdown,
+      shuttingDown: (state) => state.system.shuttingDown,
+      rebooting: (state) => state.system.rebooting,
+      isManagerApiOperational: (state) => state.system.managerApi.operational,
+      isApiOperational: (state) => state.system.api.operational,
+      jwt: (state) => state.user.jwt,
+      updateStatus: (state) => state.system.updateStatus,
     }),
     updating() {
       return this.updateStatus.state === "installing";
-    }
+    },
   },
   methods: {
     //TODO: move this to the specific layout that needs this 100vh fix
@@ -126,7 +138,7 @@ export default {
       // Add slight delay so the progress bar makes
       // it to 100% before disappearing
       setTimeout(() => (this.loading = false), 300);
-    }
+    },
   },
   created() {
     //check if system is updating
@@ -138,7 +150,7 @@ export default {
   },
   watch: {
     loading: {
-      handler: function(isLoading) {
+      handler: function (isLoading) {
         window.clearInterval(this.loadingInterval);
         //if loading, check loading status every two seconds
         if (isLoading) {
@@ -154,10 +166,10 @@ export default {
           );
         }
       },
-      immediate: true
+      immediate: true,
     },
     updating: {
-      handler: function(isUpdating, wasUpdating) {
+      handler: function (isUpdating, wasUpdating) {
         window.clearInterval(this.updateStatusInterval);
         // if updating, check loading status every two seconds
         if (isUpdating) {
@@ -177,7 +189,7 @@ export default {
               autoHideDelay: 2000,
               variant: "success",
               solid: true,
-              toaster: "b-toaster-bottom-right"
+              toaster: "b-toaster-bottom-right",
             };
 
             if (this.updateStatus.state === "failed") {
@@ -194,8 +206,8 @@ export default {
           }
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.updateViewPortHeightCSS);
@@ -204,8 +216,8 @@ export default {
   },
   components: {
     Loading,
-    Shutdown
-  }
+    Shutdown,
+  },
 };
 </script>
 

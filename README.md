@@ -9,7 +9,6 @@
 [![Twitter](https://img.shields.io/twitter/follow/getumbrel?style=social)](https://twitter.com/getumbrel)
 [![Reddit](https://img.shields.io/reddit/subreddit-subscribers/getumbrel?label=Subscribe%20%2Fr%2Fgetumbrel&style=social)](https://reddit.com/r/getumbrel)
 
-
 # ☂️ dashboard
 
 Dashboard is the web-based user interface of [Umbrel OS](https://github.com/getumbrel/umbrel-os) and is accessible at `http://umbrel.local`. It runs by-default as a containerized service.
@@ -23,16 +22,18 @@ If you are looking to run Umbrel on your hardware, you do not need to run this s
 Make sure both [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) and [`umbrel-middleware`](https://github.com/getumbrel/umbrel-middleware) are running and available.
 
 ### Step 1. Install dependencies
+
 ```sh
 yarn
 ```
 
 ### Step 2. Set environment variables
+
 The following environment variables are set in `.env` file of the project's root:
 
-| Variable | Description | Default |
-| ------------- | ------------- | ------------- |
-| `VUE_APP_MANAGER_API_URL` | URL of [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) API | `http://localhost:3006` |
+| Variable                     | Description                                                                      | Default                 |
+| ---------------------------- | -------------------------------------------------------------------------------- | ----------------------- |
+| `VUE_APP_MANAGER_API_URL`    | URL of [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) API       | `http://localhost:3006` |
 | `VUE_APP_MIDDLEWARE_API_URL` | URL of [`umbrel-middleware`](https://github.com/getumbrel/umbrel-middleware) API | `http://localhost:3005` |
 
 If you want to change the local development environment (e.g. to use your local Umbrel instance), create the `.env.development` with the following content:
@@ -43,6 +44,7 @@ VUE_APP_MANAGER_API_URL=http://umbrel.local/manager-api
 ```
 
 ### Step 3. Run dashboard
+
 ```sh
 yarn serve
 ```
@@ -50,17 +52,20 @@ yarn serve
 Dashboard should now be accessible at `http://localhost:8080`.
 
 ## Building dashboard
+
 To build dashboard for production, run:
+
 ```sh
 yarn build
 ```
+
 Built code will be inside `/dist`.
 
 ---
 
 ### ⚡️ Don't be too reckless
 
-> Umbrel is still in an early stage and things are expected to break every now and then. We **DO NOT** recommend running it on the mainnet with real money just yet, unless you want to be really *#reckless*.
+> Umbrel is still in an early stage and things are expected to break every now and then. We **DO NOT** recommend running it on the mainnet with real money just yet, unless you want to be really _#reckless_.
 
 ## ❤️ Contributing
 

@@ -178,21 +178,45 @@
               class="float-right mt-1"
             ></b-spinner>
           </b-alert>
-          <b-alert class="mt-4 mb-0" variant="warning" v-if="isRunningLowOnRam" show dismissible>
+          <b-alert
+            class="mt-4 mb-0"
+            variant="warning"
+            v-if="isRunningLowOnRam"
+            show
+            dismissible
+          >
             <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
-            <b>Low RAM:</b> Your Umbrel is running low on RAM.
-            Consider uninstalling some apps or upgrading your Umbrel's hardware.
-            <router-link to="/settings#ram" class="alert-link float-right">View usage</router-link>
+            <b>Low RAM:</b> Your Umbrel is running low on RAM. Consider
+            uninstalling some apps or upgrading your Umbrel's hardware.
+            <router-link to="/settings#ram" class="alert-link float-right"
+              >View usage</router-link
+            >
           </b-alert>
-          <b-alert class="mt-4 mb-0" variant="warning" v-if="isRunningLowOnStorage" show dismissible>
+          <b-alert
+            class="mt-4 mb-0"
+            variant="warning"
+            v-if="isRunningLowOnStorage"
+            show
+            dismissible
+          >
             <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
-            <b>Low storage:</b> Your Umbrel only has {{ readableSize(storage.total - storage.used) }} of storage left.
+            <b>Low storage:</b> Your Umbrel only has
+            {{ readableSize(storage.total - storage.used) }} of storage left.
             Consider uninstalling some apps or upgrading to a larger drive.
-            <router-link to="/settings#storage" class="alert-link float-right">View usage</router-link>
+            <router-link to="/settings#storage" class="alert-link float-right"
+              >View usage</router-link
+            >
           </b-alert>
-          <b-alert class="mt-4 mb-0" variant="warning" v-if="isUmbrelOS && isRunningHot" show dismissible>
+          <b-alert
+            class="mt-4 mb-0"
+            variant="warning"
+            v-if="isUmbrelOS && isRunningHot"
+            show
+            dismissible
+          >
             <b-icon icon="exclamation-circle" class="mr-2"></b-icon>
-            <b>High temperature:</b> Your Raspberry Pi is running hot. Consider using a heatsink, fan or a cooling case.
+            <b>High temperature:</b> Your Raspberry Pi is running hot. Consider
+            using a heatsink, fan or a cooling case.
           </b-alert>
           <transition name="change-page" mode="out-in">
             <!-- Content -->
@@ -206,7 +230,9 @@
             <small>
               <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>
               |
-              <a href="https://community.getumbrel.com" target="_blank">community</a>
+              <a href="https://community.getumbrel.com" target="_blank"
+                >community</a
+              >
             </small>
           </p>
         </footer>
@@ -224,7 +250,7 @@ import AuthenticatedVerticalNavbar from "@/components/AuthenticatedVerticalNavba
 export default {
   data() {
     return {
-      isUpdating: false
+      isUpdating: false,
     };
   },
   computed: {
@@ -233,7 +259,8 @@ export default {
       chain: (state) => state.bitcoin.chain,
       availableUpdate: (state) => state.system.availableUpdate,
       updateStatus: (state) => state.system.updateStatus,
-      showUpdateConfirmationModal: (state) => state.system.showUpdateConfirmationModal,
+      showUpdateConfirmationModal: (state) =>
+        state.system.showUpdateConfirmationModal,
       ram: (state) => state.system.ram,
       storage: (state) => state.system.storage,
       isUmbrelOS: (state) => state.system.isUmbrelOS,
@@ -242,7 +269,7 @@ export default {
     isRunningLowOnRam() {
       // over 95% RAM used
       if (this.ram && this.ram.total) {
-        return this.ram.used / this.ram.total > 0.95
+        return this.ram.used / this.ram.total > 0.95;
       }
       return false;
     },
@@ -261,7 +288,7 @@ export default {
       return false;
     },
     isMobileMenuOpen() {
-       return this.$store.getters.isMobileMenuOpen;
+      return this.$store.getters.isMobileMenuOpen;
     },
   },
   methods: {

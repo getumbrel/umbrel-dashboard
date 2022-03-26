@@ -10,7 +10,7 @@
       class="toggle-switch justify-content-center d-flex align-items-center"
       :class="{
         'toggle-left': unit === 'sats',
-        'toggle-right': unit === 'btc'
+        'toggle-right': unit === 'btc',
       }"
     >
       <span class="text-muted" v-if="unit === 'sats'">Sats</span>
@@ -24,8 +24,8 @@ export default {
   props: {
     size: {
       type: String, //sm, md, lg
-      default: "md"
-    }
+      default: "md",
+    },
   },
   data() {
     return {};
@@ -33,7 +33,7 @@ export default {
   computed: {
     unit() {
       return this.$store.state.system.unit;
-    }
+    },
   },
   methods: {
     toggleUnit() {
@@ -42,7 +42,7 @@ export default {
       } else if (this.unit === "btc") {
         this.$store.dispatch("system/changeUnit", "sats");
       }
-    }
-  }
+    },
+  },
 };
 </script>

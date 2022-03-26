@@ -1,5 +1,10 @@
 <template>
-  <b-card header-tag="header" footer-tag="footer" no-body class="mb-4 card-custom">
+  <b-card
+    header-tag="header"
+    footer-tag="footer"
+    no-body
+    class="mb-4 card-custom"
+  >
     <div class="card-custom-loading-bar" v-if="loading"></div>
     <!-- <template v-slot:header></template> -->
     <div>
@@ -10,11 +15,15 @@
             v-if="!!status"
             :variant="status.variant"
             :blink="!!status.blink"
-          >{{ status.text }}</status>
+            >{{ status.text }}</status
+          >
           <!-- Only render this div if either there's a menu or a  -->
           <!-- header on the right, else it causes spacing issues -->
           <div
-            v-if="(!!$slots['header-right'] && !!$slots['header-right'][0]) || (!!$slots['menu'] && !!$slots['menu'][0])"
+            v-if="
+              (!!$slots['header-right'] && !!$slots['header-right'][0]) ||
+              (!!$slots['menu'] && !!$slots['menu'][0])
+            "
           >
             <slot name="header-right"></slot>
             <b-dropdown
@@ -92,13 +101,13 @@ export default {
     title: String,
     subTitle: String,
     icon: String,
-    loading: Boolean
+    loading: Boolean,
   },
   computed: {},
   methods: {},
   components: {
-    Status
-  }
+    Status,
+  },
 };
 </script>
 

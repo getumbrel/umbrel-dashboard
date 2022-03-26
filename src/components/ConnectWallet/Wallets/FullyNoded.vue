@@ -1,9 +1,7 @@
 <template>
   <connection-details name="Fully Noded (iOS)" requires="bitcoind">
     <step-list>
-      <step>
-        Open the Fully Noded app on your iPhone.
-      </step>
+      <step> Open the Fully Noded app on your iPhone. </step>
       <step>
         Go to <span class="font-weight-bold">Settings > Node Manager > +</span>.
       </step>
@@ -17,20 +15,32 @@
           @click="$emit('showQrModal', urls.bitcoin.rpc.connectionString)"
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
-        <hr/>
+        <hr />
         <p class="text-muted">Or manually enter the following details</p>
         <ul class="connect-wallet-substeps">
           <li class="connect-wallet-substep">
             In the <span class="font-weight-bold">"RPC Username"</span>, enter
-            <input-copy class="my-1" :value="urls.bitcoin.rpc.rpcuser" auto-width ></input-copy>
+            <input-copy
+              class="my-1"
+              :value="urls.bitcoin.rpc.rpcuser"
+              auto-width
+            ></input-copy>
           </li>
           <li class="connect-wallet-substep">
             In the <span class="font-weight-bold">"RPC Password"</span>, enter
-            <input-copy class="my-1" :value="urls.bitcoin.rpc.rpcpassword" auto-width></input-copy>
+            <input-copy
+              class="my-1"
+              :value="urls.bitcoin.rpc.rpcpassword"
+              auto-width
+            ></input-copy>
           </li>
           <li class="connect-wallet-substep">
             In the <span class="font-weight-bold">"Address"</span>, enter
-            <input-copy class="my-1" :value="`${urls.bitcoin.rpc.address}:${urls.bitcoin.rpc.port}`" auto-width></input-copy>
+            <input-copy
+              class="my-1"
+              :value="`${urls.bitcoin.rpc.address}:${urls.bitcoin.rpc.port}`"
+              auto-width
+            ></input-copy>
           </li>
           <li class="connect-wallet-substep">
             Tap <span class="font-weight-bold">"Save"</span>.
@@ -38,7 +48,8 @@
         </ul>
       </step>
       <step>
-        Congratulations! You have successfully connected Fully Noded to your Umbrel.
+        Congratulations! You have successfully connected Fully Noded to your
+        Umbrel.
       </step>
     </step-list>
   </connection-details>
@@ -53,15 +64,15 @@ import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
     InputCopy,
-    QrCode
-  }
+    QrCode,
+  },
 };
 </script>
 

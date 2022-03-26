@@ -56,10 +56,10 @@ axios.interceptors.response.use(
       return new Promise((resolve, reject) => {
         axios
           .request(config)
-          .then(response => {
+          .then((response) => {
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             reject(error);
           });
       });
@@ -81,12 +81,12 @@ const API = {
 
         const requestOptions = {
           method: "get",
-          url
+          url,
         };
 
         if (auth && store.state.user.jwt) {
           requestOptions.headers = {
-            Authorization: `JWT ${store.state.user.jwt}`
+            Authorization: `JWT ${store.state.user.jwt}`,
           };
         }
 
@@ -114,7 +114,7 @@ const API = {
     const requestOptions = {
       method: "post",
       url,
-      data
+      data,
     };
 
     if (auth && store.state.user.jwt) {
@@ -129,7 +129,7 @@ const API = {
     const requestOptions = {
       method: "delete",
       url,
-      data
+      data,
     };
 
     if (auth && store.state.user.jwt) {
@@ -153,12 +153,12 @@ const API = {
         const requestOptions = {
           method: "get",
           url,
-          responseType: "blob"
+          responseType: "blob",
         };
 
         if (auth && store.state.user.jwt) {
           requestOptions.headers = {
-            Authorization: `JWT ${store.state.user.jwt}`
+            Authorization: `JWT ${store.state.user.jwt}`,
           };
         }
 
@@ -169,18 +169,21 @@ const API = {
 
         // Download file
         const blob = new Blob([response]);
-        const blobURL = (window.URL && window.URL.createObjectURL) ? window.URL.createObjectURL(blob) : window.webkitURL.createObjectURL(blob);
-        const tempLink = document.createElement('a');
-        tempLink.style.display = 'none';
+        const blobURL =
+          window.URL && window.URL.createObjectURL
+            ? window.URL.createObjectURL(blob)
+            : window.webkitURL.createObjectURL(blob);
+        const tempLink = document.createElement("a");
+        tempLink.style.display = "none";
         tempLink.href = blobURL;
-        tempLink.setAttribute('download', filename);
+        tempLink.setAttribute("download", filename);
 
         // Safari thinks _blank anchor are pop ups. We only want to set _blank
         // target if the browser does not support the HTML5 download attribute.
         // This allows us to download files in desktop safari if pop up blocking
         // is enabled.
-        if (typeof tempLink.download === 'undefined') {
-          tempLink.setAttribute('target', '_blank');
+        if (typeof tempLink.download === "undefined") {
+          tempLink.setAttribute("target", "_blank");
         }
 
         document.body.appendChild(tempLink);
@@ -190,8 +193,7 @@ const API = {
         setTimeout(function () {
           document.body.removeChild(tempLink);
           window.URL.revokeObjectURL(blobURL);
-        }, 200)
-
+        }, 200);
       } catch (error) {
         // Only display error messages in the browser console
         if (process.browser) {
@@ -216,7 +218,7 @@ const API = {
     }
 
     return duration;
-  }
+  },
 };
 
 export default API;

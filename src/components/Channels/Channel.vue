@@ -11,7 +11,7 @@
             <span v-if="channel.remoteAlias">{{ channel.remoteAlias }}</span>
             <span
               class="loading-placeholder loading-placeholder-sm d-block"
-              style="width:80%; margin-top: 8px;"
+              style="width: 80%; margin-top: 8px"
               v-else
             ></span>
           </div>
@@ -90,7 +90,7 @@ export default {
         return "danger";
       }
       return "default";
-    }
+    },
   },
   data() {
     return {};
@@ -100,13 +100,13 @@ export default {
       if (this.channel.type === "OPEN") {
         return {
           text: "Online",
-          variant: "success"
+          variant: "success",
         };
       }
       if (this.channel.type === "PENDING_OPEN_CHANNEL") {
         return {
           text: "Opening",
-          variant: "warning"
+          variant: "warning",
         };
       }
       if (
@@ -115,24 +115,24 @@ export default {
       ) {
         return {
           text: "Closing",
-          variant: "warning"
+          variant: "warning",
         };
       }
       if (this.channel.type === "FORCE_CLOSING_CHANNEL") {
         return {
           text: "Force Closing",
-          variant: "danger"
+          variant: "danger",
         };
       }
-    }
+    },
   },
   props: {
-    channel: Object
+    channel: Object,
   },
   components: {
     Status,
-    Bar
-  }
+    Bar,
+  },
 };
 </script>
 

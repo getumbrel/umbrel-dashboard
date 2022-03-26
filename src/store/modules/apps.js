@@ -6,13 +6,15 @@ const state = () => ({
   installed: [],
   store: [],
   installing: [],
-  uninstalling: []
+  uninstalling: [],
 });
 
 // Functions to update the state directly
 const mutations = {
   setInstalledApps(state, apps) {
-    const alphabeticallySortedApps = apps.sort((a, b) => a.name.localeCompare(b.name));
+    const alphabeticallySortedApps = apps.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
     state.installed = alphabeticallySortedApps;
   },
   setAppStore(state, appStore) {
@@ -39,20 +41,24 @@ const mutations = {
     if (index !== -1) {
       state.uninstalling.splice(index, 1);
     }
-  }
+  },
 };
 
 // Functions to get data from the API
 const actions = {
   async getInstalledApps({ commit }) {
-    const installedApps = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/apps?installed=1`);
+    const installedApps = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps?installed=1`
+    );
     if (installedApps) {
       commit("setInstalledApps", installedApps);
     }
   },
   async getAppStore({ commit, dispatch }) {
     dispatch("getInstalledApps");
-    const appStore = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/apps`);
+    const appStore = await API.get(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps`
+    );
     if (appStore) {
       commit("setAppStore", appStore);
     }
@@ -112,7 +118,7 @@ const actions = {
         window.clearInterval(poll);
       }
     }, 5000);
-  }
+  },
 };
 
 const getters = {};
@@ -122,5 +128,5 @@ export default {
   state,
   actions,
   getters,
-  mutations
+  mutations,
 };

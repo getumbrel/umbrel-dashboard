@@ -15,7 +15,7 @@ Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
 //transforms a number to sats or btc based on store
-Vue.filter("unit", value => {
+Vue.filter("unit", (value) => {
   if (store.state.system.unit === "sats") {
     return Number(value);
   } else if (store.state.system.unit === "btc") {
@@ -24,13 +24,13 @@ Vue.filter("unit", value => {
 });
 
 //transforms a number to sats
-Vue.filter("sats", value => Number(value));
+Vue.filter("sats", (value) => Number(value));
 
 //transforms a number to btc
-Vue.filter("btc", value => satsToBtc(value));
+Vue.filter("btc", (value) => satsToBtc(value));
 
 //formats the unit
-Vue.filter("formatUnit", unit => {
+Vue.filter("formatUnit", (unit) => {
   if (unit === "sats") {
     return "Sats";
   } else if (unit === "btc") {
@@ -39,7 +39,7 @@ Vue.filter("formatUnit", unit => {
 });
 
 //transforms sats to usd
-Vue.filter("satsToUSD", value => {
+Vue.filter("satsToUSD", (value) => {
   if (isNaN(parseInt(value))) {
     return value;
   } else {
@@ -53,7 +53,7 @@ Vue.filter("satsToUSD", value => {
 });
 
 //Localized number (comma, seperator, spaces, etc)
-Vue.filter("localize", n =>
+Vue.filter("localize", (n) =>
   Number(n).toLocaleString(undefined, { maximumFractionDigits: 8 })
 );
 
@@ -62,5 +62,5 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount("#app");

@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
+  >
     <img
       alt="Umbrel"
       src="@/assets/logo.svg"
@@ -7,9 +9,10 @@
       :class="hasShutdown ? 'logo-gray' : ''"
     />
     <span class="text-muted w-75 text-center">
-      <small
-        v-if="hasShutdown"
-      >Shutdown complete. You can now safely unplug your Umbrel from the power and internet.</small>
+      <small v-if="hasShutdown"
+        >Shutdown complete. You can now safely unplug your Umbrel from the power
+        and internet.</small
+      >
       <small v-else-if="shuttingDown">
         <b-spinner small class="mr-2"></b-spinner>Shutting down...
       </small>
@@ -32,8 +35,8 @@ export default {
   props: {
     hasShutdown: Boolean,
     shuttingDown: Boolean,
-    rebooting: Boolean
-  }
+    rebooting: Boolean,
+  },
 };
 </script>
 

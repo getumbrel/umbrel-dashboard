@@ -15,13 +15,13 @@
             <CountUp
               :value="{
                 endVal: numberValue,
-                decimalPlaces: hasDecimals ? 5 : 0
+                decimalPlaces: hasDecimals ? 5 : 0,
               }"
               :suffix="numberSuffix"
               countOnLoad
             />
           </h3>
-          <span class="text-muted" style="margin-left: 0.5rem;">{{
+          <span class="text-muted" style="margin-left: 0.5rem">{{
             suffix
           }}</span>
         </div>
@@ -39,7 +39,7 @@
           :class="{
             rising: change.value > 0,
             declining: change.value < 0,
-            neutral: change.value === 0
+            neutral: change.value === 0,
           }"
         >
           <path
@@ -54,7 +54,7 @@
           :class="{
             'text-success': change.value > 0,
             'text-danger': change.value < 0,
-            'text-muted': change.value === 0
+            'text-muted': change.value === 0,
           }"
         >
           {{ change.value >= 0 ? "+" : "" }}{{ change.value
@@ -62,7 +62,7 @@
         </span>
       </div>
       <div class="d-block" v-else>
-        <span style="opacity: 0;">.</span>
+        <span style="opacity: 0">.</span>
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@
 <script>
 import CountUp from "@/components/Utility/CountUp";
 
-const abbreviate = n => {
+const abbreviate = (n) => {
   if (n < 1e2) return [Number(n), ""];
   if (n >= 1e2 && n < 1e3) return [Number(n.toFixed(1)), ""];
   if (n >= 1e3 && n < 1e6) return [Number((n / 1e3).toFixed(1)), "K"];
@@ -87,20 +87,20 @@ export default {
     suffix: String,
     abbreviateValue: {
       type: Boolean,
-      default: false
+      default: false,
     },
     hasDecimals: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showNumericChange: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showPercentChange: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     numberValue() {
@@ -116,14 +116,14 @@ export default {
       } else {
         return abbreviate(this.value)[1];
       }
-    }
+    },
   },
   data() {
     return {
       change: {
         value: 0,
-        suffix: ""
-      }
+        suffix: "",
+      },
     };
   },
   methods: {},
@@ -133,25 +133,25 @@ export default {
         if (oldValue <= 0) {
           this.change = {
             value: 0,
-            suffix: ""
+            suffix: "",
           };
         } else {
           if (!this.abbreviateValue) {
             this.change = {
               value: newValue - oldValue,
-              suffix: ""
+              suffix: "",
             };
           } else {
             //because fn abbreviate doesn't work with negative numbers
             if (newValue - oldValue < 0) {
               this.change = {
                 value: abbreviate(oldValue - newValue)[0] * -1,
-                suffix: abbreviate(oldValue - newValue)[1]
+                suffix: abbreviate(oldValue - newValue)[1],
               };
             } else {
               this.change = {
                 value: abbreviate(newValue - oldValue)[0],
-                suffix: abbreviate(newValue - oldValue)[1]
+                suffix: abbreviate(newValue - oldValue)[1],
               };
             }
           }
@@ -160,20 +160,20 @@ export default {
         if (oldValue <= 0) {
           this.change = {
             value: 0,
-            suffix: "%"
+            suffix: "%",
           };
         } else {
           this.change = {
             value: Math.round(((newValue - oldValue) * 100) / oldValue),
-            suffix: "%"
+            suffix: "%",
           };
         }
       }
-    }
+    },
   },
   components: {
-    CountUp
-  }
+    CountUp,
+  },
 };
 </script>
 

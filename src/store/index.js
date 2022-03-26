@@ -12,14 +12,14 @@ Vue.use(Vuex);
 
 // Initial State
 const state = {
-  isMobileMenuOpen: true
+  isMobileMenuOpen: true,
 };
 
 // Getters
 const getters = {
   isMobileMenuOpen(state) {
     return state.isMobileMenuOpen;
-  }
+  },
 };
 
 // Mutations
@@ -33,14 +33,14 @@ const mutations = {
       document.body.style.overflow = "auto";
       state.isMobileMenuOpen = false;
     }
-  }
+  },
 };
 
 // Actions
 const actions = {
   toggleMobileMenu(context) {
     context.commit("toggleMobileMenu");
-  }
+  },
 };
 
 export default new Vuex.Store({
@@ -53,6 +53,6 @@ export default new Vuex.Store({
     system,
     bitcoin,
     lightning,
-    apps
-  }
+    apps,
+  },
 });

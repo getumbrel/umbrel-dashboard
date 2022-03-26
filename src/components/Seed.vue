@@ -9,13 +9,15 @@
         placeholder="Password"
         inputGroupClass="neu-input-group"
         :inputClass="[
-                    isIncorrectPassword ? 'incorrect-password' : '',
-                    'form-control form-control-lg neu-input w-100'
-                  ]"
+          isIncorrectPassword ? 'incorrect-password' : '',
+          'form-control form-control-lg neu-input w-100',
+        ]"
         :disabled="isLoadingSeed"
       />
 
-      <label v-if="otpEnabled" class="mt-3 mb-0">Enter your two-factor authenticator (2FA) code</label>
+      <label v-if="otpEnabled" class="mt-3 mb-0"
+        >Enter your two-factor authenticator (2FA) code</label
+      >
       <div class="seed-input-otp-container">
         <input-otp-token
           v-if="otpEnabled"
@@ -29,12 +31,12 @@
       <small
         class="mt-2 text-danger error float-right"
         v-show="isIncorrectPassword"
-      >Incorrect password</small>
+        >Incorrect password</small
+      >
 
-      <small
-        class="mt-2 text-danger error float-right"
-        v-show="isIncorrectOtp"
-      >Incorrect code</small>
+      <small class="mt-2 text-danger error float-right" v-show="isIncorrectOtp"
+        >Incorrect code</small
+      >
 
       <b-button
         variant="success"
@@ -42,9 +44,7 @@
         :disabled="isLoadingSeed"
         @click="fetchSeed"
       >
-        {{
-        isLoadingSeed ? "Decrypting Secret Words..." : "View Secret Words"
-        }}
+        {{ isLoadingSeed ? "Decrypting Secret Words..." : "View Secret Words" }}
       </b-button>
     </div>
 
@@ -73,14 +73,14 @@ export default {
       isLoadingSeed: false,
       otpToken: "",
       isCorrectOtp: false,
-      isIncorrectOtp: false
+      isIncorrectOtp: false,
     };
   },
   computed: {
     ...mapState({
-      seed: state => state.user.seed,
-      otpEnabled: state => state.user.otpEnabled
-    })
+      seed: (state) => state.user.seed,
+      otpEnabled: (state) => state.user.otpEnabled,
+    }),
   },
   props: { progress: Number },
   created() {},
@@ -91,7 +91,10 @@ export default {
     async fetchSeed() {
       this.isLoadingSeed = true;
       try {
-        await this.$store.dispatch("user/getSeed", { password: this.password, otpToken: this.otpToken });
+        await this.$store.dispatch("user/getSeed", {
+          password: this.password,
+          otpToken: this.otpToken,
+        });
         if (this.otpToken) {
           this.isCorrectOtp = true;
           // delay for ripple animation to complete
@@ -99,8 +102,7 @@ export default {
         }
         this.showSeed = true;
       } catch (error) {
-        if ( error.response && error.response.data ) {
-
+        if (error.response && error.response.data) {
           if (error.response.data === "Incorrect password") {
             this.isIncorrectPassword = true;
           }
@@ -116,15 +118,14 @@ export default {
       this.isIncorrectPassword = false;
       this.isCorrectOtp = false;
       this.isIncorrectOtp = false;
-    }
+    },
   },
   components: {
     InputPassword,
     InputOtpToken,
-    Seed
-  }
+    Seed,
+  },
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

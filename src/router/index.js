@@ -62,9 +62,9 @@ const routes = [
             path: "",
             name: "login",
             component: Login,
-            meta: { requiresAuth: false }
-          }
-        ]
+            meta: { requiresAuth: false },
+          },
+        ],
       },
       {
         path: "/start",
@@ -74,9 +74,9 @@ const routes = [
           {
             path: "",
             name: "start",
-            component: Start
-          }
-        ]
+            component: Start,
+          },
+        ],
       },
       {
         path: "/dashboard",
@@ -86,9 +86,9 @@ const routes = [
           {
             path: "",
             name: "dashboard",
-            component: Dashboard
-          }
-        ]
+            component: Dashboard,
+          },
+        ],
       },
       {
         path: "/bitcoin",
@@ -98,9 +98,9 @@ const routes = [
           {
             path: "",
             name: "bitcoin",
-            component: Bitcoin
-          }
-        ]
+            component: Bitcoin,
+          },
+        ],
       },
       {
         path: "/lightning",
@@ -110,9 +110,9 @@ const routes = [
           {
             path: "",
             name: "lightning",
-            component: Lightning
-          }
-        ]
+            component: Lightning,
+          },
+        ],
       },
       {
         path: "/apps",
@@ -122,9 +122,9 @@ const routes = [
           {
             path: "",
             name: "apps",
-            component: Apps
-          }
-        ]
+            component: Apps,
+          },
+        ],
       },
       {
         path: "/app-store",
@@ -134,14 +134,14 @@ const routes = [
           {
             path: "",
             name: "app-store",
-            component: AppStore
+            component: AppStore,
           },
           {
             path: ":id",
             name: "app-store-app",
-            component: AppStoreApp
-          }
-        ]
+            component: AppStoreApp,
+          },
+        ],
       },
       {
         path: "/settings",
@@ -151,9 +151,9 @@ const routes = [
           {
             path: "",
             name: "settings",
-            component: Settings
-          }
-        ]
+            component: Settings,
+          },
+        ],
       },
       {
         path: "/connect",
@@ -169,173 +169,173 @@ const routes = [
                 path: "bitboxapp",
                 component: BitBoxApp,
                 meta: {
-                  wallet: "bitboxapp"
-                }
+                  wallet: "bitboxapp",
+                },
               },
               {
                 path: "blockstream-green",
                 component: BlockstreamGreen,
                 meta: {
-                  wallet: "blockstream-green"
-                }
+                  wallet: "blockstream-green",
+                },
               },
               {
                 path: "bluewallet",
                 component: BlueWallet,
                 meta: {
-                  wallet: "bluewallet"
-                }
+                  wallet: "bluewallet",
+                },
               },
               {
                 path: "electrum-android",
                 component: ElectrumAndroid,
                 meta: {
-                  wallet: "electrum-android"
-                }
+                  wallet: "electrum-android",
+                },
               },
               {
                 path: "electrum-desktop",
                 component: ElectrumDesktop,
                 meta: {
-                  wallet: "electrum-desktop"
-                }
+                  wallet: "electrum-desktop",
+                },
               },
               {
                 path: "fully-noded",
                 component: FullyNoded,
                 meta: {
-                  wallet: "fully-noded"
-                }
+                  wallet: "fully-noded",
+                },
               },
               {
                 path: "lily-wallet",
                 component: LilyWallet,
                 meta: {
-                  wallet: "lily-wallet"
-                }
+                  wallet: "lily-wallet",
+                },
               },
               {
                 path: "nunchuk-desktop",
                 component: NunchukDesktop,
                 meta: {
-                  wallet: "nunchuk-desktop"
-                }
+                  wallet: "nunchuk-desktop",
+                },
               },
               {
                 path: "phoenix",
                 component: Phoenix,
                 meta: {
-                  wallet: "phoenix"
-                }
+                  wallet: "phoenix",
+                },
               },
               {
                 path: "samourai-wallet",
                 component: SamouraiWallet,
                 meta: {
-                  wallet: "samourai-wallet"
-                }
+                  wallet: "samourai-wallet",
+                },
               },
               {
                 path: "sparrow",
                 component: Sparrow,
                 meta: {
-                  wallet: "sparrow"
-                }
+                  wallet: "sparrow",
+                },
               },
               {
                 path: "specter-desktop",
                 component: SpecterDesktop,
                 meta: {
-                  wallet: "specter-desktop"
-                }
+                  wallet: "specter-desktop",
+                },
               },
               {
                 path: "wasabi",
                 component: Wasabi,
                 meta: {
-                  wallet: "wasabi"
-                }
+                  wallet: "wasabi",
+                },
               },
               {
                 path: "bitcoin-core-p2p",
                 component: BitcoinCoreP2P,
                 meta: {
-                  wallet: "bitcoin-core-p2p"
-                }
+                  wallet: "bitcoin-core-p2p",
+                },
               },
               {
                 path: "bitcoin-core-rpc",
                 component: BitcoinCoreRPC,
                 meta: {
-                  wallet: "bitcoin-core-rpc"
-                }
+                  wallet: "bitcoin-core-rpc",
+                },
               },
               {
                 path: "electrum-server",
                 component: ElectrumServer,
                 meta: {
-                  wallet: "electrum-server"
-                }
+                  wallet: "electrum-server",
+                },
               },
               {
                 path: "zap-android",
                 component: ZapAndroid,
                 meta: {
-                  wallet: "zap-android"
-                }
+                  wallet: "zap-android",
+                },
               },
               {
                 path: "zap-desktop",
                 component: ZapDesktop,
                 meta: {
-                  wallet: "zap-desktop"
-                }
+                  wallet: "zap-desktop",
+                },
               },
               {
                 path: "zap-ios",
                 component: ZapiOS,
                 meta: {
-                  wallet: "zap-ios"
-                }
+                  wallet: "zap-ios",
+                },
               },
               {
                 path: "zeus",
                 component: Zeus,
                 meta: {
-                  wallet: "zeus"
-                }
+                  wallet: "zeus",
+                },
               },
               {
                 path: "lndconnect-grpc-local",
                 component: LNDConnectGRPCLocal,
                 meta: {
-                  wallet: "lndconnect-grpc-local"
-                }
+                  wallet: "lndconnect-grpc-local",
+                },
               },
               {
                 path: "lndconnect-grpc-tor",
                 component: LNDConnectGRPCTor,
                 meta: {
-                  wallet: "lndconnect-grpc-tor"
-                }
+                  wallet: "lndconnect-grpc-tor",
+                },
               },
               {
                 path: "lndconnect-rest-local",
                 component: LNDConnectRESTLocal,
                 meta: {
-                  wallet: "lndconnect-rest-local"
-                }
+                  wallet: "lndconnect-rest-local",
+                },
               },
               {
                 path: "lndconnect-rest-tor",
                 component: LNDConnectRESTTor,
                 meta: {
-                  wallet: "lndconnect-rest-tor"
-                }
+                  wallet: "lndconnect-rest-tor",
+                },
               },
-            ]
-          }
-        ]
+            ],
+          },
+        ],
       },
       {
         path: "/logout",
@@ -345,12 +345,12 @@ const routes = [
           {
             path: "",
             name: "logout",
-            component: Logout
-          }
-        ]
-      }
-    ]
-  }
+            component: Logout,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
@@ -360,27 +360,26 @@ const router = new VueRouter({
   scrollBehavior: (to, from, savedPosition) => {
     // Exists when Browser's back/forward pressed
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
       // For anchors
     } else if (to.hash) {
-
-      // 500ms timeout allows the page to load or else 
+      // 500ms timeout allows the page to load or else
       // smooth scrolling would not scroll to the correct position
       setTimeout(() => {
-        const element = document.getElementById(to.hash.replace(/#/, ''))
+        const element = document.getElementById(to.hash.replace(/#/, ""));
         if (element && element.scrollIntoView) {
-          element.scrollIntoView({block: 'end', behavior: 'smooth'})
+          element.scrollIntoView({ block: "end", behavior: "smooth" });
         }
-      }, 500)
+      }, 500);
 
-      return { selector: to.hash }
+      return { selector: to.hash };
       // By changing queries we are still in the same component, so "from.path" === "to.path" (new query changes just "to.fullPath", but not "to.path").
     } else if (from.path === to.path) {
-      return {}
+      return {};
     }
     // Scroll to top
-    return { x: 0, y: 0 }
-  }
+    return { x: 0, y: 0 };
+  },
 });
 
 //Fake for now
@@ -388,13 +387,13 @@ const isLoggedIn = () => !!store.state.user.jwt;
 
 //Authentication Check
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!isLoggedIn()) {
       next({
         path: "/",
-        query: { redirect: to.fullPath }
+        query: { redirect: to.fullPath },
       });
     } else {
       next();

@@ -50,7 +50,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Peer Alias</span>
           <div class="w-75 text-right">
-            <span class="font-weight-bold" style="overflow-wrap: break-word;">{{
+            <span class="font-weight-bold" style="overflow-wrap: break-word">{{
               channel.remoteAlias
             }}</span>
           </div>
@@ -126,11 +126,9 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-muted">Remote Pub Key</span>
           <div class="w-75 text-right">
-            <small
-              class="font-weight-bold"
-              style="overflow-wrap: break-word;"
-              >{{ channel.remotePubkey }}</small
-            >
+            <small class="font-weight-bold" style="overflow-wrap: break-word">{{
+              channel.remotePubkey
+            }}</small>
           </div>
         </div>
 
@@ -175,12 +173,12 @@ import API from "@/helpers/api";
 
 export default {
   props: {
-    channel: Object
+    channel: Object,
   },
   data() {
     return {
       isReviewingChannelClose: false,
-      isClosing: false
+      isClosing: false,
     };
   },
   computed: {
@@ -195,7 +193,7 @@ export default {
         return false;
       }
       return true;
-    }
+    },
   },
   methods: {
     reviewChannelClose() {
@@ -207,7 +205,7 @@ export default {
       try {
         const payload = {
           channelPoint: this.channel.channelPoint,
-          force: !this.channel.active // Avoids force closing if channel is active
+          force: !this.channel.active, // Avoids force closing if channel is active
         };
         await API.delete(
           `${process.env.VUE_APP_MIDDLEWARE_API_URL}/v1/lnd/channel/close`,
@@ -220,7 +218,7 @@ export default {
             autoHideDelay: 3000,
             variant: "success",
             solid: true,
-            toaster: "b-toaster-bottom-right"
+            toaster: "b-toaster-bottom-right",
           });
         }, 200);
       } catch (err) {
@@ -231,16 +229,16 @@ export default {
             autoHideDelay: 3000,
             variant: "danger",
             solid: true,
-            toaster: "b-toaster-bottom-right"
+            toaster: "b-toaster-bottom-right",
           }
         );
       }
       this.isClosing = false;
-    }
+    },
   },
   components: {
-    Bar
-  }
+    Bar,
+  },
 };
 </script>
 
