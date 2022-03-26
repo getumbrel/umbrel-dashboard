@@ -1,9 +1,7 @@
 <template>
   <connection-details name="Fully Noded (iOS)" requires="bitcoind">
     <step-list>
-      <step>
-        Open the Fully Noded app on your iPhone.
-      </step>
+      <step> Open the Fully Noded app on your iPhone. </step>
       <step>
         Go to <span class="font-weight-bold">Settings > Node Manager > +</span>.
       </step>
@@ -66,15 +64,15 @@ import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
     InputCopy,
-    QrCode
-  }
+    QrCode,
+  },
 };
 </script>
 

@@ -177,8 +177,7 @@ export default {
         },
         {
           heading: "what is your name?",
-          text:
-            "Your name stays on your Umbrel and is never shared with a 3rd party.",
+          text: "Your name stays on your Umbrel and is never shared with a 3rd party.",
         },
         {
           heading: "set your password",
@@ -190,18 +189,15 @@ export default {
         },
         {
           heading: "note down your secret words",
-          text:
-            "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place.",
+          text: "On the next screen you will be shown 24 words. It's recommended that you write them down on a piece of paper and store it in a safe place.",
         },
         {
           heading: "note down your secret words",
-          text:
-            'Remember, there is no "forgot password" button. You will need these 24 words to recover your Umbrel.',
+          text: 'Remember, there is no "forgot password" button. You will need these 24 words to recover your Umbrel.',
         },
         {
           heading: "access from anywhere",
-          text:
-            "Even when you're not on your home network, you can access your Umbrel using Tor Browser on the following URL",
+          text: "Even when you're not on your home network, you can access your Umbrel using Tor Browser on the following URL",
         },
         {
           heading: "one last thing",
@@ -209,8 +205,7 @@ export default {
         },
         {
           heading: "🎉 that's it!",
-          text:
-            "Congratulations! Your Umbrel is now set up and synchronizing the Bitcoin blockchain.",
+          text: "Congratulations! Your Umbrel is now set up and synchronizing the Bitcoin blockchain.",
         },
       ],
       notedSeed: false,

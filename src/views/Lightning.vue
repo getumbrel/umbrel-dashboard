@@ -127,7 +127,7 @@
                   </div>
                   <span
                     class="loading-placeholder loading-placeholder-lg mt-1"
-                    style="width: 100%;"
+                    style="width: 100%"
                     v-else
                   ></span>
                 </div>
@@ -406,7 +406,7 @@ export default {
     window.clearInterval(this.interval);
   },
   watch: {
-    password: function() {
+    password: function () {
       this.isIncorrectPassword = false;
     },
   },

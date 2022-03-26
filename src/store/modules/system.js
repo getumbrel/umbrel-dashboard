@@ -6,20 +6,20 @@ const state = () => ({
   availableUpdate: {
     version: "", //update version available to download
     name: "",
-    notes: ""
+    notes: "",
   },
   updateStatus: {
     state: "", //available, unavailable, installing, successful, failed
     progress: 0, //progress of update installation
-    description: ""
+    description: "",
   },
   backupStatus: {
     status: "", //success, failed
-    timestamp: null
+    timestamp: null,
   },
   debugResult: {
     status: "", //success, processing
-    result: ""
+    result: "",
   },
   showUpdateConfirmationModal: false,
   loading: true,
@@ -30,27 +30,27 @@ const state = () => ({
   unit: "sats", //sats or btc
   api: {
     operational: false,
-    version: ""
+    version: "",
   },
   managerApi: {
     operational: false,
-    version: ""
+    version: "",
   },
   onionAddress: "",
   storage: {
     total: 0,
     used: 0,
-    breakdown: []
+    breakdown: [],
   },
   ram: {
     total: 0,
     used: 0,
-    breakdown: []
+    breakdown: [],
   },
   isUmbrelOS: false,
   cpuTemperature: 0, //in celsius
   cpuTemperatureUnit: "celsius",
-  uptime: null
+  uptime: null,
 });
 
 // Functions to update the state directly
@@ -117,7 +117,7 @@ const mutations = {
   },
   setUptime(state, uptime) {
     state.uptime = uptime;
-  }
+  },
 };
 
 // Functions to get data from the API
@@ -149,14 +149,14 @@ const actions = {
     const api = await API.get(`${process.env.VUE_APP_MIDDLEWARE_API_URL}/ping`);
     commit("setApi", {
       operational: !!(api && api.version),
-      version: api && api.version ? api.version : ""
+      version: api && api.version ? api.version : "",
     });
   },
   async getManagerApi({ commit }) {
     const api = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/ping`);
     commit("setManagerApi", {
       operational: !!(api && api.version),
-      version: api && api.version ? api.version : ""
+      version: api && api.version ? api.version : "",
     });
   },
   async getOnionAddress({ commit }) {
@@ -175,7 +175,7 @@ const actions = {
       commit("setAvailableUpdate", {
         version: "",
         name: "",
-        notes: ""
+        notes: "",
       });
     }
   },
@@ -350,7 +350,7 @@ const actions = {
     if (uptime) {
       commit("setUptime", uptime);
     }
-  }
+  },
 };
 
 const getters = {};
@@ -360,5 +360,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

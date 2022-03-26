@@ -54,7 +54,7 @@
 
                   <span
                     class="loading-placeholder loading-placeholder-lg block"
-                    style="width: 6rem;"
+                    style="width: 6rem"
                     v-else
                   ></span>
                 </h3>

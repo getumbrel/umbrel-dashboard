@@ -19,9 +19,7 @@
         Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn
         on <span class="font-weight-bold">"VPN Mode"</span>.
       </step>
-      <step>
-        Start Tor by tapping the big onion icon.
-      </step>
+      <step> Start Tor by tapping the big onion icon. </step>
       <step>
         Open Electrum Wallet, tap the settings icon and select
         <span class="font-weight-bold">"Network"</span>.
@@ -53,13 +51,13 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
-    InputCopy
-  }
+    InputCopy,
+  },
 };
 </script>

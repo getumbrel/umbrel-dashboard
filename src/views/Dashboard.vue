@@ -36,7 +36,7 @@
             />
             <span
               class="loading-placeholder loading-placeholder-lg"
-              style="width: 140px;"
+              style="width: 140px"
               v-else
             ></span>
           </template>
@@ -83,7 +83,7 @@
 
                 <span
                   class="loading-placeholder loading-placeholder-lg"
-                  style="width: 140px;"
+                  style="width: 140px"
                   v-else
                 ></span>
               </template>

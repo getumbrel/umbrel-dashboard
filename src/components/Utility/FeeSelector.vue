@@ -180,10 +180,10 @@ export default {
     },
   },
   watch: {
-    useCustomFee: function() {
+    useCustomFee: function () {
       this.emitValue();
     },
-    "fee.fast.total": function() {
+    "fee.fast.total": function () {
       this.emitValue();
     },
   },

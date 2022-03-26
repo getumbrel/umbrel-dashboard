@@ -14,9 +14,7 @@
           auto-width
         ></input-copy>
       </step>
-      <step>
-        Restart Wasabi
-      </step>
+      <step> Restart Wasabi </step>
       <step>
         Congratulations! You have successfully connected Wasabi to your Umbrel.
       </step>
@@ -37,14 +35,14 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
     InputCopy,
-    TorSetup
-  }
+    TorSetup,
+  },
 };
 </script>

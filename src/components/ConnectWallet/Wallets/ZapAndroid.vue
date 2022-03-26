@@ -18,12 +18,8 @@
         Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn
         on the <span class="font-weight-bold">"VPN Mode"</span>.
       </step>
-      <step>
-        Start Tor by tapping the big onion icon.
-      </step>
-      <step>
-        Open the Zap app on your phone.
-      </step>
+      <step> Start Tor by tapping the big onion icon. </step>
+      <step> Open the Zap app on your phone. </step>
       <step>
         Tap <span class="font-weight-bold">"Connect"</span> on the welcome
         screen.
@@ -73,14 +69,14 @@ import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
     InputCopy,
-    QrCode
-  }
+    QrCode,
+  },
 };
 </script>

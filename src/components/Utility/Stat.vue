@@ -21,7 +21,7 @@
               countOnLoad
             />
           </h3>
-          <span class="text-gray-500" style="margin-left: 0.5rem;">{{
+          <span class="text-gray-500" style="margin-left: 0.5rem">{{
             suffix
           }}</span>
         </div>
@@ -62,7 +62,7 @@
         </span>
       </div>
       <div class="block" v-else>
-        <span style="opacity: 0;">.</span>
+        <span style="opacity: 0">.</span>
       </div>
     </div>
   </div>

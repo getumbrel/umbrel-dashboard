@@ -83,7 +83,7 @@ export default {
     },
   },
   watch: {
-    value: function() {
+    value: function () {
       this.isCopied = false;
     },
   },

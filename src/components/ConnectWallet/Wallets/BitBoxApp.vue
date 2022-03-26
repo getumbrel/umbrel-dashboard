@@ -27,9 +27,7 @@
       <step>
         In the <span class="font-weight-bold">"Endpoint"</span>, enter
         <input-copy
-          :value="
-            `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`
-          "
+          :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
           auto-width
         ></input-copy>
       </step>
@@ -61,14 +59,14 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
     InputCopy,
-    TorSetup
-  }
+    TorSetup,
+  },
 };
 </script>

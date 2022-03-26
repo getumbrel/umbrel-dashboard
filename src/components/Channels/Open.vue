@@ -270,7 +270,7 @@ export default {
     },
   },
   watch: {
-    unit: function(val) {
+    unit: function (val) {
       if (val === "sats") {
         this.fundingAmount = Number(this.fundingAmountInput);
       } else if (val === "btc") {
@@ -278,7 +278,7 @@ export default {
       }
       this.fetchFees();
     },
-    sweep: function(val) {
+    sweep: function (val) {
       if (val) {
         if (this.unit === "btc") {
           this.fundingAmountInput = String(satsToBtc(this.confirmedBtcBalance));
@@ -288,7 +288,7 @@ export default {
       }
       this.fetchFees();
     },
-    fundingAmountInput: function(val) {
+    fundingAmountInput: function (val) {
       if (this.unit === "sats") {
         this.fundingAmount = Number(val);
       } else if (this.unit === "btc") {

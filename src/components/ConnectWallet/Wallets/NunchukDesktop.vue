@@ -5,9 +5,7 @@
         Make sure Tor is up and running on your system.
         <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.
       </step>
-      <step>
-        Open Nunchuk Wallet on your desktop.
-      </step>
+      <step> Open Nunchuk Wallet on your desktop. </step>
       <step>
         Go to <span class="font-weight-bold">"Account > Settings"</span>.
       </step>
@@ -18,9 +16,7 @@
       <step>
         Select <span class="font-weight-bold">"Mainnet server"</span> and enter
         <input-copy
-          :value="
-            `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`
-          "
+          :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
           auto-width
         ></input-copy>
       </step>
@@ -54,14 +50,14 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
     InputCopy,
-    TorSetup
-  }
+    TorSetup,
+  },
 };
 </script>

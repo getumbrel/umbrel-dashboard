@@ -148,7 +148,7 @@ export default {
   },
   watch: {
     loading: {
-      handler: function(isLoading) {
+      handler: function (isLoading) {
         window.clearInterval(this.loadingInterval);
         //if loading, check loading status every two seconds
         if (isLoading) {
@@ -167,7 +167,7 @@ export default {
       immediate: true,
     },
     updating: {
-      handler: function(isUpdating, wasUpdating) {
+      handler: function (isUpdating, wasUpdating) {
         window.clearInterval(this.updateStatusInterval);
         // if updating, check loading status every two seconds
         if (isUpdating) {

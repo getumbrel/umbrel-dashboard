@@ -48,7 +48,7 @@
         <div class="flex justify-between items-center mb-3">
           <span class="text-gray-500">Remote Peer Alias</span>
           <div class="w-75 text-right">
-            <span class="font-weight-bold" style="overflow-wrap: break-word;">{{
+            <span class="font-weight-bold" style="overflow-wrap: break-word">{{
               channel.remoteAlias
             }}</span>
           </div>
@@ -124,11 +124,9 @@
         <div class="flex justify-between items-center mb-3">
           <span class="text-gray-500">Remote Pub Key</span>
           <div class="w-75 text-right">
-            <small
-              class="font-weight-bold"
-              style="overflow-wrap: break-word;"
-              >{{ channel.remotePubkey }}</small
-            >
+            <small class="font-weight-bold" style="overflow-wrap: break-word">{{
+              channel.remotePubkey
+            }}</small>
           </div>
         </div>
 

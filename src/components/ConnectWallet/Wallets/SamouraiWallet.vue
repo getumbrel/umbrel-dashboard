@@ -21,12 +21,12 @@ import Step from "@/components/ConnectWallet/Step";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
-    Step
-  }
+    Step,
+  },
 };
 </script>

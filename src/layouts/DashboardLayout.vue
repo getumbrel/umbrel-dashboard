@@ -158,9 +158,7 @@
           >
             <b-icon icon="bell-fill" class="mr-2"></b-icon>
             <a
-              :href="
-                `https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`
-              "
+              :href="`https://github.com/getumbrel/umbrel/releases/tag/v${availableUpdate.version}`"
               target="_blank"
               class="alert-link"
               >Umbrel v{{ availableUpdate.version }}</a

@@ -6,7 +6,7 @@ const state = () => ({
   installed: [],
   store: [],
   installing: [],
-  uninstalling: []
+  uninstalling: [],
 });
 
 // Functions to update the state directly
@@ -26,7 +26,7 @@ const mutations = {
     }
   },
   removeInstallingApp(state, appId) {
-    const index = state.installing.findIndex(id => id === appId);
+    const index = state.installing.findIndex((id) => id === appId);
     if (index !== -1) {
       state.installing.splice(index, 1);
     }
@@ -37,11 +37,11 @@ const mutations = {
     }
   },
   removeUninstallingApp(state, appId) {
-    const index = state.uninstalling.findIndex(id => id === appId);
+    const index = state.uninstalling.findIndex((id) => id === appId);
     if (index !== -1) {
       state.uninstalling.splice(index, 1);
     }
-  }
+  },
 };
 
 // Functions to get data from the API
@@ -77,14 +77,14 @@ const actions = {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right"
+          toaster: "b-toaster-bottom-right",
         });
       }
     }
 
     const poll = window.setInterval(async () => {
       await dispatch("getInstalledApps");
-      const index = state.installed.findIndex(app => app.id === appId);
+      const index = state.installed.findIndex((app) => app.id === appId);
       if (index === -1) {
         commit("removeUninstallingApp", appId);
         window.clearInterval(poll);
@@ -105,20 +105,20 @@ const actions = {
           autoHideDelay: 3000,
           variant: "danger",
           solid: true,
-          toaster: "b-toaster-bottom-right"
+          toaster: "b-toaster-bottom-right",
         });
       }
     }
 
     const poll = window.setInterval(async () => {
       await dispatch("getInstalledApps");
-      const index = state.installed.findIndex(app => app.id === appId);
+      const index = state.installed.findIndex((app) => app.id === appId);
       if (index !== -1) {
         commit("removeInstallingApp", appId);
         window.clearInterval(poll);
       }
     }, 5000);
-  }
+  },
 };
 
 const getters = {};
@@ -128,5 +128,5 @@ export default {
   state,
   actions,
   getters,
-  mutations
+  mutations,
 };

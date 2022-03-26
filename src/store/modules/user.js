@@ -8,7 +8,7 @@ const state = () => ({
   registered: true,
   seed: [],
   installedApps: [],
-  otpEnabled: false
+  otpEnabled: false,
 });
 
 // Functions to update the state directly
@@ -31,15 +31,13 @@ const mutations = {
   },
   setOtpEnabled(state, otpEnabled) {
     state.otpEnabled = otpEnabled;
-  }
+  },
 };
 
 // Functions to get data from the API
 const actions = {
   async login({ commit }, { password, otpToken }) {
-    const {
-      data
-    } = await API.post(
+    const { data } = await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/login`,
       { password, otpToken }
     );
@@ -93,7 +91,7 @@ const actions = {
         `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/seed`,
         {
           password,
-          otpToken
+          otpToken,
         },
         false
       );
@@ -119,7 +117,7 @@ const actions = {
         {
           name,
           password,
-          seed
+          seed,
         },
         false
       );
@@ -136,7 +134,7 @@ const actions = {
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/otp/enable`,
       {
         otpToken,
-        otpUri
+        otpUri,
       },
       false
     );
@@ -146,12 +144,12 @@ const actions = {
     await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/otp/disable`,
       {
-        otpToken
+        otpToken,
       },
       false
     );
     return commit("setOtpEnabled", false);
-  }
+  },
 };
 
 const getters = {};
@@ -161,5 +159,5 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

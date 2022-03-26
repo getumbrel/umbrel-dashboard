@@ -132,7 +132,7 @@ export default {
   },
   mounted() {},
   watch: {
-    inputWords: function() {
+    inputWords: function () {
       // Emit "complete" if user has entered all recovery words
       if (
         this.inputWords.length === 24 &&

@@ -70,7 +70,7 @@ export default {
     ...mapState({
       installedApps: (state) => state.apps.installed,
     }),
-    url: function() {
+    url: function () {
       if (window.location.origin.indexOf(".onion") > 0) {
         return `http://${this.hiddenService}${this.path}`;
       } else {

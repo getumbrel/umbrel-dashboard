@@ -18,7 +18,7 @@ class TextScramble {
   setText(newText) {
     const oldText = this.el.innerText;
     const length = Math.max(oldText.length, newText.length);
-    const promise = new Promise(resolve => (this.resolve = resolve));
+    const promise = new Promise((resolve) => (this.resolve = resolve));
     this.queue = [];
     for (let i = 0; i < length; i++) {
       const from = oldText[i] || "";
@@ -65,7 +65,7 @@ class TextScramble {
 
 export default {
   props: {
-    text: String
+    text: String,
   },
   data() {
     return {};
@@ -79,12 +79,12 @@ export default {
   methods: {
     updateText(text) {
       this.fx.setText(text);
-    }
+    },
   },
   components: {},
   watch: {
-    text: "updateText"
-  }
+    text: "updateText",
+  },
 };
 </script>
 

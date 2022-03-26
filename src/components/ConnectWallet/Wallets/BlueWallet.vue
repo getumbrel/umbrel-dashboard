@@ -30,9 +30,7 @@
       <step>
         Scan this QR Code (click to enlarge)
         <qr-code
-          :value="
-            `${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`
-          "
+          :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}`"
           :size="300"
           class="qr-image mt-2"
           showLogo
@@ -64,13 +62,13 @@ import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
-    QrCode
-  }
+    QrCode,
+  },
 };
 </script>

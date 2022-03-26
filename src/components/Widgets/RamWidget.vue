@@ -120,9 +120,7 @@
                   <img
                     v-else
                     class="app-stat-list-item-icon mr-2"
-                    :src="
-                      `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`
-                    "
+                    :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
                   />
                   <div class="w-full">
                     <div class="flex justify-between items-center">

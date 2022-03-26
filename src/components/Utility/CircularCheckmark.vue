@@ -38,19 +38,19 @@ export default {
   props: {
     success: {
       type: Boolean,
-      default: false
+      default: false,
     },
     danger: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {};
   },
   computed: {},
   methods: {},
-  components: {}
+  components: {},
 };
 </script>
 

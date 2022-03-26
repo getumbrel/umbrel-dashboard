@@ -3,7 +3,7 @@
     class="otp-input-container"
     :class="{
       error: error,
-      success: success
+      success: success,
     }"
   >
     <b-input
@@ -76,31 +76,31 @@ export default {
       digit3: "",
       digit4: "",
       digit5: "",
-      digit6: ""
+      digit6: "",
     };
   },
   props: {
     error: {
       type: Boolean,
-      default: false
+      default: false,
     },
     success: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     autofocus: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     otpToken() {
       return `${this.digit1}${this.digit2}${this.digit3}${this.digit4}${this.digit5}${this.digit6}`;
-    }
+    },
   },
   methods: {
     keyup(event) {
@@ -152,7 +152,7 @@ export default {
       ) {
         return this.$emit("otpToken", this.otpToken);
       }
-    }
+    },
   },
   watch: {
     digit1(value) {
@@ -187,8 +187,8 @@ export default {
         this.digit6 = "";
         this.$refs.digitOneInput.focus();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

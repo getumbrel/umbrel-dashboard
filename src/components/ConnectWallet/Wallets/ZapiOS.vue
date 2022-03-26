@@ -1,9 +1,7 @@
 <template>
   <connection-details name="Zap (iOS)" requires="lnd">
     <step-list>
-      <step>
-        Open the Zap app on your iPhone.
-      </step>
+      <step> Open the Zap app on your iPhone. </step>
       <step>
         Tap <span class="font-weight-bold">"Connect"</span> on the welcome
         screen.
@@ -54,14 +52,14 @@ import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     InputCopy,
     Step,
-    QrCode
-  }
+    QrCode,
+  },
 };
 </script>

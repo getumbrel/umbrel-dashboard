@@ -12,7 +12,7 @@ export default {
   props: {},
   computed: {},
   methods: {},
-  components: {}
+  components: {},
 };
 </script>
 

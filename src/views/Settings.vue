@@ -996,7 +996,7 @@ export default {
     }
   },
   watch: {
-    currentPassword: function() {
+    currentPassword: function () {
       this.isIncorrectPassword = false;
     },
   },

@@ -8,7 +8,7 @@
 
 <script>
 import { CountUp } from "countup.js";
-const typeOf = type => object =>
+const typeOf = (type) => (object) =>
   Object.prototype.toString.call(object) === `[object ${type}]`;
 const isFunction = typeOf("Function");
 export default {
@@ -16,31 +16,31 @@ export default {
     delay: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
     value: {
       type: Object,
-      required: true
+      required: true,
     },
     options: {
       type: Object,
-      required: false
+      required: false,
     },
     suffix: {
       type: String,
       required: false,
-      default: ""
+      default: "",
     },
     countOnLoad: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       startVal: 0,
       instance: null,
-      firstLoad: true //used to decide if animate/count on the first mount
+      firstLoad: true, //used to decide if animate/count on the first mount
     };
   },
   computed: {},
@@ -120,7 +120,7 @@ export default {
       if (that.instance && isFunction(that.instance.update)) {
         return that.instance.update(newEndVal);
       }
-    }
+    },
   },
   watch: {
     value: {
@@ -135,10 +135,10 @@ export default {
           }
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 

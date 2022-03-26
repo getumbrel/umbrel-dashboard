@@ -38,20 +38,20 @@ export default {
     text: String,
     blink: {
       type: Boolean,
-      default: false
+      default: false,
     },
     size: {
       type: String,
-      default: "md" //sm or md
-    }
+      default: "md", //sm or md
+    },
   },
   computed: {},
   data() {
     return {
-      state: {}
+      state: {},
     };
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

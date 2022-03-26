@@ -24,9 +24,7 @@
           <div class="block">
             <img
               class="app-icon app-icon-lg mr-2 sm:mr-4 align-self-top"
-              :src="
-                `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`
-              "
+              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
             />
           </div>
           <div>
@@ -146,9 +144,7 @@
         v-for="image in app.gallery"
         class="app-gallery-screen mr-3"
         :key="image"
-        :src="
-          `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
-        "
+        :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
       />
       <div class="block" style="padding: 1px"></div>
     </div>
@@ -252,26 +248,26 @@ export default {
       installing: (state) => state.apps.installing,
       uninstalling: (state) => state.apps.uninstalling,
     }),
-    app: function() {
+    app: function () {
       return this.appStore.find((app) => app.id === this.$route.params.id);
     },
-    isInstalled: function() {
+    isInstalled: function () {
       const installedAppIndex = this.installedApps.findIndex(
         (app) => app.id === this.app.id
       );
       return installedAppIndex !== -1;
     },
-    isInstalling: function() {
+    isInstalling: function () {
       const index = this.installing.findIndex((appId) => appId === this.app.id);
       return index !== -1;
     },
-    isUninstalling: function() {
+    isUninstalling: function () {
       const index = this.uninstalling.findIndex(
         (appId) => appId === this.app.id
       );
       return index !== -1;
     },
-    url: function() {
+    url: function () {
       if (window.location.origin.indexOf(".onion") > 0) {
         const installedApp = this.installedApps.find(
           (app) => app.id === this.app.id

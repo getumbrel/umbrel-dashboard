@@ -101,7 +101,7 @@ export default {
     };
   },
   watch: {
-    password: function() {
+    password: function () {
       //bring up log in button after user retries new password after failed attempt
       this.isIncorrectPassword = false;
     },

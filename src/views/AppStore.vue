@@ -25,9 +25,7 @@
             <div class="block">
               <img
                 class="app-icon mr-2 lg:mr-4"
-                :src="
-                  `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`
-                "
+                :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
               />
             </div>
             <div class="flex justify-center flex-column">
@@ -60,9 +58,7 @@
               v-for="image in app.gallery"
               class="d-none"
               :key="app.id + image"
-              :src="
-                `https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`
-              "
+              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
             />
           </div>
         </router-link>
@@ -101,7 +97,7 @@ export default {
     ...mapState({
       store: (state) => state.apps.store,
     }),
-    categorizedAppStore: function() {
+    categorizedAppStore: function () {
       let group = this.store.reduce((r, a) => {
         r[a.category] = [...(r[a.category] || []), a];
         return r;

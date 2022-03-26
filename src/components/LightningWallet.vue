@@ -10,8 +10,8 @@
     icon="icon-app-lightning.svg"
     :loading="
       loading ||
-        (transactions.length > 0 && transactions[0]['type'] === 'loading') ||
-        lightningSyncPercent < 100
+      (transactions.length > 0 && transactions[0]['type'] === 'loading') ||
+      lightningSyncPercent < 100
     "
   >
     <template v-slot:title>
@@ -29,7 +29,7 @@
       </div>
       <span
         class="loading-placeholder loading-placeholder-lg"
-        style="width: 140px;"
+        style="width: 140px"
         v-else
       ></span>
     </template>
@@ -179,20 +179,20 @@
 
                       <!-- Invoice description -->
                       <span
-                        style="margin-left: 6px;"
+                        style="margin-left: 6px"
                         :title="tx.description"
                         v-if="tx.description"
                         >{{ tx.description }}</span
                       >
 
                       <!-- If no description -->
-                      <span style="margin-left: 6px;" v-else>Payment</span>
+                      <span style="margin-left: 6px" v-else>Payment</span>
                     </h6>
 
                     <!-- Timestamp of tx -->
                     <small
                       class="text-gray-500 mt-0 tx-timestamp"
-                      style="margin-left: 25px;"
+                      style="margin-left: 25px"
                       v-b-tooltip.hover.right
                       :title="getReadableTime(tx.timestamp)"
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
@@ -202,10 +202,10 @@
                     <!-- if invoice isn't settled -->
                     <small
                       class="text-gray-500 mt-0 tx-timestamp"
-                      style="margin-left: 21px;"
-                      :title="
-                        `Invoice expires on ${getReadableTime(tx.expiresOn)}`
-                      "
+                      style="margin-left: 21px"
+                      :title="`Invoice expires on ${getReadableTime(
+                        tx.expiresOn
+                      )}`"
                       v-else-if="tx.type === 'pending'"
                       >Unpaid invoice</small
                     >
@@ -213,7 +213,7 @@
                     <!-- If invoice expired -->
                     <small
                       class="text-gray-500 mt-0 tx-timestamp"
-                      style="margin-left: 25px;"
+                      style="margin-left: 25px"
                       :title="getReadableTime(tx.expiresOn)"
                       v-else-if="tx.type === 'expired'"
                       >Invoice expired {{ getTimeFromNow(tx.expiresOn) }}</small
@@ -658,7 +658,12 @@
         <b-button
           class="w-50"
           variant="primary"
-          style="border-radius: 0; border-bottom-left-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+          style="
+            border-radius: 0;
+            border-bottom-left-radius: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+          "
           @click="changeMode('send')"
         >
           <svg
@@ -678,7 +683,12 @@
         <b-button
           class="w-50"
           variant="success"
-          style="border-radius: 0; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+          style="
+            border-radius: 0;
+            border-bottom-right-radius: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+          "
           @click="changeMode('receive')"
         >
           <svg
@@ -700,7 +710,13 @@
       <b-button
         class="w-full"
         variant="success"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         @click="changeMode('receive')"
         v-else-if="this.mode === 'transactions' && walletBalance === 0"
       >
@@ -723,7 +739,13 @@
       <b-button
         class="w-full"
         variant="primary"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         @click="sendSats"
         v-else-if="mode === 'send'"
         :disabled="
@@ -750,7 +772,13 @@
       <b-button
         class="w-full"
         variant="success"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         @click="createInvoice"
         v-else-if="mode === 'receive'"
         :disabled="!receive.amount || receive.amount <= 0"
@@ -761,7 +789,13 @@
       <span
         v-else
         class="block w-full"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
       ></span>
     </div>
   </card-widget>
@@ -1069,7 +1103,7 @@ export default {
     },
   },
   watch: {
-    "receive.paymentRequest": function(paymentRequest) {
+    "receive.paymentRequest": function (paymentRequest) {
       window.clearInterval(this.receive.invoiceStatusPoller);
 
       //if payment request is generated, fetch invoices to check settlement status as long as the user is on the generated invoice mode
@@ -1102,14 +1136,14 @@ export default {
         }, 1000);
       }
     },
-    "receive.amountInput": function(val) {
+    "receive.amountInput": function (val) {
       if (this.unit === "sats") {
         this.receive.amount = Number(val);
       } else if (this.unit === "btc") {
         this.receive.amount = btcToSats(val);
       }
     },
-    unit: function(val) {
+    unit: function (val) {
       if (val === "sats") {
         this.receive.amount = Number(this.receive.amountInput);
       } else if (val === "btc") {

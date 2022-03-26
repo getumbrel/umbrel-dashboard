@@ -1,9 +1,7 @@
 <template>
   <connection-details name="Zeus" requires="lnd">
     <step-list>
-      <step>
-        Open the Zeus app on your phone.
-      </step>
+      <step> Open the Zeus app on your phone. </step>
       <step>
         Tap <span class="font-weight-bold">"Scan lndconnect config"</span>.
       </step>
@@ -41,10 +39,10 @@
         <input-copy
           :value="
             'https://' +
-              Array.from(
-                urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm),
-                m => m[1]
-              )[0]
+            Array.from(
+              urls.lnd.restTor.matchAll(/lndconnect:\/\/(.*):/gm),
+              (m) => m[1]
+            )[0]
           "
           auto-width
         ></input-copy>
@@ -83,25 +81,25 @@ import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   computed: {
     macaroonHex() {
       return Buffer.from(
         Array.from(
           this.urls.lnd.restTor.matchAll(/macaroon=(.*)/gm),
-          m => m[1]
+          (m) => m[1]
         )[0],
         "base64"
       ).toString("hex");
-    }
+    },
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
     InputCopy,
-    QrCode
-  }
+    QrCode,
+  },
 };
 </script>

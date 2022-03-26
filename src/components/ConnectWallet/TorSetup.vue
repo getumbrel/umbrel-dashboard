@@ -63,8 +63,8 @@ export default {
   props: {
     selectedOS: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {};
@@ -72,8 +72,8 @@ export default {
   computed: {},
   methods: {},
   components: {
-    InputCopy
-  }
+    InputCopy,
+  },
 };
 </script>
 

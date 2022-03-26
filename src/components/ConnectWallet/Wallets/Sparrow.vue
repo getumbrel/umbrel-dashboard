@@ -47,13 +47,13 @@ import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
-    InputCopy
-  }
+    InputCopy,
+  },
 };
 </script>

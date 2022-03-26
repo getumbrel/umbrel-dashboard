@@ -24,31 +24,31 @@ export default {
     inputClass: [String, Array],
     inputGroupClass: {
       type: String,
-      default: "card-input-group"
+      default: "card-input-group",
     },
     placeholder: String,
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     showPassword() {
       return this.state.showPassword;
-    }
+    },
   },
   data() {
     return {
       state: {
-        showPassword: false
-      }
+        showPassword: false,
+      },
     };
   },
   methods: {
     togglePassword() {
       return (this.state.showPassword = !this.state.showPassword);
-    }
-  }
+    },
+  },
 };
 </script>
 

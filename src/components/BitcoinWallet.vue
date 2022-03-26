@@ -10,8 +10,8 @@
     icon="icon-app-bitcoin.svg"
     :loading="
       loading ||
-        (transactions.length > 0 && transactions[0]['type'] === 'loading') ||
-        lightningSyncPercent < 100
+      (transactions.length > 0 && transactions[0]['type'] === 'loading') ||
+      lightningSyncPercent < 100
     "
   >
     <template v-slot:title>
@@ -29,7 +29,7 @@
       </div>
       <span
         class="loading-placeholder loading-placeholder-lg"
-        style="width: 140px;"
+        style="width: 140px"
         v-else
       ></span>
     </template>
@@ -158,7 +158,7 @@
                       </svg>
 
                       <!-- tx description -->
-                      <span style="margin-left: 6px;" :title="tx.description">{{
+                      <span style="margin-left: 6px" :title="tx.description">{{
                         tx.description
                       }}</span>
                     </h6>
@@ -173,25 +173,23 @@
                           : 'margin-left: 21px;'
                       "
                       v-b-tooltip.hover.bottomright
-                      :title="
-                        `${getReadableTime(tx.timestamp)} | ${
-                          tx.confirmations
-                        } confirmations`
-                      "
+                      :title="`${getReadableTime(tx.timestamp)} | ${
+                        tx.confirmations
+                      } confirmations`"
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                     >
                       {{ getTimeFromNow(tx.timestamp) }}
                       <span
                         v-if="
                           tx.description === 'Lightning Wallet' &&
-                            tx.type === 'outgoing'
+                          tx.type === 'outgoing'
                         "
                         >&bull; Channel open</span
                       >
                       <span
                         v-else-if="
                           tx.description === 'Lightning Wallet' &&
-                            tx.type === 'incoming'
+                          tx.type === 'incoming'
                         "
                         >&bull; Channel close</span
                       >
@@ -529,7 +527,12 @@
         <b-button
           class="w-50"
           variant="primary"
-          style="border-radius: 0; border-bottom-left-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+          style="
+            border-radius: 0;
+            border-bottom-left-radius: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+          "
           @click="changeMode('withdraw')"
         >
           <svg
@@ -549,7 +552,12 @@
         <b-button
           class="w-50"
           variant="success"
-          style="border-radius: 0; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+          style="
+            border-radius: 0;
+            border-bottom-right-radius: 1rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+          "
           @click="changeMode('deposit')"
         >
           <svg
@@ -570,7 +578,13 @@
       <b-button
         class="w-full"
         variant="primary"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         @click="changeMode('review-withdraw')"
         v-else-if="mode === 'withdraw'"
         :disabled="
@@ -581,7 +595,13 @@
       <b-button
         class="w-full"
         variant="primary"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         @click="withdrawBtc"
         :disabled="withdraw.isWithdrawing || !!error"
         v-else-if="mode === 'review-withdraw'"
@@ -593,7 +613,13 @@
       <b-button
         class="w-full"
         variant="success"
-        style="border-radius: 0; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; padding-top: 1rem; padding-bottom: 1rem;"
+        style="
+          border-radius: 0;
+          border-bottom-left-radius: 1rem;
+          border-bottom-right-radius: 1rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        "
         :disabled="withdraw.isWithdrawing"
         v-else-if="mode === 'withdrawn'"
         :href="getTxExplorerUrl(withdraw.txHash)"
@@ -865,7 +891,7 @@ export default {
     },
   },
   watch: {
-    "withdraw.amountInput": function(val) {
+    "withdraw.amountInput": function (val) {
       if (this.unit === "sats") {
         this.withdraw.amount = Number(val);
       } else if (this.unit === "btc") {
@@ -873,7 +899,7 @@ export default {
       }
       this.fetchWithdrawalFees();
     },
-    "withdraw.sweep": async function(val) {
+    "withdraw.sweep": async function (val) {
       if (val) {
         if (this.unit === "sats") {
           this.withdraw.amountInput = String(this.confirmedBtcBalance);
@@ -886,7 +912,7 @@ export default {
         this.fetchWithdrawalFees();
       }
     },
-    unit: function(val) {
+    unit: function (val) {
       if (val === "sats") {
         this.withdraw.amount = Number(this.withdraw.amountInput);
       } else if (val === "btc") {

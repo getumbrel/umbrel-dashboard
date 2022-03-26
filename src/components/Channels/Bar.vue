@@ -18,8 +18,9 @@ export default {
       } else if (leftPercent === 0) {
         background = `#00CD98`;
       } else {
-        background = `linear-gradient(90deg, #5351FB 0%, #5351FB ${leftPercent -
-          7}%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
+        background = `linear-gradient(90deg, #5351FB 0%, #5351FB ${
+          leftPercent - 7
+        }%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
       }
 
       let height = "4px";
@@ -33,9 +34,9 @@ export default {
       return {
         background,
         height,
-        borderRadius
+        borderRadius,
       };
-    }
+    },
   },
   data() {
     return {};
@@ -51,19 +52,20 @@ export default {
       if (leftPercent === 0) {
         return `#00CD98`;
       }
-      return `linear-gradient(90deg, #5351FB 0%, #5351FB ${leftPercent -
-        7}%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
-    }
+      return `linear-gradient(90deg, #5351FB 0%, #5351FB ${
+        leftPercent - 7
+      }%, #00CD98 ${leftPercent + 7}%, #00CD98 100%)`;
+    },
   },
   props: {
     local: Number,
     remote: Number,
     size: {
       type: String, //sm, lg
-      default: "sm"
-    }
+      default: "sm",
+    },
   },
-  components: {}
+  components: {},
 };
 </script>
 

@@ -105,7 +105,7 @@
                 <div class="align-self-center">
                   <span
                     class="block loading-placeholder mb-1"
-                    style="width: 140px;"
+                    style="width: 140px"
                   ></span>
                   <span
                     class="block loading-placeholder loading-placeholder-sm"

@@ -18,9 +18,7 @@
         Tap <span class="font-weight-bold">"STOP"</span>, restart Orbot and turn
         on the <span class="font-weight-bold">"VPN Mode"</span>.
       </step>
-      <step>
-        Start Tor by tapping the big onion icon.
-      </step>
+      <step> Start Tor by tapping the big onion icon. </step>
       <step>
         Open Green on your phone and go to
         <span class="font-weight-bold"
@@ -64,13 +62,13 @@ import QrCode from "@/components/Utility/QrCode";
 
 export default {
   props: {
-    urls: Object
+    urls: Object,
   },
   components: {
     ConnectionDetails,
     StepList,
     Step,
-    QrCode
-  }
+    QrCode,
+  },
 };
 </script>

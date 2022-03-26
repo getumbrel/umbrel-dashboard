@@ -1,13 +1,15 @@
 $black: #141821;
-$purple: #5351FB;
+$purple: #5351fb;
 $primary: $purple;
-$green: #00CD98;
-$yellow: #F6B900;
-$red: #F46E6E;
+$green: #00cd98;
+$yellow: #f6b900;
+$red: #f46e6e;
 $white: #ffffff;
 $spacer: 1.5rem;
 $body-color: $black;
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", "Segoe UI", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Roboto",
+  "Helvetica Neue", "Segoe UI", Arial, "Noto Sans", sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $h1-font-size: $font-size-base * 5;
 $h2-font-size: $font-size-base * 3;
 $h3-font-size: $font-size-base * 2;
@@ -20,7 +22,13 @@ $card-cap-bg: null;
 $card-border-color: rgba($black, 0);
 $list-group-border-radius: 0;
 $list-group-item-padding-y: 1.25rem;
-$grid-breakpoints: (xs: 0, sm: 456px, md: 768px, lg: 999px, xl: 1439px); //remove this while editing in bootstrap.build
+$grid-breakpoints: (
+  xs: 0,
+  sm: 456px,
+  md: 768px,
+  lg: 999px,
+  xl: 1439px,
+); //remove this while editing in bootstrap.build
 $modal-inner-padding: 1rem;
 $modal-content-border-color: rgba($black, 0.05);
 $modal-content-border-radius: 1rem;

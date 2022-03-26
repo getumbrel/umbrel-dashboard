@@ -24,7 +24,7 @@
           <div
             v-if="
               (!!$slots['header-right'] && !!$slots['header-right'][0]) ||
-                (!!$slots['menu'] && !!$slots['menu'][0])
+              (!!$slots['menu'] && !!$slots['menu'][0])
             "
           >
             <slot name="header-right"></slot>

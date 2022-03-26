@@ -10,12 +10,12 @@ const responsePending = {};
 // Interceptor to refresh JWT or logout user based on 401 requests
 // and to logout user if lnd is locked
 axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response;
   },
-  async function(error) {
+  async function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
 
     // Return any error which is not related to auth
@@ -56,10 +56,10 @@ axios.interceptors.response.use(
       return new Promise((resolve, reject) => {
         axios
           .request(config)
-          .then(response => {
+          .then((response) => {
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             reject(error);
           });
       });
@@ -81,12 +81,12 @@ const API = {
 
         const requestOptions = {
           method: "get",
-          url
+          url,
         };
 
         if (auth && store.state.user.jwt) {
           requestOptions.headers = {
-            Authorization: `JWT ${store.state.user.jwt}`
+            Authorization: `JWT ${store.state.user.jwt}`,
           };
         }
 
@@ -114,7 +114,7 @@ const API = {
     const requestOptions = {
       method: "post",
       url,
-      data
+      data,
     };
 
     if (auth && store.state.user.jwt) {
@@ -129,7 +129,7 @@ const API = {
     const requestOptions = {
       method: "delete",
       url,
-      data
+      data,
     };
 
     if (auth && store.state.user.jwt) {
@@ -153,12 +153,12 @@ const API = {
         const requestOptions = {
           method: "get",
           url,
-          responseType: "blob"
+          responseType: "blob",
         };
 
         if (auth && store.state.user.jwt) {
           requestOptions.headers = {
-            Authorization: `JWT ${store.state.user.jwt}`
+            Authorization: `JWT ${store.state.user.jwt}`,
           };
         }
 
@@ -190,7 +190,7 @@ const API = {
         tempLink.click();
 
         // Fixes "webkit blob resource error 1"
-        setTimeout(function() {
+        setTimeout(function () {
           document.body.removeChild(tempLink);
           window.URL.revokeObjectURL(blobURL);
         }, 200);
@@ -218,7 +218,7 @@ const API = {
     }
 
     return duration;
-  }
+  },
 };
 
 export default API;

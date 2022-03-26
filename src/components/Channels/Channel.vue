@@ -11,7 +11,7 @@
             <span v-if="channel.remoteAlias">{{ channel.remoteAlias }}</span>
             <span
               class="loading-placeholder loading-placeholder-sm block"
-              style="width:80%; margin-top: 8px;"
+              style="width: 80%; margin-top: 8px"
               v-else
             ></span>
           </div>
