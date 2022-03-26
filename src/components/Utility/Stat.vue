@@ -9,8 +9,8 @@
           v-if="numberValue === -1"
           style
         ></span>
-        <div class="d-flex align-items-baseline" v-else>
-          <h3 class="font-weight-normal mb-0">
+        <div class="flex align-items-baseline" v-else>
+          <h3 class="text-3xl font-black font-weight-normal mb-0">
             <!-- suffix number like 100K, 120K, 2M, etc -->
             <CountUp
               :value="{
@@ -21,7 +21,7 @@
               countOnLoad
             />
           </h3>
-          <span class="text-muted" style="margin-left: 0.5rem">{{
+          <span class="text-gray-500" style="margin-left: 0.5rem">{{
             suffix
           }}</span>
         </div>
@@ -54,14 +54,14 @@
           :class="{
             'text-success': change.value > 0,
             'text-danger': change.value < 0,
-            'text-muted': change.value === 0,
+            'text-gray-500': change.value === 0,
           }"
         >
           {{ change.value >= 0 ? "+" : "" }}{{ change.value
           }}{{ change.suffix }}
         </span>
       </div>
-      <div class="d-block" v-else>
+      <div class="block" v-else>
         <span style="opacity: 0">.</span>
       </div>
     </div>

@@ -11,12 +11,12 @@
         >
           <li
             href="#"
-            class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
+            class="flex-col align-items-start px-3 lg:px-6 blockchain-block"
             v-for="block in blocks"
             :key="block.height"
           >
-            <div class="d-flex w-100 justify-content-between">
-              <div class="d-flex">
+            <div class="flex w-full justify-between">
+              <div class="flex">
                 <div class="blockchain-block-icon">
                   <div class="blockchain-block-icon-cube">
                     <span class="edge top">
@@ -46,17 +46,17 @@
                   <h6 class="mb-1 font-weight-normal">
                     Block {{ block.height.toLocaleString() }}
                   </h6>
-                  <small class="text-muted" v-if="block.numTransactions">
+                  <small class="text-gray-500" v-if="block.numTransactions">
                     {{ block.numTransactions.toLocaleString() }}
                     transaction{{ block.numTransactions !== 1 ? "s" : "" }}
                   </small>
-                  <!-- <small class="text-muted" v-if="block.size">
+                  <!-- <small class="text-gray-500" v-if="block.size">
                     <span>&bull; {{ Math.round(block.size / 1000) }} KB</span>
                   </small>-->
                 </div>
               </div>
               <small
-                class="text-muted align-self-center text-right blockchain-block-timestamp"
+                class="text-gray-500 align-self-center text-right blockchain-block-timestamp"
                 v-if="block.time"
                 :title="blockReadableTime(block.time)"
                 >{{ blockTime(block.time) }}</small
@@ -69,12 +69,12 @@
         <ul>
           <li
             href="#"
-            class="flex-column align-items-start px-3 px-lg-4 blockchain-block"
+            class="flex-col align-items-start px-3 lg:px-6 blockchain-block"
             v-for="(fake, index) in [1, 2, 3]"
             :key="index"
           >
-            <div class="d-flex w-100 justify-content-between">
-              <div class="d-flex">
+            <div class="flex w-full justify-between">
+              <div class="flex">
                 <div
                   class="blockchain-block-icon blockchain-block-icon-loading"
                 >
@@ -104,11 +104,11 @@
                 </div>
                 <div class="align-self-center">
                   <span
-                    class="d-block loading-placeholder mb-1"
+                    class="block loading-placeholder mb-1"
                     style="width: 140px"
                   ></span>
                   <span
-                    class="d-block loading-placeholder loading-placeholder-sm"
+                    class="block loading-placeholder loading-placeholder-sm"
                     style="width: 80px"
                   ></span>
                 </div>

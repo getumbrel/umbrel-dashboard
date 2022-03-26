@@ -1,14 +1,12 @@
 <template>
-  <div
-    class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
-  >
+  <div class="flex flex-col items-center justify-center min-vh100 p-2">
     <img
       alt="Umbrel"
       src="@/assets/logo.svg"
       class="mb-5 logo"
       :class="hasShutdown ? 'logo-gray' : ''"
     />
-    <span class="text-muted w-75 text-center">
+    <span class="text-gray-500 w-75 text-center">
       <small v-if="hasShutdown"
         >Shutdown complete. You can now safely unplug your Umbrel from the power
         and internet.</small

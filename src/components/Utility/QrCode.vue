@@ -19,7 +19,7 @@
       :size="size"
       :level="level"
       renderAs="svg"
-      class="d-flex justify-content-center qr-image"
+      class="flex justify-center qr-image"
     ></qrcode-vue>
   </div>
 </template>

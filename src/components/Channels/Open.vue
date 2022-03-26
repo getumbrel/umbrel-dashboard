@@ -36,14 +36,14 @@
               </b-input-group-append>
             </b-input-group>
           </div>
-          <div class="mt-1 w-100 d-flex justify-content-between">
+          <div class="mt-1 w-full flex justify-between">
             <!-- TODO: Enable Sweep -->
             <!-- <b-form-checkbox v-model="sweep" size="sm" switch>
-              <small class="text-muted">Use all funds</small>
+              <small class="text-gray-500">Use all funds</small>
             </b-form-checkbox>-->
             <div></div>
             <small
-              class="text-muted d-block mb-0"
+              class="text-gray-500 block mb-0"
               :style="{ opacity: fundingAmount > 0 ? 1 : 0 }"
               >~ {{ fundingAmount | satsToUSD }}</small
             >
@@ -57,10 +57,8 @@
       <b-col col cols="12" sm="6">
         <fee-selector :fee="fee" class @change="selectFee"></fee-selector>
       </b-col>
-      <b-col class="d-flex" col cols="12" sm="6">
-        <div
-          class="mt-4 mt-sm-0 d-flex w-100 justify-content-between align-self-end"
-        >
+      <b-col class="flex" col cols="12" sm="6">
+        <div class="mt-4 sm:mt-0 flex w-full justify-between align-self-end">
           <span>
             <small class="text-danger align-self-center" v-if="error">{{
               error

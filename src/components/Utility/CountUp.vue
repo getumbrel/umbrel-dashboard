@@ -1,5 +1,5 @@
 <template>
-  <span class="d-flex">
+  <span class="flex">
     <span ref="number"></span>
     {{ suffix }}
     <!-- <small>{{ endVal }}</small> -->

@@ -12,7 +12,7 @@
     :title="tooltip"
   >
     <div
-      class="toggle-switch justify-content-center"
+      class="toggle-switch justify-center"
       :class="{
         'toggle-switch-off': !on,
         'toggle-switch-on': on,

@@ -11,7 +11,7 @@
 
       <!-- Search Bar -->
       <!-- <b-navbar-nav>
-        <div class="px-lg-4 px-xl-5 mx-xl-4"></div>
+        <div class="lg:px-6 px-xl-5 mx-xl-4"></div>
         <b-nav-form class="input-search-form">
           <b-form-input
             size="sm"
@@ -90,7 +90,7 @@
           v-model="showUpdateConfirmationModal"
         >
           <template v-slot:modal-header>
-            <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
+            <div class="px-2 sm:px-4 pt-2 flex justify-between w-full">
               <h3>Umbrel v{{ availableUpdate.version }}</h3>
               <!-- Emulate built in modal header close button action -->
               <a
@@ -115,7 +115,7 @@
               </a>
             </div>
           </template>
-          <div class="px-2 px-sm-3 pb-2 pb-sm-3">
+          <div class="px-2 sm:px-4 pb-2 sm:pb-4">
             <div class>
               <p class="text-newlines" v-if="availableUpdate.notes">
                 {{ availableUpdate.notes }}
@@ -128,7 +128,7 @@
                   your funds in case something goes wrong.</small
                 >
                 <b-button
-                  class="mt-2 mb-1 d-block"
+                  class="mt-2 mb-1 block"
                   variant="warning"
                   size="sm"
                   @click="downloadChannelBackup"
@@ -225,7 +225,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="d-flex justify-content-end text-muted pr-sm-2 pr-xl-3">
+        <footer class="flex justify-content-end text-gray-500 sm:pr-2 xl:pr-4">
           <p>
             <small>
               <a href="https://getumbrel.com" target="_blank">getumbrel.com</a>

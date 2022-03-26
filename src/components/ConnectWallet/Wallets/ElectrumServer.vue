@@ -3,7 +3,7 @@
     name="any other wallet that supports Electrum Server"
     requires="electrum"
   >
-    <div class="d-lg-flex align-items-center justify-content-center pb-3">
+    <div class="d-lg-flex items-center justify-center pb-3">
       <qr-code
         :value="urls.bitcoin.electrum.connectionString"
         :size="260"
@@ -13,9 +13,9 @@
         @click="$emit('showQrModal', urls.bitcoin.electrum.connectionString)"
         v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
-      <div class="w-100 align-self-center ml-lg-3 connect-wallet-steps">
+      <div class="w-full align-self-center ml-lg-3 connect-wallet-steps">
         <div class="connect-wallet-step">
-          <label class="mb-1 d-block"
+          <label class="mb-1 block"
             ><small class="ml-1 font-weight-bold"
               >Electrum Address</small
             ></label
@@ -27,7 +27,7 @@
           ></input-copy>
         </div>
         <div class="connect-wallet-step">
-          <label class="mb-1 d-block"
+          <label class="mb-1 block"
             ><small class="ml-1 font-weight-bold">Electrum Port</small></label
           >
           <input-copy
@@ -37,7 +37,7 @@
           ></input-copy>
         </div>
         <div class="connect-wallet-step">
-          <label class="mb-1 d-block"
+          <label class="mb-1 block"
             ><small class="ml-1 font-weight-bold">SSL</small></label
           >
           <small class="ml-1">Disabled</small>

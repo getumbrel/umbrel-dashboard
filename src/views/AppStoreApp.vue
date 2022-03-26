@@ -1,9 +1,9 @@
 <template>
-  <div class="p-sm-2">
-    <div class="mt-3 mb-1 mb-sm-3 pb-lg-2">
+  <div class="sm:p-2">
+    <div class="mt-3 mb-1 sm:mb-4 lg:pb-2">
       <router-link
         to="/app-store"
-        class="card-link text-muted d-flex align-items-center mb-4"
+        class="card-link text-gray-500 flex items-center mb-4"
         ><svg
           width="7"
           height="13"
@@ -19,28 +19,26 @@
         </svg>
         Back</router-link
       >
-      <div
-        class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
-      >
-        <div class="d-flex w-xs-100 justify-content-start pr-2">
-          <div class="d-block">
+      <div class="flex flex-col sm:flex-row justify-between items-center">
+        <div class="flex w-xs-100 justify-content-start pr-2">
+          <div class="block">
             <img
-              class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
+              class="app-icon app-icon-lg mr-2 sm:mr-4 align-self-top"
               :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
             />
           </div>
           <div>
-            <h3 class="d-block font-weight-bold mb-1">
+            <h3 class="text-3xl font-black block font-weight-bold mb-1">
               {{ app.name }}
             </h3>
-            <p class="text-muted">{{ app.tagline }}</p>
+            <p class="text-gray-500">{{ app.tagline }}</p>
             <p>
               <small>{{ app.developer }}</small>
             </p>
           </div>
         </div>
         <div
-          class="w-xs-100 d-flex flex-column align-items-sm-center"
+          class="w-xs-100 flex flex-col sm:items-center"
           v-if="isInstalled && !isUninstalling"
         >
           <b-button
@@ -62,7 +60,7 @@
             >Open</b-button
           >
           <div
-            class="mt-2 text-center d-flex justify-content-center"
+            class="mt-2 text-center flex justify-center"
             v-if="app.defaultPassword"
           >
             <div class="text-left mr-2" v-if="app.defaultUsername">
@@ -85,7 +83,7 @@
             </div>
           </div>
         </div>
-        <div class="d-flex flex-column align-items-sm-center w-xs-100" v-else>
+        <div class="flex flex-col sm:items-center w-xs-100" v-else>
           <b-button
             v-if="isInstalling"
             variant="success"
@@ -112,11 +110,11 @@
           >
           <small
             :style="{ opacity: isInstalling || isUninstalling ? 1 : 0 }"
-            class="mt-1 d-block text-muted text-center"
+            class="mt-1 block text-gray-500 text-center"
             >This may take a few minutes</small
           >
           <div
-            class="mt-2 text-center d-flex justify-content-center"
+            class="mt-2 text-center flex justify-center"
             v-if="isInstalling && app.defaultPassword"
           >
             <div class="text-left mr-2" v-if="app.defaultUsername">
@@ -141,50 +139,50 @@
         </div>
       </div>
     </div>
-    <div class="app-gallery pt-3 pb-4 mb-2 mb-sm-3">
+    <div class="app-gallery pt-3 pb-4 mb-2 sm:mb-4">
       <img
         v-for="image in app.gallery"
         class="app-gallery-screen mr-3"
         :key="image"
         :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/${image}`"
       />
-      <div class="d-block" style="padding: 1px"></div>
+      <div class="block" style="padding: 1px"></div>
     </div>
     <b-row>
       <b-col col cols="12" lg="6" xl="8">
         <card-widget header="About this app">
-          <div class="px-3 px-lg-4 pb-4">
+          <div class="px-3 lg:px-6 pb-4">
             <p class="text-newlines">{{ app.description }}</p>
           </div>
         </card-widget>
       </b-col>
       <b-col col cols="12" lg="6" xl="4">
         <card-widget header="Information">
-          <div class="px-3 px-lg-4 pb-4">
-            <div class="d-flex justify-content-between mb-3">
+          <div class="px-3 lg:px-6 pb-4">
+            <div class="flex justify-between mb-3">
               <span>Version</span>
               <span>{{ app.version }}</span>
             </div>
-            <div class="d-flex justify-content-between mb-3" v-if="app.repo">
+            <div class="flex justify-between mb-3" v-if="app.repo">
               <span>Source Code</span>
               <a :href="app.repo" target="_blank">Public</a>
             </div>
-            <div class="d-flex justify-content-between mb-3">
+            <div class="flex justify-between mb-3">
               <span>Developer</span>
               <a :href="app.website" target="_blank">{{ app.developer }}</a>
             </div>
-            <div class="d-flex justify-content-between mb-3">
+            <div class="flex justify-between mb-3">
               <span>Compatibility</span>
               <span>Compatible</span>
             </div>
             <div class="mb-4" v-if="app.dependencies.length">
-              <span class="d-block mb-3">Requires</span>
+              <span class="block mb-3">Requires</span>
               <div
-                class="d-flex align-items-center justify-content-between mb-3"
+                class="flex items-center justify-between mb-3"
                 v-for="dependency in app.dependencies"
                 :key="dependency"
               >
-                <div class="d-flex align-items-center">
+                <div class="flex items-center">
                   <img
                     :src="
                       require(`@/assets/app-store/dependencies/${dependency}.svg`)
@@ -192,7 +190,7 @@
                     style="width: 50px; height: 50px"
                     class="mr-2"
                   />
-                  <span class="text-muted my-0">{{
+                  <span class="text-gray-500 my-0">{{
                     formatDependency(dependency)
                   }}</span>
                 </div>

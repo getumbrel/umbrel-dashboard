@@ -2,11 +2,9 @@
   <div id="app">
     <transition name="loading" mode>
       <div v-if="isIframe">
-        <div
-          class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
-        >
+        <div class="flex flex-col items-center justify-center min-vh100 p-2">
           <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
-          <span class="text-muted w-75 text-center">
+          <span class="text-gray-500 w-75 text-center">
             <small
               >For security reasons Umbrel cannot be embedded in an
               iframe.</small
@@ -16,7 +14,7 @@
       </div>
       <loading v-else-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
-          <small class="text-muted d-block">{{
+          <small class="text-gray-500 block">{{
             `${updateStatus.description}...`
           }}</small>
           <b-alert class="system-alert" variant="warning" show>
@@ -99,38 +97,38 @@ export default {
 
       this.loadingPollInProgress = true;
 
-      // First check if manager api is up
-      if (this.loadingProgress <= 20) {
-        this.loadingProgress = 20;
-        await this.$store.dispatch("system/getManagerApi");
-        if (!this.isManagerApiOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }
+      // // First check if manager api is up
+      // if (this.loadingProgress <= 20) {
+      //   this.loadingProgress = 20;
+      //   await this.$store.dispatch("system/getManagerApi");
+      //   if (!this.isManagerApiOperational) {
+      //     this.loading = true;
+      //     this.loadingPollInProgress = false;
+      //     return;
+      //   }
+      // }
 
-      // Then check if middleware api is up
-      if (this.loadingProgress <= 40) {
-        this.loadingProgress = 40;
-        await this.$store.dispatch("system/getApi");
-        if (!this.isApiOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }
+      // // Then check if middleware api is up
+      // if (this.loadingProgress <= 40) {
+      //   this.loadingProgress = 40;
+      //   await this.$store.dispatch("system/getApi");
+      //   if (!this.isApiOperational) {
+      //     this.loading = true;
+      //     this.loadingPollInProgress = false;
+      //     return;
+      //   }
+      // }
 
-      // Then trigger auth check
-      if (this.loadingProgress <= 95 && this.jwt) {
-        this.loadingProgress = 95;
-        try {
-          await this.$store.dispatch("user/refreshJWT");
-        } catch (error) {
-          // it will error if jwt has expired and automatically redirect the user to login page
-          null;
-        }
-      }
+      // // Then trigger auth check
+      // if (this.loadingProgress <= 95 && this.jwt) {
+      //   this.loadingProgress = 95;
+      //   try {
+      //     await this.$store.dispatch("user/refreshJWT");
+      //   } catch (error) {
+      //     // it will error if jwt has expired and automatically redirect the user to login page
+      //     null;
+      //   }
+      // }
 
       this.loadingProgress = 100;
       this.loadingPollInProgress = false;

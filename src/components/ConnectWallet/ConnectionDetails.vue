@@ -14,7 +14,7 @@
     synchronized 100%.
   </b-alert>
   <card-widget v-else :header="`Here's how to connect ${name} to your Umbrel`">
-    <div class="px-3 px-lg-4 pb-3">
+    <div class="px-3 lg:px-6 pb-3">
       <slot></slot>
       <b-alert variant="info" v-if="requires === 'electrum'" show>
         Unable to connect to {{ name }}? If Bitcoin Core has only recently

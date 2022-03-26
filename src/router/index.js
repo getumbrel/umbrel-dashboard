@@ -128,8 +128,8 @@ const routes = [
       },
       {
         path: "/app-store",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
+        component: SimpleLayout,
+        meta: { requiresAuth: false },
         children: [
           {
             path: "",
@@ -145,8 +145,8 @@ const routes = [
       },
       {
         path: "/settings",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
+        component: SimpleLayout,
+        meta: { requiresAuth: false },
         children: [
           {
             path: "",

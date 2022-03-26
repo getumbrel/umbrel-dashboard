@@ -1,9 +1,9 @@
 <template>
-  <div class="p-sm-2">
+  <div class="sm:p-2">
     <div class="mt-3 mb-4">
       <div class="">
         <h1>app store</h1>
-        <p class="text-muted">
+        <p class="text-gray-500">
           Add super powers to your Umbrel with amazing self-hosted applications
         </p>
       </div>
@@ -19,20 +19,22 @@
           :to="`/app-store/${app.id}`"
           v-for="app in categorizedApps"
           :key="app.id"
-          class="app-list-app d-flex justify-content-between align-items-center px-3 px-lg-4 py-3"
+          class="app-list-app flex justify-between items-center px-3 lg:px-6 py-3"
         >
-          <div class="d-flex">
-            <div class="d-block">
+          <div class="flex">
+            <div class="block">
               <img
-                class="app-icon mr-2 mr-lg-3"
+                class="app-icon mr-2 lg:mr-4"
                 :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
               />
             </div>
-            <div class="d-flex justify-content-center flex-column">
-              <h3 class="app-name font-weight-bolder text-dark mb-1">
+            <div class="flex justify-center flex-column">
+              <h3
+                class="text-3xl font-black app-name font-weight-bolder text-dark mb-1"
+              >
                 {{ app.name }}
               </h3>
-              <p class="text-muted mb-0">
+              <p class="text-gray-500 mb-0">
                 {{ app.tagline }}
               </p>
             </div>
@@ -62,12 +64,12 @@
         </router-link>
       </card-widget>
       <card-widget class="pb-2 card-app-list umbrel-dev-note mt-2">
-        <div class="px-3 px-lg-4 py-3">
-          <span class="rocket ml-3 ml-lg-4">🚀</span>
+        <div class="px-3 lg:px-6 py-3">
+          <span class="rocket ml-3 lg:ml-6">🚀</span>
           <h4 class="font-weight-normal mt-4">
             Get your app on the Umbrel App Store
           </h4>
-          <p class="text-muted mb-3">
+          <p class="text-gray-500 mb-3">
             Use any programming language, database or framework to build your
             app for Umbrel.
           </p>

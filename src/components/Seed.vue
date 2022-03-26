@@ -1,8 +1,8 @@
 <template>
-  <div class="px-2 px-sm-4 pb-2 pb-sm-3">
+  <div class="px-2 sm:px-6 pb-2 sm:pb-4">
     <!-- <span>Enter your password to view your 24-word seed phrase</span> -->
-    <div class="px-0 px-lg-4" v-if="!showSeed">
-      <label class="mb-2">Enter your password</label>
+    <div class="px-0 lg:px-6" v-if="!showSeed">
+      <label class="mb-2 dark:text-gray-200">Enter your password</label>
       <input-password
         v-model="password"
         ref="password"
@@ -10,7 +10,7 @@
         inputGroupClass="neu-input-group"
         :inputClass="[
           isIncorrectPassword ? 'incorrect-password' : '',
-          'form-control form-control-lg neu-input w-100',
+          'form-control form-control-lg neu-input w-full',
         ]"
         :disabled="isLoadingSeed"
       />
@@ -48,7 +48,7 @@
       </b-button>
     </div>
 
-    <div class="d-flex justify-content-center" v-else>
+    <div class="flex justify-center" v-else>
       <!-- Seed phrase -->
       <seed :words="seed" v-if="seed.length"></seed>
       <b-spinner v-else></b-spinner>

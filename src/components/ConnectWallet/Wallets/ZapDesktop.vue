@@ -8,7 +8,7 @@
       <step>
         In the <span class="font-weight-bold">"Connection String"</span>, enter
         <input-copy
-          class="d-block mt-2 mb-1"
+          class="block mt-2 mb-1"
           :value="urls.lnd.grpcLocal"
         ></input-copy>
       </step>

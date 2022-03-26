@@ -1,21 +1,19 @@
 <template>
   <div>
-    <div
-      class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2"
-    >
+    <div class="flex flex-col items-center justify-center min-vh100 p-2">
       <img alt="Umbrel" src="@/assets/logo.svg" class="mb-2 logo" />
       <h1 class="text-center mb-2">{{ heading }}</h1>
-      <p class="text-muted w-75 text-center">{{ text }}</p>
+      <p class="text-gray-500 w-75 text-center">{{ text }}</p>
 
       <div
-        class="form-container mt-3 d-flex flex-column form-container w-100 align-items-center"
+        class="form-container mt-3 flex flex-col form-container w-full items-center"
       >
         <b-form-input
           v-model="name"
           ref="name"
           placeholder="Your name"
           v-show="currentStep === 1"
-          class="card-input w-100"
+          class="card-input w-full"
           autofocus
         ></b-form-input>
 
@@ -24,7 +22,7 @@
           ref="password"
           v-show="currentStep === 2"
           placeholder="Your password"
-          inputClass="card-input w-100"
+          inputClass="card-input w-full"
         />
 
         <input-password
@@ -32,7 +30,7 @@
           ref="confirmPassword"
           placeholder="Re-enter your password"
           v-show="currentStep === 3"
-          inputClass="card-input w-100"
+          inputClass="card-input w-full"
         />
 
         <div v-show="currentStep === 5">
@@ -49,17 +47,17 @@
 
         <input-copy
           v-if="currentStep === 6"
-          class="w-100"
+          class="w-full"
           size="sm"
           :value="onionAddress"
         ></input-copy>
 
         <div v-show="currentStep === 7">
           <div class="text-center bg-white p-3 rounded">
-            <small class="d-block text-muted text-small text-center mb-3"
+            <small class="block text-gray-500 text-small text-center mb-3"
               >By clicking next, I agree that:</small
             >
-            <span class="d-block text-muted text-small mb-1">
+            <span class="block text-gray-500 text-small mb-1">
               <b-icon
                 icon="exclamation-circle-fill"
                 variant="warning"
@@ -67,7 +65,7 @@
               ></b-icon
               >Umbrel is in beta and should not be considered secure
             </span>
-            <span class="d-block text-muted text-small mb-1">
+            <span class="block text-gray-500 text-small mb-1">
               <b-icon
                 icon="exclamation-circle-fill"
                 variant="warning"
@@ -80,7 +78,7 @@
         </div>
 
         <div class="text-center" v-show="currentStep === 8">
-          <p class="text-muted">
+          <p class="text-gray-500">
             But you don't have to wait for the sync to complete... You can start
             using Umbrel right away!
           </p>
@@ -109,7 +107,7 @@
           size="lg"
           @click="nextStep"
           :disabled="!isStepValid || isRegistering || !isLndOperational"
-          class="mt-3 mx-auto d-block px-4"
+          class="mt-3 mx-auto block px-4"
           :class="{
             'loading-fade-blink':
               !isLndOperational || (currentStep === 8 && !unlocked),
@@ -120,7 +118,7 @@
         <b-button
           variant="link"
           size="sm"
-          class="mt-3 mx-auto d-block"
+          class="mt-3 mx-auto block"
           v-if="currentStep === 4 || (currentStep === 5 && !recover)"
           @click="skipSeed"
           :disabled="isRegistering"
@@ -131,7 +129,7 @@
           size="sm"
           @click="recoverFromSeed"
           v-if="currentStep === 4"
-          class="mt-2 mx-auto d-block"
+          class="mt-2 mx-auto block"
           >Recover</b-button
         >
         <b-button
@@ -139,7 +137,7 @@
           size="sm"
           @click="prevStep"
           v-if="currentStep > 0 && currentStep !== 6 && currentStep !== 8"
-          class="mt-2 mx-auto d-block text-dark"
+          class="mt-2 mx-auto block text-dark"
           >Back</b-button
         >
       </div>

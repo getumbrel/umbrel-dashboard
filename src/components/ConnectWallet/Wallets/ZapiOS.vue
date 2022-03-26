@@ -19,7 +19,7 @@
           v-bind:style="{ cursor: 'pointer' }"
         ></qr-code>
         <hr />
-        <p class="text-muted">Or manually enter the following details</p>
+        <p class="text-gray-500">Or manually enter the following details</p>
         <ul class="connect-wallet-substeps">
           <li class="connect-wallet-substep">
             Copy

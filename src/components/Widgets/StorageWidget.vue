@@ -1,12 +1,14 @@
 <template>
   <card-widget header="Storage" :status="cardStatus">
     <div class="card-custom-body">
-      <div class="card-app-info px-3 px-lg-4">
-        <div class="d-flex w-100 justify-content-between mb-4">
+      <div class="card-app-info px-6 lg:px-9">
+        <div class="flex w-full justify-between mb-9">
           <div>
             <div>
-              <h3 class="mb-1">{{ readableSize(storage.used) }}</h3>
-              <p class="text-muted mb-0">
+              <h3 class="text-3xl font-black mb-1">
+                {{ readableSize(storage.used) }}
+              </h3>
+              <p class="text-gray-500 dark:text-gray-400 mb-0">
                 Used out of {{ readableSize(storage.total) }}
               </p>
             </div>
@@ -66,7 +68,7 @@
         </div>
       </div>
       <div class>
-        <div class="px-3 px-lg-4 mb-3">
+        <div class="px-6 lg:px-9 mb-3">
           <b-progress
             :value="Math.round((storage.used * 100) / storage.total)"
             class="mb-1"
@@ -80,7 +82,7 @@
             "
           ></b-progress>
           <div class="text-right">
-            <small class="text-muted"
+            <small class="text-gray-500"
               >{{ readableSize(storage.total - storage.used) }} available</small
             >
           </div>
@@ -100,20 +102,20 @@
         <div class="pt-1">
           <b-link
             v-b-toggle.storage-breakdown-collapse
-            class="card-link px-3 px-lg-4"
+            class="card-link px-6 lg:px-9"
           >
             <span class="when-closed">View usage</span>
             <span class="when-open">Hide usage</span>
           </b-link>
           <div class="pb-4"></div>
           <b-collapse id="storage-breakdown-collapse">
-            <ul class="app-stat-list px-3 px-lg-4">
+            <ul class="app-stat-list px-6 lg:px-9">
               <li
                 v-for="app in storage.breakdown"
                 :key="app.id"
                 class="app-stat-list-item mb-2"
               >
-                <div class="d-flex align-items-center">
+                <div class="flex items-center">
                   <img
                     v-if="app.id === 'umbrel'"
                     class="app-stat-list-item-icon mr-2"
@@ -124,17 +126,14 @@
                     class="app-stat-list-item-icon mr-2"
                     :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
                   />
-                  <div class="w-100">
-                    <div
-                      class="d-flex justify-content-between align-items-center"
-                    >
+                  <div class="w-full">
+                    <div class="flex justify-between items-center">
                       <span v-if="app.id === 'umbrel'"
                         >System
                         <b-icon
                           icon="info-circle-fill"
-                          style="opacity: 0.4"
                           variant="dark"
-                          class="ml-1"
+                          class="ml-1 opacity-40"
                           v-b-tooltip.hover.bottom
                           title="Including Bitcoin Core, LND, and Electrum server"
                         ></b-icon>
@@ -142,7 +141,7 @@
                       <span v-else>{{ getAppName(app.id) }}</span>
 
                       <!-- There's an edge case where a negative value may be returned by the API -->
-                      <small v-if="app.used < 0" class="text-muted"
+                      <small v-if="app.used < 0" class="text-gray-500"
                         >Calculating...</small
                       >
                       <span v-else>{{ readableSize(app.used) }}</span>
@@ -156,7 +155,7 @@
                   </div>
                 </div>
               </li>
-              <li class="app-stat-list-item pb-2"></li>
+              <li class="app-stat-list-item pb-3"></li>
             </ul>
           </b-collapse>
         </div>

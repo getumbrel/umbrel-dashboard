@@ -1,11 +1,11 @@
 <template>
   <card-widget header="CPU Temperature" :status="cardStatus">
     <div class="card-custom-body">
-      <div class="card-app-info px-3 px-lg-4">
-        <div class="d-flex w-100 justify-content-between mb-4">
+      <div class="card-app-info px-3 lg:px-6">
+        <div class="flex w-full justify-between mb-4">
           <div>
             <div>
-              <h3 class="mb-1">
+              <h3 class="text-3xl font-black mb-1">
                 <CountUp
                   :value="{
                     endVal: cpuTemperatureInUnit,
@@ -14,26 +14,24 @@
                 />
               </h3>
               <div @click="toggleUnit" class="toggle toggle-sm mt-2">
-                <div
-                  class="toggle-bg-text justify-content-center d-flex align-items-center"
-                >
+                <div class="toggle-bg-text justify-center flex items-center">
                   <span class="text-center">&#176;C</span>
                   <span class="text-center">&#176;F</span>
                 </div>
                 <div
-                  class="toggle-switch justify-content-center d-flex align-items-center"
+                  class="toggle-switch justify-center flex items-center"
                   :class="{
                     'toggle-left': cpuTemperatureUnit === 'celsius',
                     'toggle-right': cpuTemperatureUnit === 'fahrenheit',
                   }"
                 >
                   <span
-                    class="text-muted"
+                    class="text-gray-500"
                     v-if="cpuTemperatureUnit === 'celsius'"
                     >&#176;C</span
                   >
                   <span
-                    class="text-muted"
+                    class="text-gray-500"
                     v-else-if="cpuTemperatureUnit === 'fahrenheit'"
                     >&#176;F</span
                   >

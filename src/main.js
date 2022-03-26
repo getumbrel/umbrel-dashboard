@@ -1,5 +1,11 @@
 import Vue from "vue";
-import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
+import {
+  BootstrapVue,
+  ModalPlugin,
+  IconsPlugin,
+  DropdownPlugin,
+  BootstrapVueIcons,
+} from "bootstrap-vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -13,6 +19,9 @@ import { satsToBtc } from "@/helpers/units";
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
+Vue.use(ModalPlugin);
+Vue.use(DropdownPlugin);
+Vue.use(IconsPlugin);
 
 //transforms a number to sats or btc based on store
 Vue.filter("unit", (value) => {

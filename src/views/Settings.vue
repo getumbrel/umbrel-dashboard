@@ -1,19 +1,25 @@
 <template>
-  <div class="p-sm-2">
-    <div class="my-3 pb-2">
-      <div class="d-flex justify-content-between align-items-center">
-        <h1>settings</h1>
+  <div class="p-1 sm:p-3">
+    <div class="my-6 pb-3">
+      <div class="flex justify-between items-center">
+        <h1 class="dark:text-gray-100">settings</h1>
       </div>
     </div>
 
-    <div class="settings-card-columns">
-      <storage-widget id="storage" class="card-app-list"></storage-widget>
+    <div class="columns-1 sm:columns-2 2xl:columns-3 gap-8">
+      <storage-widget
+        id="storage"
+        class="shadow-sm inline-block w-full break-inside-avoid-column"
+      ></storage-widget>
 
-      <ram-widget id="ram" class="card-app-list"></ram-widget>
+      <ram-widget
+        id="ram"
+        class="shadow-sm inline-block w-full break-inside-avoid-column"
+      ></ram-widget>
 
       <temperature-widget
         id="temperature"
-        class="card-app-list"
+        class="shadow-sm inline-block w-full break-inside-avoid-column"
         v-if="isUmbrelOS"
       ></temperature-widget>
 
@@ -23,75 +29,75 @@
         title="100%"
         sub-title="Traffic relayed through Tor"
         icon="icon-app-tor.svg"
-        class="card-app-list"
+        class="shadow-sm inline-block w-full break-inside-avoid-column"
       >
-        <div class="pt-2">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+        <div class="pt-3">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Bitcoin</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Bitcoin</span>
+              <small class="block opacity-40 dark:text-white"
                 >Run Bitcoin Core on Tor</small
               >
             </div>
             <toggle-switch
-              class="align-self-center"
+              class="self-center"
               disabled
               tooltip="Sorry, Tor cannot be disabled for now"
             ></toggle-switch>
           </div>
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Lightning</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Lightning</span>
+              <small class="block opacity-40 dark:text-white"
                 >Run Lightning Network on Tor</small
               >
             </div>
             <toggle-switch
-              class="align-self-center"
+              class="self-center"
               disabled
               tooltip="Sorry, Tor cannot be disabled for now"
             ></toggle-switch>
           </div>
-          <div class="px-3 px-lg-4 mb-4">
-            <div class="d-flex justify-content-between w-100 mb-3">
+          <div class="px-6 lg:px-9 mb-9">
+            <div class="flex justify-between w-full mb-6">
               <div class="w-75">
-                <span class="d-block">Remote access</span>
-                <small class="d-block" style="opacity: 0.4"
+                <span class="block dark:text-white">Remote access</span>
+                <small class="block opacity-40 dark:text-white"
                   >Remotely access your Umbrel from anywhere using a Tor browser
                   on this URL</small
                 >
               </div>
               <toggle-switch
-                class="align-self-center"
+                class="self-center"
                 disabled
                 tooltip="Sorry, Tor cannot be disabled for now"
               ></toggle-switch>
             </div>
             <input-copy
-              class="w-100"
+              class="w-full"
               size="sm"
               :value="onionAddress"
             ></input-copy>
           </div>
-          <div class="px-3 px-lg-4 py-1"></div>
+          <div class="px-6 lg:px-9 py-1"></div>
         </div>
       </card-widget>
 
       <card-widget
         header="Account"
-        class="card-app-list"
+        class="shadow-sm inline-block w-full break-inside-avoid-column"
         :loading="isChangingPassword || isFetchingOtpUri"
       >
-        <div class="pt-2">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+        <div class="pt-3">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Two-factor auth (2FA)</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Two-factor auth (2FA)</span>
+              <small class="block opacity-40 dark:text-white"
                 >An extra layer of security to login</small
               >
             </div>
             <toggle-switch
-              class="align-self-center"
+              class="self-center"
               @turnOn="toggleOtpAuthSwitch"
               @turnOff="toggleOtpAuthSwitch"
               :on="otpEnabled"
@@ -105,15 +111,13 @@
               ref="enable-otp-auth-modal"
             >
               <template v-slot:modal-header="{ close }">
-                <div
-                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
-                >
+                <div class="px-2 sm:px-4 pt-3 flex justify-between w-full">
                   <h3>Enable 2FA</h3>
 
                   <!-- Emulate built in modal header close button action -->
                   <a
                     href="#"
-                    class="align-self-center"
+                    class="self-center"
                     v-on:click.stop.prevent="close"
                   >
                     <svg
@@ -133,14 +137,14 @@
                   </a>
                 </div>
               </template>
-              <div class="px-1 px-sm-4 pb-3 text-center">
-                <div class="mb-4">
+              <div class="px-1 sm:px-6 pb-3 text-center">
+                <div class="mb-9">
                   <p>
                     Scan this QR code using an authenticator app like Google
                     Authenticator or Authy
                   </p>
                   <qr-code
-                    class="mb-3 mx-auto"
+                    class="mb-6 mx-auto"
                     :value="otpUri"
                     :size="200"
                     level="Q"
@@ -148,7 +152,7 @@
                   ></qr-code>
                   <p>Or paste the following code in the app</p>
                   <input-copy
-                    class="w-100 mx-auto"
+                    class="w-full mx-auto"
                     size="sm"
                     :value="otpSecretKey"
                   ></input-copy>
@@ -175,15 +179,13 @@
               ref="disable-otp-auth-modal"
             >
               <template v-slot:modal-header="{ close }">
-                <div
-                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
-                >
+                <div class="px-2 sm:px-4 pt-3 flex justify-between w-full">
                   <h3>Disable 2FA</h3>
 
                   <!-- Emulate built in modal header close button action -->
                   <a
                     href="#"
-                    class="align-self-center"
+                    class="self-center"
                     v-on:click.stop.prevent="close"
                   >
                     <svg
@@ -203,7 +205,7 @@
                   </a>
                 </div>
               </template>
-              <div class="px-1 px-sm-4 pb-3">
+              <div class="px-1 sm:px-6 pb-3">
                 <label>
                   Enter the code displayed in your authenticator app to disable
                   2FA
@@ -220,10 +222,10 @@
           </div>
         </div>
         <div class="pt-0">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Password</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Password</span>
+              <small class="block opacity-40 dark:text-white"
                 >Change your Umbrel's password</small
               >
             </div>
@@ -243,14 +245,12 @@
               hide-footer
             >
               <template v-slot:modal-header="{ close }">
-                <div
-                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
-                >
+                <div class="px-2 sm:px-4 pt-3 flex justify-between w-full">
                   <h3>change password</h3>
                   <!-- Emulate built in modal header close button action -->
                   <a
                     href="#"
-                    class="align-self-center"
+                    class="self-center"
                     v-on:click.stop.prevent="close"
                   >
                     <svg
@@ -270,7 +270,7 @@
                   </a>
                 </div>
               </template>
-              <div class="px-4 pb-2">
+              <div class="px-4 pb-3">
                 <label class="sr-onlsy" for="input-withdrawal-amount"
                   >Current password</label
                 >
@@ -280,7 +280,7 @@
                   inputGroupClass="neu-input-group"
                   :inputClass="[
                     isIncorrectPassword ? 'incorrect-password' : '',
-                    'form-control form-control-lg neu-input w-100',
+                    'form-control form-control-lg neu-input w-full',
                   ]"
                   :disabled="isChangingPassword"
                 />
@@ -292,7 +292,7 @@
                   v-model="newPassword"
                   ref="password"
                   inputGroupClass="neu-input-group"
-                  inputClass="form-control form-control-lg neu-input w-100"
+                  inputClass="form-control form-control-lg neu-input w-full"
                   :disabled="isChangingPassword"
                 />
                 <div class="py-2"></div>
@@ -303,7 +303,7 @@
                   v-model="confirmNewPassword"
                   ref="password"
                   inputGroupClass="neu-input-group"
-                  inputClass="form-control form-control-lg neu-input w-100"
+                  inputClass="form-control form-control-lg neu-input w-full"
                   :disabled="isChangingPassword"
                 />
                 <div v-if="otpEnabled" class="py-2">
@@ -326,7 +326,7 @@
                   </small>
                 </b-alert>
                 <b-button
-                  class="w-100"
+                  class="w-full"
                   variant="success"
                   size="lg"
                   :disabled="isChangingPassword || !isAllowedToChangePassword"
@@ -342,10 +342,10 @@
           </div>
         </div>
         <div class="pt-0">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Secret words</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Secret words</span>
+              <small class="block opacity-40 dark:text-white"
                 >Note down your 24 secret words</small
               >
             </div>
@@ -356,14 +356,12 @@
 
             <b-modal id="seed-modal" centered hide-footer>
               <template v-slot:modal-header="{ close }">
-                <div
-                  class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
-                >
+                <div class="px-2 sm:px-4 pt-3 flex justify-between w-full">
                   <h3>secret words</h3>
                   <!-- Emulate built in modal header close button action -->
                   <a
                     href="#"
-                    class="align-self-center"
+                    class="self-center"
                     v-on:click.stop.prevent="close"
                   >
                     <svg
@@ -387,35 +385,35 @@
             </b-modal>
           </div>
         </div>
-        <div class="px-3 px-lg-4 py-1"></div>
+        <div class="px-6 lg:px-9 py-1"></div>
       </card-widget>
 
       <card-widget
         header="System"
-        class="card-app-list"
+        class="shadow-sm inline-block w-full"
         :loading="isCheckingForUpdate || isUpdating"
       >
-        <div class="d-block pt-2"></div>
+        <div class="block pt-3"></div>
 
         <!-- Uptime monitoring is only available on Umbrel OS -->
         <div class="pt-0" v-if="isUmbrelOS">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Uptime</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Uptime</span>
+              <small class="block opacity-40 dark:text-white"
                 >Time since last restart</small
               >
             </div>
             <div class="text-right">
-              <span class="d-block">{{ getUptime }}</span>
+              <span class="block dark:text-white">{{ getUptime }}</span>
             </div>
           </div>
         </div>
         <div class="pt-0">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Shutdown</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Shutdown</span>
+              <small class="block opacity-40 dark:text-white"
                 >Power off your Umbrel</small
               >
             </div>
@@ -425,10 +423,10 @@
           </div>
         </div>
         <div class="pt-0">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Restart</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Restart</span>
+              <small class="block opacity-40 dark:text-white"
                 >Restart your Umbrel</small
               >
             </div>
@@ -453,10 +451,10 @@
           </div>
         </div>
         <div class="pt-0">
-          <div class="d-flex w-100 justify-content-between px-3 px-lg-4 mb-4">
+          <div class="flex w-full justify-between px-6 lg:px-9 mb-9">
             <div>
-              <span class="d-block">Troubleshoot</span>
-              <small class="d-block" style="opacity: 0.4"
+              <span class="block dark:text-white">Troubleshoot</span>
+              <small class="block opacity-40 dark:text-white"
                 >View logs for troubleshooting</small
               >
             </div>
@@ -479,13 +477,15 @@
               @close="closeDebugModal"
             >
               <template v-slot:modal-header="{ close }">
-                <div class="px-2 pt-2 d-flex justify-content-between w-100">
-                  <h4 v-if="loadingDebug">Generating logs...</h4>
+                <div class="px-2 pt-3 flex justify-between w-full">
+                  <h4 v-if="loadingDebug" class="dark:text-gray-200">
+                    Generating logs...
+                  </h4>
                   <h4 v-else>{{ showDmesg ? "DMESG logs" : "Umbrel logs" }}</h4>
                   <!-- Emulate built in modal header close button action -->
                   <a
                     href="#"
-                    class="align-self-center"
+                    class="self-center"
                     v-on:click.stop.prevent="close"
                   >
                     <svg
@@ -505,20 +505,17 @@
                   </a>
                 </div>
               </template>
-              <div v-if="debugFailed" class="d-flex justify-content-center">
+              <div v-if="debugFailed" class="flex justify-center">
                 Error: Failed to fetch debug data.
               </div>
-              <div
-                v-else-if="loadingDebug"
-                class="d-flex justify-content-center"
-              >
+              <div v-else-if="loadingDebug" class="flex justify-center">
                 <b-spinner></b-spinner>
               </div>
               <pre class="px-2 text-light">{{ debugContents }}</pre>
 
               <template #modal-footer="{}">
                 <div v-if="loadingDebug"></div>
-                <div class="d-flex w-100 justify-content-between px-2" v-else>
+                <div class="flex w-full justify-between px-2" v-else>
                   <b-button
                     size="sm"
                     variant="outline-success"
@@ -540,22 +537,25 @@
             </b-modal>
           </div>
         </div>
-        <div class="px-3 px-lg-4 pb-4">
-          <div class="w-100 d-flex justify-content-between mb-1">
-            <span class="align-self-end">Umbrel Version</span>
+        <div class="px-6 lg:px-9 pb-4">
+          <div class="w-full flex justify-between mb-1">
+            <span class="self-end dark:text-white">Umbrel Version</span>
             <span class="font-weight-normal mb-0">{{ version }}</span>
           </div>
           <div v-show="!isCheckingForUpdate">
             <span v-show="!availableUpdate.version">
-              <b-icon icon="check-circle-fill" variant="success"></b-icon>
-              <small class="ml-1" style="opacity: 0.4"
+              <b-icon
+                icon="check-circle-fill fill-green-500"
+                variant="success"
+              ></b-icon>
+              <small class="ml-1 opacity-40 dark:text-white"
                 >Your Umbrel is on the latest version</small
               >
             </span>
             <div v-show="availableUpdate.version">
-              <span class="d-block">
+              <span class="block dark:text-white">
                 <b-icon icon="bell-fill" variant="success"></b-icon>
-                <small class="text-muted ml-1"
+                <small class="text-gray-500 ml-1"
                   >Umbrel v{{ availableUpdate.version }} is now available to
                   install</small
                 >
@@ -571,16 +571,9 @@
             </div>
           </div>
         </div>
-        <b-button
-          class="w-100"
+        <button
+          class="w-full rounded-b-2xl py-4 flex items-center justify-center text-white bg-bootstrap-success"
           variant="success"
-          style="
-            border-radius: 0;
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-          "
           :disabled="isCheckingForUpdate || isUpdating"
           @click="checkForUpdate"
         >
@@ -590,7 +583,7 @@
             :animation="isCheckingForUpdate ? 'spin' : ''"
           ></b-icon>
           {{ isCheckingForUpdate ? "Checking for update" : "Check for update" }}
-        </b-button>
+        </button>
       </card-widget>
     </div>
   </div>

@@ -2,11 +2,11 @@
   <div class="channel-list-container">
     <div class="channel-list">
       <div
-        class="d-flex align-items-center justify-content-center flex-column"
+        class="flex items-center justify-center flex-column"
         style="height: 100%"
         v-if="channels.length === 0"
       >
-        <p class="text-muted w-75 text-center">
+        <p class="text-gray-500 w-75 text-center">
           You need to open payment channels with other nodes to transact on the
           Lightning Network.
           <br />When you open a channel, the balance is automatically deducted
@@ -15,7 +15,7 @@
       </div>
 
       <div
-        class="d-flex align-items-center justify-content-center"
+        class="flex items-center justify-center"
         style="height: 100%"
         v-else-if="channels[0]['type'] === 'loading'"
       >

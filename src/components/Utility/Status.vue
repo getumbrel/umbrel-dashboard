@@ -1,5 +1,5 @@
 <template>
-  <small :class="`text-${variant}`" class="d-flex align-items-center">
+  <small :class="`text-${variant}`" class="flex items-center">
     <svg
       width="8"
       height="8"

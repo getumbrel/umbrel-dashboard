@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mb-4">
-      <div class="d-flex justify-content-between">
+      <div class="flex justify-between">
         <h4
           class="text-primary font-weight-bold"
           v-b-tooltip.hover.right
@@ -23,32 +23,30 @@
         size="lg"
         class="my-1"
       ></bar>
-      <div class="d-flex justify-content-between">
-        <b class="text-muted">Max Send</b>
-        <b class="text-muted text-right">Max Receive</b>
+      <div class="flex justify-between">
+        <b class="text-gray-500">Max Send</b>
+        <b class="text-gray-500 text-right">Max Receive</b>
       </div>
     </div>
 
     <transition name="mode-change" mode="out-in">
       <div v-if="!isReviewingChannelClose">
-        <div
-          class="d-flex justify-content-between align-items-center mt-1 mb-3"
-        >
-          <span class="text-muted">Status</span>
+        <div class="flex justify-between items-center mt-1 mb-3">
+          <span class="text-gray-500">Status</span>
           <span class="text-capitalize font-weight-bold">{{
             channel.status
           }}</span>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Channel Type</span>
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-gray-500">Channel Type</span>
           <span class="text-capitalize font-weight-bold"
             >{{ channel.private ? "Private" : "Public" }} Channel</span
           >
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Remote Peer Alias</span>
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-gray-500">Remote Peer Alias</span>
           <div class="w-75 text-right">
             <span class="font-weight-bold" style="overflow-wrap: break-word">{{
               channel.remoteAlias
@@ -57,17 +55,17 @@
         </div>
 
         <div
-          class="d-flex justify-content-between align-items-center mb-3"
+          class="flex justify-between items-center mb-3"
           v-if="channel.status !== 'Closing'"
         >
-          <span class="text-muted">Opened By</span>
+          <span class="text-gray-500">Opened By</span>
           <span class="text-capitalize font-weight-bold">{{
             channel.initiator ? "Your node" : "Remote peer"
           }}</span>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Local Balance</span>
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-gray-500">Local Balance</span>
           <span
             v-b-tooltip.hover.left
             :title="channel.localBalance | satsToUSD"
@@ -78,8 +76,8 @@
           </span>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Remote Balance</span>
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-gray-500">Remote Balance</span>
           <span
             v-b-tooltip.hover.left
             :title="channel.remoteBalance | satsToUSD"
@@ -90,8 +88,8 @@
           </span>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Channel Capacity</span>
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-gray-500">Channel Capacity</span>
           <span
             v-b-tooltip.hover.left
             :title="channel.capacity | satsToUSD"
@@ -103,28 +101,28 @@
         </div>
 
         <div
-          class="d-flex justify-content-between align-items-center mb-3"
+          class="flex justify-between items-center mb-3"
           v-if="channel.status === 'Online'"
         >
-          <span class="text-muted">Withdrawal Timelock</span>
+          <span class="text-gray-500">Withdrawal Timelock</span>
           <span class="text-capitalize font-weight-bold"
             >{{ parseInt(channel.csvDelay).toLocaleString() }} Blocks</span
           >
         </div>
 
         <div
-          class="d-flex justify-content-between align-items-center mb-3"
+          class="flex justify-between items-center mb-3"
           v-if="channel.status === 'Online'"
         >
-          <span class="text-muted">Commit Fee</span>
+          <span class="text-gray-500">Commit Fee</span>
           <span class="text-capitalize font-weight-bold">
             {{ channel.commitFee | unit | localize }}
             {{ unit | formatUnit }}
           </span>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Remote Pub Key</span>
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-gray-500">Remote Pub Key</span>
           <div class="w-75 text-right">
             <small class="font-weight-bold" style="overflow-wrap: break-word">{{
               channel.remotePubkey
@@ -132,7 +130,7 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-end" v-if="canCloseChannel">
+        <div class="flex justify-content-end" v-if="canCloseChannel">
           <b-button class="mt-2" variant="danger" @click="reviewChannelClose"
             >Close Channel</b-button
           >
@@ -140,7 +138,9 @@
       </div>
 
       <div v-else>
-        <h3 class="mb-3">Are you sure you want to close this channel?</h3>
+        <h3 class="text-3xl font-black mb-3">
+          Are you sure you want to close this channel?
+        </h3>
         <p>
           Your local channel balance of
           <b>{{ parseInt(channel.localBalance).toLocaleString() }} Sats</b>
@@ -153,7 +153,7 @@
           fraudulent.
         </b-alert>
 
-        <div class="d-flex justify-content-end">
+        <div class="flex justify-content-end">
           <b-button
             class="mt-2"
             variant="danger"

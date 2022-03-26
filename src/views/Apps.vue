@@ -1,8 +1,8 @@
 <template>
-  <div class="p-sm-2">
+  <div class="sm:p-2">
     <div v-if="installedApps.length">
       <div class="my-3 pb-3">
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="flex justify-between items-center">
           <h1>apps</h1>
           <div>
             <b-button variant="outline-primary" size="sm" @click="toggleEdit">{{
@@ -11,7 +11,7 @@
           </div>
         </div>
       </div>
-      <div class="d-flex flex-wrap justify-content-start apps-container">
+      <div class="flex flex-wrap justify-content-start apps-container">
         <installed-app
           v-for="app in installedApps"
           :key="app.id"
@@ -30,10 +30,10 @@
     <div v-else>
       <div class="my-3 pb-3">
         <h1>apps</h1>
-        <div
-          class="d-flex flex-column justify-content-center align-items-center py-5 mb-lg-5"
-        >
-          <p class="text-muted mb-2">You don't have any apps installed yet</p>
+        <div class="flex flex-col justify-center items-center py-5 lg:mb-12">
+          <p class="text-gray-500 mb-2">
+            You don't have any apps installed yet
+          </p>
           <b-button variant="success" class="px-4" :to="'app-store'"
             >Go to App Store</b-button
           >

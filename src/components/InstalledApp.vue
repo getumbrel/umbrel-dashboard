@@ -1,9 +1,9 @@
 <template>
-  <div class="pb-3 mb-2 installed-app d-flex flex-column align-items-center">
+  <div class="pb-3 mb-2 installed-app flex flex-col items-center">
     <a
       :href="url"
       target="_blank"
-      class="d-block mb-3 installed-app-link"
+      class="block mb-3 installed-app-link"
       :class="isUninstalling || isOffline ? 'fade-in-out cursor-wait' : ''"
       :disabled="isUninstalling || isOffline"
       v-on:click="openApp($event)"
@@ -15,12 +15,12 @@
     </a>
     <span
       v-if="isUninstalling"
-      class="text-center text-small text-muted text-truncate mb-1"
+      class="text-center text-small text-gray-500 text-truncate mb-1"
       >Uninstalling...</span
     >
     <span
       v-else-if="isOffline"
-      class="text-center text-small text-muted text-truncate mb-1"
+      class="text-center text-small text-gray-500 text-truncate mb-1"
       >Starting...</span
     >
     <span v-else class="text-center text-truncate mb-1">{{ name }}</span>

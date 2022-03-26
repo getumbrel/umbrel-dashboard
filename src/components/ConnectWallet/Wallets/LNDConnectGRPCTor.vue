@@ -3,7 +3,7 @@
     name="any other wallet that supports lndconnect gRPC on Tor"
     requires="lnd"
   >
-    <div class="d-lg-flex align-items-center justify-content-center pb-3">
+    <div class="d-lg-flex items-center justify-center pb-3">
       <qr-code
         :value="urls.lnd.grpcTor"
         :size="260"
@@ -13,8 +13,8 @@
         @click="$emit('showQrModal', urls.lnd.grpcTor)"
         v-bind:style="{ cursor: 'pointer' }"
       ></qr-code>
-      <div class="w-100 align-self-center ml-lg-3">
-        <label class="mb-1 d-block"
+      <div class="w-full align-self-center ml-lg-3">
+        <label class="mb-1 block"
           ><small class="font-weight-bold">lndconnect URL</small></label
         >
         <input-copy class="my-1" :value="urls.lnd.grpcTor"></input-copy>

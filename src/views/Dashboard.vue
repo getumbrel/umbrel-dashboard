@@ -1,10 +1,10 @@
 <template>
-  <div class="p-sm-2">
+  <div class="sm:p-2">
     <div class="my-3 pb-2">
       <h1 class="text-lowercase">
         {{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}
       </h1>
-      <!-- <p class="text-muted">Here's an overview of your Umbrel</p> -->
+      <!-- <p class="text-gray-500">Here's an overview of your Umbrel</p> -->
     </div>
     <b-row>
       <b-col col cols="12" md="6" xl="4">
@@ -41,13 +41,13 @@
             ></span>
           </template>
           <div class>
-            <!-- <div class="d-flex w-100 justify-content-between px-3 px-lg-4">
+            <!-- <div class="flex w-full justify-between px-3 lg:px-6">
                 <p class="mb-1">Connected Peers</p>
                 <p>8</p>
             </div>-->
-            <!-- <p class="px-3 px-lg-4">Latest Blocks</p> -->
+            <!-- <p class="px-3 lg:px-6">Latest Blocks</p> -->
             <blockchain></blockchain>
-            <div class="px-3 px-lg-4 py-3">
+            <div class="px-3 lg:px-6 py-3">
               <router-link to="/bitcoin" class="card-link">Manage</router-link>
             </div>
           </div>
@@ -87,7 +87,7 @@
                   v-else
                 ></span>
               </template>
-              <div class="px-3 px-lg-4 pt-2 pb-3">
+              <div class="px-3 lg:px-6 pt-2 pb-3">
                 <router-link to="/bitcoin" class="card-link"
                   >Manage</router-link
                 >

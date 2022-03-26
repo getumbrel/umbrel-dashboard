@@ -1,8 +1,8 @@
 <template>
-  <div class="nav-vertical d-flex flex-column justify-content-between">
+  <div class="nav-vertical flex flex-col justify-between">
     <div>
-      <div class="balance-container w-100 px-3 pt-4 pb-3 mb-3">
-        <p class="text-muted">
+      <div class="balance-container w-full px-3 pt-4 pb-3 mb-3">
+        <p class="text-gray-500">
           Balance
           <span style="cursor: pointer" @click="toggleBalance">
             <!-- <b-icon :icon="state.showBalance ? 'eye-slash-fill' : 'eye-fill'"></b-icon> -->
@@ -11,7 +11,7 @@
 
         <span v-if="state.showBalance">
           <div v-if="balanceLoaded">
-            <h3 class="mb-1">
+            <h3 class="text-3xl font-black mb-1">
               <CountUp
                 :value="{
                   endVal: walletBalance,
@@ -19,7 +19,7 @@
                 }"
               />
             </h3>
-            <small class="text-muted"
+            <small class="text-gray-500"
               >~
               {{ (this.btcBalance + this.lightningBalance) | satsToUSD }}</small
             >

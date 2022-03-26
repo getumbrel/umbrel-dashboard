@@ -32,7 +32,7 @@
       </step>
     </step-list>
     <hr />
-    <p class="text-muted">Or manually enter the following details</p>
+    <p class="text-gray-500">Or manually enter the following details</p>
     <step-list>
       <step>
         In the <span class="font-weight-bold">"Host"</span>, enter

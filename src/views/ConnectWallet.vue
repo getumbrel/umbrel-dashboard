@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="p-sm-2">
+    <div class="sm:p-2">
       <div class="my-3">
         <div>
           <h1>connect wallet</h1>
@@ -23,7 +23,7 @@
     </div>
 
     <b-modal id="qr-modal" ref="qr-modal" hide-footer size="lg">
-      <div class="d-flex w-100 align-items-center justify-content-center">
+      <div class="flex w-full items-center justify-center">
         <qr-code
           :value="this.qrModalData.value"
           :size="this.qrModalData.size"
