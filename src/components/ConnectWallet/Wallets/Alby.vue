@@ -18,7 +18,7 @@
         Copy this value into the
         <span class="font-weight-bold">"lndconnect REST URL"</span>.
         <input-copy
-          :value="urls.lnd.restTor.replace(/cert=(.*)&/gm, '')"
+          :value="urls.lnd.restTor"
           auto-width
         ></input-copy>
       </step>
