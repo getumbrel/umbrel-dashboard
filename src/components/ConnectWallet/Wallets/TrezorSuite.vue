@@ -15,19 +15,19 @@
       </step>
 
       <step>
-        Under <span class="font-weight-bold">Backends</span> click <span class="font-weight-bold">Trezor servers<span> and change it to
-        <span class="font-weight-bold">Custom Electrum server</span>.
+        Under <span class="font-weight-bold">Backends</span> click <span class="font-weight-bold">Trezor servers<span> and select
+        <span class="font-weight-bold">Custom Electrum server</span> from the dropdown menu.
       </step>
 
       <step>
-        In the next field <span class="font-weight-bold">"Server"</span>, enter
+        In the next field enter:
         <input-copy class="my-1" :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}:t`" auto-width></input-copy>
       </step>
       <step>
-        Press <span class="font-weight-bold">Confirm</span> button.
+        Press the <span class="font-weight-bold">Confirm</span> button.
       </step>
       <step>
-        Congratulations! You've successfully connected Trezor Sutie to your Umbrel.
+        Congratulations! You've successfully connected Trezor Suite to your Umbrel.
       </step>
     </step-list>
   </connection-details>
