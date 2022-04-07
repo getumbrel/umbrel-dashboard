@@ -17,7 +17,6 @@
       <step>
         Hover above <span class="font-weight-bold">Bitcoin</span> and click the gear icon.
       </step>
-
       <step>
         Under <span class="font-weight-bold">Backends</span> click <span class="font-weight-bold">Trezor servers</span> and select
         <span class="font-weight-bold">Custom Electrum server</span> from the dropdown menu.
