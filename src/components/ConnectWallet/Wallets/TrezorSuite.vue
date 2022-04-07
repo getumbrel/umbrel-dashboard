@@ -26,7 +26,7 @@
         <input-copy class="my-1" :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}:t`" auto-width></input-copy>
       </step>
       <step>
-        Press the <span class="font-weight-bold">Confirm</span> button.
+        Press the <span class="font-weight-bold">"Confirm"</span> button.
       </step>
       <step>
         Congratulations! You've successfully connected Trezor Suite to your Umbrel.
