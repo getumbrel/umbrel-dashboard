@@ -61,6 +61,7 @@ export default {
         { value: "samourai-wallet", text: "Samourai Wallet" },
         { value: "sparrow", text: "Sparrow" },
         { value: "specter-desktop", text: "Specter Desktop" },
+        { value: "trezor-suite", text: "Trezor Suite" },
         { value: "wasabi", text: "Wasabi" },
         { value: "zap-android", text: "Zap (Android)" },
         { value: "zap-desktop", text: "Zap (Desktop)" },
