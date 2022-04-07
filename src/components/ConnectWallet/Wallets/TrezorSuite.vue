@@ -2,6 +2,10 @@
   <connection-details name="Trezor Suite" requires="electrum">
     <step-list>
       <step>
+        Make sure Tor is up and running on your system.
+        <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.
+      </step>
+      <step>
         Open Trezor Suite and connect your Trezor.
       </step>
       <step>
