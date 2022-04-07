@@ -53,6 +53,7 @@ export default {
     StepList,
     Step,
     InputCopy,
+    TorSetup
   }
 };
 </script>
