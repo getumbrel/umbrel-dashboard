@@ -2,10 +2,6 @@
   <connection-details name="Trezor Suite" requires="electrum">
     <step-list>
       <step>
-        Make sure Tor is up and running on your system.
-        <b-link v-b-modal.tor-modal>Click here</b-link> for instructions.
-      </step>
-      <step>
         Open Trezor Suite and connect your Trezor.
       </step>
       <step>
@@ -32,10 +28,6 @@
         Congratulations! You've successfully connected Trezor Suite to your Umbrel.
       </step>
     </step-list>
-    
-    <b-modal id="tor-modal" centered hide-footer>
-      <tor-setup></tor-setup>
-    </b-modal>
   </connection-details>
 </template>
 
@@ -43,7 +35,6 @@
 import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
 import StepList from "@/components/ConnectWallet/StepList";
 import Step from "@/components/ConnectWallet/Step";
-import TorSetup from "@/components/ConnectWallet/TorSetup.vue";
 import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
@@ -54,8 +45,7 @@ export default {
     ConnectionDetails,
     StepList,
     Step,
-    InputCopy,
-    TorSetup
+    InputCopy
   }
 };
 </script>
