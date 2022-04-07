@@ -18,10 +18,9 @@
         Hover above <span class="font-weight-bold">"Bitcoin"</span> and click the gear icon.
       </step>
       <step>
-        Under <span class="font-weight-bold">Backends</span> click <span class="font-weight-bold">Trezor servers</span> and select
-        <span class="font-weight-bold">Custom Electrum server</span> from the dropdown menu.
+        Under <span class="font-weight-bold">"Backends"</span> click <span class="font-weight-bold">"Trezor servers"</span> and select
+        <span class="font-weight-bold">"Custom Electrum server"</span> from the dropdown menu.
       </step>
-
       <step>
         In the next field enter:
         <input-copy class="my-1" :value="`${urls.bitcoin.electrum.address}:${urls.bitcoin.electrum.port}:t`" auto-width></input-copy>
