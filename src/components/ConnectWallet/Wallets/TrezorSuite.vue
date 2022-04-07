@@ -41,6 +41,7 @@
 import ConnectionDetails from "@/components/ConnectWallet/ConnectionDetails";
 import StepList from "@/components/ConnectWallet/StepList";
 import Step from "@/components/ConnectWallet/Step";
+import TorSetup from "@/components/ConnectWallet/TorSetup.vue";
 import InputCopy from "@/components/Utility/InputCopy";
 
 export default {
