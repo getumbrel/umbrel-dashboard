@@ -149,7 +149,7 @@
           (excluding transaction fee) will be returned to your Bitcoin wallet.
         </p>
         <b-alert variant="warning" show>
-          It may take upto 24 hours to close this channel if the remote peer is
+          It may take up to 24 hours to close this channel if the remote peer is
           not online. During this time, the peer can dispute the record sent to
           the blockchain and seize the channel funds if this claim is
           fraudulent.
