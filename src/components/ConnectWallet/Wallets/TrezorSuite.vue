@@ -34,6 +34,10 @@
         Congratulations! You've successfully connected Trezor Suite to your Umbrel.
       </step>
     </step-list>
+    
+    <b-modal id="tor-modal" centered hide-footer>
+      <tor-setup></tor-setup>
+    </b-modal>
   </connection-details>
 </template>
 
