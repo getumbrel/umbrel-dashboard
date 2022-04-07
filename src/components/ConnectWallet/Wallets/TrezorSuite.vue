@@ -15,7 +15,7 @@
         Go to <span class="font-weight-bold">Settings > Crypto</span>.
       </step>
       <step>
-        Hover above <span class="font-weight-bold">Bitcoin</span> and click the gear icon.
+        Hover above <span class="font-weight-bold">"Bitcoin"</span> and click the gear icon.
       </step>
       <step>
         Under <span class="font-weight-bold">Backends</span> click <span class="font-weight-bold">Trezor servers</span> and select
