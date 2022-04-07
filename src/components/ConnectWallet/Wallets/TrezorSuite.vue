@@ -9,7 +9,7 @@
         Open Trezor Suite and connect your Trezor.
       </step>
       <step>
-        Make sure Tor is enabled in Trezor Suite.
+        Go to <span class="font-weight-bold">Settings > Application</span> and make sure <span class="font-weight-bold">"Tor"</span> is enabled.
       </step>
       <step>
         Open <span class="font-weight-bold">"Settings &gt; Crypto"</span>.
