@@ -35,6 +35,7 @@ import Phoenix from "../components/ConnectWallet/Wallets/Phoenix.vue";
 import SamouraiWallet from "../components/ConnectWallet/Wallets/SamouraiWallet.vue";
 import Sparrow from "../components/ConnectWallet/Wallets/Sparrow.vue";
 import SpecterDesktop from "../components/ConnectWallet/Wallets/SpecterDesktop.vue";
+import TrezorSuite from "../components/ConnectWallet/Wallets/TrezorSuite.vue";
 import Wasabi from "../components/ConnectWallet/Wallets/Wasabi.vue";
 
 import ZapAndroid from "../components/ConnectWallet/Wallets/ZapAndroid.vue";
@@ -247,6 +248,13 @@ const routes = [
                 component: SpecterDesktop,
                 meta: {
                   wallet: "specter-desktop"
+                }
+              },
+              {
+                path: "trezor-suite",
+                component: TrezorSuite,
+                meta: {
+                  wallet: "trezor-suite"
                 }
               },
               {
