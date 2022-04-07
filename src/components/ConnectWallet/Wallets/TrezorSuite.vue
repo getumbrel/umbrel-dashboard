@@ -12,7 +12,7 @@
         Go to <span class="font-weight-bold">Settings > Application</span> and make sure <span class="font-weight-bold">"Tor"</span> is enabled.
       </step>
       <step>
-        Open <span class="font-weight-bold">"Settings &gt; Crypto"</span>.
+        Go to <span class="font-weight-bold">Settings > Crypto</span>.
       </step>
       <step>
         Hover above <span class="font-weight-bold">Bitcoin</span> and click the gear icon.
