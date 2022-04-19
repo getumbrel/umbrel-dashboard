@@ -156,6 +156,8 @@
             />
           </svg>
           App Store
+
+          <span class="badge badge-pill" v-if="appsWithUpdate.length">{{ appsWithUpdate.length }}</span>
         </b-nav-item>
 
         <b-nav-item
@@ -262,6 +264,9 @@ export default {
       unit: (state) => state.system.unit,
       appStore: (state) => state.apps.store,
     }),
+    appsWithUpdate: function() {
+      return this.appStore.filter(app => app.updateAvailable)
+    },
     walletBalance() {
       return this.unit === "sats"
         ? this.btcBalance + this.lightningBalance
@@ -325,6 +330,15 @@ export default {
             fill: #5351fb;
           }
         }
+        .badge {
+          background-color: #5351fb;
+        }
+      }
+      .badge {
+        float: right;
+        margin-top: 4px;
+        background-color: #141821;
+        color: #FFF;
       }
     }
   }

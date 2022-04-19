@@ -6,7 +6,8 @@ const state = () => ({
   installed: [],
   store: [],
   installing: [],
-  uninstalling: []
+  uninstalling: [],
+  updating: []
 });
 
 // Functions to update the state directly
@@ -39,6 +40,17 @@ const mutations = {
     if (index !== -1) {
       state.uninstalling.splice(index, 1);
     }
+  },
+  addUpdatingApp(state, appId) {
+    if (!state.updating.includes(appId)) {
+      state.updating.push(appId);
+    }
+  },
+  removeUpdatingApp(state, appId) {
+    const index = state.updating.findIndex((id) => id === appId);
+    if (index !== -1) {
+      state.updating.splice(index, 1);
+    }
   }
 };
 
@@ -56,6 +68,34 @@ const actions = {
     if (appStore) {
       commit("setAppStore", appStore);
     }
+  },
+  async update({ state, commit, dispatch }, appId) {
+    commit("addUpdatingApp", appId);
+    try {
+      await API.post(
+        `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/update`
+      );
+    } catch (error) {
+      if (error.response && error.response.data) {
+        commit("removeUpdatingApp", appId);
+        return this.$bvToast.toast(error.response.data, {
+          title: "Error",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right",
+        });
+      }
+    }
+
+    const poll = window.setInterval(async () => {
+      await dispatch("getAppStore");
+      const index = state.store.findIndex((app) => app.id === appId);
+      if (index === -1 || !state.store[index].updateAvailable) {
+        commit("removeUpdatingApp", appId);
+        window.clearInterval(poll);
+      }
+    }, 5000);
   },
   async uninstall({ state, commit, dispatch }, appId) {
     commit("addUninstallingApp", appId);
