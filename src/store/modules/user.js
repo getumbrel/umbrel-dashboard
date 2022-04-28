@@ -49,8 +49,16 @@ const actions = {
     }
   },
 
-  logout({ commit, state }) {
+  async logout({ commit, state }) {
     if (state.jwt) {
+      try {
+        await API.post(
+          `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/logout`
+        );
+      } catch(e) {
+        console.error("Failed to logout server-side", e);
+      }
+
       commit("setJWT", "");
       router.push("/");
     }

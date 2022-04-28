@@ -277,8 +277,8 @@ export default {
     },
   },
   methods: {
-    logout() {
-      this.$store.dispatch("user/logout");
+    async logout() {
+      await this.$store.dispatch("user/logout");
     },
     toggleBalance() {
       return (this.state.showBalance = !this.state.showBalance);

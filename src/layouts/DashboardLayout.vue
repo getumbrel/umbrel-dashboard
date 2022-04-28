@@ -265,12 +265,12 @@ export default {
     },
   },
   methods: {
-    logout() {
+    async logout() {
       //close mobile menu
       if (this.isMobileMenuOpen) {
         this.toggleMobileMenu();
       }
-      this.$store.dispatch("user/logout");
+      await this.$store.dispatch("user/logout");
     },
     fetchData() {
       this.$store.dispatch("system/getUnit");
