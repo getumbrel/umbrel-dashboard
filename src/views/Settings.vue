@@ -217,8 +217,8 @@
                   <input-password
                     v-model="currentPassword"
                     ref="password"
-                    inputGroupClass="neu-input-group"
-                    :inputClass="[ isIncorrectPassword ? 'incorrect-password' : '', 'form-control form-control-lg neu-input w-100']"
+                    displayStyle="FormStyle"
+                    :displayInvalidAttempt="isIncorrectPassword"
                     :disabled="isChangingPassword"
                   />
                   <div class="py-2"></div>
@@ -226,8 +226,7 @@
                   <input-password
                     v-model="newPassword"
                     ref="password"
-                    inputGroupClass="neu-input-group"
-                    inputClass="form-control form-control-lg neu-input w-100"
+                    displayStyle="FormStyle"
                     :disabled="isChangingPassword"
                   />
                   <div class="py-2"></div>
@@ -235,8 +234,7 @@
                   <input-password
                     v-model="confirmNewPassword"
                     ref="password"
-                    inputGroupClass="neu-input-group"
-                    inputClass="form-control form-control-lg neu-input w-100"
+                    displayStyle="FormStyle"
                     :disabled="isChangingPassword"
                   />
                   <div v-if="otpEnabled" class="py-2">
