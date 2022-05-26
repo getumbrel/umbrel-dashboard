@@ -24,7 +24,7 @@
           </router-link>
 
           <router-link :to="{name: 'settings'}">
-            <dock-app id="settings" name="Settings" :position="position" :active="this.$route.name === 'settings'" @click="toggleDock(350)" />
+            <dock-app id="settings" name="Settings" :position="position" :notifications="settingsNotifications" :active="this.$route.name === 'settings'" @click="toggleDock(350)" />
           </router-link>
 
           <div class="divider"></div>
@@ -117,6 +117,10 @@ export default {
       default: 'bottom' // can be left (for mobile) or bottom (for desktop)
     },
     appStoreNotifications: {
+      type: Number,
+      default: 0
+    },
+    settingsNotifications: {
       type: Number,
       default: 0
     }

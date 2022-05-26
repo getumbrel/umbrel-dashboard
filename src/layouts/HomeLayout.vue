@@ -4,12 +4,19 @@
       :isOnHome="this.$route.name === 'home'" 
       :isMobileDevice="isMobileDevice"
       :isTouchDevice="isTouchDevice"
+      :isRunningLowOnRam="isRunningLowOnRam"
+      :isRunningLowOnStorage="isRunningLowOnStorage"
+      :isRunningHot="isRunningHot"
     />
       <div class="d-flex justify-content-center">
         <router-view :isMobileDevice="isMobileDevice"></router-view>
       </div>
 
-    <dock :appStoreNotifications="appsWithUpdate.length" :position="isMobileDevice ? 'left' : 'botton'" />
+    <dock
+      :position="isMobileDevice ? 'left' : 'botton'"
+      :appStoreNotifications="appsWithUpdate.length"
+      :settingsNotifications="settingsNotifications"
+    />
 
     <b-modal
       id="confirm-update-modal"
@@ -88,7 +95,6 @@ export default {
       showUpdateConfirmationModal: (state) => state.system.showUpdateConfirmationModal,
       ram: (state) => state.system.ram,
       storage: (state) => state.system.storage,
-      isUmbrelOS: (state) => state.system.isUmbrelOS,
       cpuTemperature: (state) => state.system.cpuTemperature,
     }),
     isTouchDevice: () => 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0,
@@ -114,8 +120,15 @@ export default {
       }
       return false;
     },
-    isMobileMenuOpen() {
-       return this.$store.getters.isMobileMenuOpen;
+    settingsNotifications() {
+      let notifications = 0;
+
+      if (this.availableUpdate.version) notifications++;
+      if (this.isRunningLowOnRam) notifications++;
+      if (this.isRunningLowOnStorage) notifications++;
+      if (this.isRunningHot) notifications++;
+
+      return notifications;
     },
     appsWithUpdate() {
       return this.appStore.filter(app => app.updateAvailable)
@@ -123,14 +136,9 @@ export default {
   },
   methods: {
     logout() {
-      //close mobile menu
-      if (this.isMobileMenuOpen) {
-        this.toggleMobileMenu();
-      }
       this.$store.dispatch("user/logout");
     },
     fetchData() {
-      this.$store.dispatch("system/getIsUmbrelOS");
       this.$store.dispatch("system/getAvailableUpdate");
       this.$store.dispatch("system/getRam");
       this.$store.dispatch("system/getStorage");
@@ -175,6 +183,7 @@ export default {
   created() {
     //load this data once:
     this.$store.dispatch("user/getInfo");
+    this.$store.dispatch("system/getIsUmbrelOS");
 
     //refresh this data every 20s:
     this.fetchData();
