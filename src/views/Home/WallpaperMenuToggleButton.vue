@@ -99,10 +99,10 @@ export default {
   }
   &:hover {
     .btn-wallpaper-icon-back {
-      transform: rotate(3deg);
+      transform: rotate3d(0, 0, 1, 3deg);
     }
     .btn-wallpaper-icon-front {
-      transform: rotate(-6deg);
+      transform: rotate3d(0, 0, 1, -6deg);
     }
   }
 }

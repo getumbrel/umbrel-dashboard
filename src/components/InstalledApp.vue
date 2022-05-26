@@ -221,7 +221,7 @@ export default {
     }
     &:hover {
       .installed-app-icon {
-        transform: scale(1.03);
+        transform: scale3d(1.03, 1.03, 1.03);
       }
     }
     &:active {
@@ -249,10 +249,10 @@ export default {
       left: 50%;
       height: 10px;
       width: 10px;
-      transform: translate(-50%, -50%);
+      transform: translate3d(-50%, -50%, 0);
     }
     &:hover {
-      transform: scale(1.1);
+      transform: scale3d(1.1, 1.1, 1.1);
     }
   }
 }

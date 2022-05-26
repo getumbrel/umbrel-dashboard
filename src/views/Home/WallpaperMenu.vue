@@ -75,7 +75,7 @@ export default {
       }
     }
     &:hover {
-      transform: scale(1.1);
+      transform: scale3d(1.1, 1.1, 1.1);
     }
   }
   
@@ -86,8 +86,6 @@ export default {
     .wallpaper-selector {
       width: calc(50% - 15px);
       transition: transform 0.4s, opacity 0.4s ease;
-      will-change: transform;
-      will-change: opacity;
       .wallpaper-img-container {
         overflow: hidden;
         border-radius: 8%;

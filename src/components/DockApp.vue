@@ -68,7 +68,7 @@ export default {
       height: 5px;
       bottom: -8px;
       left: 50%;
-      transform: translateX(-2.5px);
+      transform: translate3d(-2.5px, 0, 0);
       border-radius: 2.5px;
       background-color: rgba(255, 255, 255, 0.5);
       opacity: 0;
@@ -90,7 +90,7 @@ export default {
     border-radius: 6px;
     font-size: 0.9rem;
     visibility: hidden;
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
     &:after {
       content: "";
       position: absolute;
@@ -147,13 +147,13 @@ export default {
       &:after {
         left: -8px;
         top: 50%;
-        transform: translateY(-2.5px);
+        transform: translate3d(0, -2.5px, 0);
       }
     }
     .dock-app-name {
       top: 50%;
       left: 100px;
-      transform: translateY(-50%);
+      transform: translate3d(0, -50%, 0);
       &:after {
         display: none;
       }
@@ -166,25 +166,25 @@ export default {
 
 @keyframes bounce-vertical {
   0%, 100% {
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translateY(-60%);
+    transform: translate3d(0, -60%, 0);
   }
   90% {
-    transform: translateY(5px);
+    transform: translate3d(0, 5px, 0);
   }
 }
 
 @keyframes bounce-horizontal {
   0%, 100% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translateX(60%);
+    transform: translate3d(60%, 0, 0);
   }
   90% {
-    transform: translateX(-5px);
+    transform: translate3d(-5px, 0, 0);
   }
 }
 

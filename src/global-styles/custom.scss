@@ -1022,19 +1022,19 @@ svg.icon-clock {
   transition: transform 0.4s, opacity 0.4s ease;
 }
 .grow-transition-enter {
-  transform: scale(0);
+  transform: scale3d(0, 0, 0);
   opacity: 0;
 }
 .grow-transition-enter-to {
-  transform: scale(1);
+  transform: scale3d(1, 1, 1);
   opacity: 1;
 }
 .grow-transition-leave {
-  transform: scale(1);
+  transform: scale3d(1, 1, 1);
   opacity: 1;
 }
 
 .grow-transition-leave-to {
-  transform: scale(0);
+  transform: scale3d(0, 0, 0);
   opacity: 0;
 }

@@ -252,7 +252,7 @@ export default {
   position: absolute;
   bottom: 20px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate3d(-50%, 0, 0);
 }
 
 .wallpaper {
@@ -264,7 +264,7 @@ export default {
   z-index: -1;
   background-size: cover;
   background-position: center;
-  will-change: transform, filter;
+  will-change: transform;
   transition: background-image 0.3s, filter 1s, transform 1.5s ease;
   &:after {
     content: '';

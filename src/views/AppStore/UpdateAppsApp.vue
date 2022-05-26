@@ -1,7 +1,7 @@
 <template>
   <transition name="app-updated-transition" appear>
     <div class="d-flex w-100 justify-content-between align-items-center py-3 px-3 px-lg-4">
-      <div class="d-flex">
+      <div class="d-flex align-items-center">
         <div class="app-icon-container mr-2 mr-lg-2">
           <img
             class="app-icon"
@@ -91,21 +91,21 @@ export default {
 .app-updated-transition-leave {
   opacity: 1;
   .text-updated {
-    transform: translate(0, 0);
+    transform: translate3d(0, 0, 0);
     opacity: 0;
   }
   .btn-update-container {
-    transform: translate(0, 0);
+    transform: translate3d(0, 0, 0);
   }
 }
 .app-updated-transition-leave-to {
   opacity: 0;
   .text-updated {
-    transform: translate(0, -50%);
+    transform: translate3d(0, -50%, 0);
     opacity: 1;
   }
   .btn-update-container {
-    transform: translate(0, -100%);
+    transform: translate3d(0, -100%, 0);
     opacity: 0;
   }
 }

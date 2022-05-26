@@ -160,7 +160,7 @@ export default {
   bottom: 10px;
   left: 50%;
   border-radius: 16px;
-  transform: translateX(-50%);
+  transform: translate3d(-50%, 0, 0);
   z-index: 998;
   .dock {
     padding: 11px 7px;
@@ -185,7 +185,7 @@ export default {
   top: 50%;
   left: 0;
   bottom: auto;
-  transform: translate(-100%, -50%);
+  transform: translate3d(-100%, -50%, 0);
   border-radius: 0 16px 16px 0;
   transition: transform 0.3s ease;
 
@@ -193,7 +193,7 @@ export default {
     position: absolute;
     top: 50%;
     right: -28px;
-    transform: translate(0, -50%);
+    transform: translate3d(0, -50%, 0);
     height: 70px;
     width: 30px;
     border-radius: 0 7px 7px 0;
@@ -211,12 +211,12 @@ export default {
     }
   }
   &.dock-left-container-open {
-    transform: translate(0, -50%);
+    transform: translate3d(0, -50%, 0);
     .dock-left-open-button {
-      transform: translate(-100%, -50%);
+      transform: translate3d(-100%, -50%, 0);
       opacity: 0;
       svg {
-        transform: scaleX(-1);
+        transform: scale3d(-1, 1, 1);
       }
     }
   }
@@ -238,16 +238,16 @@ export default {
   transition: transform 0.5s ease;
 }
 .dark-light-mode-transition-enter {
-  transform: translateY(200%);
+  transform: translate3d(0, 200%, 0);
 }
 .dark-light-mode-transition-enter-to {
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 .dark-light-mode-transition-leave {
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 .dark-light-mode-transition-leave-to {
-  transform: translateY(-200%);
+  transform: translate3d(0, -200%, 0);
 }
 
 .dark-light-mode-gradient-transition-enter-active,
@@ -273,19 +273,19 @@ export default {
   transition: transform 1s, opacity 0.6s ease;
 }
 .dock-bottom-transition-enter {
-  transform: translate(-50%, 100%);
+  transform: translate3d(-50%, 100%, 0);
   opacity: 0;
 }
 .dock-bottom-transition-enter-to {
-  transform: translate(-50%, 0);
+  transform: translate3d(-50%, 0, 0);
   opacity: 1;
 }
 .dock-bottom-transition-leave {
-  transform: translate(-50%, 0);
+  transform: translate3d(-50%, 0, 0);
   opacity: 1;
 }
 .dock-bottom-transition-leave-to {
-  transform: translate(-50%, 100%);
+  transform: translate3d(-50%, 100%, 0);
   opacity: 0;
 }
 
@@ -295,22 +295,22 @@ export default {
   animation-delay: 1.2s;
   .dock-left-open-button {
     opacity: 0;
-    transform: translate(-100%, -50%);
+    transform: translate3d(-100%, -50%, 0);
   }
 }
 
 @keyframes dock-left-peek {
   0% {
-    transform: translate(-100%, -50%) scale(0.85);
+    transform: translate3d(-100%, -50%, 0) scale3d(0.85, 0.85, 0.85);
   }
   42% {
-    transform: translate(0, -50%) scale(1);
+    transform: translate3d(0, -50%, 0) scale3d(1, 1, 1);
   }
   58% {
-    transform: translate(0, -50%) scale(1);
+    transform: translate3d(0, -50%, 0) scale3d(1, 1, 1);
   }
   100% {
-    transform: translate(-100%, -50%) scale(0.85);
+    transform: translate3d(-100%, -50%, 0) scale3d(0.85, 0.85, 0.85);
   }
 }
 </style>

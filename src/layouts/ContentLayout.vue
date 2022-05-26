@@ -45,6 +45,9 @@ export default {
   backdrop-filter: blur(60px) brightness(var(--content-background-brightness));
   z-index: 99;
 
+  // optimize performance
+  will-change: transform;
+
   // hide scrollbar
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -74,10 +77,10 @@ export default {
         left: 50%;
         height: 10px;
         width: 10px;
-        transform: translate(-50%, -50%);
+        transform: translate3d(-50%, -50%, 0);
       }
       &:hover {
-        transform: scale(1.1);
+        transform: scale3d(1.1, 1.1, 1.1);
       }
     }
   }
@@ -86,22 +89,22 @@ export default {
   }
 }
 
-// Dock app open/close transition
+// Content open/close transition
 .content-container-transition-enter-active,
 .content-container-transition-leave-active {
-  transition: transform 0.5s cubic-bezier(.66,-0.35,.39,1.16);
+  transition: transform 0.5s cubic-bezier(.66,-0.35,.25,1.09);
 }
 .content-container-transition-enter {
-  transform: translateY(calc(50% - 100px)) scale(0);
+  transform: translate3d(0, calc(50% - 90px), 0) scale3d(0, 0, 0);
 }
 .content-container-transition-enter-to {
-  transform: translateY(0) scale(1);
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
 }
 .content-container-transition-leave {
-  transform: translateY(0) scale(1);
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
 }
 .content-container-transition-leave-to {
-  transform: translateY(calc(50% - 50px)) scale(0);
+  transform: translate3d(0, calc(50% - 90px), 0) scale3d(0, 0, 0);
 }
 
 .mobile-content-container-transition-enter-active,
@@ -109,37 +112,37 @@ export default {
   transition: transform 0.5s cubic-bezier(.66,0,.39,1);
 }
 .mobile-content-container-transition-enter {
-  transform: translateX(-60%) scale(0);
+  transform: translate3d(-55%, 0, 0) scale3d(0, 0, 0);
 }
 .mobile-content-container-transition-enter-to {
-  transform: translateX(0) scale(1);
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
 }
 .mobile-content-container-transition-leave {
-  transform: translateX(0) scale(1);
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
 }
 .mobile-content-container-transition-leave-to {
-  transform: translateX(-60%) scale(0);
+  transform: translate3d(-55%, 0, 0) scale3d(0, 0, 0);
 }
 
 // Page changing transitions
 .change-page-transition-enter-active,
 .change-page-transition-leave-active {
-  transition: transform 0.4s, opacity 0.4s ease;
+  transition: transform 0.25s, opacity 0.25s ease;
 }
 .change-page-transition-enter {
-  transform: translate(40px, 0);
+  transform: translate3d(30px, 0, 0);
   opacity: 0;
 }
 .change-page-transition-enter-to {
-  transform: translate(0, 0);
+  transform: translate3d(0, 0, 0);
   opacity: 1;
 }
 .change-page-transition-leave {
-  transform: translate(0, 0);
+  transform: translate3d(0, 0, 0);
   opacity: 1;
 }
 .change-page-transition-leave-to {
-  transform: translate(-40px, 0);
+  transform: translate3d(-30px, 0, 0);
   opacity: 0;
 }
 </style>
