@@ -90,6 +90,7 @@
 <script>
 import Vue from "vue";
 import VueConfetti from "vue-confetti";
+import { mapState } from "vuex";
 
 import InputPassword from "@/components/Utility/InputPassword";
 
@@ -107,6 +108,11 @@ export default {
       passwordError: "",
       confirmPasswordError: ""
     };
+  },
+  computed: {
+    ...mapState({
+      registered: state => state.user.registered,
+    })
   },
   methods: {
     next() {
@@ -176,6 +182,11 @@ export default {
         this.confirmPasswordError = 'The passwords do not match';
         return false;
       }
+    }
+  },
+  created() {
+    if (this.registered) {
+      return this.$router.push({name: "home"});
     }
   },
   components: {
