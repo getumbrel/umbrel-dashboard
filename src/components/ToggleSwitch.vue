@@ -57,8 +57,7 @@ export default {
   box-sizing: border-box;
   display: flex;
   cursor: pointer;
-  transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-  background: linear-gradient(346.78deg, #f7fcfc 0%, #fafcfa 100%);
+  background: var(--toggle-switch-off-background-color);
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.1);
   &.toggle-on {
@@ -78,7 +77,7 @@ export default {
   width: 30px;
   border-radius: 30px;
   background: #ffffff;
-  transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .toggle-switch-off {
   transform: translateX(0);

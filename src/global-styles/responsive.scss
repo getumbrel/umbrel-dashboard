@@ -1,7 +1,7 @@
 @include media-breakpoint-down(sm) {
     h1 {
-        font-size: $font-size-base * 4;
-        line-height: $font-size-base * 4;
+        font-size: $font-size-base * 3;
+        line-height: $font-size-base * 3;
     }
 }
 
@@ -18,7 +18,7 @@
     @include media-breakpoint-up(md) {
         column-count: 2;
     }
-    @include media-breakpoint-up(xl) {
+    @include media-breakpoint-up(lg) {
         column-count: 3;
     }
     column-gap: 30px;
@@ -26,8 +26,9 @@
 
 .card-app-list {
     // https://stackoverflow.com/a/34115300
-    box-shadow: 0 1px 10px rgba(209, 213, 223, 0.5),
+    box-shadow: 0 1px 10px var(--card-box-shadow-color),
       0 1px 2px rgba(209, 213, 223, 0) !important;
+    // transition: background-color 0.6s, box-shadow 0.6s ease;
     margin-top: 16px !important;
     margin-bottom: 16px !important;
     display: inline-block;
@@ -44,41 +45,86 @@
 }
 
 @include media-breakpoint-only(xs) {
+    .umbrel-logo {
+        max-width: 80px !important;
+    }
+    .text-greeting {
+        font-size: 1.2rem !important;
+        font-weight: 400 !important;
+    }
+    .btn-wallpaper {
+        right: 10px !important;
+    }
+    .wallpaper-container {
+        min-width: 200px !important;
+        width: 60vw !important;
+        .wallpaper-heading {
+            font-size: 1.4rem !important;
+        }
+        .wallpaper-list {
+          column-gap: 20px !important;
+          row-gap: 20px !important;
+          .wallpaper-selector {
+              width: 100% !important;
+          }
+        }
+    }
+    .content-container {
+        top: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        .header {
+            .btn-close-page {
+                top: 10px !important;
+                right: 10px !important;
+            }
+        }
+        .content {
+            padding-bottom: 40px !important;
+        }
+    }
     .app-icon {
         height: 66px !important;
         width: 66px !important;
-        border-radius: 12px !important;
+        border-radius: 16px !important;
+        &.app-icon-xs {
+            width: 46px !important;
+            height: 46px !important;
+            border-radius: 10px !important;
+        }
     }
     .installed-app {
-        width: calc(50% - 1rem) !important;
+        // width: 110px !important;
+        height: 110px !important;
+        .installed-app-title {
+            font-size: 80%;
+        }
+        .btn-uninstall {
+            right: 23px !important;
+        }
     }
     .w-xs-100 {
         width: 100%;
     }
     .app-gallery {
-        margin-left: -15px;
-        margin-right: -15px;
-        padding-left: 15px;
-        padding-right: 15px;
+        margin-left: -1rem;
+        margin-right: -1rem;
         .app-gallery-screen {
             height: auto; // so it doesn't break on Chrome (i.e. show white padding on top/bottom)
             height: intrinsic; // so it doesn't break on Safari (i.e. show white padding on top/bottom) https://stackoverflow.com/a/64108625
-            width: calc(100vw);
+            width: 100vw;
         }
     }
 }
 
 @include media-breakpoint-only(sm) {
-    .app-icon {
-        height: 70px;
-        width: 70px;
-        border-radius: 14px;
-    }
+    // .app-icon {
+    //     height: 70px;
+    //     width: 70px;
+    //     border-radius: 14px;
+    // }
     .app-gallery {
-        margin-left: calc(-15px - 0.75rem);
-        margin-right: calc(-15px - 0.75rem);
-        padding-left: 30px;
-        padding-right: 30px;
         .app-gallery-screen {
             height: 280px;
         }
@@ -92,23 +138,19 @@
         border-radius: 16px;
     }
     .app-gallery {
-        margin-left: calc(-15px - 0.75rem);
-        margin-right: calc(-15px - 0.75rem);
-        padding-left: 30px;
-        padding-right: 30px;
         .app-gallery-screen {
             height: 300px;
         }
     }
 }
 
-@include media-breakpoint-only(lg) {
-    .app-gallery {
-        margin-left: calc(-15px - 0.75rem);
-        margin-right: calc(-15px - 0.75rem);
-        padding-left: 30px;
-        padding-right: 30px;
+@include media-breakpoint-up(sm) {
+    .modal-sm {
+        max-width: 400px;
     }
+}
+
+@include media-breakpoint-only(lg) {
     .app-icon {
         height: 80px;
         width: 80px;
@@ -120,6 +162,6 @@
     .app-icon.app-icon-lg {
         height: 140px;
         width: 140px;
-        border-radius: 24px;
+        border-radius: 28px;
     }
 }

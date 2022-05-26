@@ -3,350 +3,86 @@ import VueRouter from "vue-router";
 
 import store from "@/store";
 
-import TransitionWrapperLayout from "../layouts/TransitionWrapperLayout.vue";
-import SimpleLayout from "../layouts/SimpleLayout.vue";
-import DashboardLayout from "../layouts/DashboardLayout.vue";
+import WrapperLayout from "../layouts/WrapperLayout.vue";
+import HomeLayout from "../layouts/HomeLayout.vue";
+import ContentLayout from "../layouts/ContentLayout.vue";
 
-import Start from "../views/Start.vue";
-import Login from "../views/Login.vue";
-import Dashboard from "../views/Dashboard.vue";
-import Bitcoin from "../views/Bitcoin.vue";
-import Lightning from "../views/Lightning.vue";
-import Apps from "../views/Apps.vue";
-import AppStore from "../views/AppStore.vue";
-import AppStoreApp from "../views/AppStoreApp.vue";
-import Settings from "../views/Settings.vue";
-import ConnectWallet from "../views/ConnectWallet.vue";
-import Logout from "../views/Logout.vue";
+import Start from "../views/Start/Start.vue";
+import Login from "../views/Login/Login.vue";
+import AppStore from "../views/AppStore/AppStore.vue";
+import AppStoreApp from "../views/AppStore/AppStoreApp.vue";
+import Settings from "../views/Settings/Settings.vue";
 
-// Wallet components for wallet connector
-import BitBoxApp from "../components/ConnectWallet/Wallets/BitBoxApp.vue";
-import BitcoinCoreP2P from "../components/ConnectWallet/Wallets/BitcoinCoreP2P.vue";
-import BitcoinCoreRPC from "../components/ConnectWallet/Wallets/BitcoinCoreRPC.vue";
-import BlockstreamGreen from "../components/ConnectWallet/Wallets/BlockstreamGreen.vue";
-import BlueWallet from "../components/ConnectWallet/Wallets/BlueWallet.vue";
-import ElectrumAndroid from "../components/ConnectWallet/Wallets/ElectrumAndroid.vue";
-import ElectrumDesktop from "../components/ConnectWallet/Wallets/ElectrumDesktop.vue";
-import ElectrumServer from "../components/ConnectWallet/Wallets/ElectrumServer.vue";
-import FullyNoded from "../components/ConnectWallet/Wallets/FullyNoded.vue";
-import LilyWallet from "../components/ConnectWallet/Wallets/LilyWallet.vue";
-import NunchukDesktop from "../components/ConnectWallet/Wallets/NunchukDesktop.vue";
-import Phoenix from "../components/ConnectWallet/Wallets/Phoenix.vue";
-import SamouraiWallet from "../components/ConnectWallet/Wallets/SamouraiWallet.vue";
-import Sparrow from "../components/ConnectWallet/Wallets/Sparrow.vue";
-import SpecterDesktop from "../components/ConnectWallet/Wallets/SpecterDesktop.vue";
-import Wasabi from "../components/ConnectWallet/Wallets/Wasabi.vue";
-
-import ZapAndroid from "../components/ConnectWallet/Wallets/ZapAndroid.vue";
-import ZapDesktop from "../components/ConnectWallet/Wallets/ZapDesktop.vue";
-import ZapiOS from "../components/ConnectWallet/Wallets/ZapiOS.vue";
-import Zeus from "../components/ConnectWallet/Wallets/Zeus.vue";
-
-import LNDConnectGRPCLocal from "../components/ConnectWallet/Wallets/LNDConnectGRPCLocal.vue";
-import LNDConnectGRPCTor from "../components/ConnectWallet/Wallets/LNDConnectGRPCTor.vue";
-import LNDConnectRESTLocal from "../components/ConnectWallet/Wallets/LNDConnectRESTLocal.vue";
-import LNDConnectRESTTor from "../components/ConnectWallet/Wallets/LNDConnectRESTTor.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    component: TransitionWrapperLayout,
+    component: WrapperLayout,
     children: [
       {
-        path: "",
-        component: SimpleLayout,
-        children: [
-          {
-            path: "",
-            name: "login",
-            component: Login,
-            meta: { requiresAuth: false }
-          }
-        ]
-      },
-      {
         path: "/start",
-        component: SimpleLayout,
         meta: { requiresAuth: false },
-        children: [
-          {
-            path: "",
-            name: "start",
-            component: Start
-          }
-        ]
+        name: "start",
+        component: Start
       },
       {
-        path: "/dashboard",
-        component: DashboardLayout,
+        path: "/login",
+        name: "login",
+        component: Login,
+        meta: {
+          requiresAuth: false,
+          wallpaperClass: 'wallpaper-blur wallpaper-slight-dim wallpaper-zoom-in'
+        }
+      },
+      {
+        path: "",
+        component: HomeLayout,
         meta: { requiresAuth: true },
         children: [
           {
             path: "",
-            name: "dashboard",
-            component: Dashboard
-          }
-        ]
-      },
-      {
-        path: "/bitcoin",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "bitcoin",
-            component: Bitcoin
-          }
-        ]
-      },
-      {
-        path: "/lightning",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "lightning",
-            component: Lightning
-          }
-        ]
-      },
-      {
-        path: "/apps",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "apps",
-            component: Apps
-          }
-        ]
-      },
-      {
-        path: "/app-store",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "app-store",
-            component: AppStore
+            name: "home"
           },
           {
-            path: ":id",
-            name: "app-store-app",
-            component: AppStoreApp
-          }
-        ]
-      },
-      {
-        path: "/settings",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "settings",
-            component: Settings
-          }
-        ]
-      },
-      {
-        path: "/connect",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
-          {
-            path: "",
-            name: "connect",
-            component: ConnectWallet,
+            path: "/app-store",
+            component: ContentLayout,
+            meta: { scrollTop: true },
             children: [
               {
-                path: "bitboxapp",
-                component: BitBoxApp,
+                path: "",
+                name: "app-store",
+                component: AppStore,
                 meta: {
-                  wallet: "bitboxapp"
+                  wallpaperClass: 'wallpaper-content-open wallpaper-zoom-in'
                 }
               },
               {
-                path: "blockstream-green",
-                component: BlockstreamGreen,
+                path: ":id",
+                name: "app-store-app",
+                component: AppStoreApp,
                 meta: {
-                  wallet: "blockstream-green"
+                  wallpaperClass: 'wallpaper-content-open wallpaper-zoom-in'
                 }
-              },
-              {
-                path: "bluewallet",
-                component: BlueWallet,
-                meta: {
-                  wallet: "bluewallet"
-                }
-              },
-              {
-                path: "electrum-android",
-                component: ElectrumAndroid,
-                meta: {
-                  wallet: "electrum-android"
-                }
-              },
-              {
-                path: "electrum-desktop",
-                component: ElectrumDesktop,
-                meta: {
-                  wallet: "electrum-desktop"
-                }
-              },
-              {
-                path: "fully-noded",
-                component: FullyNoded,
-                meta: {
-                  wallet: "fully-noded"
-                }
-              },
-              {
-                path: "lily-wallet",
-                component: LilyWallet,
-                meta: {
-                  wallet: "lily-wallet"
-                }
-              },
-              {
-                path: "nunchuk-desktop",
-                component: NunchukDesktop,
-                meta: {
-                  wallet: "nunchuk-desktop"
-                }
-              },
-              {
-                path: "phoenix",
-                component: Phoenix,
-                meta: {
-                  wallet: "phoenix"
-                }
-              },
-              {
-                path: "samourai-wallet",
-                component: SamouraiWallet,
-                meta: {
-                  wallet: "samourai-wallet"
-                }
-              },
-              {
-                path: "sparrow",
-                component: Sparrow,
-                meta: {
-                  wallet: "sparrow"
-                }
-              },
-              {
-                path: "specter-desktop",
-                component: SpecterDesktop,
-                meta: {
-                  wallet: "specter-desktop"
-                }
-              },
-              {
-                path: "wasabi",
-                component: Wasabi,
-                meta: {
-                  wallet: "wasabi"
-                }
-              },
-              {
-                path: "bitcoin-core-p2p",
-                component: BitcoinCoreP2P,
-                meta: {
-                  wallet: "bitcoin-core-p2p"
-                }
-              },
-              {
-                path: "bitcoin-core-rpc",
-                component: BitcoinCoreRPC,
-                meta: {
-                  wallet: "bitcoin-core-rpc"
-                }
-              },
-              {
-                path: "electrum-server",
-                component: ElectrumServer,
-                meta: {
-                  wallet: "electrum-server"
-                }
-              },
-              {
-                path: "zap-android",
-                component: ZapAndroid,
-                meta: {
-                  wallet: "zap-android"
-                }
-              },
-              {
-                path: "zap-desktop",
-                component: ZapDesktop,
-                meta: {
-                  wallet: "zap-desktop"
-                }
-              },
-              {
-                path: "zap-ios",
-                component: ZapiOS,
-                meta: {
-                  wallet: "zap-ios"
-                }
-              },
-              {
-                path: "zeus",
-                component: Zeus,
-                meta: {
-                  wallet: "zeus"
-                }
-              },
-              {
-                path: "lndconnect-grpc-local",
-                component: LNDConnectGRPCLocal,
-                meta: {
-                  wallet: "lndconnect-grpc-local"
-                }
-              },
-              {
-                path: "lndconnect-grpc-tor",
-                component: LNDConnectGRPCTor,
-                meta: {
-                  wallet: "lndconnect-grpc-tor"
-                }
-              },
-              {
-                path: "lndconnect-rest-local",
-                component: LNDConnectRESTLocal,
-                meta: {
-                  wallet: "lndconnect-rest-local"
-                }
-              },
-              {
-                path: "lndconnect-rest-tor",
-                component: LNDConnectRESTTor,
-                meta: {
-                  wallet: "lndconnect-rest-tor"
-                }
-              },
+              }
             ]
-          }
-        ]
-      },
-      {
-        path: "/logout",
-        component: DashboardLayout,
-        meta: { requiresAuth: true },
-        children: [
+          },
           {
-            path: "",
-            name: "logout",
-            component: Logout
-          }
+            path: "/settings",
+            component: ContentLayout,
+            meta: { scrollTop: true },
+            children: [
+              {
+                path: "",
+                name: "settings",
+                component: Settings,
+                meta: {
+                  wallpaperClass: 'wallpaper-content-open wallpaper-zoom-in'
+                } 
+              }
+            ]
+          },
         ]
       }
     ]
@@ -378,23 +114,31 @@ const router = new VueRouter({
     } else if (from.path === to.path) {
       return {}
     }
+
+    // scroll to top for ContentLayout (position: fixed) components
+    if (to.matched.some(record => record.meta.scrollTop)) {
+      // wait for 400ms (transition duration) for current route to fade out and prevent jerk motion
+      setTimeout(() => {
+        document.getElementsByClassName("content-container")[0].scroll(0, 0);
+      }, 400);
+    }
+
     // Scroll to top
-    return { x: 0, y: 0 }
+    return { x: 0, y: 0 };
   }
 });
 
-//Fake for now
+//Authentication Check
 const isLoggedIn = () => !!store.state.user.jwt;
 
-//Authentication Check
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!isLoggedIn()) {
       next({
-        path: "/",
-        query: { redirect: to.fullPath }
+        path: "/login",
+        query: to.name === "home" ? "" : { redirect: to.fullPath }
       });
     } else {
       next();

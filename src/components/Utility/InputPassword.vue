@@ -7,6 +7,7 @@
       :type="showPassword ? 'text' : 'password'"
       v-bind:value="value"
       v-on:input="$emit('input', $event.target.value)"
+      v-on:blur="$emit('blur', $event.target.value)"
       :disabled="disabled"
     />
     <b-input-group-append>

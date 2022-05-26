@@ -1,0 +1,112 @@
+<template>
+  <transition name="app-updated-transition" appear>
+    <div class="d-flex w-100 justify-content-between align-items-center py-3 px-3 px-lg-4">
+      <div class="d-flex">
+        <div class="app-icon-container mr-2 mr-lg-2">
+          <img
+            class="app-icon"
+            :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+          />
+        </div>
+        <div class="d-flex flex-column">
+          <h4 class="app-name text-title-color mb-1 pr-1">
+            {{ app.name }}
+          </h4>
+          <span class="text-muted mb-0">
+            {{ app.version }}
+          </span>
+        </div>
+      </div>
+      <div class="position-relative">
+        <div class="btn-update-container">
+          <b-button 
+            variant="success"
+            size="sm"
+            @click="updateApp()"
+            class="px-2 btn-update"
+            :class="{ 'fade-in-out': isUpdating }"
+            :disabled="isUpdating"
+          >{{ isUpdating ? "Updating..." : "Update" }}</b-button>
+        </div>
+        <span class="text-updated w-100 d-flex align-items-center justify-content-end">
+          <b-icon icon="check-circle-fill" variant="success"></b-icon>
+          <small class="ml-1">Updated</small>
+        </span>
+      </div>
+    </div>
+  </transition>
+</template>
+
+
+
+<script>
+import { mapState } from "vuex";
+
+export default {
+  props: {
+    app: Object
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapState({
+      updating: (state) => state.apps.updating,
+    }),
+    isUpdating: function() {
+      return this.updating.includes(this.app.id);
+    }
+  },
+  methods: {
+    updateApp: function() {
+      if(this.isUpdating) return false;
+
+      this.$store.dispatch("apps/update", this.app.id);
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.text-updated {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  opacity: 1;
+  visibility: hidden;
+}
+
+.app-updated-transition-leave-active {
+  transition: opacity 0.3s ease;
+  transition-delay: 5s;
+  opacity: 1;
+  .text-updated {
+    transition: transform 0.3s, opacity 0.3s ease;
+    visibility: visible;
+  }
+  .btn-update-container {
+    transition: transform 0.3s, opacity 0.3s ease;
+  }
+}
+.app-updated-transition-leave {
+  opacity: 1;
+  .text-updated {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  .btn-update-container {
+    transform: translate(0, 0);
+  }
+}
+.app-updated-transition-leave-to {
+  opacity: 0;
+  .text-updated {
+    transform: translate(0, -50%);
+    opacity: 1;
+  }
+  .btn-update-container {
+    transform: translate(0, -100%);
+    opacity: 0;
+  }
+}
+</style>

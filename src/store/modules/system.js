@@ -48,9 +48,10 @@ const state = () => ({
     breakdown: []
   },
   isUmbrelOS: false,
-  cpuTemperature: 0, //in celsius
+  cpuTemperature: 69, //in celsius
   cpuTemperatureUnit: "celsius",
-  uptime: null
+  uptime: null,
+  darkMode: false
 });
 
 // Functions to update the state directly
@@ -117,6 +118,14 @@ const mutations = {
   },
   setUptime(state, uptime) {
     state.uptime = uptime;
+  },
+  setDarkMode(state, darkMode) {
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+    state.darkMode = darkMode;
   }
 };
 
@@ -312,6 +321,19 @@ const actions = {
     if (uptime) {
       commit("setUptime", uptime);
     }
+  },
+  async getDarkMode({ commit }) {
+    if (window.localStorage && window.localStorage.getItem("darkMode")) {
+      commit("setDarkMode", JSON.parse(window.localStorage.getItem("darkMode")));
+    } else {
+      commit("setDarkMode", window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+  },
+  toggleDarkMode({ commit, state }) {
+    if (window.localStorage) {
+      window.localStorage.setItem("darkMode", !state.darkMode);
+    }
+    commit("setDarkMode", !state.darkMode);
   },
 };
 

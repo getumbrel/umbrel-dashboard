@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+    <!-- insert wallpaper in the root component since it's used across all views -->
+    <div v-if="wallpaper" class="wallpaper"
+      :class="wallpaperClassList"
+      :style="{backgroundImage: `url(${require('@/assets/wallpapers/' + wallpaper)})`}"
+    ></div>
     <transition name="loading" mode>
       <div v-if="isIframe">
         <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
@@ -11,9 +16,11 @@
       </div>
       <loading v-else-if="updating" :progress="updateStatus.progress">
         <div class="text-center">
-          <small class="text-muted d-block">{{`${updateStatus.description}...`}}</small>
-          <b-alert class="system-alert" variant="warning" show>
-            <small>Please do not refresh this page or turn off your Umbrel while the update is in progress</small>
+          <small class="text-white d-block">{{`${updateStatus.description}...`}}</small>
+          <b-alert class="alert-system" variant="glass" show>
+            <div class="d-flex align-items-center">
+              <small>Please do not refresh this page or turn off your Umbrel while the update is in progress</small>
+            </div>
           </b-alert>
         </div>
       </loading>
@@ -24,8 +31,10 @@
         :rebooting="rebooting"
       >
         <div class="text-center" v-if="shuttingDown || rebooting">
-          <b-alert class="system-alert" variant="warning" show>
-            <small>Please do not refresh this page or turn off your Umbrel while it is {{ shuttingDown ? 'shutting down' : 'rebooting'}}</small>
+          <b-alert class="alert-system" variant="glass" show>
+            <div class="d-flex align-items-center">
+              <small>Please do not refresh this page or turn off your Umbrel while it is {{ shuttingDown ? 'shutting down' : 'rebooting'}}</small>
+            </div>
           </b-alert>
         </div>
       </shutdown>
@@ -59,16 +68,31 @@ export default {
   },
   computed: {
     ...mapState({
+      wallpaper: state => state.user.wallpaper,
       hasShutdown: state => state.system.hasShutdown,
       shuttingDown: state => state.system.shuttingDown,
       rebooting: state => state.system.rebooting,
       isManagerApiOperational: state => state.system.managerApi.operational,
       isApiOperational: state => state.system.api.operational,
-      jwt: state => state.user.jwt,
-      updateStatus: state => state.system.updateStatus
+      updateStatus: state => state.system.updateStatus,
+      jwt: state => state.user.jwt
     }),
     updating() {
       return this.updateStatus.state === "installing";
+    },
+    wallpaperClassList() {
+      const classList = [];
+      if (!window.CSS.supports('backdrop-filter', 'blur(0)')) {
+        classList.push("wallpaper-no-backdrop-blur");
+      }
+      if (this.loading || this.isIframe || this.shuttingDown || this.rebooting || this.updating || this.hasShutdown) {
+        classList.push("wallpaper-blur wallpaper-slight-dim wallpaper-zoom-in");
+        return classList;
+      }
+      if (this.$route.meta && this.$route.meta.wallpaperClass) {
+        classList.push(this.$route.meta.wallpaperClass);
+      }
+      return classList.join(" ");
     }
   },
   methods: {
@@ -87,7 +111,7 @@ export default {
 
       this.loadingPollInProgress = true;
 
-      // First check if manager api is up
+      // First check if manager api is up and get the wallpaper
       if (this.loadingProgress <= 20) {
         this.loadingProgress = 20;
         await this.$store.dispatch("system/getManagerApi");
@@ -98,25 +122,14 @@ export default {
         }
       }
 
-      // Then check if middleware api is up
-      if (this.loadingProgress <= 40) {
-        this.loadingProgress = 40;
-        await this.$store.dispatch("system/getApi");
-        if (!this.isApiOperational) {
-          this.loading = true;
-          this.loadingPollInProgress = false;
-          return;
-        }
-      }
-
       // Then trigger auth check
-      if (this.loadingProgress <= 95 && this.jwt) {
-        this.loadingProgress = 95;
+      if (this.loadingProgress <= 70 && this.jwt) {
+        this.loadingProgress = 70;
         try {
-          await this.$store.dispatch("user/refreshJWT");
+          await this.$store.dispatch("user/getInfo");
         } catch (error) {
-          // it will error if jwt has expired and automatically redirect the user to login page
-          null;
+          // it will error if jwt has expired and automatically
+          // redirect the user to login page
         }
       }
 
@@ -129,10 +142,16 @@ export default {
     }
   },
   created() {
-    //check if system is updating
+    // check if system is updating
     this.$store.dispatch("system/getUpdateStatus");
 
-    //for 100vh consistency
+    // get light/dark mode preference
+    this.$store.dispatch("system/getDarkMode");
+
+    // get wallpaper
+    this.$store.dispatch("user/getWallpaper");
+    
+    // for 100vh consistency
     this.updateViewPortHeightCSS();
     window.addEventListener("resize", this.updateViewPortHeightCSS);
   },
@@ -218,25 +237,78 @@ export default {
 }
 .loading-enter {
   opacity: 0;
-  // filter: blur(70px);
 }
 .loading-enter-to {
   opacity: 1;
-  // filter: blur(0);
 }
 .loading-leave {
   opacity: 1;
-  // filter: blur(0);
 }
 .loading-leave-to {
   opacity: 0;
-  // filter: blur(70px);
 }
 
-.system-alert {
+.alert-system {
   position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.wallpaper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--vh100);
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  will-change: transform, filter;
+  transition: background-image 0.3s, filter 1s, transform 1.5s ease;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(0);
+    transition: backdrop-filter 0.4s ease;
+  }
+  &.wallpaper-blur {
+    filter: blur(0);
+    &:after {
+      backdrop-filter: blur(10px);
+    }
+  }
+  &.wallpaper-slight-dim {
+    filter: brightness(0.9);
+  }
+  &.wallpaper-content-open {
+    filter: brightness(var(--wallpaper-brightness));
+  }
+  &.wallpaper-zoom-in {
+    transform: scale3d(1.25, 1.25, 1.25);
+  }
+
+  // use blur filter if backdrop blur isn't supported.
+  // we check this via JS and not CSS @supports media query because
+  // vue auto-prefixes backdrop-blur with -webkit vendor prefix
+  // which tests positive for Safari, while we want this behavior off
+  // for Safari due to artificacts on edges. that's the opposite of
+  // Chrome, which has artificacts on edges using blur filter
+  // but not backdrop-blur
+  &.wallpaper-no-backdrop-blur {
+    &:after {
+      display: none !important;
+    }
+    &.wallpaper-blur {
+      filter: blur(12px);
+      &.wallpaper-slight-dim {
+        filter: blur(12px) brightness(0.9);
+      }
+    }
+  }
 }
 </style>

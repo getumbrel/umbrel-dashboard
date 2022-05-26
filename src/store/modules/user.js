@@ -8,7 +8,8 @@ const state = () => ({
   registered: true,
   seed: [],
   installedApps: [],
-  otpEnabled: false
+  otpEnabled: false,
+  wallpaper: ""
 });
 
 // Functions to update the state directly
@@ -31,6 +32,9 @@ const mutations = {
   },
   setOtpEnabled(state, otpEnabled) {
     state.otpEnabled = otpEnabled;
+  },
+  setWallpaper(state, wallpaper) {
+    state.wallpaper = wallpaper;
   }
 };
 
@@ -60,7 +64,7 @@ const actions = {
       }
 
       commit("setJWT", "");
-      router.push("/");
+      router.push({name: 'login'});
     }
   },
 
@@ -120,14 +124,13 @@ const actions = {
     }
   },
 
-  async register({ commit, state }, { name, password, seed }) {
-    if (!state.registered) {
+  async register({ commit, state }, { name, password }) {
+    if (state.registered) {
       const result = await API.post(
         `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/register`,
         {
           name,
-          password,
-          seed
+          password
         },
         false
       );
@@ -135,7 +138,6 @@ const actions = {
       if (result.data && result.data.jwt) {
         commit("setJWT", result.data.jwt);
         commit("setRegistered", true);
-        commit("setSeed", []); //remove seed from store
       }
     }
   },
@@ -159,6 +161,24 @@ const actions = {
       false
     );
     return commit("setOtpEnabled", false);
+  },
+  async getWallpaper({ commit }) {
+    const defaultWallpaper = "1.jpg";
+    let wallpaper;
+    try {
+      wallpaper = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/account/wallpaper`) || defaultWallpaper;
+    } catch (error) {
+      wallpaper = defaultWallpaper;
+    }
+    return commit("setWallpaper", wallpaper);
+  },
+  async setWallpaper({ commit }, wallpaper) {
+    // Update state immediately to make the new wallpaper live
+    commit("setWallpaper", wallpaper);
+    await API.post(
+      `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/wallpaper`,
+      {wallpaper},
+    );
   }
 };
 
