@@ -81,6 +81,8 @@
               ></input-copy>
             </div>
           </div>
+          <!-- spacer on mobile -->
+          <div class="p-1 p-sm-0"></div>
         </div>
         <div class="d-flex flex-column align-items-sm-center w-xs-100" v-else>
           <b-button

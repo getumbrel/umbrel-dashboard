@@ -40,7 +40,7 @@
 
   <!-- Mobile app drawer -->
   <div v-else>
-    <div class="w-100 mt-3 mb-2 d-flex justify-content-center">
+    <div class="w-100 mt-3 mb-4 d-flex justify-content-center">
       <b-button 
         size="sm" 
         pill
