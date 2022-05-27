@@ -60,6 +60,9 @@ body {
   --glass-alert-button-hover-text-color: rgba(255, 255, 255, 1);
 
   --input-copy-border-color: rgba(0, 0, 0, 0.2);
+
+  --toast-text-color: #0006;
+  --toast-background-brightness: 1.5;
 }
 
 body.dark-mode {
@@ -121,6 +124,9 @@ body.dark-mode {
   --glass-alert-button-hover-text-color: rgba(0, 0, 0, 1);
 
   --input-copy-border-color: rgba(255, 255, 255, 0.2);
+
+  --toast-text-color: #ffffffe0;
+  --toast-background-brightness: 0.9;
 }
 
 
@@ -417,53 +423,38 @@ a {
 
   .b-toast {
     .toast {
+        border-radius: 0.75rem;
         outline: none !important;
+        backdrop-filter: blur(16px) brightness(var(--toast-background-brightness));
         .toast-header {
-            color: rgba(0,0,0,0.5);
+            padding: 1rem 1rem 0 1.25rem;
+            background: none;
+            color: var(--toast-text-color);
             .close {
                 text-shadow: none;
-                opacity: 0.3;
+                color: var(--toast-text-color);
             }
         }
         .toast-body {
-            padding-top: 0;
+            padding: 1rem 1.25rem 1.25rem 1.25rem;
+            background: none;
+            color: var(--toast-text-color);
         }
     }
 
     &.b-toast-success {
         .toast {
-            .toast-header {
-                color: #fff;
-                background: $green;
-            }
-            .toast-body {
-                color: #fff;
-                background: $green;
-            }
+            background: #07d48285;
         }
     }
     &.b-toast-warning {
         .toast {
-            .toast-header {
-                color: #fff;
-                background: $yellow;
-            }
-            .toast-body {
-                color: #fff;
-                background: $yellow;
-            }
+            background: #f6cc00b3;
         }
     }
     &.b-toast-danger {
         .toast {
-            .toast-header {
-                color: #fff;
-                background: $red;
-            }
-            .toast-body {
-                color: #fff;
-                background: $red;
-            }
+            background: #f22c2c94;
         }
     }
   }
