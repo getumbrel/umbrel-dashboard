@@ -279,17 +279,6 @@
             </div>
 
             <b-button variant="outline-primary" size="sm" @click="rebootPrompt">Restart</b-button>
-            <b-modal
-              ref="reboot-modal"
-              title="Are you sure?"
-              no-close-on-backdrop
-              no-close-on-esc
-              @ok="reboot($event)"
-            >
-              <div>
-                <p>Your Lightning wallet will not be able to receive any payments while your Umbrel is restarting.</p>
-              </div>
-            </b-modal>
           </div>
         </div>
         <div class="pt-0">
@@ -740,10 +729,7 @@ export default {
       }
 
       // Get user consent first
-      const approved = await this.$bvModal.msgBoxConfirm(
-        "Your Lightning wallet will not be able to receive any payments while your Umbrel is offline.",
-        { title: "Are you sure?" }
-      );
+      const approved = window.confirm("Are you sure you want to shutdown your Umbrel?");
       if (!approved) {
         return;
       }
@@ -765,7 +751,7 @@ export default {
       }
       this.$bvToast.toast(toastText, toastOptions);
     },
-    rebootPrompt() {
+    async rebootPrompt() {
       // disable on testnet
       if (window.location.hostname === "testnet.getumbrel.com") {
         return this.$bvToast.toast('y u try to do dis on testnet :"(', {
@@ -778,24 +764,23 @@ export default {
       }
       // Reset any cached hasRebooted value from previous reboot
       this.$store.commit("system/setHasRebooted", false);
-      this.$refs["reboot-modal"].show();
-    },
-    async reboot(event) {
-      if (!this.hasRebooted) {
-        event.preventDefault();
-        try {
-          await this.$store.dispatch("system/reboot");
-        } catch (e) {
-          this.$bvToast.toast("Reboot failed", {
-            title: "Something went wrong and Umbrel was not able to reboot",
-            autoHideDelay: 3000,
-            variant: "danger",
-            solid: true,
-            toaster: "b-toaster-bottom-right"
-          });
-        }
+      const approved = window.confirm("Are you sure you want to restart your Umbrel?");
+      if (!approved) {
+        return;
       }
-    }
+      // reboot request
+      try {
+        await this.$store.dispatch("system/reboot");
+      } catch (e) {
+        this.$bvToast.toast("Reboot failed", {
+          title: "Something went wrong and Umbrel was not able to reboot",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
+    },
   },
   beforeDestroy() {
     if (this.pollUpdateStatus) {
