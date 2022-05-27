@@ -144,6 +144,15 @@ export default {
         this.isCorrectOtp = true;
         await delay(1000);
       }
+
+      try {
+        await Promise.all([
+          this.$store.dispatch("user/getInfo"),
+          this.$store.dispatch("apps/getInstalledApps")
+        ]);
+      } catch (error) {
+          // do nothing
+      }
       
       // redirect to home
       return this.$router.push(
