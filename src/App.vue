@@ -43,6 +43,9 @@
       <!-- component matched by the route will render here -->
       <router-view v-else></router-view>
     </transition>
+
+    <!-- Preload dock icons -->
+    <img v-for="image in ['home', 'settings', 'app-store', 'sun', 'moon', 'logout']" :key="image" class="d-none" :src="require(`@/assets/dock/${image}.png`)" alt="" draggable="false">
   </div>
 </template>
 
