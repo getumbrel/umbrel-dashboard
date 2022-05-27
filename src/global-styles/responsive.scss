@@ -116,6 +116,9 @@
             width: 100vw;
         }
     }
+    .app-suggestions-container {
+        width: 100% !important;
+    }
 }
 
 @include media-breakpoint-only(sm) {
@@ -163,5 +166,8 @@
         height: 140px;
         width: 140px;
         border-radius: 28px;
+    }
+    .app-suggestions-container {
+        max-width: 1200px !important;
     }
 }

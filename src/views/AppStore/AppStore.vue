@@ -180,32 +180,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.app-list-app {
-  border-bottom: solid 1px var(--app-store-app-border-color);
-  &:first-child {
-    padding-top: 0 !important;
-  }
-  &:last-child {
-    border-bottom: none;
-  }
-  .icon-arrow-container {
-    transform: translate3d(0, 0, 0);
-    transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    .icon-arrow {
-      width: 10px;
-      height: 17.86px;
-      path {
-        fill: var(--app-store-arrow-icon-color);
-      }
-    }
-  }
-  &:hover {
-    .icon-arrow-container {
-      transform: translate3d(6px, 0, 0);
-    }
-  }
-}
-
 .umbrel-dev-note {
   position: relative;
   overflow: visible;

@@ -54,14 +54,14 @@
         </div>
       </div>
 
-      <!-- No apps  -->
-      <div v-if="installedApps.length === 0">
-        <!-- TODO: no apps view -->
-      </div>
+      <!-- Show suggested apps if no apps are installed  -->
+      <transition name="app-drawer-transition" appear>
+        <app-suggestions v-if="appStore.length && noAppsInstalled && isOnHome" />
+      </transition>
 
       <!-- App drawer -->
       <transition name="app-drawer-transition" appear>
-        <app-drawer v-if="installedApps.length > 0 && isOnHome" :isTouchDevice="isTouchDevice" :isMobileDevice="isMobileDevice" />
+        <app-drawer v-if="installedApps.length && isOnHome" :isTouchDevice="isTouchDevice" :isMobileDevice="isMobileDevice" />
       </transition>
     </div>
   </div>
@@ -74,6 +74,7 @@ import WallpaperMenuToggleButton from '@/views/Home/WallpaperMenuToggleButton.vu
 import WallpaperMenu from '@/views/Home/WallpaperMenu.vue';
 import Notification from '@/views/Home/Notification.vue';
 import AppDrawer from '@/views/Home/AppDrawer.vue';
+import AppSuggestions from './AppSuggestions.vue';
 
 export default {
   data() {
@@ -93,7 +94,9 @@ export default {
   computed: {
     ...mapState({
       name: state => state.user.name,
+      noAppsInstalled: state => state.apps.noAppsInstalled,
       installedApps: (state) => state.apps.installed,
+      appStore: state => state.apps.store,
       availableUpdate: state => state.system.availableUpdate,
       ram: (state) => state.system.ram,
       storage: (state) => state.system.storage,
@@ -134,6 +137,7 @@ export default {
     WallpaperMenu,
     Notification,
     AppDrawer,
+    AppSuggestions,
   }
 };
 </script>

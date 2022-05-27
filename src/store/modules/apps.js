@@ -7,7 +7,8 @@ const state = () => ({
   store: [],
   installing: [],
   uninstalling: [],
-  updating: []
+  updating: [],
+  noAppsInstalled: false // we store this seperately instead of checking for empty installed array as that's the default state
 });
 
 // Functions to update the state directly
@@ -15,6 +16,7 @@ const mutations = {
   setInstalledApps(state, apps) {
     const alphabeticallySortedApps = apps.sort((a, b) => a.name.localeCompare(b.name));
     state.installed = alphabeticallySortedApps;
+    state.noAppsInstalled = !apps.length;
   },
   setAppStore(state, appStore) {
     state.store = appStore;
