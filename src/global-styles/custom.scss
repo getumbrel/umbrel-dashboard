@@ -16,6 +16,8 @@ body {
   --card-box-shadow-color: rgba(0, 0, 0, 0.05);
   --card-hover-box-shadow-color: rgba(0, 0, 0, 0.06);
 
+  --card-glass-background-color: rgba(175, 175, 175, 0.1);
+
   --text-color: #141821;
   --text-muted-color: rgba(108, 117, 125, 1);
   --text-title-color: #343a40;
@@ -80,6 +82,8 @@ body.dark-mode {
   --card-box-shadow-color: rgba(0, 0, 0, 0.1);
   --card-hover-box-shadow-color: rgba(0, 0, 0, 0.15);
 
+  --card-glass-background-color: rgba(175, 175, 175, 0.1);
+
   --text-color: rgba(255, 255, 255, 0.95);
   --text-muted-color: rgba(255, 255, 255, 0.4);
   --text-title-color: rgba(255, 255, 255, 0.92);
@@ -129,6 +133,40 @@ body.dark-mode {
   --toast-background-brightness: 0.9;
 }
 
+// replace glassmorphic styles with solid
+// colors for browsers that don't support
+// backdrop-filter (like Firefox and Tor Browser)
+@supports not (backdrop-filter: blur(10px)) {
+  body {
+    --content-background-color: rgb(247, 245, 245);
+
+    --dock-background-color: rgb(237, 238, 240);
+
+    --card-glass-background-color: rgba(106, 105, 105, 0.18);
+
+    --wallpaper-brightness: 1;
+    --wallpaper-container-background-color: rgba(253, 253, 253, 1);
+    --wallpaper-container-border-color: rgba(255, 255, 255, 0.5);
+    --wallpaper-close-button-background-color: rgba(0, 0, 0, 0.3);
+
+    --glass-button-background-color: rgba(255, 255, 255, 0.2);
+  }
+  body.dark-mode {
+    --content-background-color: rgb(26, 26, 28);
+
+    --dock-background-color: rgba(69, 69, 69, 1);
+
+    --card-glass-background-color: rgba(106, 105, 105, 0.18);
+
+    --wallpaper-brightness: 0.4;
+    --wallpaper-container-background-color: rgb(26, 26, 28);
+    --wallpaper-container-border-color: rgba(255, 255, 255, 0.1);
+
+    --glass-button-background-color: rgba(0, 0, 0, 0.05);
+    --glass-button-border-color: rgba(255, 255, 255, 0.05);
+    --glass-button-text-color: rgba(255, 255, 255, 1);
+  }
+}
 
 
 body {
@@ -797,14 +835,11 @@ svg.icon-clock {
 }
 
 .card-glass {
-  background: rgba(208, 208, 208, 0.1);
   box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.15);
   border-radius: 1rem;
-
-  background: rgba(175, 175, 175, 0.1);
+  background: var(--card-glass-background-color);
   box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(40px) brightness(1.15);
-  /* Note: backdrop-filter has minimal browser support */
   border-radius: 30px;
   border: solid 2px rgba(255, 255, 255, 0.1);
 }
@@ -842,14 +877,16 @@ svg.icon-clock {
     background: rgba(249, 249, 249, 0.2);
     border-color: rgba(255, 255, 255, 0.2);
   }
-  &::-webkit-input-placeholder, &:-ms-input-placeholder, &::placeholder { /* Edge */
-    color: rgba(255, 255, 255, 0.6);
-  }
   &:disabled {
     opacity: 0.6;
     background: rgba(249, 249, 249, 0.2);
     pointer-events: none;
   }
+}
+
+input.glass-input::placeholder, input.glass-input::-webkit-input-placeholder, input.glass-input::-moz-placeholder, input.glass-input:-moz-placeholder, input.glass-input:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.7) !important;
+  opacity: 1 !important;
 }
 
 .glass-input-group {
