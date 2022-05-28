@@ -93,7 +93,7 @@ export default {
         transition: transform 0.4s, box-shadow 0.4s ease;
         transform: scale3d(1, 1, 1);
         aspect-ratio: 4 / 3;
-        background: transparent;
+        background: rgba(0, 0, 0, 0.4);
         .wallpaper-img {
           width: 100%;
           height: 100%;

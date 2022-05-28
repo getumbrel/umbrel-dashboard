@@ -135,11 +135,11 @@
       </div>
     </div>
     <div class="app-gallery pt-1 pb-3 pt-sm-3 pb-sm-4 mb-2 mb-sm-3 px-1 px-sm-2 px-md-4">
-      <img
+      <app-store-app-gallery-image
         v-for="image in app.gallery"
-        class="app-gallery-screen mx-2"
         :key="image"
-        :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/${image}`"
+        :appId="app.id"
+        :image="image"
       />
       <div class="d-block" style="padding: 1px"></div>
     </div>
@@ -306,6 +306,7 @@ import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/Utility/InputCopy";
+import AppStoreAppGalleryImage from './AppStoreAppGalleryImage.vue';
 
 export default {
   data() {
@@ -411,6 +412,7 @@ export default {
   components: {
     CardWidget,
     InputCopy,
+    AppStoreAppGalleryImage,
   },
 };
 </script>

@@ -110,9 +110,8 @@
     .app-gallery {
         margin-left: -1rem;
         margin-right: -1rem;
-        .app-gallery-screen {
-            height: auto; // so it doesn't break on Chrome (i.e. show white padding on top/bottom)
-            height: intrinsic; // so it doesn't break on Safari (i.e. show white padding on top/bottom) https://stackoverflow.com/a/64108625
+        .app-gallery-image-container {
+            height: 62.5vw;
             width: 100vw;
         }
     }
@@ -123,8 +122,9 @@
 
 @include media-breakpoint-only(sm) {
     .app-gallery {
-        .app-gallery-screen {
+        .app-gallery-image-container {
             height: 280px;
+            width: 448px;
         }
     }
 }
@@ -136,8 +136,9 @@
         border-radius: 16px;
     }
     .app-gallery {
-        .app-gallery-screen {
+        .app-gallery-image-container {
             height: 300px;
+            width: 480px;
         }
     }
 }
