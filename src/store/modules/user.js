@@ -68,6 +68,15 @@ const actions = {
     }
   },
 
+  // We use this to logout the user on a failed refresh attempt.
+  // We don't want to do a full logout because that triggers a new API
+  // request which will fail the auth attempt and be retried after a token
+  // refresh causing an infinite loop of refresh/logout attempts
+  async softLogout({ commit }) {
+    commit("setJWT", "");
+    router.push({name: 'login'});
+  },
+
   async refreshJWT({ commit }) {
     const { data } = await API.post(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`

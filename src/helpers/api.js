@@ -36,7 +36,7 @@ axios.interceptors.response.use(
       error.config.url ===
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/refresh`
     ) {
-      await store.dispatch("user/logout");
+      await store.dispatch("user/softLogout");
       return Promise.reject(error);
     }
 
