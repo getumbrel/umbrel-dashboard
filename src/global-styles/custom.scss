@@ -7,8 +7,9 @@ body {
   --heading-on-wallpaper-color: rgba(255, 255, 255, 1);
   --text-on-wallpaper-color: rgba(255, 255, 255, 1);
 
-  --content-background-color: rgba(230, 230, 230, 0.75);
-  --content-background-brightness: 2;
+  --app-suggestions-container-background-color: rgba(255, 255, 255, 0.75);
+
+  --content-background-color: rgba(255, 255, 255, 0.85);
   --content-close-button-background-color: rgba(0, 0, 0, 0.3);
 
   --card-header-text-color: rgba(108, 117, 125, 0.5);
@@ -30,7 +31,7 @@ body {
   --app-store-app-icon-border-color: #e1e6ea;
   --app-store-app-gallery-image-box-shadow-color: rgba(0, 0, 0, 0.14);
 
-  --dock-background-color: rgba(217, 217, 217, 0.24);
+  --dock-background-color: rgba(217, 217, 217, 0.4);
   --dock-border-color: rgba(0, 0, 0, 0.1);
   --dock-divider-color: rgba(0, 0, 0, 0.1);
 
@@ -54,7 +55,7 @@ body {
   --modal-glass-background: rgba(255, 255, 255, 0.8);
 
   --glass-alert-text-color: rgba(0, 0, 0, 0.6);
-  --glass-alert-background-color: rgba(255, 255, 255, 0.4);
+  --glass-alert-background-color: rgba(255, 255, 255, 0.6);
   --glass-alert-border-color: rgba(0, 0, 0, 0.05);
   --glass-alert-button-background-color: rgba(0, 0, 0, 0.4);
   --glass-alert-button-text-color: rgba(255, 255, 255, 1);
@@ -63,8 +64,7 @@ body {
 
   --input-copy-border-color: rgba(0, 0, 0, 0.2);
 
-  --toast-text-color: #0006;
-  --toast-background-brightness: 1.5;
+  --toast-text-color: #000000b3;
 }
 
 body.dark-mode {
@@ -73,8 +73,9 @@ body.dark-mode {
   --heading-on-wallpaper-color: rgba(255, 255, 255, 1);
   --text-on-wallpaper-color: rgba(255, 255, 255, 1);
 
-  --content-background-color: rgba(0, 0, 0, 0.5);
-  --content-background-brightness: 1;
+  --app-suggestions-container-background-color: rgba(0, 0, 0, 0.75);
+
+  --content-background-color: rgba(0, 0, 0, 0.66);
   --content-close-button-background-color: rgba(255, 255, 255, 0.25);
 
   --card-header-text-color: rgba(255, 255, 255, 0.3);
@@ -93,10 +94,10 @@ body.dark-mode {
 
   --app-store-arrow-icon-color: #7F8183;
   --app-store-app-border-color: rgba(255, 255, 255, 0.06);
-  --app-store-app-icon-border-color: rgba(255, 255, 255, 0.07);
+  --app-store-app-icon-border-color: 0000001c;
   --app-store-app-gallery-image-box-shadow-color: rgba(0, 0, 0, 0.5);
 
-  --dock-background-color: rgba(69, 69, 69, 0.5);
+  --dock-background-color: rgba(69, 69, 69, 0.4);
   --dock-border-color: rgba(255, 255, 255, 0.1);
   --dock-divider-color: rgba(255, 255, 255, 0.1);
 
@@ -121,16 +122,15 @@ body.dark-mode {
 
   --glass-alert-text-color: rgba(255, 255, 255, 0.9);
   --glass-alert-background-color: rgba(0, 0, 0, 0.5);
-  --glass-alert-border-color: rgba(0, 0, 0, 0.05);
-  --glass-alert-button-background-color: rgba(255, 255, 255, 0.8);
+  --glass-alert-border-color: rgba(255, 255, 255, 0.05);
+  --glass-alert-button-background-color: rgba(255, 255, 255, 0.7);
   --glass-alert-button-text-color: rgba(0, 0, 0, 1);
   --glass-alert-button-hover-background-color: rgba(255, 255, 255, 1);
   --glass-alert-button-hover-text-color: rgba(0, 0, 0, 1);
 
   --input-copy-border-color: rgba(255, 255, 255, 0.2);
 
-  --toast-text-color: #ffffffe0;
-  --toast-background-brightness: 0.9;
+  --toast-text-color: #ffffffcf;
 }
 
 // replace glassmorphic styles with solid
@@ -463,7 +463,7 @@ a {
     .toast {
         border-radius: 0.75rem;
         outline: none !important;
-        backdrop-filter: blur(16px) brightness(var(--toast-background-brightness));
+        backdrop-filter: blur(16px) saturate(150%);
         .toast-header {
             padding: 1rem 1rem 0 1.25rem;
             background: none;
@@ -936,7 +936,7 @@ svg.icon-clock {
   border-radius: 1rem;
   background: var(--card-glass-background-color);
   box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(40px) brightness(1.15);
+  backdrop-filter: blur(40px) saturate(120%);
   border-radius: 30px;
   border: solid 2px rgba(255, 255, 255, 0.1);
 }
@@ -1024,7 +1024,7 @@ input.glass-input::placeholder, input.glass-input::-webkit-input-placeholder, in
   color: var(--glass-alert-text-color);
   background: var(--glass-alert-background-color);
   border-color: var(--glass-alert-border-color);
-  backdrop-filter: blur(10px) brightness(1.2);
+  backdrop-filter: blur(10px) saturate(180%);
   border-radius: 0.25rem;
   &.alert-sm {
     max-width: 500px;
@@ -1081,7 +1081,7 @@ input.glass-input::placeholder, input.glass-input::-webkit-input-placeholder, in
   @supports (-webkit-appearance: none) {
     .modal-content {
       background-color: var(--modal-glass-background);
-      backdrop-filter: blur(70px) brightness(2);
+      backdrop-filter: blur(60px) saturate(200%);
     }
   }
 }

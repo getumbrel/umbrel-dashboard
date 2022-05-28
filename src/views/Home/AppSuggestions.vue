@@ -117,10 +117,9 @@ export default {
   width: calc(100% - 20px);
   max-width: 700px;
   border-radius: 16px;
-  background: var(--content-background-color);
-  background-color: var(--content-background-color);
+  background-color: var(--app-suggestions-container-background-color);
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(60px) brightness(var(--content-background-brightness));
+  backdrop-filter: blur(60px) saturate(150%);
 }
 .card-app-list {
   max-width: 400px;

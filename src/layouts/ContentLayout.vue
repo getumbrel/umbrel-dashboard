@@ -42,7 +42,7 @@ export default {
   overflow-y: auto;
   background-color: var(--content-background-color);
   box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(60px) brightness(var(--content-background-brightness));
+  backdrop-filter: blur(60px) saturate(200%);
   z-index: 99;
 
   // optimize performance

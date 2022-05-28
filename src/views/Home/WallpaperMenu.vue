@@ -54,7 +54,7 @@ export default {
   top: 0;
   right: 0;
   background-color: var(--wallpaper-container-background-color);
-  backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px) saturate(180%);
   box-shadow: -10px 0px 100px rgba(0, 0, 0, 0.3);
   border-left: solid 2px var(--wallpaper-container-border-color);
   overflow-y: scroll;

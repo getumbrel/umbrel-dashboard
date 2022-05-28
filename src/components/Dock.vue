@@ -173,7 +173,7 @@ export default {
     background-color: var(--dock-background-color);
     border: 1px solid var(--dock-border-color);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(30px) brightness(1.1);
+    backdrop-filter: blur(20px) saturate(180%);
     .divider {
       height: 60px;
       width: 2px;
@@ -203,7 +203,7 @@ export default {
     border-radius: 0 7px 7px 0;
     background-color: var(--dock-background-color);
     border: 1px solid var(--dock-border-color);
-    backdrop-filter: blur(40px) brightness(0.9);
+    backdrop-filter: blur(20px) saturate(180%);
     box-shadow: 4px 0 6px rgb(0 0 0 / 10%);
     transition: transform 0.3s ease;
     svg {
