@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
-    <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo-loading" draggable="false" />
+    <logo class="mb-5 logo-loading" />
 
     <!-- <b-spinner class="my-4" variant="primary"></b-spinner> -->
     <b-progress
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import Logo from '@/components/Logo.vue';
+
 export default {
   data() {
     return {};
@@ -21,7 +23,9 @@ export default {
   props: { progress: Number },
   created() {},
   methods: {},
-  components: {}
+  components: {
+    Logo,
+  }
 };
 </script>
 

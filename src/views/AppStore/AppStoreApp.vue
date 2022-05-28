@@ -306,7 +306,7 @@ import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/Utility/InputCopy";
-import AppStoreAppGalleryImage from './AppStoreAppGalleryImage.vue';
+import AppStoreAppGalleryImage from "@/views/AppStore/AppStoreAppGalleryImage";
 
 export default {
   data() {

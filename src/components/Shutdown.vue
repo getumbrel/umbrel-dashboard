@@ -1,11 +1,9 @@
 <template>
   <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
-    <img
-      alt="Umbrel"
-      src="@/assets/logo.svg"
+    <logo
       class="mb-5 logo"
       :class="hasShutdown ? 'logo-gray' : ''"
-    />
+     />
     <span class="text-white w-75 text-center">
       <small
         v-if="hasShutdown"
@@ -22,13 +20,17 @@
 </template>
 
 <script>
+import Logo from '@/components/Logo.vue';
+
 export default {
   data() {
     return {};
   },
   created() {},
   methods: {},
-  components: {},
+  components: {
+    Logo,
+  },
   props: {
     hasShutdown: Boolean,
     shuttingDown: Boolean,

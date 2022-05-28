@@ -3,7 +3,7 @@
 
     <div v-if="step === 0" class="d-flex flex-column align-items-center justify-content-center p-2 min-vh100">
       <div class="w-75 d-flex flex-column align-items-center justify-content-center">
-        <img alt="Umbrel" src="@/assets/logo.svg" class="mb-3 logo" draggable="false" />
+        <logo class="mb-3 logo" />
         <h1 class="text-center text-white text-lowercase mb-2">Welcome to Umbrel</h1>
         <p class="text-center text-white">Your personal server is now ready to setup.</p>
         <transition name="slide-up" appear>
@@ -17,9 +17,8 @@
     </div>
     
     <div v-else class="d-flex flex-column align-items-center justify-content-center min-vh100">
-      <img alt="Umbrel" src="@/assets/logo.svg" class="ml-3 mt-3 logo logo-small d-none d-sm-block" draggable="false" />
-      <img alt="Umbrel" src="@/assets/logo.svg" class="logo logo-xs d-sm-none" draggable="false" />
-
+      <logo class="ml-3 mt-3 logo logo-small d-none d-sm-block" />
+      <logo class="logo logo-xs d-sm-none" />
         <div v-if="step === 1" :key="1" class="card-glass px-3 px-sm-4 pt-5 pb-5 mt-5 mt-sm-0 mx-2">
           <h3 class="text-center text-white mb-2">Create your account</h3>
           <p class="text-center text-white mb-2">Your account information is stored only on your Umbrel. Please make sure to backup your password safely as there is no way to reset it.</p>
@@ -93,6 +92,7 @@ import VueConfetti from "vue-confetti";
 import { mapState } from "vuex";
 
 import InputPassword from "@/components/Utility/InputPassword";
+import Logo from '@/components/Logo.vue';
 
 Vue.use(VueConfetti);
 
@@ -191,6 +191,7 @@ export default {
   },
   components: {
     InputPassword,
+    Logo,
   }
 };
 </script>

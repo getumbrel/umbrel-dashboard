@@ -8,7 +8,7 @@
     <transition name="loading" mode>
       <div v-if="isIframe">
         <div class="d-flex flex-column align-items-center justify-content-center min-vh100 p-2">
-          <img alt="Umbrel" src="@/assets/logo.svg" class="mb-5 logo" />
+          <logo class="mb-5 logo" />
           <span class="text-muted w-75 text-center">
             <small>For security reasons Umbrel cannot be embedded in an iframe.</small>
           </span>
@@ -58,6 +58,7 @@ import { mapState } from "vuex";
 import delay from "@/helpers/delay";
 import Shutdown from "@/components/Shutdown";
 import Loading from "@/components/Loading";
+import Logo from '@/components/Logo.vue';
 
 export default {
   name: "App",
@@ -226,7 +227,8 @@ export default {
   },
   components: {
     Loading,
-    Shutdown
+    Shutdown,
+    Logo,
   }
 };
 </script>

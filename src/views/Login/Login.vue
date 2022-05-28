@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column align-items-center justify-content-center min-vh100 login-container p-2">
-    <img alt="Umbrel" src="@/assets/logo.svg" class="mb-3 logo" draggable="false" />
+    <logo class="mb-3 logo" />
     <h1 class="text-center text-white text-lowercase mb-1">Welcome back</h1>
     <p v-if="!showOtpInput" class="text-white w-75 text-center">Enter the password to login to your Umbrel</p>
     <p v-else class="text-white w-75 text-center">Enter your two-factor authentication code</p>
@@ -68,6 +68,7 @@ import delay from "@/helpers/delay";
 
 import InputPassword from "@/components/Utility/InputPassword";
 import InputOtpToken from "@/components/Utility/InputOtpToken";
+import Logo from '@/components/Logo.vue';
 
 export default {
   data() {
@@ -169,7 +170,8 @@ export default {
   },
   components: {
     InputPassword,
-    InputOtpToken
+    InputOtpToken,
+    Logo
   }
 };
 </script>
