@@ -84,7 +84,7 @@
             padding-bottom: 40px !important;
         }
     }
-    .app-icon {
+    .app-icon, .installed-app-icon-container {
         height: 66px !important;
         width: 66px !important;
         border-radius: 16px !important;
@@ -122,11 +122,6 @@
 }
 
 @include media-breakpoint-only(sm) {
-    // .app-icon {
-    //     height: 70px;
-    //     width: 70px;
-    //     border-radius: 14px;
-    // }
     .app-gallery {
         .app-gallery-screen {
             height: 280px;
@@ -135,7 +130,7 @@
 }
 
 @include media-breakpoint-only(md) {
-    .app-icon {
+    .app-icon, .installed-app-icon-container {
         height: 80px;
         width: 80px;
         border-radius: 16px;
@@ -154,7 +149,7 @@
 }
 
 @include media-breakpoint-only(lg) {
-    .app-icon {
+    .app-icon, .installed-app-icon-container {
         height: 80px;
         width: 80px;
         border-radius: 16px;
