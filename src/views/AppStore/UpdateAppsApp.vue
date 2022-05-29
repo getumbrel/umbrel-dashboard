@@ -58,10 +58,22 @@ export default {
     }
   },
   methods: {
-    updateApp: function() {
+    updateApp: async function() {
       if(this.isUpdating) return false;
 
-      this.$store.dispatch("apps/update", this.app.id);
+      try {
+        await this.$store.dispatch("apps/update", this.app.id);
+      } catch(error) {
+        if (error.response && error.response.data) {
+          return this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right",
+          });
+        }
+      }
     }
   }
 };

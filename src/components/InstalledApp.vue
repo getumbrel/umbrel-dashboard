@@ -183,9 +183,22 @@ export default {
       }
       return this.showUninstallConfirmation = true;
     },
-    uninstall() {
-      this.$store.dispatch("apps/uninstall", this.app.id);
-      this.showUninstallConfirmation = false;
+    async uninstall() {
+      try {
+        this.showUninstallConfirmation = false;
+        await this.$store.dispatch("apps/uninstall", this.app.id);
+      }
+      catch (error) {
+        if (error.response && error.response.data) {
+          this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right",
+          });
+        }
+      }
     },
     openApp(event) {
       if (this.torOnly && window.location.origin.indexOf(".onion") < 0) {

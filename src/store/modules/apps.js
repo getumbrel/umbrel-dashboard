@@ -78,16 +78,9 @@ const actions = {
         `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/update`
       );
     } catch (error) {
-      if (error.response && error.response.data) {
-        commit("removeUpdatingApp", appId);
-        return this.$bvToast.toast(error.response.data, {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        });
-      }
+      commit("removeUpdatingApp", appId);
+
+      throw error;
     }
 
     const poll = window.setInterval(async () => {
@@ -101,21 +94,15 @@ const actions = {
   },
   async uninstall({ state, commit, dispatch }, appId) {
     commit("addUninstallingApp", appId);
+
     try {
       await API.post(
         `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/uninstall`
       );
-    } catch (error) {
-      if (error.response && error.response.data) {
-        commit("removeUninstallingApp", appId);
-        return this.$bvToast.toast(error.response.data, {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        });
-      }
+    } catch(error) {
+      commit("removeUninstallingApp", appId);
+
+      throw error;
     }
 
     const poll = window.setInterval(async () => {
@@ -134,16 +121,9 @@ const actions = {
         `${process.env.VUE_APP_MANAGER_API_URL}/v1/apps/${appId}/install`
       );
     } catch (error) {
-      if (error.response && error.response.data) {
-        commit("removeInstallingApp", appId);
-        return this.$bvToast.toast(error.response.data, {
-          title: "Error",
-          autoHideDelay: 3000,
-          variant: "danger",
-          solid: true,
-          toaster: "b-toaster-bottom-right",
-        });
-      }
+      commit("removeInstallingApp", appId);
+
+      throw error;
     }
 
     const poll = window.setInterval(async () => {

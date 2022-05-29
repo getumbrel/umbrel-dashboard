@@ -368,16 +368,28 @@ export default {
     goBack() {
       return this.$router.back();
     },
-    installApp({confirmedPermissions = false}) {
+    async installApp({confirmedPermissions = false}) {
       if (this.appDependencies.length) {
         if (!confirmedPermissions) {
           return this.$bvModal.show('app-dependencies-modal');
         }
         this.$bvModal.hide('app-dependencies-modal');
       }
-      this.$store.dispatch("apps/install", this.app.id);
-      this.isOffline = true;
-      this.pollOfflineApp();
+      try {
+        await this.$store.dispatch("apps/install", this.app.id);
+        this.isOffline = true;
+        this.pollOfflineApp();
+      } catch (error) {
+        if (error.response && error.response.data) {
+          return this.$bvToast.toast(error.response.data, {
+            title: "Error",
+            autoHideDelay: 3000,
+            variant: "danger",
+            solid: true,
+            toaster: "b-toaster-bottom-right",
+          });
+        }
+      }
     },
     openApp(event) {
       if (this.app.torOnly && window.location.origin.indexOf(".onion") < 0) {
