@@ -297,6 +297,7 @@ export default {
     border-radius: 50%;
     box-shadow: -4px 4px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.4s, opacity 0.4s ease;
+    z-index: 2;
     svg {
       position: absolute;
       top: 50%;
