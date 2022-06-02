@@ -4,8 +4,8 @@
       :href="url"
       target="_blank"
       class="d-block mb-1 mb-sm-2 installed-app-link"
-      :class="isUninstalling || isOffline ? 'cursor-wait' : ''"
-      :disabled="isUninstalling || isOffline"
+      :class="isUninstalling ? 'cursor-wait' : ''"
+      :disabled="isUninstalling"
       v-on:click="openApp($event)"
       >
       <div class="installed-app-icon-container">
@@ -206,7 +206,7 @@ export default {
         alert(`${this.app.name} can only be used over Tor. Please access your Umbrel in a Tor browser on your remote access URL (Settings > Account > Remote access) to open this app.`);
         return;
       }
-      if (this.isUninstalling || this.isOffline) {
+      if (this.isUninstalling) {
         event.preventDefault();
         return;
       }
