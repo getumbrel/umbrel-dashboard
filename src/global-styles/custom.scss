@@ -34,6 +34,7 @@ body {
   --dock-background-color: rgba(217, 217, 217, 0.4);
   --dock-border-color: rgba(0, 0, 0, 0.1);
   --dock-divider-color: rgba(0, 0, 0, 0.1);
+  --dock-left-open-button-icon-color: rgba(0, 0, 0, 0.5);
 
   --wallpaper-brightness: 1;
   --wallpaper-container-background-color: rgba(255, 255, 255, 0.4);
@@ -100,6 +101,7 @@ body.dark-mode {
   --dock-background-color: rgba(69, 69, 69, 0.4);
   --dock-border-color: rgba(255, 255, 255, 0.1);
   --dock-divider-color: rgba(255, 255, 255, 0.1);
+  --dock-left-open-button-icon-color: rgba(255, 255, 255, 0.8);
 
   --wallpaper-brightness: 0.4;
   --wallpaper-container-background-color: rgba(0, 0, 0, 0.4);

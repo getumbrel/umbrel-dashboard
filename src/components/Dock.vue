@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- hidden background to register click to close left dock -->
-    <div v-if="position === 'left' && showDock" class="dock-left-close-background" @click="toggleDock"></div>
 
     <transition :name="position === 'left' ? 'dock-left-transition' : 'dock-bottom-transition'" appear>
 
@@ -203,13 +201,14 @@ export default {
     border-radius: 0 7px 7px 0;
     background-color: var(--dock-background-color);
     border: 1px solid var(--dock-border-color);
+    border-left: none;
     backdrop-filter: blur(20px) saturate(180%);
-    box-shadow: 4px 0 6px rgb(0 0 0 / 10%);
+    box-shadow: 4px 0 6px rgb(0 0 0 / 5%);
     transition: transform 0.3s ease;
     svg {
       transition: transform 0.3s ease;
       path {
-        stroke: rgba(255, 255, 255, 1);
+        stroke: var(--dock-left-open-button-icon-color);
         stroke-width: 3px;
       }
     }
@@ -217,8 +216,6 @@ export default {
   &.dock-left-container-open {
     transform: translate3d(0, -50%, 0);
     .dock-left-open-button {
-      transform: translate3d(-100%, -50%, 0);
-      opacity: 0;
       svg {
         transform: scale3d(-1, 1, 1);
       }
