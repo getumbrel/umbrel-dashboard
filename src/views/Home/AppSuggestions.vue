@@ -1,64 +1,60 @@
 <template>
-  <div>
-    <div class="app-suggestions-container d-flex flex-column align-items-center mx-auto px-2 py-4 px-sm-4">
-      <h2 class="app-suggestions-heading text-center mb-1">Install your first app</h2>
-      <b-row>
-        <b-col
-          v-for="suggestion in suggestions" 
-          :key="suggestion.title"
-          lg="4"
+  <div class="app-suggestions-container d-flex flex-column align-items-center mx-auto px-2 py-4 px-sm-4 mb-5">
+    <h2 class="app-suggestions-heading text-center mb-1">Install your first app</h2>
+    <b-row>
+      <b-col
+        v-for="suggestion in suggestions" 
+        :key="suggestion.title"
+        lg="4"
+      >
+        <h4 class="font-weight-normal text-center suggestion-title mb-2 mt-3">{{ suggestion.title }}</h4>
+        <card-widget
+          class="pt-4 pb-2 d-block mx-auto card-app-list"
         >
-          <h4 class="font-weight-normal text-center suggestion-title mb-2 mt-3">{{ suggestion.title }}</h4>
-          <card-widget
-            class="pt-4 pb-2 d-block mx-auto card-app-list"
+          <router-link
+            v-for="appId in suggestion.apps"
+            :key="appId"
+            :to="{name: 'app-store-app', params: {id: appId}}"
+            class="app-list-app d-flex justify-content-between align-items-center p-3"
           >
-            <router-link
-              v-for="appId in suggestion.apps"
-              :key="appId"
-              :to="{name: 'app-store-app', params: {id: appId}}"
-              class="app-list-app d-flex justify-content-between align-items-center p-3"
-            >
-              <div class="d-flex">
-                <div class="d-block">
-                  <img
-                    class="app-icon mr-2 mr-lg-3"
-                    :src="`https://static.getumbrel.com/umbrel-apps-gallery/${appId}/icon.svg`"
-                    draggable="false"
-                  />
-                </div>
-                <div class="d-flex justify-content-center flex-column">
-                  <h4 class="app-name text-title-color mb-1">
-                    {{ getAppName(appId) }}
-                  </h4>
-                  <p class="app-tagline text-muted mb-0">
-                    {{ getAppTagline(appId) }}
-                  </p>
-                </div>
+            <div class="d-flex">
+              <div class="d-block">
+                <img
+                  class="app-icon mr-2 mr-lg-3"
+                  :src="`https://static.getumbrel.com/umbrel-apps-gallery/${appId}/icon.svg`"
+                  draggable="false"
+                />
               </div>
-              <div class="ml-2 icon-arrow-container">
-                <svg
-                  viewBox="0 0 14 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="icon-arrow"
-                >
-                  <path
-                    d="M0.512563 3.0484C-0.170855 2.35104 -0.170855 1.22039 0.512563 0.523023C1.19598 -0.174341 2.30402 -0.174341 2.98744 0.523023L13.4874 11.2373C14.1499 11.9133 14.1731 13.0019 13.54 13.7066L3.91502 24.4209C3.26193 25.1479 2.15494 25.197 1.44248 24.5306C0.730023 23.8642 0.681893 22.7346 1.33498 22.0076L9.82776 12.5537L0.512563 3.0484Z"
-                    fill="#C3C6D1"
-                  />
-                </svg>
+              <div class="d-flex justify-content-center flex-column">
+                <h4 class="app-name text-title-color mb-1">
+                  {{ getAppName(appId) }}
+                </h4>
+                <p class="app-tagline text-muted mb-0">
+                  {{ getAppTagline(appId) }}
+                </p>
               </div>
-            </router-link>
-          </card-widget>
-        </b-col>
-      </b-row>
-      <router-link
-        :to="{name: 'app-store'}"
-        class="btn btn-sm rounded-pill btn-success text-uppercase mt-3 font-weight-bold px-3 py-2 mx-auto text-center"
-      >View more in app store</router-link>
-    </div>
-    <!-- Spacer for scroll -->
-    <div class="p-2 p-sm-4 mb-sm-5" />
+            </div>
+            <div class="ml-2 icon-arrow-container">
+              <svg
+                viewBox="0 0 14 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon-arrow"
+              >
+                <path
+                  d="M0.512563 3.0484C-0.170855 2.35104 -0.170855 1.22039 0.512563 0.523023C1.19598 -0.174341 2.30402 -0.174341 2.98744 0.523023L13.4874 11.2373C14.1499 11.9133 14.1731 13.0019 13.54 13.7066L3.91502 24.4209C3.26193 25.1479 2.15494 25.197 1.44248 24.5306C0.730023 23.8642 0.681893 22.7346 1.33498 22.0076L9.82776 12.5537L0.512563 3.0484Z"
+                  fill="#C3C6D1"
+                />
+              </svg>
+            </div>
+          </router-link>
+        </card-widget>
+      </b-col>
+    </b-row>
+    <router-link
+      :to="{name: 'app-store'}"
+      class="btn btn-sm rounded-pill btn-success text-uppercase mt-3 font-weight-bold px-3 py-2 mx-auto text-center"
+    >View more in app store</router-link>
   </div>
 </template>
 
@@ -107,7 +103,6 @@ export default {
 
 <style lang="scss" scoped>
 .app-suggestions-container {
-  overflow: hidden;
   .app-suggestions-heading {
     opacity: 0.8;
   }
