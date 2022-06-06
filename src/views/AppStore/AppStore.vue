@@ -74,7 +74,7 @@
         <p class="text-muted mb-3">
           Use any programming language, database or framework to build your app for Umbrel.
         </p>
-        <b-link class="primary-link" href="https://github.com/getumbrel/umbrel/blob/master/apps/README.md" target="_blank">Learn more</b-link>
+        <b-link class="primary-link" href="https://github.com/getumbrel/umbrel-apps/blob/master/README.md" target="_blank">Learn more</b-link>
       </div>
       </card-widget>
     </div>
