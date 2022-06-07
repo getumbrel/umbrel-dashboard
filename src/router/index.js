@@ -28,6 +28,12 @@ const routes = [
         component: Start
       },
       {
+        path: "/dashboard",
+        meta: { requiresAuth: false },
+        name: "dashboardObselete",
+        redirect: { name: 'home' }
+      },
+      {
         path: "/login",
         name: "login",
         component: Login,
