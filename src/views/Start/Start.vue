@@ -102,7 +102,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
-      step: 2,
+      step: 0,
       isRegistering: false,
       nameError: "",
       passwordError: "",
@@ -111,7 +111,7 @@ export default {
   },
   computed: {
     ...mapState({
-      registered: state => !state.user.registered,
+      registered: state => state.user.registered,
     })
   },
   methods: {
