@@ -73,7 +73,7 @@
           <h3 class="text-center text-white mb-2">Congratulations 🎉</h3>
           <p class="text-center text-white mb-2">That's it — you're all set.</p>
           <div class="form-container mt-4 d-flex flex-column form-container w-100 align-items-center">
-            <p class="opacity-80 text-center text-white">By clicking next, you agree to the <a class="glass-link" href="#">privacy policy</a> and <a class="glass-link" href="#">terms of service</a>, and understand that Umbrel is in beta and shouldn’t be considered secure.</p>
+            <p class="opacity-80 text-center text-white">By clicking next, you agree that Umbrel is in beta and should not be considered secure.</p>
           </div>
           <div class="d-flex flex-column align-items-center">
           <b-button
@@ -102,7 +102,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
-      step: 0,
+      step: 2,
       isRegistering: false,
       nameError: "",
       passwordError: "",
@@ -111,7 +111,7 @@ export default {
   },
   computed: {
     ...mapState({
-      registered: state => state.user.registered,
+      registered: state => !state.user.registered,
     })
   },
   methods: {
