@@ -27,7 +27,7 @@
           <div class="d-block">
             <img
               class="app-icon app-icon-lg mr-2 mr-sm-3 align-self-top"
-              :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
               draggable="false"
             />
           </div>
@@ -179,7 +179,7 @@
               >
                 <div class="d-flex align-items-center">
                   <img
-                    :src="`https://static.getumbrel.com/umbrel-apps-gallery/${dependency.id}/icon.svg`"
+                    :src="`https://getumbrel.github.io/umbrel-apps-gallery/${dependency.id}/icon.svg`"
                     class="mr-2 app-icon app-icon-xs"
                   />
                   <span class="">{{ dependency.name }}</span>
@@ -252,7 +252,7 @@
         >
           <div class="d-flex align-items-center">
             <img
-              :src="`https://static.getumbrel.com/umbrel-apps-gallery/${dependency.id}/icon.svg`"
+              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${dependency.id}/icon.svg`"
               class="mr-2 app-icon app-icon-xs"
             />
             <span class="">{{

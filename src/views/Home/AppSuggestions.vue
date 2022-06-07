@@ -21,7 +21,7 @@
               <div class="d-block">
                 <img
                   class="app-icon mr-2 mr-lg-3"
-                  :src="`https://static.getumbrel.com/umbrel-apps-gallery/${appId}/icon.svg`"
+                  :src="`https://getumbrel.github.io/umbrel-apps-gallery/${appId}/icon.svg`"
                   draggable="false"
                 />
               </div>

@@ -13,7 +13,7 @@
           class="installed-app-icon app-icon"
           :class="{'d-none': !iconLoaded, 'dim-in-out': isUninstalling || isOffline}"
           :alt="app.name"
-          :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+          :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
           draggable="false"
           @load="onIconLoad"
         />
@@ -67,7 +67,7 @@
           >
             <div class="d-flex align-items-center">
               <img
-                :src="`https://static.getumbrel.com/umbrel-apps-gallery/${dependant.id}/icon.svg`"
+                :src="`https://getumbrel.github.io/umbrel-apps-gallery/${dependant.id}/icon.svg`"
                 class="mr-2 app-icon app-icon-xs"
               />
               <span class="">{{ dependant.name }}</span>

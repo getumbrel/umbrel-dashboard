@@ -4,12 +4,12 @@
   >
     <img
       class="app-gallery-image-preloader"
-      :src="`https://static.getumbrel.com/umbrel-apps-gallery/${appId}/icon.svg`"
+      :src="`https://getumbrel.github.io/umbrel-apps-gallery/${appId}/icon.svg`"
     />
     <img
       :class="!this.imageLoaded ? 'loading' : ''"
       class="app-gallery-image"
-      :src="`https://static.getumbrel.com/umbrel-apps-gallery/${appId}/${image}`"
+      :src="`https://getumbrel.github.io/umbrel-apps-gallery/${appId}/${image}`"
       @load="onGalleryImageLoad"
     />
   </div>

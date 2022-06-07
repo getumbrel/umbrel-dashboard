@@ -233,7 +233,7 @@
       <img
         v-for="app in appStore"
         :key="app.id"
-        :src="`https://static.getumbrel.com/umbrel-apps-gallery/${app.id}/icon.svg`"
+        :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
         class="d-none"
       />
     </div>
