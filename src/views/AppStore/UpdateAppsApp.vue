@@ -1,38 +1,41 @@
 <template>
   <transition name="app-updated-transition" appear>
-    <div class="d-flex w-100 justify-content-between align-items-center py-3 px-3 px-lg-4">
-      <div class="d-flex align-items-center">
-        <div class="app-icon-container mr-2 mr-lg-2">
-          <img
-            class="app-icon"
-            :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
-          />
+    <div class="py-3 px-3 px-lg-4">
+      <div class="d-flex w-100 justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="app-icon-container mr-2 mr-lg-2">
+            <img
+              class="app-icon"
+              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+            />
+          </div>
+          <div class="d-flex flex-column">
+            <h4 class="app-name text-title-color mb-1 pr-1">
+              {{ app.name }}
+            </h4>
+            <span class="text-muted mb-0">
+              Version {{ app.version }}
+            </span>
+          </div>
         </div>
-        <div class="d-flex flex-column">
-          <h4 class="app-name text-title-color mb-1 pr-1">
-            {{ app.name }}
-          </h4>
-          <span class="text-muted mb-0">
-            {{ app.version }}
+        <div class="position-relative">
+          <div class="btn-update-container">
+            <b-button 
+              variant="success"
+              size="sm"
+              @click="updateApp()"
+              class="px-2 btn-update"
+              :class="{ 'fade-in-out': isUpdating }"
+              :disabled="isUpdating"
+            >{{ isUpdating ? "Updating..." : "Update" }}</b-button>
+          </div>
+          <span class="text-updated w-100 d-flex align-items-center justify-content-end">
+            <b-icon icon="check-circle-fill" variant="success"></b-icon>
+            <small class="ml-1">Updated</small>
           </span>
         </div>
       </div>
-      <div class="position-relative">
-        <div class="btn-update-container">
-          <b-button 
-            variant="success"
-            size="sm"
-            @click="updateApp()"
-            class="px-2 btn-update"
-            :class="{ 'fade-in-out': isUpdating }"
-            :disabled="isUpdating"
-          >{{ isUpdating ? "Updating..." : "Update" }}</b-button>
-        </div>
-        <span class="text-updated w-100 d-flex align-items-center justify-content-end">
-          <b-icon icon="check-circle-fill" variant="success"></b-icon>
-          <small class="ml-1">Updated</small>
-        </span>
-      </div>
+      <release-notes v-if="app.releaseNotes" :text="app.releaseNotes" />
     </div>
   </transition>
 </template>
@@ -41,6 +44,7 @@
 
 <script>
 import { mapState } from "vuex";
+import ReleaseNotes from "@/views/AppStore/ReleaseNotes";
 
 export default {
   props: {
@@ -75,6 +79,9 @@ export default {
         }
       }
     }
+  },
+  components: {
+    ReleaseNotes,
   }
 };
 </script>

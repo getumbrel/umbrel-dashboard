@@ -148,6 +148,11 @@
         <card-widget header="About this app">
           <div class="px-3 px-lg-4 pb-4">
             <p class="text-newlines">{{ app.description }}</p>
+            <div v-if="app.releaseNotes" class="release-notes-container mt-4 pt-3">
+              <h3 class="mb-1">What's new</h3>
+              <span class="text-muted d-block mb-3">Version {{ app.version }}</span>
+              <release-notes :text="app.releaseNotes" />
+            </div>
           </div>
         </card-widget>
       </b-col>
@@ -307,6 +312,7 @@ import delay from "@/helpers/delay";
 import CardWidget from "@/components/CardWidget";
 import InputCopy from "@/components/Utility/InputCopy";
 import AppStoreAppGalleryImage from "@/views/AppStore/AppStoreAppGalleryImage";
+import ReleaseNotes from "@/views/AppStore/ReleaseNotes";
 
 export default {
   data() {
@@ -425,9 +431,13 @@ export default {
     CardWidget,
     InputCopy,
     AppStoreAppGalleryImage,
+    ReleaseNotes,
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.release-notes-container {
+  border-top: solid 1px var(--app-store-app-border-color);
+}
 </style>
