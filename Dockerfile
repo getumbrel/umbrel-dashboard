@@ -23,7 +23,7 @@ RUN yarn build
 
 FROM node:12-buster-slim AS umbrel-dashboard
 
-RUN yarn global add serve
+RUN yarn global add serve@13
 
 COPY --from=umbrel-dashboard-builder /app/dist/ /dist
 
