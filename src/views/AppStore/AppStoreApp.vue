@@ -61,22 +61,22 @@
             v-on:click="openApp($event)"
             >Open</b-button
           >
-          <div class="mt-2 text-center d-flex justify-content-center" v-if="app.defaultPassword">
-            <div class="text-left mr-2" v-if="app.defaultUsername">
+          <div class="mt-2 text-center d-flex justify-content-center" v-if="installedApp.defaultPassword">
+            <div class="text-left mr-2" v-if="installedApp.defaultUsername">
               <small class="text-muted">Default app username</small>
               <input-copy
                 width="140px"
                 size="sm"
-                :value="app.defaultUsername"
+                :value="installedApp.defaultUsername"
                 class="mt-1"
               ></input-copy>
             </div>
-            <div :class="app.defaultUsername ? 'text-left': ''">
+            <div :class="installedApp.defaultUsername ? 'text-left': ''">
               <small class="text-muted">Default app password</small>
               <input-copy
-                :width="app.defaultUsername ? '140px' : 'auto'"
+                :width="installedApp.defaultUsername ? '140px' : 'auto'"
                 size="sm"
-                :value="app.defaultPassword"
+                :value="installedApp.defaultPassword"
                 class="mt-1"
               ></input-copy>
             </div>
@@ -330,6 +330,9 @@ export default {
     }),
     app: function () {
       return this.appStore.find((app) => app.id === this.$route.params.id);
+    },
+    installedApp: function () {
+      return this.installedApps.find((app) => app.id === this.$route.params.id);
     },
     isInstalled: function () {
       const installedAppIndex = this.installedApps.findIndex(
