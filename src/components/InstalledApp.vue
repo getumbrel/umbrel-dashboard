@@ -166,7 +166,7 @@ export default {
         if (this.torOnly) {
           return "#";
         }
-        return `${window.location.origin}:${this.app.port}${this.app.path}`;
+        return `${window.location.protocol}//${window.location.hostname}:${this.app.port}${this.app.path}`;
       }
     },
     dependants: function() {
