@@ -20,7 +20,7 @@ If you are looking to run Umbrel on your hardware, you do not need to run this s
 
 ## 🛠 Running dashboard
 
-Make sure both [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) and [`umbrel-middleware`](https://github.com/getumbrel/umbrel-middleware) are running and available.
+Make sure [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) is running and available. Alternatively, if you have an Umbrel running already and you only want to make changes to the dashboard, you can connect to it directly without running `umbrel-manager`.
 
 ### Step 1. Install dependencies
 ```sh
@@ -33,12 +33,10 @@ The following environment variables are set in `.env` file of the project's root
 | Variable | Description | Default |
 | ------------- | ------------- | ------------- |
 | `VUE_APP_MANAGER_API_URL` | URL of [`umbrel-manager`](https://github.com/getumbrel/umbrel-manager) API | `http://localhost:3006` |
-| `VUE_APP_MIDDLEWARE_API_URL` | URL of [`umbrel-middleware`](https://github.com/getumbrel/umbrel-middleware) API | `http://localhost:3005` |
 
 If you want to change the local development environment (e.g. to use your local Umbrel instance), create the `.env.development` with the following content:
 
 ```sh
-VUE_APP_MIDDLEWARE_API_URL=http://umbrel.local/api
 VUE_APP_MANAGER_API_URL=http://umbrel.local/manager-api
 ```
 
