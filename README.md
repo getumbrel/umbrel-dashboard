@@ -47,6 +47,8 @@ yarn serve
 
 Dashboard should now be accessible at `http://localhost:8080`.
 
+> If your local dashboard can't get past loading in the web browser, you will need to install a CORS unblocking extension in your browser to make it work. For example, [here's one for Chrome](https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en).
+
 ## Building dashboard
 To build dashboard for production, run:
 ```sh
