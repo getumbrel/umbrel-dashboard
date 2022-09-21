@@ -1,5 +1,6 @@
 <template>
-  <div class="app-suggestions-container d-flex flex-column align-items-center mx-auto px-2 py-4 px-sm-4 mb-5">
+<div class="">
+  <div class="app-suggestions-container d-flex flex-column align-items-center mx-auto px-2 py-4 px-sm-4">
     <h2 class="app-suggestions-heading text-center mb-1">Install your first app</h2>
     <b-row>
       <b-col
@@ -56,6 +57,7 @@
       class="btn btn-sm rounded-pill btn-success text-uppercase mt-3 font-weight-bold px-3 py-2 mx-auto text-center"
     >View more in app store</router-link>
   </div>
+</div>
 </template>
 
 <script>
@@ -103,6 +105,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-suggestions-container {
+  margin-bottom: 8rem;
   .app-suggestions-heading {
     opacity: 0.8;
   }
