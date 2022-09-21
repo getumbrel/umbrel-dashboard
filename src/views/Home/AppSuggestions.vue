@@ -71,15 +71,15 @@ export default {
       suggestions: [
         {
           title: "For the bitcoiner",
-            apps: ['bitcoin', 'lightning', 'electrs'],
+            apps: ['bitcoin', 'lightning', 'mempool', 'thunderhub', 'electrs'],
         },
         {
           title: "For the self-hoster",
-            apps: ['nextcloud', 'home-assistant', 'photoprism'],
+            apps: ['nextcloud', 'home-assistant', 'pi-hole', 'tailscale', 'uptime-kuma'],
         },
         {
-          title: "For the networker",
-            apps: ['pi-hole', 'tailscale', 'uptime-kuma'],
+          title: "For the streamer",
+            apps: ['plex', 'jellyfin', 'transmission', 'sonarr', 'radarr'],
         },
       ]
     };
