@@ -41,11 +41,11 @@
       <card-widget
         v-for="app in appStoreSearchResults"
         :key="app.id"
-        class="pt-4 pb-2 card-app-list"
+        class="pt-3 pb-1 pt-sm-4 pb-sm-2 card-app-list"
       >
         <router-link
           :to="{name: 'app-store-app', params: {id: app.id}}"
-          class="app-list-app d-flex justify-content-between align-items-center px-3 px-lg-4 py-3"
+          class="app-list-app d-flex justify-content-between align-items-center px-3 px-lg-4 py-2 py-sm-3"
         >
           <div class="d-flex">
             <div class="d-block">
@@ -59,7 +59,7 @@
               <h3 class="app-name text-title-color mb-1">
                 {{ app.name }}
               </h3>
-              <p class="text-muted mb-0">
+              <p class="app-tagline text-muted mb-0">
                 {{ app.tagline }}
               </p>
             </div>
@@ -106,7 +106,7 @@
               <h3 class="app-name text-title-color mb-1">
                 {{ app.name }}
               </h3>
-              <p class="text-muted mb-0">
+              <p class="app-tagline text-muted mb-0">
                 {{ app.tagline }}
               </p>
             </div>
@@ -276,6 +276,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.app-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.app-tagline {
+  font-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 .search-input-container {
   svg.search-input-icon {
     transition: transform 0.3s ease;
