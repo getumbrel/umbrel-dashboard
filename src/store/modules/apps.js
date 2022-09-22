@@ -3,6 +3,7 @@ import API from "@/helpers/api";
 
 // Initial state
 const state = () => ({
+  appStoreScrollTop: 0, // to preserve app store scroll position when user switches back-and-forth between app listings
   installed: [],
   store: [],
   installing: [],
@@ -16,6 +17,9 @@ const state = () => ({
 
 // Functions to update the state directly
 const mutations = {
+  setAppStoreScrollTop(state, appStoreScrollTop) {
+    state.appStoreScrollTop = appStoreScrollTop;
+  },
   setInstalledApps(state, apps) {
     const alphabeticallySortedApps = apps.sort((a, b) => a.name.localeCompare(b.name));
     state.installed = alphabeticallySortedApps;
@@ -88,6 +92,9 @@ const mutations = {
 
 // Functions to get data from the API
 const actions = {
+  updateAppStoreScrollTop({ commit }, scrollTop) {
+    commit("setAppStoreScrollTop", scrollTop);
+  },
   async getInstalledApps({ commit }) {
     const installedApps = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/apps?installed=1`);
     if (installedApps) {
