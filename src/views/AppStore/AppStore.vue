@@ -21,7 +21,6 @@
                 class="search-input"
                 type="text"
                 v-model="appStoreSearchQuery"
-                @input="search"
                 placeholder="Search apps"
               ></b-input>
             </div>
