@@ -1,6 +1,6 @@
 <template>
   <transition :name="isMobileDevice ? 'mobile-content-container-transition' : 'content-container-transition'" mode="out-in" appear>
-    <div class="content-container">
+    <div id="content-container" class="content-container">
       <div class="header">
         <router-link :to="{name: 'home'}"
           class="btn-close-page cursor-pointer"

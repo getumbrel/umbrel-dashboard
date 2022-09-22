@@ -200,6 +200,7 @@ export default {
   },
   computed: {
     ...mapState({
+      scrollTop: (state) => state.apps.appStoreScrollTop,
       appStore: (state) => state.apps.store,
       updating: (state) => state.apps.updating,
       appStoreSearchIndex: (state) => state.apps.searchIndex,
@@ -231,6 +232,10 @@ export default {
     }
   },
   methods: {
+    onScroll: function(event) {
+      // update scroll position
+      this.$store.dispatch("apps/updateAppStoreScrollTop", event.target.scrollTop);
+    },
     updateAll: function() {
       this.appsWithUpdate
       .forEach(app => {
@@ -244,9 +249,24 @@ export default {
   created() {
     this.$store.dispatch("apps/getAppStore");
 
-    // autofocus search input
     // https://stackoverflow.com/a/63485725
-    this.$nextTick(() => this.$refs.searchInput.focus());
+    this.$nextTick(() => {
+
+      // autofocus search input
+      this.$refs.searchInput.focus()
+
+      // set previous scroll position
+      const container = document.getElementById("content-container");
+      if (this.scrollTop) {
+        container.scrollTop = this.scrollTop;
+      }
+      // watch scroll position
+      container.addEventListener('scroll', this.onScroll);
+    });
+  },
+  beforeDestroy() {
+    const container = document.getElementById("content-container");
+    container.removeEventListener('scroll', this.onScroll);
   },
   components: {
     CardWidget,
