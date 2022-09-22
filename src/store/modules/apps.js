@@ -1,5 +1,5 @@
+import lunr from "lunr";
 import API from "@/helpers/api";
-// import Vue from "vue"
 
 // Initial state
 const state = () => ({
@@ -8,7 +8,10 @@ const state = () => ({
   installing: [],
   uninstalling: [],
   updating: [],
-  noAppsInstalled: false // we store this seperately instead of checking for empty installed array as that's the default state
+  noAppsInstalled: false, // we store this seperately instead of checking for empty installed array as that's the default state
+  searchIndex: null,
+  searchQuery: "",
+  searchResults: [],
 });
 
 // Functions to update the state directly
@@ -19,7 +22,34 @@ const mutations = {
     state.noAppsInstalled = !apps.length;
   },
   setAppStore(state, appStore) {
+
+    // build a new search index if the app store has changed
+    // we store this in global state so it doesn't have to
+    // regenerate everytime the app store view is loaded and
+    // to persist the search query if the user changes views
+    if (state.store.length !== appStore.length) {
+      const searchIndex = lunr(function () {
+        this.ref('id');
+
+        // bump up the priority of name matching over tagline matching
+        // https://github.com/olivernn/lunr.js/issues/312#issuecomment-399657187
+        this.field('name', { boost: 10 }); 
+        this.field('tagline');
+
+        appStore.forEach((app) => {
+          this.add(app)
+        }, this);
+      });
+      state.searchIndex = searchIndex;
+    }
+
     state.store = appStore;
+  },
+  setSearchQuery(state, searchQuery) {
+    state.searchQuery = searchQuery;
+  },
+  setSearchResults(state, searchResults) {
+    state.searchResults = searchResults;
   },
   addInstallingApp(state, appId) {
     if (!state.installing.includes(appId)) {
@@ -70,6 +100,26 @@ const actions = {
     if (appStore) {
       commit("setAppStore", appStore);
     }
+  },
+  searchAppStore({ state, commit }, searchQuery) {
+    commit("setSearchQuery", searchQuery);
+
+    // don't search if the search index isn't built yet
+    if (!state.searchIndex) {
+      return commit("setSearchResults", []);
+    }
+
+    // get search results
+    // ~1 = allow fuzzy matching upto 1 character of mistake
+    // * = to allow for autocomplete search (eg. showing nextcloud when "nex" is typed)
+    // docs: https://lunrjs.com/guides/searching.html
+    const searchResults = state.searchIndex.search(`${searchQuery}~1 ${searchQuery}*`);
+
+    // create a new array of matched results
+    // in the same sorting order as lunr provides
+    const matchedApps = searchResults.map(result => state.store.find(app => app.id === result.ref));
+
+    commit("setSearchResults", matchedApps);
   },
   async update({ state, commit, dispatch }, appId) {
     commit("addUpdatingApp", appId);
