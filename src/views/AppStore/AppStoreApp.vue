@@ -171,6 +171,10 @@
               <span class="text-muted">Developer</span>
               <a class="primary-link" :href="app.website" target="_blank">{{ app.developer }}</a>
             </div>
+            <div v-if="app.submitter && app.submission" class="d-flex justify-content-between mb-3">
+              <span class="text-muted">Submitted by</span>
+              <a class="primary-link" :href="app.submission" target="_blank">{{ app.submitter }}</a>
+            </div>
             <div class="d-flex justify-content-between mb-3">
               <span class="text-muted">Compatibility</span>
               <span>Compatible</span>
