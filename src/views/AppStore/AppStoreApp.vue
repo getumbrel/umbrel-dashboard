@@ -134,7 +134,7 @@
         </div>
       </div>
     </div>
-    <div class="app-gallery pt-1 pb-3 pt-sm-3 pb-sm-4 mb-2 mb-sm-3 px-1 px-sm-2 px-md-4">
+    <div class="app-gallery pt-1 pb-3 pt-sm-3 pb-sm-4 mb-2 mb-sm-3 px-1 px-sm-2 px-md-4" v-dragscroll>
       <app-store-app-gallery-image
         v-for="image in app.gallery"
         :key="image"
@@ -310,6 +310,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { dragscroll } from 'vue-dragscroll';
 
 import delay from "@/helpers/delay";
 
@@ -319,6 +320,9 @@ import AppStoreAppGalleryImage from "@/views/AppStore/AppStoreAppGalleryImage";
 import ReleaseNotes from "@/views/AppStore/ReleaseNotes";
 
 export default {
+  directives: {
+    dragscroll
+  },
   data() {
     return {
       isOffline: false,
