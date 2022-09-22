@@ -167,7 +167,7 @@
           </div>
           <div class="d-flex align-items-center justify-content-between w-100 px-2 px-lg-3">
             <h2 class="mr-auto text-lowercase">Updates</h2>
-            <b-button variant="outline-primary" class="px-2" size="sm" @click="updateAll" v-if="canUpdateAll">Update all</b-button>
+            <b-button variant="outline-primary" class="px-2" size="sm" @click="updateAll" v-show="canUpdateAll && !isUpdatingAll">Update all</b-button>
           </div>
         </div>
       </template>
@@ -196,7 +196,9 @@ import UpdateAppsApp from "@/views/AppStore/UpdateAppsApp";
 
 export default {
   data() {
-    return {};
+    return {
+      isUpdatingAll: false,
+    };
   },
   computed: {
     ...mapState({
@@ -237,6 +239,7 @@ export default {
       this.$store.dispatch("apps/updateAppStoreScrollTop", event.target.scrollTop);
     },
     updateAll: function() {
+      this.isUpdatingAll = true;
       this.appsWithUpdate
       .forEach(app => {
         // Call updateApp() within each UpdateAppsApp component
