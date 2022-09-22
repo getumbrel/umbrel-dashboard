@@ -20,8 +20,9 @@
                 ref="searchInput"
                 class="search-input"
                 type="text"
-                v-model="appStoreSearchQuery"
                 placeholder="Search apps"
+                v-model="appStoreSearchQuery"
+                @input="onTypeAppStoreSearchQuery"
               ></b-input>
             </div>
           </div>
@@ -37,7 +38,7 @@
       </div>
     </div>
 
-    <div v-if="appStoreSearchQuery" class="app-store-card-columns">
+    <div v-if="appStoreSearchQuery && appStoreSearchResults.length" class="app-store-card-columns">
       <card-widget
         v-for="app in appStoreSearchResults"
         :key="app.id"
@@ -79,6 +80,13 @@
           </div>
         </router-link>
       </card-widget>
+    </div>
+
+    <div v-else-if="appStoreSearchQuery && !appStoreSearchResults.length && !isTypingAppStoreSearchQuery" class="w-100">
+      <p class="text-muted">No results found</p>
+      <transition name="no-search-results-transition" appear>
+        <img class="no-search-results-image d-block mt-5 mx-auto" src="@/assets/no-search-results.gif" />
+      </transition>
     </div>
 
     <div v-show="!appStoreSearchQuery" class="app-store-card-columns">
@@ -191,12 +199,15 @@
 <script>
 import { mapState } from "vuex";
 
+import delay from "@/helpers/delay";
+
 import CardWidget from "@/components/CardWidget";
 import UpdateAppsApp from "@/views/AppStore/UpdateAppsApp";
 
 export default {
   data() {
     return {
+      isTypingAppStoreSearchQuery: false,
       isUpdatingAll: false,
     };
   },
@@ -237,6 +248,15 @@ export default {
     onScroll: function(event) {
       // update scroll position
       this.$store.dispatch("apps/updateAppStoreScrollTop", event.target.scrollTop);
+    },
+    onTypeAppStoreSearchQuery: async function() {
+      this.isTypingAppStoreSearchQuery = true;
+      const appStoreSearchQuery = this.appStoreSearchQuery;
+      await delay(500);
+      const newAppStoreSearchQuery = this.appStoreSearchQuery;
+      if (newAppStoreSearchQuery === appStoreSearchQuery) {
+        this.isTypingAppStoreSearchQuery = false;
+      }
     },
     updateAll: function() {
       this.isUpdatingAll = true;
@@ -294,6 +314,7 @@ export default {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
 .search-input-container {
   svg.search-input-icon {
     transition: transform 0.3s ease;
@@ -323,6 +344,12 @@ export default {
       opacity: 1 !important;
     }
   }
+}
+
+.no-search-results-image {
+  width: 300px;
+  height: auto;
+  border-radius: 20px;
 }
 
 .umbrel-dev-note {
@@ -356,5 +383,21 @@ export default {
     font-size: 15px;
     line-height: 25px;
     margin: 0;
+}
+
+// transitions
+
+.no-search-results-transition-enter-active,
+.no-search-results-transition-leave-active {
+  transition: transform 0.5s ease;
+  transition-delay: 0.5s;
+}
+.no-search-results-transition-enter {
+  transform: rotate(-360deg) scale3d(0, 0, 0);
+  opacity: 0;
+}
+.no-search-results-transition-enter-to {
+  transform: rotate(0deg) scale3d(1, 1, 1);
+  opacity: 1;
 }
 </style>
