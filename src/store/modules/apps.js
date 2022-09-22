@@ -104,6 +104,12 @@ const actions = {
   searchAppStore({ state, commit }, searchQuery) {
     commit("setSearchQuery", searchQuery);
 
+    // don't try to search for no query, eg. when
+    // the user clears the search input
+    if (!searchQuery) {
+      return;
+    }
+
     // don't search if the search index isn't built yet
     if (!state.searchIndex) {
       return commit("setSearchResults", []);
