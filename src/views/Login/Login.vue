@@ -109,6 +109,7 @@ export default {
     }
 
     this.loading = false;
+    this.selectPasswordInput();
   },
   methods: {
     async authenticateUser() {
@@ -120,6 +121,7 @@ export default {
         this.isLoggingIn = false;
         if (error.response && error.response.data === "Incorrect password") {
           this.isIncorrectPassword = true;
+          this.selectPasswordInput();
           return;
         }
         if (error.response && error.response.data === "Missing OTP token") {
@@ -159,6 +161,9 @@ export default {
       return this.$router.push(
         this.$router.history.current.query.redirect || {name: 'home'}
       );
+    },
+    selectPasswordInput() {
+      this.$nextTick(() => this.$refs.password.$el.querySelector('input').select());
     },
     authenticateUserWithOtp(otpToken) {
       this.otpToken = otpToken;
