@@ -163,7 +163,6 @@ export default {
       );
     },
     selectPasswordInput() {
-      console.log(this.$refs)
       this.$nextTick(() => this.$refs.password.$el.querySelector('input').select());
     },
     authenticateUserWithOtp(otpToken) {
