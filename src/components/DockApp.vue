@@ -58,7 +58,7 @@ export default {
   width: 60px;
   height: 60px;
   transition: margin 0.3s, transform 0.3s ease;
-  margin: 0 6px;
+  margin: 0 8px;
 
   .dock-app {
     &:after {
@@ -194,7 +194,6 @@ export default {
 @media (hover: hover) and (pointer: fine) {
   .dock-app-container {
     &:hover {
-      margin: 0px 15px;
       .dock-app-name  {
         visibility: visible;
       }
