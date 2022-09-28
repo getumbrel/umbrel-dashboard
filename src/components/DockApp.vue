@@ -58,7 +58,7 @@ export default {
   width: 60px;
   height: 60px;
   transition: margin 0.3s, transform 0.3s ease;
-  margin: 0 8px;
+  margin: 0 6px;
 
   .dock-app {
     &:after {
@@ -199,7 +199,7 @@ export default {
       }
     }
     .dock-app-icon-container:hover {
-      transform: scale3d(1.3, 1.3, 1.3) translate3d(0, -10px, 0);
+      transform: scale3d(1.2, 1.2, 1.2) translate3d(0, -10px, 0);
     }
     &.dock-app-container-left {
       &:hover {
