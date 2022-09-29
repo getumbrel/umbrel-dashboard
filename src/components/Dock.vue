@@ -25,8 +25,6 @@
             <dock-app id="settings" name="Settings" :position="position" :notifications="settingsNotifications" :active="this.$route.name === 'settings'" @click="toggleDock(350)" />
           </router-link>
 
-          <div class="divider"></div>
-
           <dock-app id="mode" :name="darkMode ? 'Light Mode' : 'Dark Mode'" :position="position" @click="toggleDarkMode">
             <template v-slot:icon>
               <svg width="100%" height="100%" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -172,13 +170,6 @@ export default {
     border: 1px solid var(--dock-border-color);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(20px) saturate(180%);
-    .divider {
-      height: 60px;
-      width: 2px;
-      border-radius: 2px;
-      background-color: var(--dock-divider-color);
-      margin: 0 6px;
-    }
   }
 }
 
@@ -225,12 +216,6 @@ export default {
     flex-direction: column !important;
     padding: 7px 11px 7px 13px;
     border-radius: 0 16px 16px 0;
-    .divider {
-      height: 2px;
-      width: 60px;
-      border-radius: 2px;
-      margin: 6px 0;
-    }
   }
 }
 
