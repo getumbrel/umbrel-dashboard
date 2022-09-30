@@ -1,6 +1,6 @@
 <template>
   <div class="dock-app-container cursor-pointer d-flex justify-content-center align-items-center"
-    :class="{'bounce': bounceIcon, 'dock-app-container-left': position === 'left', 'dock-divider': id === 'settings'}"
+    :class="{'bounce': bounceIcon, 'dock-app-container-left': position === 'left', 'dock-divider': id === 'mode'}"
     @click="onClick"
     >
     <div class="dock-app" :class="{'dock-app-active': active}">
@@ -59,15 +59,15 @@ export default {
 
   &.dock-divider {
     .dock-app-name {
-      transform: translateX(calc(-50% - 6px));
+      transform: translate3d(calc(-50% + 6px), 0, 0);
     }
-    &:after {
+    &:before {
       content: "";
       display: block;
       width: 2px;
       height: 60px;
       padding: 0 6px;
-      border-right: 2px solid var(--dock-divider-color);
+      border-left: 2px solid var(--dock-divider-color);
     }
   }
 
@@ -156,7 +156,7 @@ export default {
     animation: bounce-vertical 0.6s ease;
   }
 
-  &.bounce:after {
+  &.bounce:before {
     animation: bounce-vertical-reverse 0.6s ease;
   }
 
@@ -167,16 +167,16 @@ export default {
 
     &.dock-divider {
       .dock-app-name {
-        transform: translateY(calc(-50% - 6px));
+        transform: translate3d(0, calc(-50% + 6px), 0);
       }
-      &:after {
+      &:before {
         content: "";
         display: block;
         width: 60px;
         height: 2px;
         padding: 6px 0;
-        border-right: none;
-        border-bottom: 2px solid var(--dock-divider-color);
+        border-left: none;
+        border-top: 2px solid var(--dock-divider-color);
       }
     }
 
@@ -205,7 +205,7 @@ export default {
     &.bounce {
       animation: bounce-horizontal 0.6s ease;
     }
-    &.bounce:after {
+    &.bounce:before {
       animation: bounce-horizontal-reverse 0.6s ease;
     }
   }
@@ -269,7 +269,7 @@ export default {
     &:hover {
       .dock-app-icon-container {
         .dock-app-notification {
-          transform: scale(1.3) translate(-1px, -17px);
+          transform: scale3d(1.3, 1.3, 1.3) translate3d(-1px, -17px, 0);
         }
       }
 
@@ -278,7 +278,7 @@ export default {
         width: 78px;
         height: 78px;
         margin-top: -20px;
-        transform: translateY(-5px);
+        transform: translate3d(0, -5px, 0);
       }
       .dock-app-name {
         visibility: visible;
@@ -288,7 +288,7 @@ export default {
       &:hover {
         .dock-app-icon-container {
           .dock-app-notification {
-            transform: scale(1.3) translate(20px, 1px);
+            transform: scale3d(1.3, 1.3, 1.3) translate3d(20px, 1px, 0);
           }
         }
 
@@ -296,7 +296,7 @@ export default {
         svg {
           margin-top: 0;
           margin-right: -20px;
-          transform: translateX(5px);
+          transform: translate3d(5px, 0, 0);
           width: 78px;
           height: 78px;
         }
