@@ -48,6 +48,7 @@ const state = () => ({
     breakdown: []
   },
   isUmbrelOS: false,
+  isSdCardFailing: false,
   cpuTemperature: 69, //in celsius
   cpuTemperatureUnit: "celsius",
   uptime: null,
@@ -109,6 +110,9 @@ const mutations = {
   },
   setIsUmbrelOS(state, isUmbrelOS) {
     state.isUmbrelOS = isUmbrelOS;
+  },
+  setIsSdCardFailing(state, isSdCardFailing) {
+    state.isSdCardFailing = isSdCardFailing;
   },
   setCpuTemperature(state, cpuTemperature) {
     state.cpuTemperature = cpuTemperature;
@@ -298,6 +302,10 @@ const actions = {
   async getIsUmbrelOS({ commit }) {
     const isUmbrelOS = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/is-umbrel-os`);
     commit("setIsUmbrelOS", !!isUmbrelOS);
+  },
+  async getIsSdCardFailing({ commit }) {
+    const isSdCardFailing = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/is-sd-card-failing`);
+    commit("setIsSdCardFailing", !!isSdCardFailing);
   },
   async getCpuTemperature({ commit }) {
     const cpuTemperature = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/temperature`);
