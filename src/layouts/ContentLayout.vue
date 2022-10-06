@@ -92,7 +92,7 @@ export default {
 // Content open/close transition
 .content-container-transition-enter-active,
 .content-container-transition-leave-active {
-  transition: transform 0.5s cubic-bezier(.66,-0.35,.25,1.09);
+  transition: transform 0.35s cubic-bezier(.66,-0.35,.25,1.09);
 }
 .content-container-transition-enter {
   transform: translate3d(0, calc(50% - 90px), 0) scale3d(0, 0, 0);
@@ -109,7 +109,7 @@ export default {
 
 .mobile-content-container-transition-enter-active,
 .mobile-content-container-transition-leave-active {
-  transition: transform 0.5s cubic-bezier(.66,0,.39,1);
+  transition: transform 0.35s cubic-bezier(.66,0,.39,1);
 }
 .mobile-content-container-transition-enter {
   transform: translate3d(-55%, 0, 0) scale3d(0, 0, 0);
@@ -127,7 +127,7 @@ export default {
 // Page changing transitions
 .change-page-transition-enter-active,
 .change-page-transition-leave-active {
-  transition: transform 0.25s, opacity 0.25s ease;
+  transition: transform 0.15s, opacity 0.15s ease;
 }
 .change-page-transition-enter {
   transform: translate3d(30px, 0, 0);

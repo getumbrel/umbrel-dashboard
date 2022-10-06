@@ -123,10 +123,10 @@ const router = new VueRouter({
 
     // scroll to top for ContentLayout (position: fixed) components
     if (to.matched.some(record => record.meta.scrollTop)) {
-      // wait for 200ms (transition duration) for current route to fade out and prevent jerk motion
+      // wait for 150ms (transition duration) for current route to fade out and prevent jerk motion
       setTimeout(() => {
         document.getElementsByClassName("content-container")[0].scroll(0, 0);
-      }, 200);
+      }, 150);
     }
 
     // Scroll to top
