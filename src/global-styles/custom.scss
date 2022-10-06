@@ -754,7 +754,7 @@ svg.icon-clock {
       object-fit: contain;
       border-radius: 10px;
       opacity: 1;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.3s linear;
       &.loading {
         opacity: 0;
       }
@@ -769,7 +769,9 @@ svg.icon-clock {
       filter: blur(70px) saturate(2);
       z-index: -1;
       border-radius: 5px;
-      animation: app-gallery-image-preloader linear infinite 5s;
+      &.loading {
+        animation: app-gallery-image-preloader linear infinite 5s;
+      }
     }
     &:nth-child(1) {
       .app-gallery-image-preloader {
