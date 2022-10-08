@@ -9,7 +9,8 @@ const state = () => ({
   seed: [],
   installedApps: [],
   otpEnabled: false,
-  wallpaper: ""
+  wallpaper: "",
+  remoteTorAccess: false
 });
 
 // Functions to update the state directly
@@ -35,6 +36,9 @@ const mutations = {
   },
   setWallpaper(state, wallpaper) {
     state.wallpaper = wallpaper;
+  },
+  setRemoteTorAccess(state, remoteTorAccess) {
+    state.remoteTorAccess = remoteTorAccess;
   }
 };
 
@@ -94,12 +98,13 @@ const actions = {
   },
 
   async getInfo({ commit }) {
-    const { name, otpEnabled, installedApps } = await API.get(
+    const { name, otpEnabled, installedApps, remoteTorAccess } = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`
     );
     commit("setName", name);
     commit("setOtpEnabled", otpEnabled);
     commit("setInstalledApps", installedApps);
+    commit("setRemoteTorAccess", remoteTorAccess);
   },
 
   async getSeed({ commit, state, dispatch }, { password, otpToken }) {

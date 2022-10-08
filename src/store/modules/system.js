@@ -52,6 +52,8 @@ const state = () => ({
   cpuTemperature: 69, //in celsius
   cpuTemperatureUnit: "celsius",
   uptime: null,
+  remoteTorAccessStatus: null,
+  remoteTorAccessInFlight: false,
   darkMode: false
 });
 
@@ -122,6 +124,10 @@ const mutations = {
   },
   setUptime(state, uptime) {
     state.uptime = uptime;
+  },
+  setRemoteTorAccessStatus(state, status) {
+    state.remoteTorAccessStatus = status;
+    state.remoteTorAccessInFlight = status.state !== "complete";
   },
   setDarkMode(state, darkMode) {
     if (darkMode) {
@@ -249,17 +255,7 @@ const actions = {
       }
     }, 2000);
   },
-  async reboot({ commit }) {
-
-    // Reset any cached hasRebooted value from previous reboot
-    commit("setHasRebooted", false);
-
-    // Rebooting
-    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`);
-    if (!result) {
-      throw new Error('Reboot request failed');
-    }
-
+  async rebootHasBegun({ commit }) {
     commit("setRebooting", true);
 
     let pollIfUp;
@@ -284,6 +280,19 @@ const actions = {
         return;
       }
     }, 2000);
+  },
+  async reboot({ commit, dispatch }) {
+
+    // Reset any cached hasRebooted value from previous reboot
+    commit("setHasRebooted", false);
+
+    // Rebooting
+    const result = await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/reboot`);
+    if (!result) {
+      throw new Error('Reboot request failed');
+    }
+
+    dispatch("rebootHasBegun");
   },
   async getStorage({ commit }) {
     const storage = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/storage`);
@@ -329,6 +338,35 @@ const actions = {
     if (uptime) {
       commit("setUptime", uptime);
     }
+  },
+  async getRemoteTorAccessStatus({ commit }) {
+    const status = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/remote-tor-access-status`);
+
+    if (status) {
+      commit("setRemoteTorAccessStatus", status);
+    }
+  },
+  async toggleRemoteTorAccess({ state, dispatch }, payload) {
+    try {
+      state.remoteTorAccessInFlight = true;
+      await API.post(`${process.env.VUE_APP_MANAGER_API_URL}/v1/system/remote-tor-access`, payload);
+    } catch (error) {
+      state.remoteTorAccessInFlight = false;
+      throw error;
+    }
+
+    dispatch("pollRemoteTorAccessStatus");
+  },
+  async pollRemoteTorAccessStatus({ state, dispatch }) {
+    const poll = window.setInterval(async () => {
+      await dispatch("getRemoteTorAccessStatus");
+
+      if(state.remoteTorAccessStatus.state === "complete")
+      {
+        await dispatch("user/getInfo", null, { root: true });
+        window.clearInterval(poll);
+      }
+    }, 5000);
   },
   async getDarkMode({ commit }) {
     if (window.localStorage && window.localStorage.getItem("darkMode")) {

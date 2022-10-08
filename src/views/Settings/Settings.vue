@@ -223,7 +223,7 @@
         <div class="px-3 px-xl-4 mb-4">
           <div class="d-flex justify-content-between w-100 mb-3">
             <div class="w-75">
-              <span class="d-block">Remote access</span>
+              <span class="d-block">Remote Tor access</span>
               <small
                 class="d-block"
                 style="opacity: 0.4"
@@ -231,11 +231,13 @@
             </div>
             <toggle-switch
               class="align-self-center"
-              disabled
-              tooltip="Sorry, Tor cannot be disabled for now"
+              @turnOn="toggleRemoteTorAccessSwitch"
+              @turnOff="toggleRemoteTorAccessSwitch"
+              :on="remoteTorAccessIsOn"
+              :loading="remoteTorAccessInFlight"
             ></toggle-switch>
           </div>
-          <input-copy class="w-100" size="sm" :value="onionAddress"></input-copy>
+          <input-copy v-if="remoteTorAccess && onionAddress" class="w-100" size="sm" :value="onionAddress"></input-copy>
         </div>
         <div class="px-3 px-xl-4 py-1"></div>
       </card-widget>
@@ -430,7 +432,8 @@ export default {
       isCorrectOtp: false,
       isIncorrectOtp: false,
       isFetchingOtpUri: false,
-      isTogglingOtpAuth: false
+      isTogglingOtpAuth: false,
+      remoteTorAccessOnState: false
     };
   },
   computed: {
@@ -442,7 +445,10 @@ export default {
       debugResult: state => state.system.debugResult,
       isUmbrelOS: state => state.system.isUmbrelOS,
       uptime: state => state.system.uptime,
-      otpEnabled: state => state.user.otpEnabled
+      otpEnabled: state => state.user.otpEnabled,
+      remoteTorAccess: state => state.user.remoteTorAccess,
+      remoteTorAccessStatus: state => state.system.remoteTorAccessStatus,
+      remoteTorAccessInFlight: state => state.system.remoteTorAccessInFlight
     }),
     otpSecretKey() {
       if (!this.otpUri) {
@@ -476,12 +482,28 @@ export default {
         return false;
       }
       return true;
+    },
+    remoteTorAccessIsOn() {
+      if(this.remoteTorAccessInFlight) {
+        return ! this.remoteTorAccess;
+      } else {
+        return this.remoteTorAccess;
+      }
     }
   },
-  created() {
-    this.$store.dispatch("system/getOnionAddress");
+  async created() {
+    if(this.remoteTorAccess) {
+      this.$store.dispatch("system/getOnionAddress");
+    }
+    
     this.$store.dispatch("system/getVersion");
     this.$store.dispatch("system/getUptime");
+    await this.$store.dispatch("system/getRemoteTorAccessStatus");
+
+    if(this.remoteTorAccessInFlight)
+    {
+      this.$store.dispatch("system/pollRemoteTorAccessStatus");
+    }
   },
   methods: {
     setOtpToken(otpToken) {
@@ -781,6 +803,24 @@ export default {
         });
       }
     },
+    async toggleRemoteTorAccessSwitch() {
+      if(!window.confirm("Are you sure?\n\nThis will restart your Umbrel and it may take a few minutes.")) {
+        return;
+      }
+
+      try {
+        await this.$store.dispatch("system/toggleRemoteTorAccess", { enabled: ! this.remoteTorAccess });
+        await this.$store.dispatch("system/rebootHasBegun");
+      } catch (e) {
+        this.$bvToast.toast("Error", {
+          title: "Something went wrong and the setting could not be changed.",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        });
+      }
+    }
   },
   beforeDestroy() {
     if (this.pollUpdateStatus) {
