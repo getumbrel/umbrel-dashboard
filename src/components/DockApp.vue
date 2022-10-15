@@ -1,6 +1,6 @@
 <template>
   <div class="dock-app-container cursor-pointer d-flex justify-content-center align-items-center"
-    :class="{'bounce': bounceIcon, 'dock-app-container-left': position === 'left'}"
+    :class="{'bounce': bounceIcon, 'dock-app-container-left': position === 'left', 'dock-divider': id === 'mode'}"
     @click="onClick"
     >
     <div class="dock-app" :class="{'dock-app-active': active}">
@@ -55,10 +55,21 @@ export default {
 <style lang="scss" scoped>
 .dock-app-container {
   position: relative;
-  width: 60px;
-  height: 60px;
-  transition: margin 0.3s, transform 0.3s ease;
-  margin: 0 6px;
+  padding: 0 6px;
+
+  &.dock-divider {
+    .dock-app-name {
+      transform: translate3d(calc(-50% + 6px), 0, 0);
+    }
+    &:before {
+      content: "";
+      display: block;
+      width: 2px;
+      height: 60px;
+      padding: 0 6px;
+      border-left: 2px solid var(--dock-divider-color);
+    }
+  }
 
   .dock-app {
     &:after {
@@ -104,10 +115,14 @@ export default {
   }
 
   .dock-app-icon-container {
-    transition: transform 0.2s ease;
+
+    .dock-app-icon,
+    svg {
+      width: 60px;
+      height: 60px;
+      transition: transform 0.2s ease, width 0.2s ease, height 0.2s ease, margin 0.2s ease;
+    }
     .dock-app-icon {
-      width: 100%;
-      height: 100%;
       object-fit: cover;
       border-radius: 8px;
       // box-shadow: 0 0 6px rgb(0 0 0 / 10%);
@@ -115,7 +130,7 @@ export default {
     .dock-app-notification {
       position: absolute;
       top: -7px;
-      right: -6px;
+      right: 0px;
       height: 26px;
       width: 26px;
       background: #FF4E4E;
@@ -124,7 +139,7 @@ export default {
       font-size: 15px;
       line-height: 25px;
       margin: 0;
-      transition: transform 0.4s, opacity 0.4s ease;
+      transition: transform 0.2s, opacity 0.4s ease;
       &.dock-app-notification-xl {
         width: 34px;
       }
@@ -141,8 +156,37 @@ export default {
     animation: bounce-vertical 0.6s ease;
   }
 
+  &.bounce:before {
+    animation: bounce-vertical-reverse 0.6s ease;
+  }
+
   &.dock-app-container-left {
-    margin: 6px 0;
+    display: flex;
+    flex-direction: column;
+    padding: 6px 0;
+
+    &.dock-divider {
+      .dock-app-name {
+        transform: translate3d(0, calc(-50% + 6px), 0);
+      }
+      &:before {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 2px;
+        padding: 6px 0;
+        border-left: none;
+        border-top: 2px solid var(--dock-divider-color);
+      }
+    }
+
+    .dock-app-icon-container {
+      .dock-app-notification {
+        top: 0;
+        right: -6px;
+        transition: transform 0.2s;
+      }
+    }
     .dock-app {
       &:after {
         left: -8px;
@@ -161,6 +205,9 @@ export default {
     &.bounce {
       animation: bounce-horizontal 0.6s ease;
     }
+    &.bounce:before {
+      animation: bounce-horizontal-reverse 0.6s ease;
+    }
   }
 }
 
@@ -176,6 +223,19 @@ export default {
   }
 }
 
+@keyframes bounce-vertical-reverse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 60%, 0);
+  }
+  90% {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
 @keyframes bounce-horizontal {
   0%, 100% {
     transform: translate3d(0, 0, 0);
@@ -188,26 +248,58 @@ export default {
   }
 }
 
+@keyframes bounce-horizontal-reverse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-60%, 0, 0);
+  }
+  90% {
+    transform: translate3d(5px, 0, 0);
+  }
+}
+
 // enable icon hover animation and 
 // name visibility on desktops only
 
 @media (hover: hover) and (pointer: fine) {
   .dock-app-container {
     &:hover {
-      margin: 0px 15px;
-      .dock-app-name  {
+      .dock-app-icon-container {
+        .dock-app-notification {
+          transform: scale3d(1.3, 1.3, 1.3) translate3d(-1px, -17px, 0);
+        }
+      }
+
+      .dock-app-icon,
+      svg {
+        width: 78px;
+        height: 78px;
+        margin-top: -20px;
+        transform: translate3d(0, -5px, 0);
+      }
+      .dock-app-name {
         visibility: visible;
       }
     }
-    .dock-app-icon-container:hover {
-      transform: scale3d(1.3, 1.3, 1.3) translate3d(0, -10px, 0);
-    }
     &.dock-app-container-left {
       &:hover {
-        margin: 15px 0;
-      }
-      .dock-app-icon-container:hover {
-        transform: scale3d(1.3, 1.3, 1.3) translate3d(10px, 0, 0);
+        .dock-app-icon-container {
+          .dock-app-notification {
+            transform: scale3d(1.3, 1.3, 1.3) translate3d(20px, 1px, 0);
+          }
+        }
+
+        .dock-app-icon,
+        svg {
+          margin-top: 0;
+          margin-right: -20px;
+          transform: translate3d(5px, 0, 0);
+          width: 78px;
+          height: 78px;
+        }
       }
     }
   }
