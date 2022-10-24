@@ -13,6 +13,7 @@ const state = () => ({
   searchIndex: null,
   searchQuery: "",
   searchResults: [],
+  communityAppStoreApps: [],
 });
 
 // Functions to update the state directly
@@ -87,6 +88,9 @@ const mutations = {
     if (index !== -1) {
       state.updating.splice(index, 1);
     }
+  },
+  setCommunityAppStoreApps(state, apps) {
+    state.communityAppStoreApps = apps;
   }
 };
 
@@ -106,6 +110,13 @@ const actions = {
     const appStore = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/apps`);
     if (appStore) {
       commit("setAppStore", appStore);
+    }
+  },
+  async getCommunityAppStoreApps({ commit, dispatch }, communityAppStoreId) {
+    dispatch("getInstalledApps");
+    const apps = await API.get(`${process.env.VUE_APP_MANAGER_API_URL}/v1/apps?repo=${communityAppStoreId}`);
+    if (apps) {
+      commit("setCommunityAppStoreApps", apps);
     }
   },
   searchAppStore({ state, commit }, searchQuery) {

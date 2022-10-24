@@ -31,6 +31,8 @@ body {
   --app-store-app-icon-border-color: #e1e6ea;
   --app-store-app-gallery-image-box-shadow-color: rgba(0, 0, 0, 0.14);
 
+  --community-app-stores-list-container-background-color: #f7f7f7;
+
   --dock-background-color: rgba(217, 217, 217, 0.4);
   --dock-border-color: rgba(0, 0, 0, 0.1);
   --dock-divider-color: rgba(0, 0, 0, 0.1);
@@ -97,6 +99,8 @@ body.dark-mode {
   --app-store-app-border-color: rgba(255, 255, 255, 0.06);
   --app-store-app-icon-border-color: #a8a8a824;
   --app-store-app-gallery-image-box-shadow-color: rgba(0, 0, 0, 0.5);
+
+  --community-app-stores-list-container-background-color: #313131;
 
   --dock-background-color: rgba(69, 69, 69, 0.4);
   --dock-border-color: rgba(255, 255, 255, 0.1);
@@ -242,13 +246,13 @@ a {
         color: #fff;
     }
     &.btn-outline-danger {
-        &:hover,&:active {
+        &:not(:disabled):hover,&:active {
             color: #fff !important;
         }
     }
     &.btn-outline-primary {
         color: var(--primary-link-color);
-        &:hover,&:active {
+        &:not(:disabled):hover,&:active {
           color: #fff;
           // background-color: var(--primary-link-clor) !important;
         }
@@ -350,11 +354,22 @@ a {
   
 
 .dropdown-menu {
-    background: #ffffff;
-    box-shadow: 0px 10px 30px rgba(209, 213, 223, 0.8);
-    border-radius: 1rem;
-    padding: 1rem 0;
-    border: none !important;
+  color: var(--glass-alert-text-color);
+  background: var(--glass-alert-background-color);
+  border-color: var(--glass-alert-border-color);
+  backdrop-filter: blur(10px) saturate(180%);
+    // box-shadow: 0px 10px 30px var(--card-box-shadow-color);
+  border-radius: 0.5rem;
+  padding: 0.25rem 0;
+  border: none !important;
+  margin-top: 0.1rem;
+  .dropdown-item {
+    padding: 0.5rem 1.25rem;
+    color: var(--glass-alert-text-color);
+    &:hover {
+      background: var(--glass-alert-background-color);
+    }
+  }
 }
 .dropdown-item, .dropdown-group {
     padding: 0.6rem 2rem;
@@ -751,7 +766,7 @@ svg.icon-clock {
       height: 100%;
       width: 100%;
       display: block;
-      object-fit: contain;
+      object-fit: cover;
       border-radius: 10px;
       opacity: 1;
       transition: opacity 0.3s linear;
@@ -1022,6 +1037,10 @@ input.glass-input::placeholder, input.glass-input::-webkit-input-placeholder, in
       background-color: rgba(255, 255, 255, 1) !important;
     }
   }
+}
+
+.alert-warning {
+  background-color: #fbe59e;
 }
 
 .alert-glass {

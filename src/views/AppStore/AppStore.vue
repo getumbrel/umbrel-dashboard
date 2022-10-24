@@ -2,12 +2,45 @@
   <div class="pt-2">
     <div class="mt-3">
       <div class="">
+        <b-link
+        v-if="communityAppStoreId"
+        :to="{name: 'app-store'}"
+        class="card-link primary-link d-inline-block mb-4"
+        ><svg
+          width="7"
+          height="13"
+          viewBox="0 0 7 13"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="mr-1"
+        >
+          <path
+            d="M6.74372 11.4153C7.08543 11.7779 7.08543 12.3659 6.74372 12.7285C6.40201 13.0911 5.84799 13.0911 5.50628 12.7285L0.256283 7.15709C-0.0749738 6.80555 -0.0865638 6.23951 0.229991 5.87303L5.04249 0.301606C5.36903 -0.0764332 5.92253 -0.101971 6.27876 0.244565C6.63499 0.591101 6.65905 1.17848 6.33251 1.55652L2.08612 6.47256L6.74372 11.4153Z"
+            fill="#C3C6D1"
+          />
+        </svg>
+        <small class="text-uppercase">Back to Umbrel App Store</small></b-link>
+
+        <!-- Community app store header -->
         <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h1>app store</h1>
+          <div v-if="communityAppStoreId">
+            <b-badge pill variant="primary" class="mb-1">
+              Community App Store
+            </b-badge>
+            <h1 class="text-lowercase">
+              {{ communityAppStore.name }} App Store
+            </h1>
             <p class="text-muted mb-0">
-              Add super powers to your Umbrel with amazing self-hosted applications
+              Discover and install apps from the {{ communityAppStore.name }} App Store
             </p>
+            <div class="block w-100 py-3"></div>
+          </div>
+
+          <!-- Official app store header -->
+          <div v-else>
+            <h1 class="text-lowercase">App Store</h1>
+            <p class="text-muted mb-0">Add super powers to your Umbrel with amazing self-hosted applications</p>
+            <!-- Search  -->
             <div
               class="search-input-container mt-3 mb-2 d-flex align-items-center"
               :class="{'active': appStoreSearchQuery}"
@@ -26,19 +59,93 @@
               ></b-input>
             </div>
           </div>
-          <div class="position-relative" v-if="appsWithUpdate.length">
-            <b-button variant="primary" class="px-3" v-b-modal.app-updates-modal>
-              {{ `Update${appsWithUpdate.length > 1 ? 's' : ''}` }}
-            </b-button>
-            <transition name="grow-transition" appear>
-              <span class="updates-badge text-white text-center mr-1">{{ appsWithUpdate.length }}</span>
-            </transition>
+
+          <div class="d-flex">
+            <div class="position-relative mr-3" v-if="appsWithUpdate.length">
+              <b-button variant="primary" class="px-3" v-b-modal.app-updates-modal>
+                {{ `Update${appsWithUpdate.length > 1 ? 's' : ''}` }}
+              </b-button>
+              <transition name="grow-transition" appear>
+                <span class="updates-badge text-white text-center mr-1">{{ appsWithUpdate.length }}</span>
+              </transition>
+            </div>
+            <b-dropdown
+              v-if="!communityAppStoreId"
+              variant="link"
+              toggle-class="text-decoration-none p-0"
+              no-caret
+              right
+            >
+              <template v-slot:button-content>
+                <svg
+                  width="18"
+                  height="4"
+                  viewBox="0 0 18 4"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M2 4C3.10457 4 4 3.10457 4 2C4 0.89543 3.10457 0 2 0C0.89543 0 0 0.89543 0 2C0 3.10457 0.89543 4 2 4Z"
+                    fill="#6c757d"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M9 4C10.1046 4 11 3.10457 11 2C11 0.89543 10.1046 0 9 0C7.89543 0 7 0.89543 7 2C7 3.10457 7.89543 4 9 4Z"
+                    fill="#6c757d"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M16 4C17.1046 4 18 3.10457 18 2C18 0.89543 17.1046 0 16 0C14.8954 0 14 0.89543 14 2C14 3.10457 14.8954 4 16 4Z"
+                    fill="#6c757d"
+                  />
+                </svg>
+              </template>
+              <b-dropdown-item href="#" v-b-modal.community-app-stores-modal><b-badge pill variant="primary" class="mr-1">New</b-badge> Community App Stores</b-dropdown-item>
+            </b-dropdown>
+
+            <b-modal id="community-app-stores-modal" size="lg" body-class="py-0 px-2" header-class="mb-0 pb-0" centered hide-footer>
+              <template v-slot:modal-header="{ close }">
+                <div class="d-flex flex-column w-100">
+                  <div class="d-flex justify-content-end w-100">
+                    <a
+                      href="#"
+                      class="align-self-center"
+                      v-on:click.stop.prevent="close"
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M13.6003 4.44197C13.3562 4.19789 12.9605 4.19789 12.7164 4.44197L9.02116 8.1372L5.32596 4.442C5.08188 4.19792 4.68615 4.19792 4.44207 4.442C4.198 4.68607 4.198 5.0818 4.44207 5.32588L8.13728 9.02109L4.44185 12.7165C4.19777 12.9606 4.19777 13.3563 4.44185 13.6004C4.68592 13.8445 5.08165 13.8445 5.32573 13.6004L9.02116 9.90497L12.7166 13.6004C12.9607 13.8445 13.3564 13.8445 13.6005 13.6004C13.8446 13.3563 13.8446 12.9606 13.6005 12.7165L9.90505 9.02109L13.6003 5.32585C13.8444 5.08178 13.8444 4.68605 13.6003 4.44197Z"
+                          fill="#6c757d"
+                        />
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between w-100 px-2 px-lg-3">
+                    <h2 class="text-lowercase">Community App Stores</h2>
+                  </div>
+                </div>
+              </template>
+              <community-app-stores />
+            </b-modal>
           </div>
         </div>
       </div>
     </div>
 
-    <div v-if="appStoreSearchQuery && appStoreSearchResults.length" class="app-store-card-columns">
+    <!-- Search results  -->
+    <div v-if="!communityAppStoreId && appStoreSearchQuery && appStoreSearchResults.length" class="app-store-card-columns">
       <card-widget
         v-for="app in appStoreSearchResults"
         :key="app.id"
@@ -52,7 +159,7 @@
             <div class="d-block">
               <img
                 class="app-icon mr-2 mr-lg-3"
-                :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+                :src="app.icon"
                 draggable="false"
               />
             </div>
@@ -82,14 +189,16 @@
       </card-widget>
     </div>
 
-    <div v-else-if="appStoreSearchQuery && !appStoreSearchResults.length && !isTypingAppStoreSearchQuery" class="w-100">
+    <!-- No results found -->
+    <div v-else-if="!communityAppStoreId && appStoreSearchQuery && !appStoreSearchResults.length && !isTypingAppStoreSearchQuery" class="w-100">
       <p class="text-muted">No results found</p>
       <transition name="no-search-results-transition" appear>
         <img class="no-search-results-image d-block mt-5 mx-auto" src="@/assets/no-search-results.gif" />
       </transition>
     </div>
 
-    <div v-show="!appStoreSearchQuery" class="app-store-card-columns">
+    <!-- All apps in the app store -->
+    <div v-show="communityAppStoreId || !appStoreSearchQuery" class="app-store-card-columns">
       <card-widget
         v-for="categorizedApps in categorizedAppStore"
         :key="categorizedApps[0].category"
@@ -97,7 +206,7 @@
         :header="categorizedApps[0].category"
       >
         <router-link
-          :to="{name: 'app-store-app', params: {id: app.id}}"
+          :to="{name: communityAppStoreId ? 'community-app-store-app' : 'app-store-app', params: {id: app.id}}"
           v-for="app in categorizedApps"
           :key="app.id"
           class="app-list-app d-flex justify-content-between align-items-center px-3 px-lg-4 py-3"
@@ -106,7 +215,7 @@
             <div class="d-block">
               <img
                 class="app-icon mr-2 mr-lg-3"
-                :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+                :src="app.icon"
                 draggable="false"
               />
             </div>
@@ -136,6 +245,7 @@
       </card-widget>
       <card-widget
         class="pb-2 card-app-list umbrel-dev-note mt-2"
+        v-if="appStore.length && !communityAppStoreId"
       >
       <div class="px-3 px-lg-4 py-3">
         <span class="rocket ml-3 ml-lg-4">🚀</span>
@@ -203,6 +313,7 @@ import delay from "@/helpers/delay";
 
 import CardWidget from "@/components/CardWidget";
 import UpdateAppsApp from "@/views/AppStore/UpdateAppsApp";
+import CommunityAppStores from "@/views/AppStore/CommunityAppStores";
 
 export default {
   data() {
@@ -218,6 +329,8 @@ export default {
       updating: (state) => state.apps.updating,
       appStoreSearchIndex: (state) => state.apps.searchIndex,
       appStoreSearchResults: (state) => state.apps.searchResults,
+      communityAppStores: (state) => state.user.communityAppStores,
+      communityAppStoreApps: (state) => state.apps.communityAppStoreApps,
     }),
     // for v-model to work with global state
     appStoreSearchQuery: {
@@ -228,11 +341,18 @@ export default {
         this.$store.dispatch("apps/searchAppStore", value)
       }
     },
+    communityAppStoreId: function() {
+      return this.$router.currentRoute.params.communityAppStoreId || "";
+    },
+    communityAppStore: function() {
+      return this.communityAppStores.find(({id}) => id === this.communityAppStoreId);
+    },
     appsWithUpdate: function() {
       return this.appStore.filter(app => app.updateAvailable)
     },
     categorizedAppStore: function () {
-      return this.appStore.reduce((categories, app) => {
+      const appStore = this.communityAppStoreId ? this.communityAppStoreApps : this.appStore;
+      return appStore.reduce((categories, app) => {
         if (!categories[app.category]) {
           categories[app.category] = [];
         }
@@ -270,13 +390,19 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("apps/getAppStore");
+    if (this.communityAppStoreId) {
+      this.$store.dispatch("apps/getCommunityAppStoreApps", this.communityAppStoreId);
+    } else {
+      this.$store.dispatch("apps/getAppStore");
+    }
 
     // https://stackoverflow.com/a/63485725
     this.$nextTick(() => {
 
       // autofocus search input
-      this.$refs.searchInput.focus()
+      if (!this.communityAppStoreId) {
+        this.$refs.searchInput.focus()
+      }
 
       // set previous scroll position
       const container = document.getElementById("content-container");
@@ -286,6 +412,7 @@ export default {
       // watch scroll position
       container.addEventListener('scroll', this.onScroll);
     });
+
   },
   beforeDestroy() {
     const container = document.getElementById("content-container");
@@ -293,7 +420,8 @@ export default {
   },
   components: {
     CardWidget,
-    UpdateAppsApp
+    UpdateAppsApp,
+    CommunityAppStores,
   },
 };
 </script>
@@ -390,7 +518,7 @@ export default {
 .no-search-results-transition-enter-active,
 .no-search-results-transition-leave-active {
   transition: transform 0.5s ease;
-  transition-delay: 0.5s;
+  transition-delay: 1.5s;
 }
 .no-search-results-transition-enter {
   transform: rotate(-360deg) scale3d(0, 0, 0);

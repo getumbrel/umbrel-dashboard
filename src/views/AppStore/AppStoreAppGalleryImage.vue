@@ -5,12 +5,12 @@
     <img
       class="app-gallery-image-preloader"
       :class="!imageLoaded ? 'loading' : ''"
-      :src="`https://getumbrel.github.io/umbrel-apps-gallery/${appId}/icon.svg`"
+      :src="preloaderImage"
     />
     <img
       :class="!imageLoaded ? 'loading' : ''"
       class="app-gallery-image"
-      :src="`https://getumbrel.github.io/umbrel-apps-gallery/${appId}/${image}`"
+      :src="galleryImage"
       @load="onGalleryImageLoad"
     />
   </div>
@@ -19,8 +19,8 @@
 <script>
 export default {
   props: {
-    appId: String,
-    image: String,
+    preloaderImage: String,
+    galleryImage: String,
   },
   data() {
     return {

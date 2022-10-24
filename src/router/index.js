@@ -75,6 +75,29 @@ const routes = [
             ]
           },
           {
+            path: "/community-app-store",
+            component: ContentLayout,
+            meta: { scrollTop: true },
+            children: [
+              {
+                path: ":communityAppStoreId",
+                name: "community-app-store",
+                component: AppStore,
+                meta: {
+                  wallpaperClass: 'wallpaper-content-open wallpaper-zoom-in',
+                }
+              },
+              {
+                path: ":communityAppStoreId/:id",
+                name: "community-app-store-app",
+                component: AppStoreApp,
+                meta: {
+                  wallpaperClass: 'wallpaper-content-open wallpaper-zoom-in',
+                }
+              }
+            ]
+          },
+          {
             path: "/settings",
             component: ContentLayout,
             meta: { scrollTop: true },

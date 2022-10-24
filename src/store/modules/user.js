@@ -7,7 +7,7 @@ const state = () => ({
   jwt: window.localStorage.getItem("jwt") || "",
   registered: true,
   seed: [],
-  installedApps: [],
+  communityAppStores: [],
   otpEnabled: false,
   wallpaper: "",
   remoteTorAccess: false
@@ -25,8 +25,8 @@ const mutations = {
   setName(state, name) {
     state.name = name;
   },
-  setInstalledApps(state, installedApps) {
-    state.installedApps = installedApps;
+  setCommunityAppStores(state, communityAppStores) {
+    state.communityAppStores = communityAppStores;
   },
   setSeed(state, seed) {
     state.seed = seed;
@@ -98,13 +98,13 @@ const actions = {
   },
 
   async getInfo({ commit }) {
-    const { name, otpEnabled, installedApps, remoteTorAccess } = await API.get(
+    const { name, otpEnabled, remoteTorAccess, communityAppRepos } = await API.get(
       `${process.env.VUE_APP_MANAGER_API_URL}/v1/account/info`
     );
     commit("setName", name);
     commit("setOtpEnabled", otpEnabled);
-    commit("setInstalledApps", installedApps);
     commit("setRemoteTorAccess", remoteTorAccess);
+    commit("setCommunityAppStores", communityAppRepos);
   },
 
   async getSeed({ commit, state, dispatch }, { password, otpToken }) {

@@ -131,6 +131,8 @@ export default {
         this.loadingProgress = 70;
         try {
           await this.$store.dispatch("user/getInfo");
+          // load apps
+          await this.$store.dispatch("apps/getInstalledApps");
         } catch (error) {
           // it will error if jwt has expired and automatically
           // redirect the user to login page

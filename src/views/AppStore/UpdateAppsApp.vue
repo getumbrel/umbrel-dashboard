@@ -6,7 +6,7 @@
           <div class="app-icon-container mr-2 mr-lg-2">
             <img
               class="app-icon"
-              :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+              :src="app.icon"
             />
           </div>
           <div class="d-flex flex-column">

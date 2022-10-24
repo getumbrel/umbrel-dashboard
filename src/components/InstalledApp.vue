@@ -13,7 +13,7 @@
           class="installed-app-icon app-icon"
           :class="{'d-none': !iconLoaded, 'dim-in-out': isUninstalling || isOffline}"
           :alt="app.name"
-          :src="`https://getumbrel.github.io/umbrel-apps-gallery/${app.id}/icon.svg`"
+          :src="app.icon"
           draggable="false"
           @load="onIconLoad"
         />

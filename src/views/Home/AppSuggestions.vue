@@ -22,7 +22,7 @@
               <div class="d-block">
                 <img
                   class="app-icon mr-2 mr-lg-3"
-                  :src="`https://getumbrel.github.io/umbrel-apps-gallery/${appId}/icon.svg`"
+                  :src="getAppIcon(appId)"
                   draggable="false"
                 />
               </div>
@@ -95,6 +95,9 @@ export default {
     },
     getAppTagline(appId) {
       return this.appStore.find((app) => app.id === appId)['tagline'];
+    },
+    getAppIcon(appId) {
+      return this.appStore.find((app) => app.id === appId)['icon'];
     },
   },
   components: {
