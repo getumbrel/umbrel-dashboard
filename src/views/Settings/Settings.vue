@@ -227,7 +227,7 @@
               <small
                 class="d-block"
                 style="opacity: 0.4"
-              >Remotely access your Umbrel from anywhere using a Tor browser on this URL</small>
+              >Remotely access your Umbrel from anywhere using a Tor browser {{remoteTorAccess && onionAddress ? 'on this URL' : ''}}</small>
             </div>
             <toggle-switch
               class="align-self-center"
