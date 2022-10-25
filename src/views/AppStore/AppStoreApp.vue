@@ -262,7 +262,7 @@
         </div>
       </template>
       <div class="px-2">
-        <p>{{ app.name }} is an app published in a Community App Store called "Example".
+        <p>{{ app.name }} is an app published in a Community App Store called "{{ communityAppStore.name }}".
           <br/><br/>
           <span class="font-weight-bold">Apps in Community App Stores are not verified or vetted by the official Umbrel App Store team, and can potentially be insecure or malicious.</span>
           <br/><br/>
@@ -386,10 +386,14 @@ export default {
       appStore: (state) => state.apps.store,
       installing: (state) => state.apps.installing,
       uninstalling: (state) => state.apps.uninstalling,
+      communityAppStores: (state) => state.user.communityAppStores,
       communityAppStoreApps: (state) => state.apps.communityAppStoreApps,
     }),
     communityAppStoreId: function() {
       return this.$router.currentRoute.params.communityAppStoreId || "";
+    },
+    communityAppStore: function() {
+      return this.communityAppStores.find(({id}) => id === this.communityAppStoreId);
     },
     app: function () {
       const appStore = this.communityAppStoreId ? this.communityAppStoreApps : this.appStore;
