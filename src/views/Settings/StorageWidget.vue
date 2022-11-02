@@ -75,7 +75,7 @@
                         <span v-if="app.id === 'umbrel'">System
                           <!-- <b-icon icon="info-circle-fill" style="opacity: 0.4" variant="dark" class="ml-1" v-b-tooltip.hover.bottom title="Including Bitcoin Core, LND, and Electrum server"></b-icon> -->
                         </span>
-                        <span v-else>{{ getAppName(app.id) }}</span>
+                        <span v-else>{{ app.name }}</span>
 
                         <!-- There's an edge case where a negative value may be returned by the API -->
                         <small v-if="app.used < 0" class="text-muted">Calculating...</small>
@@ -171,10 +171,6 @@ export default {
   methods: {
     readableSize(n) {
       return readableSize(n);
-    },
-    getAppName(appId) {
-      const index = this.store.findIndex(({id}) => id === appId);
-      return index > -1 ? this.store[index]['name'] : "";
     }
   },
   components: {
