@@ -1,7 +1,7 @@
 <template>
   <div class="p-sm-2">
     <div class="my-3 pb-2">
-      <h1 class="text-lowercase">{{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}</h1>
+      <h1>{{ greeting }}{{ name ? `, ${name.split(" ")[0]}` : "" }}</h1>
       <!-- <p class="text-muted">Here's an overview of your Umbrel</p> -->
     </div>
     <b-row>

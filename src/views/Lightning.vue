@@ -76,7 +76,7 @@
               <div
                 class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100"
               >
-                <h3 class="text-lowercase">Lightning Address</h3>
+                <h3>Lightning Address</h3>
                 <!-- Emulate built in modal header close button action -->
                 <a
                   href="#"

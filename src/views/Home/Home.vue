@@ -21,7 +21,7 @@
       <div class="mt-3 mt-sm-3 mb-2">
         <div class="d-flex flex-column justify-content-center align-items-center">
           <logo class="umbrel-logo mb-2" compact />
-          <span class="text-greeting text-white text-lowercase text-center d-block mb-4">{{ greeting }}, {{ name.split(" ")[0] }}</span>
+          <span class="text-greeting text-white text-center d-block mb-4">{{ greeting }}, {{ name.split(" ")[0] }}</span>
           
           <!-- Umbrel update notification -->
           <transition name="notification-transition" appear>

@@ -27,7 +27,7 @@
             <b-badge pill variant="primary" class="mb-1">
               Community App Store
             </b-badge>
-            <h1 class="text-lowercase">
+            <h1>
               {{ communityAppStore.name }} App Store
             </h1>
             <p class="text-muted mb-0">
@@ -38,7 +38,7 @@
 
           <!-- Official app store header -->
           <div v-else>
-            <h1 class="text-lowercase">App Store</h1>
+            <h1>App Store</h1>
             <p class="text-muted mb-0">Add super powers to your Umbrel with amazing self-hosted applications</p>
             <!-- Search  -->
             <div
@@ -133,7 +133,7 @@
                     </a>
                   </div>
                   <div class="d-flex align-items-center justify-content-between w-100 px-2 px-lg-3">
-                    <h2 class="text-lowercase">Community App Stores</h2>
+                    <h2>Community App Stores</h2>
                   </div>
                 </div>
               </template>
@@ -284,7 +284,7 @@
             </a>
           </div>
           <div class="d-flex align-items-center justify-content-between w-100 px-2 px-lg-3">
-            <h2 class="mr-auto text-lowercase">Updates</h2>
+            <h2 class="mr-auto">Updates</h2>
             <b-button variant="outline-primary" class="px-2" size="sm" @click="updateAll" v-show="canUpdateAll && !isUpdatingAll">Update all</b-button>
           </div>
         </div>
