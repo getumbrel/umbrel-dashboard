@@ -4,7 +4,7 @@
     <div v-if="step === 0" class="d-flex flex-column align-items-center justify-content-center p-2 min-vh100">
       <div class="w-75 d-flex flex-column align-items-center justify-content-center">
         <logo class="mb-3 logo" />
-        <h1 class="text-center text-white text-lowercase mb-2">Welcome to Umbrel</h1>
+        <h1 class="text-center text-white mb-2">Welcome to Umbrel</h1>
         <p class="text-center text-white">Your personal server is now ready to setup.</p>
         <transition name="slide-up" appear>
           <b-button
