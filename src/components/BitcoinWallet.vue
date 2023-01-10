@@ -181,20 +181,12 @@
                       v-if="tx.type === 'outgoing' || tx.type === 'incoming'"
                     >
                       {{ getTimeFromNow(tx.timestamp) }}
-                      <span
-                        v-if="
-                          tx.description === 'Lightning Wallet' &&
-                            tx.type === 'outgoing'
-                        "
-                        >&bull; Channel open</span
-                      >
-                      <span
-                        v-else-if="
-                          tx.description === 'Lightning Wallet' &&
-                            tx.type === 'incoming'
-                        "
-                        >&bull; Channel close</span
-                      >
+                      <span v-if="tx.description === 'Lightning Wallet' && tx.type === 'outgoing'">
+                        &bull; {{ tx.confirmations === 0 ? "Channel opening" : "Channel open" }}
+                      </span>
+                      <span v-else-if=" tx.description === 'Lightning Wallet' && tx.type === 'incoming'">
+                        &bull; {{ tx.confirmations === 0 ? "Channel closing" : "Channel close" }}
+                      </span>
                     </small>
                   </div>
 
