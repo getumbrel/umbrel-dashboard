@@ -744,7 +744,8 @@ export default {
         return state.lightning.balance.total;
       },
       walletBalanceInSats: state => state.lightning.balance.total,
-      unit: state => state.system.unit
+      unit: state => state.system.unit,
+      maxReceive: state => state.lightning.maxReceive
     }),
     isLightningPage() {
       return this.$router.currentRoute.path === "/lightning";
@@ -842,6 +843,27 @@ export default {
       this.send.isSending = false;
     },
     async createInvoice() {
+      // Check that there is enough liquidity to recieve
+      if (this.receive.amount > this.maxReceive) {
+        const toastOptions = {
+          title: "Error creating invoice",
+          autoHideDelay: 3000,
+          variant: "danger",
+          solid: true,
+          toaster: "b-toaster-bottom-right"
+        };
+
+        this.$bvToast.toast(
+          `
+            You can receive a maximum of ${this.maxReceive.toLocaleString()} Sats through your payment channels. 
+            Increase your limit by getting other Lightning nodes to open channels with you.
+          `,
+          toastOptions
+        );
+
+        return;
+      }
+
       //generate invoice to receive payment
       this.loading = true;
       this.receive.isGeneratingInvoice = true;
@@ -1025,6 +1047,7 @@ export default {
   async created() {
     window.moment = moment;
     await this.$store.dispatch("lightning/getStatus");
+    await this.$store.dispatch("lightning/getChannels");
   },
   beforeDestroy() {
     window.clearInterval(this.QRAnimation);
