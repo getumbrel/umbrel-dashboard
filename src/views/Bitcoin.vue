@@ -108,6 +108,7 @@
                     title="Connections"
                     :value="stats.peers"
                     suffix="Peers"
+                    :raw-value="stats.peers"
                     showNumericChange
                   ></stat>
                 </b-col>
@@ -116,6 +117,7 @@
                     title="Mempool"
                     :value="abbreviateSize(stats.mempool)[0]"
                     :suffix="abbreviateSize(stats.mempool)[1]"
+                    :raw-value="stats.mempool"
                     showPercentChange
                   ></stat>
                 </b-col>
@@ -124,6 +126,7 @@
                     title="Hashrate"
                     :value="abbreviateHashRate(stats.hashrate)[0]"
                     :suffix="abbreviateHashRate(stats.hashrate)[1]"
+                    :raw-value="stats.hashrate"
                     showPercentChange
                   ></stat>
                 </b-col>
@@ -132,6 +135,7 @@
                     title="Blockchain Size"
                     :value="abbreviateSize(stats.blockchainSize)[0]"
                     :suffix="abbreviateSize(stats.blockchainSize)[1]"
+                    :raw-value="stats.blockchainSize"
                     showPercentChange
                   ></stat>
                 </b-col>
