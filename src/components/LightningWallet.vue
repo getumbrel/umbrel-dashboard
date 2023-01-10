@@ -994,13 +994,27 @@ export default {
               return inv.paymentRequest === this.receive.paymentRequest;
             })[0];
 
-            if (currentInvoice && currentInvoice.settled) {
-              this.changeMode("received");
-              window.clearInterval(this.receive.invoiceStatusPoller);
+            //check if invoice is settled or expired
+            if (currentInvoice) {
+              const now = Math.floor(new Date().getTime());
+              const invoiceExpiresOn =
+                (Number(currentInvoice.timestamp) + Number(currentInvoice.expiry)) *
+                1000;
 
-              //refresh
-              this.$store.dispatch("lightning/getChannels");
-              this.$store.dispatch("lightning/getTransactions");
+              if (currentInvoice.settled || now > invoiceExpiresOn) {
+                if (currentInvoice.settled) {
+                  this.changeMode("received");
+                } else if (now > invoiceExpiresOn) {
+                  this.expiredInvoice.expiresOn = invoiceExpiresOn;
+                  this.changeMode("invoice-expired");
+                }
+
+                window.clearInterval(this.receive.invoiceStatusPoller);
+
+                //refresh
+                this.$store.dispatch("lightning/getChannels");
+                this.$store.dispatch("lightning/getTransactions");
+              }
             }
           }
           this.receive.invoiceStatusPollerInprogress = false;
