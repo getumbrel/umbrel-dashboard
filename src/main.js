@@ -43,11 +43,12 @@ Vue.filter("satsToUSD", value => {
   if (isNaN(parseInt(value))) {
     return value;
   } else {
-    return (
-      "$" +
-      Number(
-        (satsToBtc(value) * store.state.bitcoin.price).toFixed(2)
-      ).toLocaleString()
+    return Number(satsToBtc(value) * store.state.bitcoin.price).toLocaleString(
+      Intl.NumberFormat().resolvedOptions().locale,
+      {
+        currency: "usd",
+        style: "currency"
+      }
     );
   }
 });
