@@ -244,21 +244,50 @@
             :disabled="send.isSending"
           ></b-input>
 
-          <!-- Invoice amount + description -->
-          <div v-if="send.isValidInvoice && send.amount">
-            <div class="d-flex justify-content-between mb-3 align-items-center">
-              <div>
-                <small class="d-block text-muted mb-1">Paying</small>
-                <h4 class="d-block mb-0">{{ send.amount | unit | localize }}</h4>
-                <small class="d-block text-muted">
-                  {{
-                  unit | formatUnit
-                  }}
-                </small>
+          <!-- Invoice amount if custom -->
+          <transition name="fade">
+            <div v-if="send.isCustomAmount">
+              <label class="sr-onlsy" for="input-amt">Amount</label>
+              <div class="mb-2">
+                <b-input-group class="neu-input-group">
+                  <b-input
+                    id="input-amt"
+                    class="neu-input"
+                    type="text"
+                    size="lg"
+                    v-model.number="send.amountInput"
+                    autofocus
+                    :disabled="send.isSending"
+                  ></b-input>
+                  <b-input-group-append class="neu-input-group-append">
+                    <sats-btc-switch class="align-self-center" size="sm"></sats-btc-switch>
+                  </b-input-group-append>
+                </b-input-group>
+                <small
+                  class="text-muted mt-2 d-block text-right mb-0"
+                  :style="{ opacity: send.amount > 0 ? 1 : 0 }"
+                >~ {{ send.amount | satsToUSD }}</small>
               </div>
-              <small class="d-block text-muted">~ {{ send.amount | satsToUSD }}</small>
             </div>
-
+          </transition>
+          
+          <!-- Invoice amount + description -->
+          <div v-if="send.isValidInvoice">
+            <div v-if="send.amount && !send.isCustomAmount">
+              <div class="d-flex justify-content-between mb-3 align-items-center">
+                <div>
+                  <small class="d-block text-muted mb-1">Paying</small>
+                  <h4 class="d-block mb-0">{{ send.amount | unit | localize }}</h4>
+                  <small class="d-block text-muted">
+                    {{
+                    unit | formatUnit
+                    }}
+                  </small>
+                </div>
+                <small class="d-block text-muted">~ {{ send.amount | satsToUSD }}</small>
+              </div>
+            </div>
+            
             <div v-if="send.description">
               <small class="d-block text-muted mb-1">For</small>
               <span>{{ send.description }}</span>
@@ -633,7 +662,7 @@
         @click="sendSats"
         v-else-if="mode === 'send'"
         :disabled="
-          !send.paymentRequest || !send.isValidInvoice || send.isSending
+          !send.paymentRequest || !send.isValidInvoice || send.isSending || !send.amount
         "
       >
         <svg
@@ -707,6 +736,8 @@ export default {
         paymentRequest: "", //Bolt 11 payment request/invoice entered by the user
         description: "", //invoice description
         amount: null, //invoice amount
+        amountInput: "", //input custom amount (tmp variable)
+        isCustomAmount: false, //check if invoice needs a custom amount
         isValidInvoice: false, //check if invoice entered by user is a valid Bolt 11 invoice
         isSending: false, //used for transition while tx is being broadcasted,
         paymentPreImage: "" //proof of payment
@@ -789,6 +820,8 @@ export default {
         paymentRequest: "",
         description: "",
         amount: null,
+        amountInput: "",
+        isCustomAmount: false,
         isValidInvoice: false,
         isSending: false
       };
@@ -815,7 +848,7 @@ export default {
       this.error = "";
 
       const payload = {
-        amt: 0, //because payment request already has amount info
+        amt: this.send.isCustomAmount ? this.send.amount : 0,
         paymentRequest: this.send.paymentRequest
       };
 
@@ -892,6 +925,8 @@ export default {
         this.send.description = "";
         this.send.isValidInvoice = false;
         this.send.amount = null;
+        this.send.amountInput = "";
+        this.send.isCustomAmount = false;
         this.send.description = "";
         this.error = "";
         return;
@@ -900,6 +935,8 @@ export default {
       this.send.description = "";
       this.send.isValidInvoice = false;
       this.send.amount = null;
+      this.send.amountInput = "";
+      this.send.isCustomAmount = false;
       this.send.description = "";
       this.error = "";
       this.loading = true;
@@ -925,7 +962,13 @@ export default {
         this.send.isValidInvoice = false;
         this.error = `Invoice expired ${moment(invoiceExpiresOn).fromNow()}`;
       } else {
-        this.send.amount = Number(fetchedInvoice.numSatoshis);
+        if (fetchedInvoice.numSatoshis === "0") {
+          this.send.amount = null;
+          this.send.isCustomAmount = true;
+        } else {
+          this.send.amount = Number(fetchedInvoice.numSatoshis);
+          this.send.isCustomAmount = false;
+        }
         this.send.description = fetchedInvoice.description;
         this.send.isValidInvoice = true;
         this.error = "";
@@ -1014,11 +1057,20 @@ export default {
         this.receive.amount = btcToSats(val);
       }
     },
+    "send.amountInput": function(val) {
+      if (this.unit === "sats") {
+        this.send.amount = Number(val);
+      } else if (this.unit === "btc") {
+        this.send.amount = btcToSats(val);
+      }
+    },
     unit: function(val) {
       if (val === "sats") {
         this.receive.amount = Number(this.receive.amountInput);
+        this.send.amount = Number(this.send.amountInput);
       } else if (val === "btc") {
         this.receive.amount = btcToSats(this.receive.amountInput);
+        this.send.amount = btcToSats(this.send.amountInput);
       }
     }
   },
