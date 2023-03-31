@@ -2,7 +2,7 @@
   <div class="">
     <div class="my-3">
       <div class="d-flex justify-content-between align-items-center">
-        <h1 class="text-title mb-0">settings</h1>
+        <h1 class="text-title mb-0">Настройки</h1>
       </div>
     </div>
     <b-row>
@@ -16,15 +16,15 @@
       <temperature-widget id="temperature" class="card-app-list" v-if="isUmbrelOS"></temperature-widget>
 
       <card-widget
-        header="Account"
+        header="Аккаунт"
         class="card-app-list"
         :loading="isChangingPassword || isFetchingOtpUri"
       >
         <div class="pt-2">
           <div class="d-flex w-100 justify-content-between px-3 px-xl-4 mb-4">
             <div>
-              <span class="d-block">Two-factor auth (2FA)</span>
-              <small class="d-block" style="opacity: 0.4">An extra layer of security to login</small>
+              <span class="d-block">Двухфакторная аутентификация</span>
+              <small class="d-block" style="opacity: 0.4">Дополнительный уровень защиты вашего аккаунта</small>
             </div>
             <toggle-switch
               class="align-self-center"
@@ -60,7 +60,7 @@
               </template>
               <div class="px-1 px-sm-4 pb-3 text-center">
                 <div class="mb-4">
-                  <p>Scan this QR code using an authenticator app like Google Authenticator or Authy</p>
+                  <p>Отсканируйте qr-код, используя приложение-аутентификатор, например Google Authenticator или Authy</p>
                   <div class="otp-qr-container bg-white d-flex justify-content-center align-items-center mx-auto mb-3 br-sm">
                     <qr-code
                       class="mx-auto"
@@ -70,12 +70,12 @@
                       showLogo
                     ></qr-code>
                   </div>
-                  <p>Or paste the following code in the app</p>
+                  <p>Или вставьте следующий код в приложении</p>
                   <input-copy class="w-100 mx-auto" size="sm" :value="otpSecretKey"></input-copy>
                 </div>
 
                 <label> 
-                  Enter the code displayed in your authenticator app to enable 2FA
+                  Введите код, отображаемый в приложении-аутентификаторе для активации двухфакторной аутентификации
                 </label>
                 <input-otp-token
                   autofocus
@@ -90,7 +90,7 @@
               <b-modal id="disable-otp-auth-modal" centered hide-footer ref="disable-otp-auth-modal">
               <template v-slot:modal-header="{ close }">
                 <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-                  <h3>Disable 2FA</h3>
+                  <h3>Отключить двухфакторную аутентификацию</h3>
                   
                   <!-- Emulate built in modal header close button action -->
                   <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
@@ -113,7 +113,7 @@
               </template>
               <div class="px-1 px-sm-4 pb-3">
                 <label> 
-                  Enter the code displayed in your authenticator app to disable 2FA
+                  Введите код, отображаемый в приложении-аутентификаторе для отключения двухфакторной аутентификации
                 </label>
                 <input-otp-token
                   autofocus
@@ -130,8 +130,8 @@
         <div class="pt-0">
           <div class="d-flex w-100 justify-content-between px-3 px-xl-4 mb-4">
             <div>
-              <span class="d-block">Password</span>
-              <small class="d-block" style="opacity: 0.4">Change your Umbrel's password</small>
+              <span class="d-block">Пароль</span>
+              <small class="d-block" style="opacity: 0.4">Изменить ваш пароль входа</small>
             </div>
 
             <b-button
@@ -139,12 +139,12 @@
               size="sm"
               v-b-modal.change-password-modal
               :disabled="isChangingPassword"
-            >Change</b-button>
+            >Изменить</b-button>
 
             <b-modal id="change-password-modal" ref="change-password-modal" centered hide-footer>
               <template v-slot:modal-header="{ close }">
                 <div class="px-2 px-sm-3 pt-2 d-flex justify-content-between w-100">
-                  <h3>change password</h3>
+                  <h3>изменить пароль</h3>
                   <!-- Emulate built in modal header close button action -->
                   <a href="#" class="align-self-center" v-on:click.stop.prevent="close">
                     <svg
@@ -165,7 +165,7 @@
                 </div>
               </template>
               <div class="px-4 pb-2">
-                <label class="sr-onlsy" for="input-withdrawal-amount">Current password</label>
+                <label class="sr-onlsy" for="input-withdrawal-amount">Актуальный пароль</label>
                 <input-password
                   v-model="currentPassword"
                   ref="password"
@@ -174,7 +174,7 @@
                   :disabled="isChangingPassword"
                 />
                 <div class="py-2"></div>
-                <label class="sr-onlsy" for="input-withdrawal-amount">New password</label>
+                <label class="sr-onlsy" for="input-withdrawal-amount">Новый пароль</label>
                 <input-password
                   v-model="newPassword"
                   ref="password"
@@ -183,7 +183,7 @@
                   :disabled="isChangingPassword"
                 />
                 <div class="py-2"></div>
-                <label class="sr-onlsy" for="input-withdrawal-amount">Confirm new password</label>
+                <label class="sr-onlsy" for="input-withdrawal-amount">Подтверждение нового пароля</label>
                 <input-password
                   v-model="confirmNewPassword"
                   ref="password"
@@ -193,7 +193,7 @@
                 />
                 <div v-if="otpEnabled" class="py-2">
                   <label> 
-                    Enter your two-factor authentication (2FA) code
+                    Введите ваш код для двухфакторной аутентификации
                   </label>
                   <input-otp-token
                     :success="isCorrectOtp"
@@ -205,8 +205,7 @@
                 <div class="py-2"></div>
                 <b-alert variant="warning" show>
                   <small>
-                    ⚠ Remember, there is no "Forgot Password" button. If you lose
-                    your password, you will not be able to login to your Umbrel.
+                    ⚠ Запомните, тут нет возможности восстановить пароль. Если вы забудете пароль, вы потеряете доступ к своей Ноосфере.
                   </small>
                 </b-alert>
                 <b-button
@@ -215,7 +214,7 @@
                   size="lg"
                   :disabled="isChangingPassword || !isAllowedToChangePassword"
                   @click="changePassword"
-                >{{ isChangingPassword ? 'Changing password...' : 'Change password'}}</b-button>
+                >{{ isChangingPassword ? 'Изменение пароля...' : 'Изменить пароль'}}</b-button>
               </div>
             </b-modal>
           </div>
@@ -223,11 +222,11 @@
         <div class="px-3 px-xl-4 mb-4">
           <div class="d-flex justify-content-between w-100 mb-3">
             <div class="w-75">
-              <span class="d-block">Remote Tor access</span>
+              <span class="d-block">Удаленное управление через Tor</span>
               <small
                 class="d-block"
                 style="opacity: 0.4"
-              >Remotely access your Umbrel from anywhere using a Tor browser {{remoteTorAccess && onionAddress ? 'on this URL' : ''}}</small>
+              >Удаленный доступ к вашей системе из любого места с помощью браузера Tor {{remoteTorAccess && onionAddress ? 'on this URL' : ''}}</small>
             </div>
             <toggle-switch
               class="align-self-center"
@@ -247,7 +246,7 @@
       <b-col cols="12" md="6" lg="4">
 
       <card-widget
-        header="System"
+        header="Система"
         class="card-app-list"
         :loading="isCheckingForUpdate || isUpdating"
       >
@@ -256,8 +255,8 @@
         <div class="pt-0" v-if="isUmbrelOS">
           <div class="d-flex w-100 justify-content-between px-3 px-xl-4 mb-4">
             <div>
-              <span class="d-block">Uptime</span>
-              <small class="d-block" style="opacity: 0.4">Time since last restart</small>
+              <span class="d-block">Время работы</span>
+              <small class="d-block" style="opacity: 0.4">Прошло времени с последней перезагрузки</small>
             </div>
             <div class="text-right">
               <span class="d-block">{{ getUptime }}</span>
@@ -267,29 +266,29 @@
         <div class="pt-0">
           <div class="d-flex w-100 justify-content-between px-3 px-xl-4 mb-4">
             <div>
-              <span class="d-block">Shutdown</span>
-              <small class="d-block" style="opacity: 0.4">Power off your Umbrel</small>
+              <span class="d-block">Выключить</span>
+              <small class="d-block" style="opacity: 0.4">Отключение системы</small>
             </div>
-            <b-button variant="outline-primary" size="sm" @click="shutdownPrompt">Shutdown</b-button>
+            <b-button variant="outline-primary" size="sm" @click="shutdownPrompt">Выключить</b-button>
           </div>
         </div>
         <div class="pt-0">
           <div class="d-flex w-100 justify-content-between px-3 px-xl-4 mb-4">
             <div>
-              <span class="d-block">Restart</span>
-              <small class="d-block" style="opacity: 0.4">Restart your Umbrel</small>
+              <span class="d-block">Перезагрузить</span>
+              <small class="d-block" style="opacity: 0.4">Перезагрузить вашу систему</small>
             </div>
 
-            <b-button variant="outline-primary" size="sm" @click="rebootPrompt">Restart</b-button>
+            <b-button variant="outline-primary" size="sm" @click="rebootPrompt">Перезагрузить</b-button>
           </div>
         </div>
         <div class="pt-0">
           <div class="d-flex w-100 justify-content-between px-3 px-xl-4 mb-4">
             <div>
-              <span class="d-block">Troubleshoot</span>
-              <small class="d-block" style="opacity: 0.4">View logs for troubleshooting</small>
+              <span class="d-block">Устранение неполадок</span>
+              <small class="d-block" style="opacity: 0.4">Показать логи ошибок</small>
             </div>
-            <b-button variant="outline-primary" size="sm" @click="openDebugModal">Start</b-button>
+            <b-button variant="outline-primary" size="sm" @click="openDebugModal">Начать</b-button>
             <b-modal
               ref="debug-modal"
               size="xl"
@@ -355,20 +354,20 @@
         </div>
         <div class="px-3 px-xl-4 pb-4">
           <div class="w-100 d-flex justify-content-between mb-1">
-            <span class="align-self-end">Umbrel Version</span>
+            <span class="align-self-end">Версия Ноосферы</span>
             <span class="font-weight-normal mb-0">{{ version }}</span>
           </div>
           <div v-show="!isCheckingForUpdate">
             <span v-show="!availableUpdate.version">
               <b-icon icon="check-circle-fill" variant="success"></b-icon>
-              <small class="ml-1" style="opacity: 0.4">Your Umbrel is on the latest version</small>
+              <small class="ml-1" style="opacity: 0.4">Ваша Ноосфера имеют последнюю версию</small>
             </span>
             <div v-show="availableUpdate.version">
               <span class="d-block">
                 <b-icon icon="bell-fill" variant="success"></b-icon>
                 <small
                   class="text-muted ml-1"
-                >Umbrel {{availableUpdate.version}} is now available to install</small>
+                >Версия Ноосферы {{availableUpdate.version}} доступна для установки</small>
               </span>
               <b-button
                 class="mt-2"
@@ -388,7 +387,7 @@
           @click="checkForUpdate"
         >
           <b-icon icon="arrow-repeat" class="mr-2" :animation="isCheckingForUpdate ? 'spin' : ''"></b-icon>
-          {{ isCheckingForUpdate ? "Checking for update" : "Check for update"}}
+          {{ isCheckingForUpdate ? "Проверка обновления" : "Проверить обновление"}}
         </b-button>
       </card-widget>
       </b-col>
