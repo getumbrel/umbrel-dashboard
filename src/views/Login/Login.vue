@@ -1,9 +1,9 @@
 <template>
   <div v-if="!loading" class="d-flex flex-column align-items-center justify-content-center min-vh100 login-container p-2">
     <logo class="mb-3 logo" />
-    <h1 class="text-center text-white text-lowercase mb-1">Welcome back</h1>
-    <p v-if="!showOtpInput" class="text-white w-75 text-center">Enter the password to login to your Umbrel</p>
-    <p v-else class="text-white w-75 text-center">Enter your two-factor authentication code</p>
+    <h1 class="text-center text-white text-lowercase mb-1">Добро пожаловать</h1>
+    <p v-if="!showOtpInput" class="text-white w-75 text-center">Введите пароль для входа в систему</p>
+    <p v-else class="text-white w-75 text-center">Введите ваш код двухфакторной аутентификации</p>
     <form
       v-if="!showOtpInput"
       v-on:submit.prevent="authenticateUser"
@@ -12,7 +12,7 @@
       <input-password
         v-model="password"
         ref="password"
-        placeholder="Password"
+        placeholder="Пароль"
         :inputClass="[
           isIncorrectPassword ? 'incorrect-password' : '',
           'glass-input w-100'
@@ -33,7 +33,7 @@
             v-show="!!password && !isIncorrectPassword"
             :disabled="isLoggingIn"
             pill
-          >Log in</b-button>
+          >Войти</b-button>
         </transition>
       </div>
     </form>
@@ -54,7 +54,7 @@
       />
       <div class="login-button-container">
         <transition name="fade">
-          <small class="mt-2 text-white error" v-show="isIncorrectOtp">Incorrect code</small>
+          <small class="mt-2 text-white error" v-show="isIncorrectOtp">Неверный код</small>
         </transition>
       </div>
     </form>
